@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Practice — Gene Expression (5 Passages × 5 Questions)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  /* Top blue bar */
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  /* Passage header with right-side How to reason button */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+
+  /* Questions */
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  code{ background:#f0f0f0; padding:1px 4px; border-radius:4px; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+
+<body>
+  <div class="main-header">
+    🧬 Genetic Code, Transcription, Translation & Gene Regulation
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+  <div class="section-tag">5 Passages × 5 Questions (Total 25) — Evidence → Reasoning → Best answer</div>
+
+
+  <div class="passage-header">
+    <span>📘 Passage 1 — Degeneracy, Wobble, and Mutation Consequences</span>
+    <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A genetics lab studies a 12–amino-acid peptide hormone (Protein P) encoded by a short open reading frame (ORF). In wild-type cells, the mRNA begins with a normal start codon and terminates at the first in-frame stop codon. The lab engineers four variants of the coding sequence and measures protein size and abundance by immunoblotting.</p>
+    <p><b>Variant 1</b> changes a single base in the third position of a codon in the middle of the ORF. The resulting protein is the same length as wild-type and retains antibody recognition, but a functional assay shows slightly reduced activity.</p>
+    <p><b>Variant 2</b> changes a single base and introduces a premature stop codon early in the ORF. The immunoblot shows a shorter band and greatly reduced signal intensity compared with wild-type.</p>
+    <p><b>Variant 3</b> deletes one nucleotide near the beginning of the ORF. The immunoblot shows a band of abnormal size and the functional assay shows near-complete loss of activity.</p>
+    <p><b>Variant 4</b> changes the start codon AUG to AUA. The mRNA level is unchanged, but protein is barely detectable.</p>
+  </div>
+
+  <div class="reasoning-box" id="p1-reason">
+    <b>How to reason (Passage 1):</b>
+    <ol>
+      <li><b>Use the genetic code rules:</b> start codon is <code>AUG</code>; stops are <code>UAA/UGA/UAG</code>.</li>
+      <li><b>Map outcomes to mutation types:</b> same length suggests silent or conservative missense; early truncation suggests nonsense; 1-nt indel suggests frameshift.</li>
+      <li><b>Use wobble logic:</b> third-base changes are more likely to be silent because the code is degenerate.</li>
+      <li><b>Separate mRNA vs protein effects:</b> unchanged mRNA but lost protein often means translation initiation failure.</li>
+      <li><b>Eliminate distractors</b> that confuse transcriptional changes with translation/codon changes.</li>
+    </ol>
+  </div>
+
+  <div class="question" id="q1">
+    <b>1. Variant 2 most directly represents which mutation type, based on the evidence?</b>
+    <div class="choice" onclick="selectChoice('q1', this, false)">A. Silent mutation that does not change the encoded amino acid</div>
+    <div class="choice" onclick="selectChoice('q1', this, true)">B. Nonsense mutation producing a premature stop codon and truncated protein</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Missense mutation that changes one amino acid but preserves length</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Frameshift mutation that alters the reading frame downstream</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Variant 2 introduces a <b>premature stop codon</b> and produces a <b>shorter protein band</b>. That pattern is classic for a <b>nonsense</b> mutation (truncation). The reduced band intensity is also consistent with unstable truncated protein (or reduced translation efficiency of a defective product).
+<ul>
+  <li><b>A</b> Silent mutations keep the same amino acid and typically keep size and often function.</li>
+  <li><b>C</b> Missense changes keep protein length (no early stop), so you would not expect truncation.</li>
+  <li><b>D</b> Frameshifts can change size, but the stem specifically says it <i>introduces a premature stop codon</i> with an early truncation pattern.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q2">
+    <b>2. Which explanation best accounts for Variant 4 having normal mRNA levels but almost no detectable protein?</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. RNA polymerase II can no longer bind the TATA box, so hnRNA is not synthesized</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">B. The poly-A tail cannot be added, so the mRNA is rapidly degraded in the nucleus</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. A premature stop codon triggers immediate termination, producing a shorter protein</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">D. Loss of the AUG start codon prevents efficient translation initiation by ribosomes</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Translation generally begins at the <b>start codon AUG</b>. Changing AUG → AUA disrupts the initiation signal, so ribosomes fail to initiate properly, yielding <b>very little protein</b> even when <b>mRNA levels are unchanged</b>.
+<ul>
+  <li><b>A</b> would lower mRNA levels (transcription problem), contradicting “mRNA level is unchanged.”</li>
+  <li><b>B</b> would typically decrease mRNA abundance; the passage says mRNA is unchanged.</li>
+  <li><b>C</b> would produce a <i>shorter</i> protein band, not “barely detectable protein” due to initiation failure.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q3">
+    <b>3. Variant 3 most likely caused near-complete loss of function because it:</b>
+    <div class="choice" onclick="selectChoice('q3', this, true)">A. Shifted the reading frame, changing most downstream codons and often introducing an early stop codon</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. Changed a third-base position that is usually protected by wobble pairing</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">C. Converted thymine to uracil, destabilizing DNA and stopping transcription</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. Increased GC content, forcing a switch to Z-DNA and preventing translation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+A single-nucleotide deletion near the beginning of an ORF causes a <b>frameshift</b>. That changes the <b>reading frame</b>, so nearly all downstream codons encode different amino acids and an early stop frequently appears. This typically produces a severely altered, nonfunctional protein of abnormal size.
+<ul>
+  <li><b>B</b> describes a situation more consistent with a potentially silent change, not a 1-nt deletion.</li>
+  <li><b>C</b> confuses DNA/RNA chemistry; thymine/uracil substitution is about RNA vs DNA, not a typical mutation description here.</li>
+  <li><b>D</b> Z-DNA is a DNA conformation topic and does not explain frameshifted protein output.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q4">
+    <b>4. Variant 1 changes the third base of a codon yet produces the same protein length. Which inference is most consistent with the genetic code being degenerate?</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. The mutation must be silent because the third base never affects amino acid identity</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. The mutation must create a new stop codon because third-base changes favor termination</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">C. The codon likely still encodes the same amino acid, but the slight activity drop suggests a nearby regulatory/structural effect or a conservative missense elsewhere in the assay system</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">D. The mutation converted DNA into RNA, which changes ribosome binding</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Degeneracy (and wobble at the third base) means many third-base changes <b>do not change the amino acid</b> or may produce a <b>conservative</b> change. The unchanged size supports “no truncation.” The slight activity decrease could be from a subtle amino acid substitution (missense) or effects not visible on size-based blotting (e.g., folding/active-site microenvironment).
+<ul>
+  <li><b>A</b> is too absolute—third-base changes are <i>often</i> silent, not <i>never</i> consequential.</li>
+  <li><b>B</b> is incorrect: third-base changes do not preferentially create stop codons.</li>
+  <li><b>D</b> is nonsensical (DNA does not “convert into RNA” due to a point mutation).</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q5">
+    <b>5. The reduced band intensity in Variant 2 (truncated protein) is most reasonably explained by which downstream consequence?</b>
+    <div class="choice" onclick="selectChoice('q5', this, true)">A. The truncated protein is more likely to be unstable and degraded, lowering detected abundance</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. The truncated protein increases ribosomal processivity, reducing antibody binding</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Truncation automatically increases polyadenylation, diluting the protein signal</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. The stop codon forces splicing to remove the entire exon containing the mutation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+A truncated protein can misfold or lack stabilizing domains, making it <b>more prone to degradation</b>. That reduces steady-state protein levels and band intensity, even if transcription occurred.
+<ul>
+  <li><b>B</b> ribosomal “processivity” is not increased by truncation; termination stops translation.</li>
+  <li><b>C</b> polyadenylation affects mRNA, not direct “dilution” of protein signal.</li>
+  <li><b>D</b> stop codons are in mature mRNA coding regions; splicing is directed by splice sites/snRNPs, not by stop codons.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+
+  <div class="passage-header">
+    <span>📘 Passage 2 — Eukaryotic Transcription and RNA Processing Decisions</span>
+    <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A cell biology team examines expression of the human <i>NXF</i> gene in cultured cells. They identify a canonical promoter with a TATA box roughly 25 base pairs upstream of the transcription start site. When they inhibit the enzyme responsible for synthesizing RNA from DNA templates, newly made RNA transcripts disappear.</p>
+    <p>In untreated cells, the earliest nuclear transcripts contain intronic sequences and are detected only in the nucleus. Within minutes, most transcripts gain a 5′ cap and a poly-A tail, lose introns, and appear in the cytoplasm. The team then introduces two mutations:</p>
+    <p><b>Mutation A</b> disrupts a conserved splice-site sequence at the boundary of intron 2. The cytoplasm accumulates longer RNA species, and the resulting protein shows an internal deletion of 18 amino acids.</p>
+    <p><b>Mutation B</b> deletes a short region in the promoter that includes the TATA box. Total <i>NXF</i> RNA levels fall sharply, but the few transcripts that are produced appear properly capped and polyadenylated.</p>
+    <p>Finally, the team compares tissues and observes that brain cells express a shorter NXF isoform while liver cells express a longer isoform, even though genomic DNA sequence is identical.</p>
+  </div>
+
+  <div class="reasoning-box" id="p2-reason">
+    <b>How to reason (Passage 2):</b>
+    <ol>
+      <li><b>Separate steps:</b> promoter/TATA affects <b>transcription initiation</b>; splicing/cap/tail affect <b>RNA processing</b>.</li>
+      <li><b>Use location clues:</b> hnRNA (pre-mRNA) with introns stays in the <b>nucleus</b>; processed mRNA appears in <b>cytoplasm</b>.</li>
+      <li><b>Interpret splice-site mutation outcomes:</b> defective splicing can cause intron retention or exon skipping → altered protein.</li>
+      <li><b>Explain tissue-specific isoforms:</b> identical DNA but different mRNA lengths → <b>alternative splicing</b> (eukaryotes).</li>
+      <li><b>Reject mismatched mechanisms</b> (e.g., Shine–Dalgarno is prokaryotic translation, not euk transcription).</li>
+    </ol>
+  </div>
+
+  <div class="question" id="q6">
+    <b>6. The enzyme whose inhibition causes newly made transcripts to disappear is most likely:</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. DNA polymerase δ</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">B. Reverse transcriptase</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">C. RNA polymerase II</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. DNA ligase</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+In eukaryotes, <b>RNA polymerase II</b> synthesizes hnRNA (pre-mRNA) from the DNA template during transcription. Inhibiting it prevents production of new transcripts.
+<ul>
+  <li><b>A</b> DNA polymerase δ is for DNA replication/primer replacement, not transcription.</li>
+  <li><b>B</b> reverse transcriptase is viral/biotech-related, not the normal cellular transcription enzyme.</li>
+  <li><b>D</b> ligase seals nicks in DNA; it does not synthesize RNA.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q7">
+    <b>7. Which interpretation best explains why Mutation B lowers total NXF RNA but does not prevent capping/polyadenylation of the transcripts that are made?</b>
+    <div class="choice" onclick="selectChoice('q7', this, true)">A. Deleting the TATA box reduces transcription initiation frequency, but processing enzymes can still act on any transcript that is produced</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. Deleting the TATA box prevents snRNP binding, so introns cannot be removed</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">C. Deleting the TATA box converts the gene into a polycistronic transcript</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. Deleting the TATA box blocks ribosome scanning from the 5′ cap</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+The <b>TATA box</b> is a promoter element that helps recruit transcription machinery, so removing it reduces <b>initiation</b> and total RNA output. But once an RNA molecule is produced, the <b>5′ cap</b> and <b>poly-A tail</b> can still be added by processing machinery.
+<ul>
+  <li><b>B</b> spliceosome recognition depends on splice sites and snRNPs, not directly on TATA.</li>
+  <li><b>C</b> polycistronic gene products are a prokaryotic strategy; this does not follow from TATA deletion.</li>
+  <li><b>D</b> is translation-related and would not primarily explain reduced <i>RNA levels</i>.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q8">
+    <b>8. Mutation A leads to longer cytoplasmic RNAs and a protein missing 18 amino acids. Which splicing outcome best fits these observations?</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Enhanced splicing that removes two introns at once, shortening the mRNA</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. Complete failure of transcription initiation at the promoter</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. Conversion of mRNA into rRNA, producing a different ribosome</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. Aberrant splicing that causes exon skipping (removing an exon segment) while allowing export of an altered mRNA</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+A splice-site mutation can cause the spliceosome to skip an exon or use a cryptic splice site. Exon skipping can produce a protein with an <b>internal deletion</b> (here, 18 amino acids). The presence of abnormal RNAs in the cytoplasm suggests some transcripts are still processed/exported, but incorrectly.
+<ul>
+  <li><b>A</b> would usually shorten RNA, not cause longer cytoplasmic species.</li>
+  <li><b>B</b> would reduce RNA production, not create longer RNAs plus a specific internal deletion.</li>
+  <li><b>C</b> is not a plausible outcome of splice-site mutation.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q9">
+    <b>9. The earliest nuclear transcripts that contain introns are best described as:</b>
+    <div class="choice" onclick="selectChoice('q9', this, false)">A. mature mRNA</div>
+    <div class="choice" onclick="selectChoice('q9', this, true)">B. hnRNA (pre-mRNA)</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. tRNA</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. rRNA</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Newly synthesized eukaryotic transcripts that still contain introns are <b>hnRNA</b> (pre-mRNA). They are processed in the nucleus (capping, polyadenylation, splicing) before becoming mature mRNA.
+<ul>
+  <li><b>A</b> mature mRNA has introns removed.</li>
+  <li><b>C</b> tRNA is transcribed and processed differently and functions as an adaptor in translation.</li>
+  <li><b>D</b> rRNA forms ribosomes; it is not a transient intron-containing transcript of a typical coding gene.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q10">
+    <b>10. Brain vs liver producing different NXF isoforms from the same genomic DNA is best explained by:</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Polycistronic transcription producing multiple proteins from one mRNA in eukaryotes</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">B. Wobble pairing at the third base of codons changing the mRNA length</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">C. Alternative splicing selecting different exon combinations in different tissues</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Mismatch repair altering codons during G2 phase to generate tissue-specific transcripts</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Different tissues making different-length mRNAs/proteins from the same gene is a hallmark of <b>alternative splicing</b> in eukaryotes: different exon combinations yield distinct isoforms.
+<ul>
+  <li><b>A</b> polycistronic gene strategy is mainly prokaryotic.</li>
+  <li><b>B</b> wobble affects codon decoding, not transcript length.</li>
+  <li><b>D</b> mismatch repair fixes replication errors; it does not program tissue-specific transcript architecture.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+
+  <div class="passage-header">
+    <span>📘 Passage 3 — Translation: Initiation, Sites, and Stop Codons</span>
+    <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A pharmacology group tests two inhibitors that affect protein synthesis. In <b>bacteria</b>, Drug S sharply reduces production of a reporter protein even though mRNA levels of the reporter remain normal. Ribosome profiling shows the small ribosomal subunit still binds mRNA but fails to position correctly at the start codon. In <b>eukaryotic</b> cells, Drug S has little effect.</p>
+    <p>Drug C, however, reduces reporter protein production in eukaryotes. In Drug C–treated eukaryotic cells, the 40S subunit binds mRNA less efficiently, and translation initiation is impaired. The team also engineers an mRNA where the first AUG is mutated but a second downstream AUG remains in-frame. In eukaryotes, translation begins at the second AUG, producing a shorter protein that still contains the antibody epitope.</p>
+    <p>Finally, the group makes a reporter that contains an early <code>UAG</code> stop codon. In both bacteria and eukaryotes, translation stops early and the truncated peptide is released from the ribosome when a protein factor promotes hydrolysis of the bond between the peptide and the tRNA.</p>
+  </div>
+
+  <div class="reasoning-box" id="p3-reason">
+    <b>How to reason (Passage 3):</b>
+    <ol>
+      <li><b>Use initiation differences:</b> bacteria use <b>Shine–Dalgarno</b> with 30S; eukaryotes use the <b>5′ cap</b> with 40S scanning.</li>
+      <li><b>Interpret “mRNA normal but protein low”</b> as a translation problem, not transcription.</li>
+      <li><b>Apply ribosome site logic:</b> initiator tRNA starts in the <b>P site</b>; new aminoacyl-tRNA enters <b>A site</b>; empty tRNA exits <b>E site</b>.</li>
+      <li><b>Stop codon mechanism:</b> release factor + water → peptide release (termination).</li>
+      <li><b>Beware cross-system traps:</b> Shine–Dalgarno (prok) vs 5′ cap (euk).</li>
+    </ol>
+  </div>
+
+  <div class="question" id="q11">
+    <b>11. Drug S most likely disrupts which prokaryote-specific initiation feature suggested by the passage’s evidence?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Binding of the 40S ribosomal subunit to the 5′ cap</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. Placement of N-formylmethionine on the E site</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">C. Recognition of stop codons by eukaryotic release factors</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">D. Alignment of the 30S subunit via the Shine–Dalgarno sequence to correctly locate the start codon</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+In bacteria, initiation begins when the <b>30S</b> subunit binds the mRNA and aligns using the <b>Shine–Dalgarno</b> sequence to place the start codon in the correct position. Drug S affects bacteria but not eukaryotes and causes mis-positioning at the start codon → consistent with disrupting Shine–Dalgarno–guided alignment.
+<ul>
+  <li><b>A</b> is eukaryote-specific (40S + 5′ cap), but Drug S has little effect in eukaryotes.</li>
+  <li><b>B</b> initiator fMet starts in the <b>P site</b>, not E site.</li>
+  <li><b>C</b> termination is not the implicated step (profiling shows failure at initiation positioning).</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q12">
+    <b>12. Drug C impairs translation initiation in eukaryotes by reducing efficient 40S binding. Which mRNA feature is the most plausible direct target?</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. The Shine–Dalgarno sequence upstream of the start codon</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">B. The 5′ cap required for 40S recruitment and scanning</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. The poly-A tail, which replaces the need for a start codon</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">D. The stop codon, which normally recruits the initiator tRNA</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Eukaryotic initiation involves the <b>40S</b> subunit binding the <b>5′ cap</b> and scanning to the first start codon. If Drug C reduces 40S binding, the cap-dependent recruitment step is the best match.
+<ul>
+  <li><b>A</b> Shine–Dalgarno is prokaryotic.</li>
+  <li><b>C</b> poly-A tail can enhance stability/translation efficiency, but it does not replace the start codon or the primary 40S recruitment step.</li>
+  <li><b>D</b> stop codons recruit release factors, not initiator tRNA.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q13">
+    <b>13. In eukaryotes, mutating the first AUG caused initiation at a downstream AUG and produced a shorter protein. This best illustrates which principle?</b>
+    <div class="choice" onclick="selectChoice('q13', this, false)">A. Degeneracy guarantees that losing the first AUG cannot change protein length</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Ribosomes in eukaryotes always initiate at the last AUG in an mRNA</div>
+    <div class="choice" onclick="selectChoice('q13', this, true)">C. Eukaryotic ribosomes scan from the 5′ end and typically initiate at the first available start codon; if it is lost, a downstream AUG can be used</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. Spliceosomes can substitute for ribosomes to initiate translation after exon ligation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Eukaryotic initiation: the 40S subunit binds the <b>5′ cap</b> and <b>scans</b> until it finds a start codon. If the first AUG is mutated, scanning can continue to a downstream in-frame AUG, producing a shorter N-terminus.
+<ul>
+  <li><b>A</b> degeneracy concerns multiple codons per amino acid, not start codon placement.</li>
+  <li><b>B</b> initiation is generally near the 5′ end, not “last AUG.”</li>
+  <li><b>D</b> spliceosomes mediate splicing; they do not initiate translation.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q14">
+    <b>14. During normal elongation, which event best describes what happens after an aminoacyl-tRNA enters the A site?</b>
+    <div class="choice" onclick="selectChoice('q14', this, true)">A. The growing polypeptide chain is transferred from the tRNA in the P site to the tRNA in the A site</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">B. A release factor places a water molecule to hydrolyze the peptide-tRNA bond</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. The 30S subunit binds the Shine–Dalgarno sequence</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. RNA polymerase II adds a 7-methylguanylate cap to the transcript</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Elongation: a new aminoacyl-tRNA enters the <b>A site</b>, and the ribosome catalyzes <b>peptide bond formation</b> transferring the growing chain from the <b>P-site</b> tRNA to the <b>A-site</b> tRNA.
+<ul>
+  <li><b>B</b> describes termination (stop codon + release factor).</li>
+  <li><b>C</b> is prokaryotic initiation, not elongation.</li>
+  <li><b>D</b> is transcriptional processing, not translation.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q15">
+    <b>15. The reporter containing an early UAG stop codon produces a truncated peptide because termination occurs when:</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. tRNA anticodons bind UAG and add an amino acid that ends the chain</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. DNA polymerase proofreads the mRNA and removes UAG</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">C. The ribosome switches to transcription to bypass the stop codon</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">D. A release factor recognizes the stop codon in the A site and promotes hydrolysis to release the peptide</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Stop codons are not recognized by tRNAs. Instead, a <b>release factor</b> binds when a stop codon (like <code>UAG</code>) enters the <b>A site</b> and catalyzes addition of <b>water</b>, hydrolyzing the bond between the peptide and the tRNA → peptide release.
+<ul>
+  <li><b>A</b> is wrong because there is no standard tRNA for stop codons (in MCAT context).</li>
+  <li><b>B</b> DNA polymerase acts on DNA, not on mRNA in translation.</li>
+  <li><b>C</b> ribosomes do not “switch to transcription.”</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+
+  <div class="passage-header">
+    <span>📘 Passage 4 — Prokaryotic Operons: Inducible vs Repressible Logic</span>
+    <button class="reason-btn" id="p4-btn" onclick="toggleReasoning('p4')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A microbiology lab examines regulation of two operons in <b>prokaryotes</b>. Operon L encodes enzymes that metabolize lactose. Operon T encodes enzymes that synthesize tryptophan. The lab measures mRNA output under different nutrient conditions and in mutant strains.</p>
+    <p>In wild-type cells, Operon L mRNA is <b>low</b> when lactose is absent, but increases sharply when lactose is added. Operon T mRNA is <b>high</b> when tryptophan is scarce, but drops when tryptophan is abundant.</p>
+    <p><b>Mutant 1</b> carries a repressor that cannot bind its inducer molecule but still binds DNA normally. When lactose is added, Operon L mRNA stays low.</p>
+    <p><b>Mutant 2</b> carries a repressor that cannot bind DNA at the operator site. Operon L mRNA is high regardless of lactose.</p>
+    <p><b>Mutant 3</b> carries a repressor for Operon T that cannot bind tryptophan. When tryptophan is abundant, Operon T mRNA remains high.</p>
+  </div>
+
+  <div class="reasoning-box" id="p4-reason">
+    <b>How to reason (Passage 4):</b>
+    <ol>
+      <li><b>Classify the systems:</b> lactose breakdown is typically <b>inducible</b> (off by default); tryptophan synthesis is <b>repressible</b> (on by default).</li>
+      <li><b>Map molecules:</b> an <b>inducer</b> removes a repressor from DNA; a <b>corepressor</b> helps a repressor bind DNA.</li>
+      <li><b>Use mutant logic:</b> if repressor can’t bind inducer → stays on DNA → operon stays off; if repressor can’t bind operator → operon is constitutively on.</li>
+      <li><b>Read the direction correctly:</b> abundant tryptophan should turn <i>off</i> synthesis genes in repressible systems.</li>
+      <li><b>Ignore eukaryotic features</b> (TATA box, spliceosome) in prokaryotic operon questions.</li>
+    </ol>
+  </div>
+
+  <div class="question" id="q16">
+    <b>16. Based on wild-type behavior, Operon L is best classified as:</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. Repressible because it turns off when lactose is present</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">B. Inducible because it turns on when lactose (the relevant substrate) is present</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Constitutive because it is always transcribed at high levels</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">D. Enhancer-driven because lactose recruits eukaryotic transcription factors</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Operon L is <b>low when lactose is absent</b> and <b>high when lactose is added</b>. That is the hallmark of an <b>inducible</b> operon: it is off by default and turned on by an inducer (often derived from the substrate).
+<ul>
+  <li><b>A</b> reverses the logic: repressible operons are typically on by default and turned off by a corepressor.</li>
+  <li><b>C</b> contradicts the condition-dependent expression described.</li>
+  <li><b>D</b> enhancers and many TF concepts are eukaryotic and not the core operon model here.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q17">
+    <b>17. Mutant 2 shows high Operon L mRNA regardless of lactose. Which mechanism best explains this?</b>
+    <div class="choice" onclick="selectChoice('q17', this, false)">A. The inducer is permanently bound to the repressor, preventing transcription</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. RNA polymerase has lost the ability to read 5′→3′</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. The operon has been converted into a repressible system by tryptophan</div>
+    <div class="choice" onclick="selectChoice('q17', this, true)">D. The repressor cannot bind the operator, so it cannot block transcription (constitutive expression)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+If the repressor cannot bind the <b>operator</b>, it cannot physically block RNA polymerase from transcribing the operon. The result is <b>constitutive</b> (always-on) expression, independent of lactose.
+<ul>
+  <li><b>A</b> would decrease transcription, not increase it.</li>
+  <li><b>B</b> is irrelevant and incorrect; RNA polymerase synthesizes RNA 5′→3′ from a DNA template, but this does not explain nutrient-independent high transcription.</li>
+  <li><b>C</b> mixes up different operons and logic.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q18">
+    <b>18. Mutant 1 has a repressor that cannot bind its inducer but still binds DNA normally. Why does lactose fail to increase Operon L transcription?</b>
+    <div class="choice" onclick="selectChoice('q18', this, true)">A. Without inducer binding, the repressor stays bound to the operator and continues blocking transcription</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">B. Lactose acts as a corepressor that strengthens repressor–operator binding</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. The mutation removes the TATA box so RNA polymerase II cannot bind</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. The mutation prevents formation of the 5′ cap, so mRNA is degraded</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+In an <b>inducible</b> operon, the inducer normally binds the repressor and reduces its affinity for the operator, allowing transcription. If the repressor <b>cannot bind inducer</b>, it remains on DNA and keeps the operon off even when lactose is present.
+<ul>
+  <li><b>B</b> describes repressible logic (corepressor), not inducible lactose logic.</li>
+  <li><b>C</b> is eukaryotic transcription (RNA pol II + TATA), not bacterial operons.</li>
+  <li><b>D</b> is eukaryotic mRNA processing, not prokaryotic operon control.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q19">
+    <b>19. Operon T is high when tryptophan is scarce and low when tryptophan is abundant. This pattern is most consistent with Operon T being:</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Inducible, because tryptophan induces transcription when abundant</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. Inducible, because repressors always activate transcription</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">C. Repressible, because tryptophan (when abundant) acts as a corepressor to turn the operon off</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. Constitutive, because tryptophan is required for ribosome assembly</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Tryptophan biosynthesis genes are usually <b>repressible</b>: they are expressed when tryptophan is low (you need to make it) and turned off when tryptophan is high. In classic Jacob–Monod logic, abundant tryptophan acts as a <b>corepressor</b>, enabling the repressor to bind the operator and block transcription.
+<ul>
+  <li><b>A</b> is the opposite of what’s described.</li>
+  <li><b>B</b> is incorrect: repressors block transcription; they do not “always activate.”</li>
+  <li><b>D</b> does not explain the nutrient-dependent on/off pattern.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q20">
+    <b>20. Mutant 3’s Operon T repressor cannot bind tryptophan, and Operon T stays high even when tryptophan is abundant. Which conclusion is best supported?</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. Tryptophan is the inducer for Operon T, so loss of binding causes repression</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">B. Tryptophan is the corepressor for Operon T; without binding, the repressor cannot shut off transcription</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. Tryptophan binds RNA polymerase to block transcription directly</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">D. Tryptophan increases wobble pairing, so codons no longer match</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+In a <b>repressible</b> operon, the corepressor (here, tryptophan) must bind the repressor to allow effective operator binding and repression. If the repressor cannot bind tryptophan, it cannot form the active repressor–corepressor complex, so transcription remains <b>on</b> even when tryptophan is plentiful.
+<ul>
+  <li><b>A</b> mislabels tryptophan as an inducer; the described pattern is repressible, not inducible.</li>
+  <li><b>C</b> is not the core Jacob–Monod mechanism described (operator/repressor interaction).</li>
+  <li><b>D</b> wobble relates to translation, not operon transcription control.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+
+  <div class="passage-header">
+    <span>📘 Passage 5 — Eukaryotic Gene Regulation: Promoters, Enhancers, and Chromatin</span>
+    <button class="reason-btn" id="p5-btn" onclick="toggleReasoning('p5')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A developmental biology lab studies a eukaryotic gene (Gene R) that is normally expressed only in a specific cell lineage. The promoter lies close to the transcription start site and contains a TATA box. A distal enhancer is located tens of thousands of base pairs away. Transcription factors bind both regions and, when Gene R is active, chromatin in the gene’s promoter region is highly accessible to DNase.</p>
+    <p>The lab compares three treatments:</p>
+    <p><b>Treatment 1</b> inhibits an enzyme that <i>adds acetyl groups</i> to histone lysines. After treatment, DNase accessibility at the promoter decreases and Gene R mRNA decreases.</p>
+    <p><b>Treatment 2</b> inhibits an enzyme that <i>removes acetyl groups</i> from histones. After treatment, DNase accessibility increases and Gene R mRNA increases in cells that already contain the correct transcription factors.</p>
+    <p><b>Treatment 3</b> increases DNA methylation near the promoter. Even with transcription factors present, Gene R mRNA decreases.</p>
+    <p>In an engineered construct, the enhancer is deleted but the promoter remains intact. Basal transcription can still be detected, but lineage-specific high-level expression is lost.</p>
+  </div>
+
+  <div class="reasoning-box" id="p5-reason">
+    <b>How to reason (Passage 5):</b>
+    <ol>
+      <li><b>Link chromatin marks to accessibility:</b> histone acetylation generally <b>increases</b> accessibility; DNA methylation generally <b>decreases</b> accessibility.</li>
+      <li><b>Map enzyme inhibitors:</b> inhibiting acetyltransferase → less acetylation → more positive histones → tighter DNA binding; inhibiting deacetylase → more acetylation → looser chromatin.</li>
+      <li><b>Promoter vs enhancer:</b> promoter is near start site and supports basal transcription; enhancers (farther away) boost/tissue-specific expression via TF binding and DNA looping.</li>
+      <li><b>Use DNase as a readout:</b> more DNase cutting = more open chromatin.</li>
+      <li><b>Don’t assume TFs are enough:</b> TF presence can be overridden by closed chromatin (e.g., methylation).</li>
+    </ol>
+  </div>
+
+  <div class="question" id="q21">
+    <b>21. Why does Treatment 1 reduce DNase accessibility and Gene R transcription?</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. Reducing histone acetylation preserves lysine positive charge, strengthening histone–DNA attraction and compacting chromatin</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Reducing histone acetylation removes phosphate groups from DNA, making it less negative</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Reducing histone acetylation increases spliceosome activity, removing introns faster</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. Reducing histone acetylation converts the promoter into an enhancer</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Histones are rich in positively charged lysines. <b>Acetylation</b> masks positive charge, weakening attraction to negatively charged DNA and opening chromatin. If an acetyltransferase is inhibited, acetylation drops → histones remain more positive → chromatin compacts → <b>less DNase access</b> and <b>lower transcription</b>.
+<ul>
+  <li><b>B</b> histone acetylation does not remove DNA phosphates.</li>
+  <li><b>C</b> splicing is a separate RNA-processing step and does not explain reduced promoter accessibility.</li>
+  <li><b>D</b> promoter identity is not converted by acetylation status.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q22">
+    <b>22. Treatment 2 increases Gene R transcription only in cells that already have the correct transcription factors. This most strongly implies that histone deacetylase inhibition:</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. Creates new transcription factors de novo in all cells</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">B. Forces ribosomes to initiate at AUG more efficiently</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. Eliminates stop codons (UAA/UGA/UAG) so translation runs longer</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">D. Primarily increases chromatin accessibility, but TF availability remains a separate limiting requirement</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Inhibiting histone deacetylases increases acetylation and <b>opens chromatin</b>, improving access to DNA. But transcription still requires the appropriate <b>transcription factors</b>—so only cells that already have them can strongly upregulate Gene R.
+<ul>
+  <li><b>A</b> chromatin drugs do not “create TFs” as a direct effect in this model.</li>
+  <li><b>B</b> is translation, not transcription.</li>
+  <li><b>C</b> stop codons are properties of mRNA coding regions; deacetylase inhibition does not change the genetic code.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q23">
+    <b>23. Why does deleting the enhancer reduce lineage-specific high expression while leaving some basal transcription intact?</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Enhancers are required for splicing; without them introns cannot be removed</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">B. Promoters can drive basal transcription near the start site, but enhancers provide additional TF-binding and long-range regulation that boosts/tunes expression</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">C. Enhancers replace the need for a TATA box at the promoter</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. Enhancers encode the Shine–Dalgarno sequence needed for bacterial initiation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+A <b>promoter</b> near the transcription start site can recruit the core transcription machinery and produce <b>basal</b> transcription. A distant <b>enhancer</b> provides additional TF binding and regulatory input (often via DNA looping) to achieve <b>high, tissue-specific</b> expression. Removing the enhancer keeps the promoter but loses that boost.
+<ul>
+  <li><b>A</b> splicing is RNA processing; enhancers regulate transcription initiation/enhancement.</li>
+  <li><b>C</b> enhancers do not replace promoter elements like the TATA box.</li>
+  <li><b>D</b> Shine–Dalgarno is a prokaryotic translation initiation feature, unrelated here.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q24">
+    <b>24. Treatment 3 increases DNA methylation near the promoter and reduces Gene R mRNA even with transcription factors present. Which mechanism best fits this observation?</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. DNA methylation increases histone acetylation, which prevents RNA polymerase II from binding</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. DNA methylation strengthens base pairing, preventing the DNA from being unwound by helicase</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">C. DNA methylation promotes a more closed chromatin state, reducing transcriptional accessibility at the promoter</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">D. DNA methylation converts U to T in the mRNA, creating stop codons</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+In the MCAT-level model, <b>DNA methylation</b> is associated with <b>reduced transcription</b> by promoting a more condensed chromatin environment and/or recruitment of silencing complexes. Even if TFs exist, they cannot effectively act if the promoter is inaccessible.
+<ul>
+  <li><b>A</b> methylation generally correlates with decreased accessibility, not increased acetylation.</li>
+  <li><b>B</b> methylation is not primarily about preventing helicase unwinding for transcription.</li>
+  <li><b>D</b> methylation does not “convert U to T” in mRNA; uracil/thymine differences are nucleotide identity, not methylation switching in transcripts.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q25">
+    <b>25. The DNase accessibility assay is used as a proxy for promoter openness. Which result would most strongly support that a cell has shifted Gene R into a transcriptionally active chromatin state?</b>
+    <div class="choice" onclick="selectChoice('q25', this, false)">A. Less DNase cutting at the promoter and increased DNA methylation at CpG sites</div>
+    <div class="choice" onclick="selectChoice('q25', this, false)">B. No change in DNase cutting but a large increase in stop codon frequency</div>
+    <div class="choice" onclick="selectChoice('q25', this, false)">C. Less DNase cutting and increased histone deacetylation at the promoter</div>
+    <div class="choice" onclick="selectChoice('q25', this, true)">D. More DNase cutting at the promoter along with increased histone acetylation and reduced promoter methylation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+An active chromatin state is typically <b>open</b> and accessible, so you would expect <b>more DNase cutting</b>. Histone acetylation (more open) and reduced promoter methylation (less silencing) reinforce that interpretation.
+<ul>
+  <li><b>A</b> describes a more silent/closed state.</li>
+  <li><b>B</b> stop codons relate to translation, not chromatin openness.</li>
+  <li><b>C</b> deacetylation generally compacts chromatin and would decrease DNase accessibility.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+
+</body>
+</html>
