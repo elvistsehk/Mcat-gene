@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Practice — Ribosome & Translation (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  .subheader{
+    background:#0f4fa0; color:#fff; padding:10px 14px; border-radius:8px;
+    font-size:18px; font-weight:bold; margin:16px 0 10px 0;
+  }
+
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  code{ background:#f0f0f0; padding:1px 4px; border-radius:4px; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+<body>
+
+  <div class="main-header">
+    🧬 Chapter 7.3 — Ribosome, Translation, and Posttranslational Processing
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+  <div class="section-tag">15 Standalone MCAT-style Questions + 3 Passages (3 Questions Each) — Evidence → Reasoning → Best answer</div>
+
+<div class="subheader">Standalone Questions (Q1–Q15)</div>
+  <div class="question" id="q1">
+    <b>1. A toxin selectively inhibits the enzyme activity that catalyzes peptide bond formation inside ribosomes. Which ribosomal component is most directly responsible for the inhibited activity?</b>
+    <div class="choice" onclick="selectChoice('q1', this, true)">A. rRNA in the large subunit (a ribozyme peptidyl transferase)</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. mRNA at the 5′ cap</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. tRNA anticodon loop in the A site</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. DNA-dependent RNA polymerase II</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Peptide bond formation is catalyzed by <b>peptidyl transferase</b>, which is an <b>rRNA-based ribozyme</b> in the <b>large ribosomal subunit</b>.
+<ul>
+  <li><b>B</b> the 5′ cap helps recruit the ribosome but does not catalyze peptide bonds.</li>
+  <li><b>C</b> the tRNA anticodon base-pairs with mRNA; it is not the catalytic site.</li>
+  <li><b>D</b> RNA polymerase II performs transcription, not translation.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q2">
+    <b>2. In eukaryotes, which RNA polymerase transcribes the 5S rRNA and where does this transcription occur relative to the nucleolus?</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. RNA polymerase I; inside the nucleolus</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">B. RNA polymerase III; outside the nucleolus</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. RNA polymerase II; inside the nucleolus</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. RNA polymerase III; inside the nucleolus</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+<b>RNA polymerase III</b> transcribes <b>5S rRNA</b>, and this occurs <b>outside the nucleolus</b> (whereas Pol I in the nucleolus makes the 45S pre-rRNA containing 28S, 18S, and 5.8S).
+<ul>
+  <li><b>A</b> Pol I transcribes 28S/18S/5.8S as the 45S precursor inside the nucleolus.</li>
+  <li><b>C</b> Pol II makes hnRNA (pre-mRNA) and some snRNA, not 5S rRNA.</li>
+  <li><b>D</b> gets the polymerase right but the location wrong for 5S rRNA in this model.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q3">
+    <b>3. Which statement correctly describes the directionality of translation on an mRNA molecule?</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. The ribosome moves 3′→5′ and synthesizes the protein C-terminus→N-terminus</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. The ribosome moves 5′→3′ and synthesizes the protein C-terminus→N-terminus</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">C. The ribosome moves 5′→3′ and synthesizes the protein N-terminus→C-terminus</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. The ribosome moves 3′→5′ and synthesizes the protein N-terminus→C-terminus</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+During elongation, the ribosome <b>moves 5′→3′</b> along mRNA while the polypeptide is synthesized from <b>N-terminus to C-terminus</b>.
+<ul>
+  <li><b>A, C, D</b> mismatch either ribosome movement direction, peptide growth direction, or both.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q4">
+    <b>4. During initiation, the initiator tRNA base-pairs with the start codon and begins the chain in which ribosomal site?</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. A site</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. E site</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. Release-factor site</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">D. P site</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+The initiator tRNA binds the start codon <b>in the P site</b>. This is why the P site is where the first amino acid (Met or fMet) begins the chain.
+<ul>
+  <li><b>A</b> accepts incoming aminoacyl-tRNAs during elongation.</li>
+  <li><b>C</b> is the exit site for uncharged tRNA.</li>
+  <li><b>D</b> is not a standard ribosomal site (release factors bind in the A site at stop codons).</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q5">
+    <b>5. Which ribosomal site most directly binds the incoming aminoacyl-tRNA corresponding to the next codon to be translated?</b>
+    <div class="choice" onclick="selectChoice('q5', this, true)">A. A site</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. P site</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. E site</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. Shine–Dalgarno site</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+The <b>A (aminoacyl) site</b> holds the incoming aminoacyl-tRNA whose anticodon matches the codon currently positioned in the A site.
+<ul>
+  <li><b>B</b> P site holds the tRNA carrying the growing peptide.</li>
+  <li><b>C</b> E site holds the uncharged tRNA before exit.</li>
+  <li><b>D</b> Shine–Dalgarno is an mRNA sequence (prokaryotic initiation), not a tRNA-binding site.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q6">
+    <b>6. A drug prevents the large and small ribosomal subunits from associating. Which stage of translation is most directly blocked?</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. Transcription termination</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">B. Initiation complex formation</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. Peptidyl transferase reaction during elongation</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. Stop codon recognition by release factor</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+The <b>large subunit joining the small subunit</b> is a key step in forming the completed <b>initiation complex</b>. If subunits can’t associate, translation stalls before productive elongation begins.
+<ul>
+  <li><b>A</b> is unrelated (transcription).</li>
+  <li><b>C</b> requires an assembled ribosome.</li>
+  <li><b>D</b> occurs at termination later in the process.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q7">
+    <b>7. Compared with eukaryotes, prokaryotes can begin translating an mRNA before transcription is finished primarily because:</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. Eukaryotic ribosomes require fMet, which is slow to load</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. Prokaryotic mRNAs always lack stop codons</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">C. Prokaryotes have no nucleus, so transcription and translation occur in the same compartment</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. Eukaryotes translate in the nucleolus while prokaryotes translate in the ER</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Prokaryotes lack a nucleus; <b>transcription and translation occur in the same cytoplasmic space</b>, allowing ribosomes to translate a nascent mRNA as it is being made.
+<ul>
+  <li><b>B</b> fMet is prokaryotic, not eukaryotic.</li>
+  <li><b>C</b> both domains require stop codons for termination.</li>
+  <li><b>D</b> translation occurs in the cytoplasm; nucleolus is for rRNA synthesis/processing.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q8">
+    <b>8. A prokaryotic mRNA mutant lacks an intact Shine–Dalgarno sequence. What is the most likely immediate effect?</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. The mRNA cannot be capped at the 5′ end</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. The ribosome cannot form peptide bonds because rRNA is missing</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. Transcription cannot start because TATA box binding fails</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. The small ribosomal subunit has difficulty binding/positioning to initiate translation efficiently</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+In prokaryotes, the <b>Shine–Dalgarno sequence</b> in the 5′ UTR helps the small subunit bind and align the start codon. If it’s disrupted, <b>initiation efficiency falls</b>.
+<ul>
+  <li><b>B</b> 5′ capping is a eukaryotic processing feature, not prokaryotic mRNA.</li>
+  <li><b>C</b> peptide bond catalysis depends on rRNA, but Shine–Dalgarno doesn’t remove rRNA.</li>
+  <li><b>D</b> TATA boxes are eukaryotic promoter elements for transcription.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q9">
+    <b>9. Which statement best explains why S values (e.g., 40S + 60S = 80S) are not additive like simple masses?</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. S values are determined by ultracentrifugation and depend on size and shape (sedimentation), not mass alone</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. S values measure nucleotide number directly</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. S values represent the number of rRNA strands in the subunit</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. S values are additive only in prokaryotes but not in eukaryotes</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Svedberg (S) units describe <b>sedimentation behavior</b> in an ultracentrifuge, which depends on <b>size, shape, and density</b>, not just mass. Therefore they are not strictly additive.
+<ul>
+  <li><b>A</b> nucleotide counts do not define S values.</li>
+  <li><b>C</b> rRNA strand count does not determine S.</li>
+  <li><b>D</b> non-additivity applies broadly; 30S+50S=70S also shows this.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q10">
+    <b>10. Which step most directly requires a release factor and results in hydrolysis of the completed polypeptide from tRNA?</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Binding of the initiator tRNA to AUG</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">B. Entry of a stop codon into the A site</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. Formation of the 45S pre-rRNA</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Charging a tRNA with an amino acid using ATP</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+At termination, when a <b>stop codon</b> enters the <b>A site</b>, a <b>release factor</b> binds and promotes addition of a <b>water molecule</b>, hydrolyzing the bond linking the polypeptide to the tRNA.
+<ul>
+  <li><b>A</b> is initiation.</li>
+  <li><b>C</b> is rRNA transcription/processing.</li>
+  <li><b>D</b> is aminoacyl-tRNA synthetase activity, not termination.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q11">
+    <b>11. A nascent peptide contains an N-terminal signal sequence that targets it for secretion. Where is translation of this protein most likely to occur after targeting?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. In the mitochondrial matrix</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. In the nucleolus</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">C. Directly into the lumen of the rough ER</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. Only on free ribosomes in the cytosol with no ER association</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Signal sequences for secreted proteins direct the translating ribosome to the <b>rough ER</b>, allowing co-translational insertion of the peptide into the <b>ER lumen</b>.
+<ul>
+  <li><b>A</b> mitochondrial targeting uses different signals and imports.</li>
+  <li><b>C</b> nucleolus is for rRNA, not translation.</li>
+  <li><b>D</b> secreted proteins typically engage the ER pathway.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q12">
+    <b>12. Which posttranslational modification best matches the description: addition of an oligosaccharide as proteins pass through the ER and Golgi to influence destination?</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Carboxylation</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Prenylation</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. Phosphorylation</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. Glycosylation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+<b>Glycosylation</b> adds carbohydrate chains (oligosaccharides) in the <b>ER and Golgi</b>, aiding trafficking, stability, and recognition.
+<ul>
+  <li><b>A</b> carboxylation adds carboxyl groups, often for Ca²⁺ binding.</li>
+  <li><b>C</b> prenylation adds lipid groups to help membrane association.</li>
+  <li><b>D</b> phosphorylation regulates activity by adding phosphate groups to Ser/Thr/Tyr.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q13">
+    <b>13. A student proposes that tetracyclines cause minimal human side effects because human and bacterial ribosomes are identical. Which statement best corrects this reasoning?</b>
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. Human ribosomes are 80S (40S + 60S) and differ structurally from bacterial 70S (30S + 50S), enabling selective targeting</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Human ribosomes are 70S, just like bacteria, so the premise is correct</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. Bacterial ribosomes are made only of protein, so antibiotics bind proteins only</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. Antibiotics target DNA polymerase in ribosomes, not ribosome structure</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Selective antibiotic toxicity relies on structural differences: <b>bacteria: 70S (30S + 50S)</b> vs <b>eukaryotes: 80S (40S + 60S)</b>. Many antibiotics bind bacterial ribosomal features more strongly.
+<ul>
+  <li><b>A</b> is false: human cytosolic ribosomes are 80S.</li>
+  <li><b>C</b> ribosomes contain both protein and rRNA in both domains.</li>
+  <li><b>D</b> DNA polymerase is not part of the ribosome.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q14">
+    <b>14. Which statement best describes the role of elongation factors (EF) and GTP during elongation?</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. They synthesize mRNA from DNA and require GTP to unwind the helix</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. They help recruit and position aminoacyl-tRNA and use GTP to drive steps of elongation and factor cycling</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. They add the 5′ cap and poly-A tail using GTP</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. They cleave signal peptides after translation has ended</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Elongation factors assist in <b>recruiting/positioning aminoacyl-tRNAs</b> and in translocation/cycling steps; <b>GTP hydrolysis</b> provides energy and directionality for these processes.
+<ul>
+  <li><b>A</b> describes transcription/replication machinery, not elongation.</li>
+  <li><b>C</b> are RNA processing steps (cap/tail) done in the nucleus.</li>
+  <li><b>D</b> cleavage of signal peptides is a posttranslational processing event, not EF function.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q15">
+    <b>15. A chaperone protein is most directly required to:</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Catalyze peptide bond formation at the A site</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Add N-formyl groups to methionine in eukaryotes</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">C. Assist a nascent polypeptide in achieving proper folding into its functional conformation</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">D. Remove introns from hnRNA before translation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Chaperones primarily assist with <b>protein folding</b> (and sometimes refolding), helping the polypeptide reach a functional conformation and reducing misfolding/aggregation.
+<ul>
+  <li><b>A</b> peptide bond formation is catalyzed by ribosomal rRNA.</li>
+  <li><b>C</b> N-formylmethionine is a prokaryotic initiation feature.</li>
+  <li><b>D</b> splicing is performed by the spliceosome on hnRNA, not chaperones.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<div class="subheader">Passage-Based Questions (3 Passages × 3 Questions)</div>
+
+  <div class="passage-header">
+    <span>📘 Passage 1 — Antibiotic Targeting of Ribosomes</span>
+    <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A researcher compares the effect of two antibiotics on cultured human cells and a bacterial strain. Antibiotic X causes rapid cessation of bacterial protein production and slows bacterial growth, but human cells show minimal changes in protein synthesis. Antibiotic Y reduces protein synthesis in both bacteria and human cells, and treated human cells show signs of stress and reduced viability.</p>
+    <p>Biochemical profiling suggests that Antibiotic X binds strongly to a structural feature present in bacterial ribosomes but absent (or significantly different) in eukaryotic ribosomes. The lab confirms that bacterial ribosomes sediment as <b>70S particles</b> made of <b>30S and 50S subunits</b>, whereas human cytosolic ribosomes sediment as <b>80S particles</b> made of <b>40S and 60S subunits</b>. Both ribosomes contain rRNA and proteins, and the rRNA contributes catalytic activity for peptide bond formation.</p>
+    <p>The investigator hypothesizes that the selectivity of Antibiotic X arises from ribosomal structural differences, not from differences in the genetic code.</p>
+  </div>
+
+  <div class="reasoning-box" id="p1-reason">
+    <b>How to reason (Passage 1):</b>
+    <ol>
+      <li><b>Identify the phenotype:</b> X selectively blocks bacterial protein synthesis → likely bacterial ribosome targeting.</li>
+      <li><b>Use the structural clue:</b> bacteria are 70S (30S/50S); humans are 80S (40S/60S).</li>
+      <li><b>Separate “code” vs “machinery”:</b> genetic code is largely universal; the key difference is ribosome structure.</li>
+      <li><b>Predict off-target toxicity:</b> if a drug also hits 80S features, human protein synthesis drops.</li>
+    </ol>
+  </div>
+
+  <div class="question" id="q16">
+    <b>16. Which observation from the passage most directly supports the claim that Antibiotic X is selectively targeting bacterial translation machinery?</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. Both organisms use codons to specify amino acids</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. Both ribosomes contain rRNA and proteins</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Human cells display stress when treated with Antibiotic Y</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">D. Antibiotic X stops bacterial protein production while minimally affecting human protein synthesis</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Selective inhibition of bacterial protein synthesis with minimal effect on human protein synthesis strongly indicates that Antibiotic X targets <b>bacterial translation machinery</b> (e.g., a bacterial ribosomal feature).
+<ul>
+  <li><b>B</b> would argue against selectivity because the genetic code is shared.</li>
+  <li><b>C</b> is true but not selective—both have rRNA/proteins.</li>
+  <li><b>D</b> describes Antibiotic Y, not X.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q17">
+    <b>17. Which mechanistic inference best explains why Antibiotic Y is more toxic to human cells than Antibiotic X?</b>
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Antibiotic Y binds a feature shared between 70S and 80S ribosomes, impairing translation in both</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. Antibiotic Y increases Shine–Dalgarno binding in eukaryotes</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Antibiotic Y blocks transcription by RNA polymerase I</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. Antibiotic Y removes the 5′ cap from bacterial mRNA only</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+If an antibiotic inhibits translation in both bacteria and humans, it likely binds a <b>conserved ribosomal feature</b> or otherwise interferes with translation in both contexts, leading to human toxicity.
+<ul>
+  <li><b>B</b> Shine–Dalgarno is prokaryotic, not eukaryotic.</li>
+  <li><b>C</b> Pol I is rRNA transcription, not translation directly.</li>
+  <li><b>D</b> bacteria typically lack 5′ caps; and this would not explain toxicity in humans.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q18">
+    <b>18. If Antibiotic X interferes specifically with peptide bond formation, which ribosomal component is the most plausible direct target?</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. mRNA codons in the A site</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">B. rRNA in the large subunit (peptidyl transferase activity)</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Initiation factors that bind the 5′ cap</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. DNA-dependent RNA polymerase III</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Peptide bond formation is catalyzed by <b>peptidyl transferase</b>, an <b>rRNA-based ribozyme</b> in the <b>large subunit</b>. A selective drug could exploit bacterial structural differences in this region.
+<ul>
+  <li><b>A</b> codons provide information but are not catalytic.</li>
+  <li><b>C</b> 5′ cap recognition is eukaryotic initiation; Antibiotic X is selective for bacteria.</li>
+  <li><b>D</b> RNA polymerase III performs transcription, not translation.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+
+  <div class="passage-header">
+    <span>📘 Passage 2 — Initiation and Start-Site Targeting</span>
+    <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A biotechnology company designs an mRNA-based therapeutic to be translated in human cells. Version 1 of the mRNA contains a normal <b>5′ cap</b> and a start codon in a favorable context. Version 2 is identical in coding sequence but lacks a 5′ cap. Version 3 contains the 5′ cap but includes a strong Shine–Dalgarno-like sequence upstream of AUG.</p>
+    <p>After transfection into human cells, Version 1 produces high protein levels. Version 2 yields much lower protein output and the RNA decays quickly. Version 3 produces protein levels similar to Version 1; the Shine–Dalgarno-like sequence appears to have little effect in this system.</p>
+    <p>The team concludes that eukaryotic initiation depends on distinct recognition elements compared with prokaryotic initiation and that stability and initiation efficiency can both influence final protein output.</p>
+  </div>
+
+  <div class="reasoning-box" id="p2-reason">
+    <b>How to reason (Passage 2):</b>
+    <ol>
+      <li><b>Match organism to initiation signal:</b> human cells → small subunit binds <b>5′ cap</b>, not Shine–Dalgarno.</li>
+      <li><b>Separate two effects:</b> cap affects <b>ribosome recruitment</b> and <b>mRNA protection</b>.</li>
+      <li><b>Interpret “no effect” sequences:</b> a prokaryotic-style motif won’t help in eukaryotes if the machinery doesn’t read it.</li>
+      <li><b>Link phenotype to mechanism:</b> low protein + fast decay suggests compromised stability and initiation.</li>
+    </ol>
+  </div>
+
+  <div class="question" id="q19">
+    <b>19. Which version best demonstrates that Shine–Dalgarno-like sequences are not a primary driver of initiation in eukaryotes?</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Version 1 (cap present) produces high protein</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. Version 2 (no cap) produces low protein and decays quickly</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">C. Version 3 (cap present + Shine–Dalgarno-like sequence) behaves similarly to Version 1</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. All versions behave identically because codons are universal</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Version 3 includes a Shine–Dalgarno-like sequence but shows little benefit over Version 1 in human cells. This implies the Shine–Dalgarno motif is not a key initiation cue for eukaryotic ribosomes.
+<ul>
+  <li><b>A</b> shows the cap supports translation but doesn’t isolate Shine–Dalgarno’s role.</li>
+  <li><b>B</b> highlights the importance of the cap but not the Shine–Dalgarno-like element.</li>
+  <li><b>D</b> is contradicted by the observed differences.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q20">
+    <b>20. The low protein output from Version 2 is best explained by which combined effect of removing the 5′ cap?</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. Loss of peptide bond formation because rRNA is absent</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. Switch from methionine to N-formylmethionine during initiation</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. Forced termination at UAA, UGA, or UAG</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">D. Reduced ribosome recruitment for initiation and increased susceptibility to degradation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+The 5′ cap is recognized by eukaryotic initiation machinery and protects mRNA. Without it, <b>initiation is inefficient</b> and the transcript is <b>less stable</b>, producing less protein.
+<ul>
+  <li><b>B</b> ribosomes still have rRNA; the cap doesn’t remove ribosomal components.</li>
+  <li><b>C</b> fMet is a prokaryotic initiator; cap loss does not cause that switch.</li>
+  <li><b>D</b> stop codons are in the coding region; cap loss doesn’t create them.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q21">
+    <b>21. If the company wanted translation to begin at AUG with the initiator tRNA placed correctly, which ribosomal site should contain the initiator tRNA during initiation?</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. P site</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. A site</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. E site</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. A site only after the first peptide bond forms</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+During initiation, the initiator tRNA binds AUG in the <b>P site</b>. The A site remains available for the next incoming aminoacyl-tRNA during elongation.
+<ul>
+  <li><b>A</b> A site is for incoming aminoacyl-tRNA during elongation.</li>
+  <li><b>C</b> E site is for exit of uncharged tRNA.</li>
+  <li><b>D</b> is incorrect: the initiator starts in the P site before the first peptide bond.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+
+  <div class="passage-header">
+    <span>📘 Passage 3 — Posttranslational Processing and Function</span>
+    <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A patient presents with easy bruising and prolonged bleeding after minor injuries. Laboratory testing shows low functional activity of several clotting factors, despite normal mRNA levels and normal-length translated polypeptides. Dietary history suggests chronic malabsorption of fat-soluble vitamins.</p>
+    <p>The clinician suspects a defect in a posttranslational modification required for these factors to bind calcium and participate in the clotting cascade. In cell culture, adding the missing vitamin to the medium restores clotting factor activity without changing transcription rates or ribosome function.</p>
+    <p>Separately, a research team studies a hormone precursor protein that is translated as a larger inactive polypeptide and becomes active only after proteolytic cleavage. Inhibition of the relevant protease yields normal translation but markedly reduced hormone activity.</p>
+  </div>
+
+  <div class="reasoning-box" id="p3-reason">
+    <b>How to reason (Passage 3):</b>
+    <ol>
+      <li><b>Use “normal mRNA + normal-length protein”:</b> rules out transcription/translation length errors → think <b>posttranslational</b>.</li>
+      <li><b>Connect symptoms to mechanism:</b> clotting factors need Ca²⁺ binding; the passage hints a vitamin-dependent modification.</li>
+      <li><b>Identify the modification type:</b> Ca²⁺ binding sites are often created by <b>carboxylation</b> (vitamin K dependent in classic examples).</li>
+      <li><b>Second vignette:</b> normal translation but low activity after protease inhibition → <b>cleavage/processing</b> is required.</li>
+    </ol>
+  </div>
+
+  <div class="question" id="q22">
+    <b>22. Which posttranslational modification is most consistent with the clotting-factor defect described in the patient?</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. Glycosylation in the ER to select the correct codon</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">B. Carboxylation of residues to create calcium-binding sites (vitamin-dependent)</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. Prenylation to remove introns from mRNA</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. Phosphorylation of ribosomal rRNA to form the 80S complex</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+The passage describes normal transcripts and translation but reduced clotting factor function, restored by a missing vitamin. Many clotting factors require <b>posttranslational carboxylation</b> to create <b>Ca²⁺-binding sites</b> (classically vitamin K dependent).
+<ul>
+  <li><b>B</b> glycosylation affects trafficking and stability; it does not “select codons.”</li>
+  <li><b>C</b> prenylation adds lipid groups; intron removal is splicing (RNA processing).</li>
+  <li><b>D</b> phosphorylation can regulate proteins, but “phosphorylating rRNA to form 80S” is not the mechanism.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q23">
+    <b>23. In the hormone precursor experiment, why does protease inhibition reduce hormone activity despite normal translation?</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Stop codons fail to enter the A site</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Peptidyl transferase cannot function without proteases</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">C. The protein must be cleaved from a larger inactive precursor to become active</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. Translation occurs in the nucleus for hormone genes</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Many hormones are translated as larger inactive precursors and require <b>proteolytic cleavage</b> to become active. If cleavage is blocked, the translated product remains inactive.
+<ul>
+  <li><b>B</b> termination depends on stop codons and release factors, not proteases.</li>
+  <li><b>C</b> peptide bond formation is ribosomal rRNA activity.</li>
+  <li><b>D</b> translation occurs in the cytoplasm (or on rough ER for secretory proteins), not in the nucleus.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q24">
+    <b>24. If the hormone precursor contains a signal sequence for secretion, which additional step is most likely required for proper localization before secretion?</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. DNA replication at the nucleolus to assemble ribosomes</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. Conversion of methionine to fMet in the ER lumen</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. Binding of Shine–Dalgarno sequence to the 40S subunit</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">D. Ribosome targeting to the rough ER during translation, followed by ER→Golgi trafficking and exocytosis</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Secreted proteins use an N-terminal <b>signal sequence</b> to direct the translating ribosome to the <b>rough ER</b>, enabling entry into the secretory pathway (ER → Golgi → vesicles → exocytosis).
+<ul>
+  <li><b>B</b> describes unrelated DNA/ribosome biogenesis concepts.</li>
+  <li><b>C</b> fMet is prokaryotic initiation, not eukaryotic secretion targeting.</li>
+  <li><b>D</b> Shine–Dalgarno is prokaryotic; eukaryotes use the 5′ cap.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+</body></html>
