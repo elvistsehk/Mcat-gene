@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Practice — Prokaryotic Operons & Eukaryotic Gene Regulation (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  .subheader{
+    background:#0f4fa0; color:#fff; padding:10px 14px; border-radius:8px;
+    font-size:18px; font-weight:bold; margin:16px 0 10px 0;
+  }
+
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  code{ background:#f0f0f0; padding:1px 4px; border-radius:4px; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+<body>
+
+  <div class="main-header">
+    🧬 Chapters 7.4–7.5 — Operons & Eukaryotic Gene Regulation
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+  <div class="section-tag">15 Standalone MCAT-style Questions + 3 Passages (3 Questions Each) — Evidence → Reasoning → Best answer</div>
+
+<div class="subheader">Standalone Questions (Q1–Q15)</div>
+  <div class="question" id="q1">
+    <b>1. In a standard prokaryotic operon, which DNA element is a <em>nontranscribed</em> region that binds a repressor protein to control access to structural genes?</b>
+    <div class="choice" onclick="selectChoice('q1', this, true)">A. Operator site</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. Structural gene</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Enhancer</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Poly-A signal</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+The <b>operator</b> is a nontranscribed DNA region that binds the <b>repressor</b> and can physically block RNA polymerase from transcribing the structural genes.
+<ul>
+  <li><b>B</b> structural genes are transcribed and encode the proteins/enzymes.</li>
+  <li><b>C</b> enhancers are eukaryotic long-distance regulatory sequences, not classic operon parts.</li>
+  <li><b>D</b> poly-A signals are eukaryotic mRNA processing features, not bacterial operon DNA.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q2">
+    <b>2. Which pairing correctly matches the term with its definition?</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. Positive control: protein binding decreases transcription; Negative control: protein binding increases transcription</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">B. Negative control: a DNA-binding protein reduces transcription; Positive control: a DNA-binding protein increases transcription</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. Inducible system: normally on, turned off by a signal; Repressible system: normally off, turned on by a signal</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. Cis regulator: travels through the cell; Trans regulator: is a local DNA sequence near the gene</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+<b>Negative control</b> means a protein binds DNA and <b>reduces transcription</b> (often by blocking RNA polymerase). <b>Positive control</b> means a protein binds DNA and <b>increases transcription</b> (often by recruiting/stabilizing RNA polymerase).
+<ul>
+  <li><b>A</b> reverses the definitions.</li>
+  <li><b>B</b> reverses inducible vs repressible.</li>
+  <li><b>D</b> reverses cis (DNA sequence) vs trans (diffusible factor/protein).</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q3">
+    <b>3. Which statement best describes the lac operon under the Jacob–Monod model?</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. It is a negative repressible system: normally on, turned off by lactose</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. It is a positive repressible system: normally on, turned off by cAMP</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">C. It is a negative inducible system: normally off due to a repressor, turned on when an inducer binds the repressor</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. It is a negative inducible system: normally on and turned off when tryptophan binds the repressor</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+The <b>lac operon</b> is the classic <b>negative inducible</b> system: the repressor sits on the operator (off), and an <b>inducer</b> (derived from lactose) binds the repressor to remove it (on).
+<ul>
+  <li><b>A</b> describes the trp operon logic (negative repressible), not lac.</li>
+  <li><b>B</b> mislabels both the system and the signal.</li>
+  <li><b>D</b mixes lac with tryptophan/trp operon.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q4">
+    <b>4. In a repressible operon like the trp operon, high levels of the final product (tryptophan) decrease transcription primarily because tryptophan:</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Acts as an inducer that removes the repressor from DNA</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. Directly binds RNA polymerase and prevents promoter recognition</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. Is converted into cAMP, which activates CAP to shut off transcription</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">D. Acts as a corepressor that activates the repressor to bind the operator</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+In the <b>trp operon</b>, tryptophan serves as a <b>corepressor</b>. It binds the repressor, causing a conformational change that allows the repressor–corepressor complex to bind the <b>operator</b> and block transcription (negative feedback).
+<ul>
+  <li><b>A</b> describes inducible systems like lac (inducer removes repression).</li>
+  <li><b>C</b> is not the core mechanism described; control is via operator/repressor.</li>
+  <li><b>D</b> cAMP/CAP is tied to lac operon activation when glucose is low.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q5">
+    <b>5. In E. coli, low glucose leads to increased transcription of lac genes partly because low glucose causes:</b>
+    <div class="choice" onclick="selectChoice('q5', this, true)">A. Higher cAMP, which binds CAP and helps CAP bind near the promoter to increase transcription</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. Lower cAMP, which binds CAP and blocks RNA polymerase</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. CAP to bind the operator and act as a repressor</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. RNA polymerase to require a primer, slowing transcription unless lactose is present</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+When <b>glucose is low</b>, <b>cAMP rises</b>. cAMP binds <b>CAP</b>, enabling CAP to bind near the lac promoter and <b>increase transcription</b> (positive control).
+<ul>
+  <li><b>B</b> has the cAMP direction wrong.</li>
+  <li><b>C</b> CAP is an activator at the promoter region, not an operator repressor.</li>
+  <li><b>D</b> RNA polymerase does not require a primer.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q6">
+    <b>6. Consider a wild-type lac operon. Which environment produces the <em>highest</em> transcription of lac structural genes?</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. High lactose, high glucose</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">B. High lactose, low glucose</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. Low lactose, low glucose</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. Low lactose, high glucose</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Maximal lac transcription requires <b>lactose present</b> (inducer removes repressor) and <b>glucose low</b> (high cAMP → CAP activation). So <b>high lactose + low glucose</b> yields the highest output.
+<ul>
+  <li><b>B</b> lactose removes repression, but high glucose lowers cAMP and reduces CAP activation → lower than maximal.</li>
+  <li><b>C</b> low lactose keeps the repressor bound (operon off) even if CAP is active.</li>
+  <li><b>D</b> both signals reduce lac expression (no inducer + low CAP activation).</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q7">
+    <b>7. In a wild-type trp operon, which condition most strongly favors transcription of the tryptophan biosynthesis genes?</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. High tryptophan in the environment</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. High glucose in the environment</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">C. Low tryptophan in the environment</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. High lactose in the environment</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+The <b>trp operon</b> is a <b>negative repressible</b> system: it is normally on, but <b>high tryptophan</b> acts as a corepressor to turn it off. Thus, <b>low tryptophan</b> favors transcription.
+<ul>
+  <li><b>A</b> turns transcription off by activating the repressor.</li>
+  <li><b>C</b> and <b>D</b> are not the controlling signals for the trp operon described here.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q8">
+    <b>8. A mutation prevents the lac repressor from binding the operator, but the repressor protein is otherwise normal. What is the most likely outcome?</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Complete loss of lac transcription because RNA polymerase cannot bind the promoter</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. Conversion of the lac operon into a repressible system</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. Only CAP binding is affected; lactose induction remains normal</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. Constitutive transcription of lac structural genes (always on relative to repression)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+If the <b>repressor cannot bind the operator</b>, it cannot block RNA polymerase from reaching the structural genes. The operon becomes <b>constitutively expressed</b> with respect to repression (though CAP/cAMP can still modulate the level).
+<ul>
+  <li><b>B</b> operator mutation does not remove the promoter or RNA polymerase binding.</li>
+  <li><b>C</b> system classification doesn’t flip just because repression is lost; it becomes derepressed.</li>
+  <li><b>D</b> CAP binds near the promoter, not the operator; the primary effect is loss of repression.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q9">
+    <b>9. A bacterium has a lac repressor that cannot bind lactose (inducer), but can still bind the operator. What happens when lactose is present?</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. Lac genes remain largely off because the repressor stays bound to the operator</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Lac genes turn on normally because lactose activates CAP</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. Lac genes become repressible and turn off when lactose is present</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. Lac genes are transcribed only if tryptophan is low</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+If the repressor <b>cannot bind the inducer</b>, it will remain bound to the operator and continue to block transcription even when lactose is present. This prevents normal induction.
+<ul>
+  <li><b>A</b> CAP activation is driven by cAMP (glucose low), not by lactose directly.</li>
+  <li><b>C</b> lactose does not act as a corepressor; it is an inducer in lac.</li>
+  <li><b>D</b> trp logic is unrelated to lac induction.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q10">
+    <b>10. In eukaryotes, which feature best distinguishes an enhancer from an upstream promoter element?</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Enhancers must be within ~25 bp of the transcription start site; promoters can be far away</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">B. Enhancers can act at large distances (even within introns) and often require DNA looping to contact the promoter</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. Enhancers are trans regulators that diffuse through the cytoplasm</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Enhancers are nontranscribed regions that bind bacterial repressors</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Enhancers are <b>cis-regulatory DNA sequences</b> that can lie <b>hundreds to ~1000 bp away</b> (or within introns) and often act by <b>DNA looping</b> to bring bound transcription factors near the promoter.
+<ul>
+  <li><b>A</b> is backwards: upstream promoter elements are near the start site; enhancers can be far.</li>
+  <li><b>C</b> enhancers are DNA sequences (cis), not diffusible proteins (trans).</li>
+  <li><b>D</b> describes bacterial operon operator/repressor logic, not eukaryotic enhancers.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q11">
+    <b>11. A DNA response element within an enhancer is best classified as which type of regulator?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Trans regulator</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. Translation factor</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">C. Cis regulator</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. Spliceosomal regulator</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Response elements, promoters, and enhancers are <b>cis regulators</b> because they are <b>DNA sequences in the vicinity</b> of the gene they control. The transcription factors that bind them are <b>trans regulators</b>.
+<ul>
+  <li><b>A</b> refers to diffusible factors (proteins) that travel to DNA.</li>
+  <li><b>C</b> translation factors act in protein synthesis, not transcription control.</li>
+  <li><b>D</b> spliceosome acts on RNA, not enhancer DNA.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q12">
+    <b>12. A cell needs a rapid, large increase in a protein’s level in response to a hormone. Which mechanism most directly increases transcription rate without changing gene copy number?</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Gene duplication in series on the chromosome</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Gene duplication in parallel (replicating only that gene)</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. Conversion of euchromatin into heterochromatin</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. Enhancer-mediated recruitment of transcription factors and coactivators</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Hormone receptors can function as transcription factors that bind enhancer response elements and recruit coactivators, boosting <b>transcription rate</b> quickly. Gene duplication changes copy number and is typically slower.
+<ul>
+  <li><b>A</b> and <b>B</b> increase copy number (amplification), not simply per-copy transcription rate.</li>
+  <li><b>D</b> heterochromatin formation generally decreases transcription.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q13">
+    <b>13. Histone acetylation generally increases transcription in eukaryotes because acetylation:</b>
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. Reduces positive charge on lysine residues, loosening histone–DNA interactions and opening chromatin</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Adds positive charge to histone tails, tightening DNA binding</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. Directly methylates cytosine bases, silencing promoters</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. Prevents DNA bending required for enhancer–promoter contact</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Acetylation of lysines <b>neutralizes some positive charge</b>, weakening attraction between histones and negatively charged DNA. This promotes <b>euchromatin (open)</b> and increases access for transcription machinery.
+<ul>
+  <li><b>A</b> is the opposite of what acetylation does.</li>
+  <li><b>C</b> is DNA methylation, not histone acetylation.</li>
+  <li><b>D</b> acetylation generally facilitates access; it doesn’t specifically block looping.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q14">
+    <b>14. A drug inhibits histone deacetylases (HDACs). Which change is most consistent with this inhibition?</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Increase in heterochromatin and global decrease in transcription</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. Increased histone acetylation, more open chromatin, and increased transcription of accessible genes</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. Decrease in euchromatin due to increased DNA methylation</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Loss of CAP binding to promoters in bacteria</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+HDACs remove acetyl groups and promote chromatin closure. Inhibiting HDACs tends to <b>increase acetylation</b> and keep chromatin more <b>open</b>, allowing higher transcription where other factors permit.
+<ul>
+  <li><b>A</b> describes HDAC overactivity, not inhibition.</li>
+  <li><b>B</b> DNA methylation is a different mechanism.</li>
+  <li><b>D</b> CAP is a bacterial regulator; HDACs are eukaryotic chromatin modifiers.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q15">
+    <b>15. Which statement best reflects the relationship between DNA methylation and gene expression in eukaryotes?</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Methylation always increases transcription by recruiting RNA polymerase</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Methylation occurs only on thymine residues within promoters</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">C. Methylation of DNA is usually associated with gene silencing and increased heterochromatin</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">D. Methylation is a prokaryotic-only mechanism used in the lac operon</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+DNA methylation is commonly linked to <b>gene silencing</b> and more <b>heterochromatin</b>, limiting access of transcription machinery.
+<ul>
+  <li><b>B</b> is generally false in the model described; methylation often represses.</li>
+  <li><b>C</b> methylation is on cytosine (and sometimes adenine), not thymine.</li>
+  <li><b>D</b> methylation also exists in eukaryotes and is not the lac operon’s main control.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<div class="subheader">Passage-Based Questions (3 Passages × 3 Questions)</div>
+
+  <div class="passage-header">
+    <span>📘 Passage 1 — Dissecting lac Operon Control with Growth Conditions</span>
+    <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>Researchers measure <b>lac structural gene transcription</b> in E. coli under four growth conditions. They quantify lac mRNA by RT-qPCR after 10 minutes of exposure to each condition.</p>
+    <p><b>Condition A:</b> High glucose, no lactose → very low lac mRNA. <b>Condition B:</b> High glucose, high lactose → moderate lac mRNA. <b>Condition C:</b> Low glucose, no lactose → very low lac mRNA. <b>Condition D:</b> Low glucose, high lactose → very high lac mRNA.</p>
+    <p>In a second strain, the <b>CAP binding site near the lac promoter</b> is mutated so CAP cannot bind DNA. In this CAP-site mutant, lac mRNA is low in Condition A, moderate in Condition B, low in Condition C, and only modestly increased in Condition D (far below wild-type D).</p>
+    <p>The team interprets the data using the Jacob–Monod model, combining negative inducible control by the lac repressor with positive control by CAP–cAMP when glucose is low.</p>
+  </div>
+
+  <div class="reasoning-box" id="p1-reason">
+    <b>How to reason (Passage 1):</b>
+    <ol>
+      <li><b>Map signals to regulators:</b> lactose present → inducer removes <b>repressor</b> (negative inducible). Low glucose → high <b>cAMP</b> activates <b>CAP</b> (positive control).</li>
+      <li><b>Predict baseline:</b> if no lactose, repressor stays on → low transcription regardless of glucose.</li>
+      <li><b>Identify “maximal”:</b> lactose present + low glucose gives both derepression and CAP activation → highest output.</li>
+      <li><b>Use the mutant:</b> if CAP can’t bind, low-glucose advantage should largely disappear.</li>
+    </ol>
+  </div>
+
+  <div class="question" id="q16">
+    <b>16. Based on the wild-type results, which regulator most directly explains why Condition C (low glucose, no lactose) still yields very low lac mRNA?</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. CAP cannot be activated when glucose is low</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. RNA polymerase cannot bind promoters in low glucose</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Low glucose functions as a corepressor for lac</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">D. The lac repressor remains bound to the operator without an inducer</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Condition C has <b>no lactose</b>, so the <b>inducer is absent</b>. The lac repressor stays bound to the operator and blocks transcription (negative control), even though CAP would be activated by low glucose.
+<ul>
+  <li><b>B</b> is wrong: CAP activation is favored when glucose is low (cAMP rises).</li>
+  <li><b>C</b> is not the described mechanism; RNA polymerase can bind but is blocked by the repressor.</li>
+  <li><b>D</b> describes trp-style corepressor logic, not lac.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q17">
+    <b>17. Why does the CAP-site mutant show a much smaller increase in lac mRNA in Condition D compared with wild-type?</b>
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Because CAP can no longer bind DNA to provide positive control when glucose is low</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. Because the inducer cannot bind the lac repressor in the mutant</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Because the operator becomes an enhancer in the mutant</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. Because cAMP levels fall when glucose is low</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+In the CAP-site mutant, CAP cannot bind the promoter region, so the <b>positive control contribution</b> (CAP–cAMP boosting transcription under low glucose) is lost. Lactose can still remove the repressor, but maximal activation is blunted.
+<ul>
+  <li><b>A</b> is not stated; the mutation is at CAP binding site, not repressor/inducer.</li>
+  <li><b>C</b> operator/enhancer concepts are mismatched (enhancers are eukaryotic).</li>
+  <li><b>D</b> has the direction wrong: low glucose raises cAMP.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q18">
+    <b>18. In the CAP-site mutant, which condition best isolates the effect of lactose (induction) with minimal contribution from CAP activation?</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. Condition A (high glucose, no lactose)</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">B. Condition B (high glucose, high lactose)</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Condition C (low glucose, no lactose)</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. Condition D (low glucose, high lactose)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+With <b>high glucose</b>, cAMP is low, so CAP activation is minimal. Adding <b>lactose</b> in Condition B specifically tests derepression by the inducer (repressor removal) without strong CAP-driven amplification.
+<ul>
+  <li><b>A</b> lacks lactose, so it does not test induction.</li>
+  <li><b>C</b> lacks lactose and includes CAP-favoring low glucose (though CAP binding is mutated, it’s not “isolating lactose”).</li>
+  <li><b>D</b> includes low glucose, which would normally add CAP effects; it is not “minimal contribution” in the conceptual model.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+
+  <div class="passage-header">
+    <span>📘 Passage 2 — Corepressor Logic in the trp Operon</span>
+    <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A lab grows E. coli with an intact <b>trp operon</b> and measures transcription of tryptophan biosynthesis genes. In <b>Medium 1</b>, tryptophan is scarce and trp mRNA levels are high. In <b>Medium 2</b>, tryptophan is abundant and trp mRNA levels are very low.</p>
+    <p>The lab then adds a tryptophan analog (Trp*) that can bind the trp repressor but <b>cannot</b> be incorporated into proteins. In a tryptophan-scarce medium supplemented with Trp*, trp mRNA levels drop sharply, similar to Medium 2. Finally, the lab introduces a mutation in the <b>repressor protein</b> that prevents it from binding Trp or Trp* but does not affect its stability. In this repressor-mutant strain, trp mRNA remains high even when tryptophan is abundant.</p>
+    <p>The researchers conclude that the trp operon behaves as a negative repressible system controlled by a product-dependent corepressor mechanism.</p>
+  </div>
+
+  <div class="reasoning-box" id="p2-reason">
+    <b>How to reason (Passage 2):</b>
+    <ol>
+      <li><b>Identify the operon type:</b> trp is <b>negative repressible</b>—normally on, turned off by product acting as corepressor.</li>
+      <li><b>Use the analog logic:</b> if Trp* binds the repressor, it should mimic high tryptophan and turn transcription off.</li>
+      <li><b>Interpret the mutant:</b> if the repressor can’t bind corepressor, it can’t be activated to bind the operator → operon stays on.</li>
+      <li><b>Avoid “enzyme-style” traps:</b> the analog’s inability to enter proteins is irrelevant if the regulatory step is binding the repressor.</li>
+    </ol>
+  </div>
+
+  <div class="question" id="q19">
+    <b>19. The sharp drop in trp mRNA in tryptophan-scarce medium supplemented with Trp* most strongly indicates that Trp* functions as:</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. An inducer that removes the repressor from the operator</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. A transcription factor that binds an enhancer</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">C. A corepressor that activates the repressor to bind the operator</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. A molecule that raises cAMP to activate CAP</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Trp* binds the repressor and turns transcription off even when real tryptophan is scarce. That is the hallmark of a <b>corepressor</b>: it binds the repressor to enable operator binding and repression.
+<ul>
+  <li><b>A</b> is inducible logic (lac), the opposite of trp behavior.</li>
+  <li><b>C</b> enhancers are eukaryotic; trp is bacterial operon control.</li>
+  <li><b>D</b> CAP/cAMP is relevant to lac, not trp here.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q20">
+    <b>20. In the repressor-mutant strain that cannot bind Trp or Trp*, high tryptophan fails to repress the operon because:</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. The operator DNA sequence is deleted, so RNA polymerase cannot bind</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. CAP permanently occupies the promoter region and blocks transcription</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. Tryptophan becomes an inducer and removes the repressor from DNA</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">D. The repressor cannot undergo the corepressor-dependent conformational change needed to bind the operator</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+If the repressor cannot bind corepressor, it cannot be “activated” to bind the operator. Therefore, the operon remains on even when tryptophan is abundant.
+<ul>
+  <li><b>A</b> would typically reduce transcription because the promoter/operator architecture is disrupted; not what’s described.</li>
+  <li><b>C</b> CAP is not the main trp regulator in this model.</li>
+  <li><b>D</b> swaps the lac inducer concept into the trp system incorrectly.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q21">
+    <b>21. Which result would most strongly support that the trp operon is serving a negative feedback role for cellular energy conservation?</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. High tryptophan turns transcription off, reducing synthesis of tryptophan-producing enzymes</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. High tryptophan increases transcription, ensuring tryptophan levels rise further</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Low tryptophan turns transcription off to prevent wasting resources</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. Tryptophan levels do not affect transcription; only glucose levels matter</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+Negative feedback means the product reduces its own further production. When tryptophan is abundant, shutting down the costly biosynthetic enzymes conserves energy and resources.
+<ul>
+  <li><b>B</b> would be positive feedback, not negative.</li>
+  <li><b>C</b> is the opposite of what would be adaptive.</li>
+  <li><b>D</b> contradicts the passage’s clear product dependence.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+
+  <div class="passage-header">
+    <span>📘 Passage 3 — Enhancers, Chromatin Remodeling, and Signal-Driven Expression</span>
+    <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A research group studies a human gene, <b>GENE-X</b>, whose expression increases after exposure to a steroid hormone. They identify a DNA response element located ~700 bp upstream of the transcription start site. When hormone is added, a nuclear hormone receptor binds this element, and GENE-X mRNA rises ~8-fold within two hours.</p>
+    <p>When the response element is deleted, the hormone no longer increases GENE-X transcription, even though the promoter region remains intact. Chromatin immunoprecipitation (ChIP) shows that hormone treatment increases <b>histone acetylation</b> near the promoter and decreases nucleosome occupancy. Separately, treatment with an <b>HDAC inhibitor</b> increases baseline GENE-X transcription even without hormone, but the fold-change response to hormone becomes smaller (because baseline is already higher).</p>
+    <p>Finally, when DNA methylation is experimentally increased across the GENE-X locus, both baseline transcription and hormone responsiveness decrease, and the region shows hallmarks of more compact chromatin.</p>
+  </div>
+
+  <div class="reasoning-box" id="p3-reason">
+    <b>How to reason (Passage 3):</b>
+    <ol>
+      <li><b>Classify the distant element:</b> ~700 bp away → likely an <b>enhancer/response element</b> (cis DNA).</li>
+      <li><b>Identify the trans factor:</b> the hormone receptor is a <b>trans regulator</b> that binds the response element.</li>
+      <li><b>Connect chromatin marks to access:</b> histone acetylation → more <b>euchromatin</b> → higher transcription.</li>
+      <li><b>Interpret drug logic:</b> HDAC inhibitor raises baseline by keeping acetylation high; fold-change can shrink because you start higher.</li>
+      <li><b>Use methylation clue:</b> increased DNA methylation → silencing/heterochromatin → less transcription and responsiveness.</li>
+    </ol>
+  </div>
+
+  <div class="question" id="q22">
+    <b>22. The DNA response element located ~700 bp upstream of GENE-X is best described as:</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. A trans-regulatory protein that diffuses to the promoter</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">B. A cis-regulatory enhancer element that can act at a distance from the promoter</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. An operator site that binds a bacterial repressor</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. A polyadenylation signal required for mRNA stability</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+A distant DNA response element that binds a hormone receptor to boost transcription fits the definition of a <b>cis-regulatory enhancer/response element</b>.
+<ul>
+  <li><b>B</b> describes the hormone receptor (protein), not the DNA element.</li>
+  <li><b>C</b> operator sites are bacterial operon features.</li>
+  <li><b>D</b> polyadenylation signals are RNA processing elements, not upstream enhancer DNA.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q23">
+    <b>23. Which mechanistic link best explains why HDAC inhibition increases baseline GENE-X transcription?</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. HDAC inhibition increases methylation, producing more heterochromatin and higher transcription</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. HDAC inhibition blocks CAP binding to promoters, increasing transcription</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">C. HDAC inhibition prevents removal of acetyl groups, favoring open chromatin and easier access for transcription machinery</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. HDAC inhibition converts an inducible operon into a repressible operon</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+HDACs remove acetyl groups and promote chromatin closure. Inhibiting them keeps histones more <b>acetylated</b>, weakening histone–DNA interactions and promoting <b>euchromatin</b>, which increases transcriptional accessibility.
+<ul>
+  <li><b>A</b> methylation generally represses rather than activates.</li>
+  <li><b>C</b> CAP is bacterial regulation, not human chromatin control.</li>
+  <li><b>D</b> operon system terms don’t apply to eukaryotic chromatin remodeling.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q24">
+    <b>24. Increasing DNA methylation across the GENE-X locus decreases both baseline transcription and hormone responsiveness most directly because methylation:</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. Stabilizes RNA polymerase binding at the promoter</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. Acts as an inducer that removes repressors from DNA</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. Creates additional enhancer sites to recruit hormone receptor</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">D. Is associated with chromatin compaction (heterochromatin), limiting access of transcription factors and polymerase</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+The passage explicitly ties increased methylation to more compact chromatin and decreased transcription. DNA methylation is typically linked with <b>gene silencing</b> and <b>heterochromatin</b>, which reduces access for transcription factors and RNA polymerase.
+<ul>
+  <li><b>A</b> is the opposite effect.</li>
+  <li><b>C</b> is lac-style inducible logic, not eukaryotic methylation.</li>
+  <li><b>D</b> methylation doesn’t create enhancers; it tends to repress.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+</body></html>
