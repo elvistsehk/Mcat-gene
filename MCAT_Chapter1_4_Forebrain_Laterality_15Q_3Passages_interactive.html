@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Forebrain, Cortex, Laterality (15 + 3 Passages × 3)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:22px; font-weight:bold; margin-bottom:20px; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{ background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06); }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold; display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff; border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.55; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  .passage-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:20px; font-weight:bold; margin-top:35px; margin-bottom:10px; }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; line-height:1.65; box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align: justify; text-justify: inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+</style>
+<script>
+  const state = {};
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+
+    state[qid] = {answered:true};
+  }
+
+  function resetAll(){
+    for(const k in state){ delete state[k]; }
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+<body>
+  <div class="main-header">
+    🧠 MCAT Practice — Forebrain, Cortex, Laterality (15 Single Questions + 3 Passages × 3)
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+<div class="question" id="q1">
+  <b>1. Which statement best describes the thalamus?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. A primary center for speech production</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. A structure that initiates voluntary movement via motor neurons</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. A relay station that sorts and transmits sensory information to the cortex (except smell)</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. A gland that secretes melatonin to regulate circadian rhythms</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> The thalamus serves as a sensory “way station,” relaying incoming sensory information to the appropriate cortical areas. Olfaction (smell) is the key exception.</div>
+      <div style="margin-top:6px;"><b>中:</b> Thalamus 係感覺「轉車站」，把感覺訊號分類後送去對應皮質區；**嗅覺例外**（唔經 thalamus）。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q2">
+  <b>2. Which set of functions is most strongly associated with the hypothalamus?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Homeostasis + autonomic regulation + endocrine control + drives (hunger/thirst/sex)</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Visual processing + face recognition + color perception</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Primary somatosensory processing for touch and pain</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Fine motor coordination and balance</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> The hypothalamus regulates homeostasis (temperature, water balance, metabolism), controls the ANS, influences endocrine output, and drives behaviors (hunger, thirst, sex).</div>
+      <div style="margin-top:6px;"><b>中:</b> Hypothalamus 管 homeostasis（體溫/水分/代謝）、ANS、自主內分泌調控，同 drive behaviors（飢餓/口渴/性）。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q3">
+  <b>3. A lab rat stops eating and drinking after a lesion in the hypothalamus. Which region was most likely damaged?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Ventromedial hypothalamus (VMH)</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">B. Lateral hypothalamus (LH)</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Thalamus</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Pineal gland</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> The lateral hypothalamus is the hunger center; removal causes refusal to eat/drink (aphagia/adipsia).</div>
+      <div style="margin-top:6px;"><b>中:</b> LH 係 hunger center；切除會「唔食唔飲」（要 tube feeding）。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q4">
+  <b>4. A patient with hypothalamic damage becomes hyperphagic and rapidly gains weight. Which nucleus is most implicated?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Lateral hypothalamus (LH)</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Anterior hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Thalamus</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. Ventromedial hypothalamus (VMH)</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> The VMH functions as a satiety center; lesions remove “stop eating” signals and can lead to obesity.</div>
+      <div style="margin-top:6px;"><b>中:</b> VMH 係 satiety center；受損→停唔到口→肥胖。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q5">
+  <b>5. The posterior pituitary is best described as:</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Axonal projections from the hypothalamus that release ADH and oxytocin</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. A cortical association area integrating input from multiple lobes</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. A basal ganglia structure coordinating smooth movement</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. A gland that produces dopamine for motor initiation</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Posterior pituitary consists of hypothalamic axons and is the release site for ADH (vasopressin) and oxytocin.</div>
+      <div style="margin-top:6px;"><b>中:</b> Posterior pituitary 係 hypothalamus 軸突延伸，負責釋放 **ADH/oxytocin**。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q6">
+  <b>6. Which structure secretes melatonin and receives direct signals from the retina for coordination with sunlight?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Thalamus</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">B. Pineal gland</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Amygdala</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Basal ganglia</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> The pineal gland secretes melatonin to regulate circadian rhythms and receives retinal input related to light/dark cycles.</div>
+      <div style="margin-top:6px;"><b>中:</b> Pineal gland 分泌 melatonin 管晝夜節律，並接收 retina 訊號去配合日光。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q7">
+  <b>7. A chronic disorder characterized by uncontrolled resting tremors and jerky movement is most associated with damage to the:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Occipital lobe</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Hippocampus</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">C. Basal ganglia</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Thalamus</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Parkinson’s disease involves degeneration of portions of the basal ganglia, producing resting tremor and movement abnormalities.</div>
+      <div style="margin-top:6px;"><b>中:</b> Parkinson 同 basal ganglia 退化相關，典型係 resting tremor 同動作唔順/僵硬。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q8">
+  <b>8. A researcher finds that mild stimulation of a brain region is intensely pleasurable and promotes lever-pressing behavior even over food. Which region is most likely involved?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Wernicke’s area</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Primary visual cortex</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Ventromedial hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Septal nuclei</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> The septal nuclei include a primary pleasure center and are linked to addictive behavior (Olds &amp; Milner experiments).</div>
+      <div style="margin-top:6px;"><b>中:</b> Septal nuclei 係快感中心，與成癮行為相關（老鼠寧願按掣唔食）。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q9">
+  <b>9. Lesions of the amygdala are most likely to produce which outcome?</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Reduced fear/aggression with increased docility and possible hypersexuality</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Complete loss of new long-term memory formation</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Inability to comprehend spoken language</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Loss of visual processing</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> The amygdala is central for fear and rage; damage reduces defensive/aggressive reactions and can cause docility and hypersexual states (Klüver–Bucy features).</div>
+      <div style="margin-top:6px;"><b>中:</b> Amygdala 管恐懼/怒；受損→fear/aggression 下降、變溫馴，甚至 hypersexual（Klüver–Bucy）。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q10">
+  <b>10. After bilateral removal of medial temporal lobe structures, a patient retains intelligence but cannot form new long-term memories. This best indicates damage to the:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Thalamus</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Hippocampus</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Motor cortex</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Pons</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> The hippocampus consolidates new information into long-term memory. Damage classically causes anterograde amnesia (H.M.).</div>
+      <div style="margin-top:6px;"><b>中:</b> Hippocampus 負責建立新長期記憶；受損→ anterograde amnesia（H.M. 經典）。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q11">
+  <b>11. Which statement best characterizes the prefrontal cortex?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Primary site of visual processing</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Projection area initiating voluntary movement via precentral gyrus</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. An association area supporting executive function, impulse control, and long-term planning</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Relay station for all sensory modalities including smell</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> The prefrontal cortex integrates information across cortical regions (association area) and supervises executive functions such as planning, attention, and impulse control.</div>
+      <div style="margin-top:6px;"><b>中:</b> Prefrontal cortex 係 association area，整合多區資訊，管 executive function、衝動控制、長期規劃等。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q12">
+  <b>12. The primary motor cortex is located on the:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Postcentral gyrus of the parietal lobe</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Occipital lobe (striate cortex)</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Temporal lobe near the hippocampus</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Precentral gyrus just anterior to the central sulcus</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Primary motor cortex lies on the precentral gyrus in the frontal lobe, immediately in front of the central sulcus.</div>
+      <div style="margin-top:6px;"><b>中:</b> Primary motor cortex 位於 frontal lobe 嘅 precentral gyrus（中央溝前面）。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q13">
+  <b>13. A patient loses the ability to localize touch, pressure, temperature, and pain on the body. Which cortical area is most directly affected?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Somatosensory cortex on the postcentral gyrus (parietal lobe)</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Broca’s area (frontal lobe)</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Primary auditory cortex (temporal lobe)</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Prefrontal cortex association area</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Somatosensory information is processed in the primary somatosensory cortex on the postcentral gyrus of the parietal lobe.</div>
+      <div style="margin-top:6px;"><b>中:</b> 觸覺/壓覺/溫度/痛覺 → parietal lobe 嘅 postcentral gyrus（primary somatosensory cortex）。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q14">
+  <b>14. A lesion that disrupts visual processing is most likely located in the:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Frontal lobe</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Occipital lobe</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Parietal lobe</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Hypothalamus</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> The occipital lobe contains the primary visual cortex (striate cortex).</div>
+      <div style="margin-top:6px;"><b>中:</b> Occipital lobe 有 visual cortex（striate cortex），受損→視覺處理受影響。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q15">
+  <b>15. A patient speaks fluently but produces sentences that are nonsensical and cannot understand spoken language. Which area is most likely damaged?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Broca’s area (dominant frontal lobe)</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Primary motor cortex</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Wernicke’s area (dominant temporal lobe)</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Cerebellum</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Wernicke’s area in the dominant temporal lobe supports language comprehension; damage yields fluent but meaningless speech with poor comprehension.</div>
+      <div style="margin-top:6px;"><b>中:</b> Wernicke（dominant temporal）管理解；受損→講得流利但無意思、聽唔明。</div>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">📘 Passage 1 - Sensory Relay and Homeostatic Breakdown</div>
+
+<div class="passage-box">
+
+  <p>A 52-year-old patient is evaluated after a small forebrain stroke. On exam, the patient reports that odors are still recognizable, but touch, pain, and temperature sensations from the right side of the body feel ‘muted’ and slow to register. Hearing appears relatively preserved.</p>
+
+  <p>Over the next day, the patient develops episodes of abnormal sweating and difficulty maintaining a stable body temperature. Laboratory testing shows increased plasma osmolality and concentrated urine. The team suspects the patient is failing to coordinate a normal endocrine response to dehydration.</p>
+
+  <p>Imaging suggests injury near a relay structure that routes most incoming sensory signals to the cerebral cortex, as well as nearby circuitry important for autonomic and endocrine regulation. The team reviews that one sense classically bypasses the main sensory relay, and that hypothalamic osmoreceptors can trigger release of a hormone that increases renal water reabsorption.</p>
+
+</div>
+
+<div class="question" id="q16">
+  <b>16. Which forebrain structure is most directly implicated by the patient’s slowed sensation of touch/pain/temperature (with smell preserved)?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Pineal gland</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Septal nuclei</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Basal ganglia</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Thalamus</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Most sensory modalities relay through the thalamus to reach cortex; smell is the classic exception.</div>
+      <div style="margin-top:6px;"><b>中:</b> 多數感覺（觸/痛/溫）要經 thalamus 去 cortex；嗅覺係例外，所以 smell 仍保留更支持 thalamus 問題。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q17">
+  <b>17. The passage notes increased plasma osmolality. Which hormonal response would best help restore water balance?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Increased ADH release to increase renal water reabsorption</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Increased melatonin release to promote sleep</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Decreased oxytocin release to reduce lactation</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Increased dopamine release to initiate movement</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Hypothalamic osmoreceptors can trigger ADH release (via posterior pituitary), increasing water reabsorption and lowering plasma osmolality.</div>
+      <div style="margin-top:6px;"><b>中:</b> 血漿滲透壓高→hypothalamus osmoreceptors 觸發 **ADH↑**（posterior pituitary 釋放）→腎回收水↑。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q18">
+  <b>18. Which sensory modality is most consistent with the ‘bypasses the main sensory relay’ exception referenced in the passage?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Vision</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Smell (olfaction)</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Touch</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Pain</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Olfactory input is the major sensory modality that does not require thalamic relay before reaching cortex.</div>
+      <div style="margin-top:6px;"><b>中:</b> 嗅覺（olfaction）係經典例外：唔需要先經 thalamus relay。</div>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">📘 Passage 2 - Split-Brain Testing and Hemispheric Dominance</div>
+
+<div class="passage-box">
+
+  <p>A patient with severe epilepsy undergoes surgery in which the corpus callosum is severed to limit seizure spread. In follow-up testing, the patient can name a key placed in the right hand without difficulty. However, when the same key is placed in the left hand while the patient’s eyes are closed, the patient can describe its shape by touch but cannot say the object’s name.</p>
+
+  <p>In a separate task, different auditory messages are presented to each ear while the patient performs speech shadowing (repeating the attended message aloud). The examiner notes that successful performance requires coordinated function across temporal, parietal, and frontal regions, and that language reception and production are typically lateralized to one dominant hemisphere.</p>
+
+  <p>The examiner explains that most motor output and many sensory pathways are contralateral, but some systems (such as hearing) have more ipsilateral/bilateral representation. The team uses these principles to infer which hemisphere received information from each hand.</p>
+
+</div>
+
+<div class="question" id="q19">
+  <b>19. Why can the patient feel the key with the left hand but cannot name it?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. The left hand projects ipsilaterally to the left hemisphere</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. The thalamus is destroyed, eliminating all sensory relay</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Tactile input from the left hand reaches the right hemisphere, but language areas in the dominant (usually left) hemisphere cannot access it without the corpus callosum</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. The pineal gland no longer secretes melatonin</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Left-hand somatosensory information projects primarily to the right hemisphere. Without the corpus callosum, it cannot be shared with the dominant language hemisphere to name the object.</div>
+      <div style="margin-top:6px;"><b>中:</b> 左手觸覺多投射去右半球；callosum 斷咗就傳唔到去語言優勢半球，所以摸到但講唔出名。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q20">
+  <b>20. If the patient is typical in hemispheric dominance, which hemisphere is most likely dominant for language?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Right hemisphere in nearly all right-handed individuals</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Right hemisphere in nearly all left-handed individuals</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Nondominant hemisphere (usually right)</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Left hemisphere for most individuals regardless of handedness</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Most individuals are left-hemisphere dominant for language; 95% of right-handed individuals are left-dominant, and most left-handed individuals are also left-dominant.</div>
+      <div style="margin-top:6px;"><b>中:</b> 大多數人（包括多數左撇子）語言優勢半球係左邊；右手更加係大多左優勢。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q21">
+  <b>21. The passage mentions that hearing can be more ipsilateral/bilateral. Which inference best follows?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. A unilateral cortical lesion is less likely to cause complete deafness than a unilateral occipital lesion causing blindness</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Hearing signals never reach the cortex</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Hearing is processed only in the occipital lobe</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Hearing bypasses the thalamus in the same way as smell</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Because hearing has more bilateral representation, one-sided cortical damage often reduces processing but does not eliminate hearing entirely—unlike vision, which is more separated by visual fields.</div>
+      <div style="margin-top:6px;"><b>中:</b> 聽覺較雙側表徵，所以單側皮質損傷較少造成「全聾」；而視覺缺損更常見（特定視野）。</div>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">📘 Passage 3 - Movement Circuits, Executive Control, and Cortical Maps</div>
+
+<div class="passage-box">
+
+  <p>A 68-year-old patient reports increasing difficulty initiating smooth movements and develops a resting tremor that improves somewhat when reaching for objects. Family members also note the patient has become more rigid in routines and repeatedly checks locked doors despite reassurance.</p>
+
+  <p>Neurologic testing shows relatively intact strength, but movement appears ‘jerky’ and posture is less steady. Cognitive testing shows the patient can recall distant childhood events, but struggles to plan multi-step tasks and becomes impulsive in conversation.</p>
+
+  <p>The clinician explains that some deep brain structures coordinate smooth movement and posture by relaying cortical information through an extrapyramidal system. The clinician also reviews that the prefrontal cortex is an association area important for executive control, while primary motor cortex is a projection area organized as a motor homunculus.</p>
+
+</div>
+
+<div class="question" id="q22">
+  <b>22. Which structure is most directly linked to the patient’s resting tremor and jerky movement?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Occipital lobe</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Basal ganglia</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Pineal gland</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Hippocampus</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Resting tremor and impaired smooth movement are classic for basal ganglia dysfunction (e.g., Parkinson’s).</div>
+      <div style="margin-top:6px;"><b>中:</b> Resting tremor＋動作唔順係 basal ganglia 退化（Parkinson）典型。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q23">
+  <b>23. Which finding in the passage best supports involvement of prefrontal cortex dysfunction?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Improved tremor during reaching</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Less steady posture</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Preserved recall of remote childhood events</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">D. Poor multi-step planning and increased impulsivity</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> The prefrontal cortex supports executive function, long-term planning, and impulse control; deficits in planning and increased impulsivity point to prefrontal involvement.</div>
+      <div style="margin-top:6px;"><b>中:</b> Prefrontal 管 planning/impulse control；做唔到多步計劃＋衝動增加 → prefrontal 受影響。</div>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q24">
+  <b>24. Which statement best distinguishes the prefrontal cortex from the primary motor cortex, as used in the passage?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Both are projection areas; both initiate voluntary movement</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Prefrontal cortex is a sensory relay station; primary motor cortex secretes hormones</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. Prefrontal cortex is an association area integrating information; primary motor cortex is a projection area that initiates voluntary movement</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Prefrontal cortex is located in the temporal lobe; primary motor cortex is in the occipital lobe</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation / 解釋（點擊展開/收起）</summary>
+    <div class="explain-body">
+      <div><b>EN:</b> Association areas integrate input from diverse regions (prefrontal). Projection areas perform basic outputs like initiating voluntary movement (primary motor cortex).</div>
+      <div style="margin-top:6px;"><b>中:</b> Prefrontal 係 association area（整合多區資訊）；primary motor cortex 係 projection area（發起 voluntary movement）。</div>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>
