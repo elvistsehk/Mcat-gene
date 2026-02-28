@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Forebrain, Limbic System, Cortex & Laterality (Ch. 1.3) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+  .reasoning-box .key{ color:#0f4fa0; font-weight:700; }
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Forebrain, Limbic System, Cortex & Laterality (Ch. 1.3)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<div class="question" id="q1">
+  <b>1. Which forebrain structure acts as a relay station for most incoming sensory information (except smell)?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Thalamus</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Cerebellum</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Amygdala</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The thalamus sorts and transmits incoming sensory signals to appropriate regions of the cerebral cortex; olfaction largely bypasses it.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Hypothalamus regulates homeostasis and drives, not primary sensory relay.</li>
+        <li><b>C:</b> Cerebellum refines motor coordination and balance.</li>
+        <li><b>D:</b> Amygdala is involved in fear/aggression and emotional processing.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q2">
+  <b>2. A lesion in the lateral hypothalamus (LH) in a lab rat would most likely cause:</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Severe resting tremor and jerky movements</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Inability to form new long-term memories</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Obesity due to loss of satiety signaling</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Refusal to eat and drink unless force-fed</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The LH is classically described as a hunger center; removal leads to reduced feeding/drinking behavior.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Parkinsonian tremor relates to basal ganglia dysfunction.</li>
+        <li><b>B:</b> Anterograde amnesia is linked to hippocampal dysfunction.</li>
+        <li><b>C:</b> Obesity is more associated with ventromedial hypothalamus damage (satiety center).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q3">
+  <b>3. Damage to the ventromedial hypothalamus (VMH) is most likely to produce:</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Hyperphagia and obesity</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Loss of circadian rhythm from absent melatonin</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Loss of auditory processing</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Aphasia due to impaired speech production</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The VMH is described as a satiety center; lesions can remove “stop eating” signals, causing overeating and obesity.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Melatonin is secreted by the pineal gland.</li>
+        <li><b>C:</b> Auditory cortex is in the temporal lobe.</li>
+        <li><b>D:</b> Speech production deficits are associated with Broca’s area in the frontal lobe.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q4">
+  <b>4. Which endocrine hormones are released from the posterior pituitary?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. TSH and ACTH</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Insulin and glucagon</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. ADH (vasopressin) and oxytocin</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Melatonin and cortisol</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The posterior pituitary releases hypothalamic hormones ADH and oxytocin via axonal projections.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> TSH and ACTH are anterior pituitary hormones.</li>
+        <li><b>B:</b> Insulin and glucagon are pancreatic hormones.</li>
+        <li><b>D:</b> Melatonin is pineal; cortisol is adrenal cortex.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q5">
+  <b>5. The pineal gland’s most well-known function is secretion of a hormone that regulates:</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Blood glucose concentration</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Voluntary motor initiation</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">C. Circadian rhythms</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Primary sensory relay</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The pineal gland secretes melatonin, which helps regulate circadian rhythms and is influenced by retinal input.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Blood glucose is regulated by insulin/glucagon and other hormones.</li>
+        <li><b>B:</b> Motor initiation is cortical/basal ganglia circuitry.</li>
+        <li><b>D:</b> Thalamus is the major sensory relay station.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q6">
+  <b>6. Which structure is most directly associated with defensive and aggressive behavior, including fear and rage?</b>
+  <div class="choice" onclick="selectChoice('q6', this, true)">A. Amygdala</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Thalamus</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Pons</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Hippocampus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The amygdala is strongly linked to fear and aggression; lesions reduce fear/aggression and can produce hypersexuality and docility.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Thalamus relays sensory input to cortex.</li>
+        <li><b>C:</b> Pons is part of brainstem and aids breathing and relay.</li>
+        <li><b>D:</b> Hippocampus consolidates new long-term memories.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q7">
+  <b>7. A patient cannot form new long-term memories after removal of medial temporal lobe structures. Which structure is most implicated?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Cerebellum</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Basal ganglia</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Pineal gland</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. Hippocampus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The hippocampus is essential for consolidation of new long-term memories; damage causes anterograde amnesia.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cerebellum refines coordination and balance.</li>
+        <li><b>B:</b> Basal ganglia primarily support smooth movement and posture.</li>
+        <li><b>C:</b> Pineal gland regulates circadian rhythms via melatonin.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q8">
+  <b>8. Which term describes the inability to establish new long-term memories, as seen in H.M.?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Prosopagnosia</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Anterograde amnesia</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Agnosia</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Retrograde amnesia</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Anterograde amnesia is the inability to form new long-term memories after injury.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Prosopagnosia is face recognition impairment.</li>
+        <li><b>C:</b> Agnosia is inability to recognize sensory stimuli despite intact sensation.</li>
+        <li><b>D:</b> Retrograde amnesia is loss of memories formed before injury.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q9">
+  <b>9. The basal ganglia most directly help:</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Make movements smooth and posture steady</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Control breathing and heart rate</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Relay olfactory information to cortex</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Secrete melatonin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Basal ganglia coordinate movement via extrapyramidal pathways; degeneration contributes to Parkinson’s symptoms.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Breathing/heart rate are medulla/brainstem functions.</li>
+        <li><b>C:</b> Basal ganglia are not primary olfactory relay structures.</li>
+        <li><b>D:</b> Melatonin is pineal.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q10">
+  <b>10. Broca’s area is most critical for:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Auditory reflexes</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Visual processing</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Speech production</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Language comprehension</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Broca’s area (usually in the dominant/left hemisphere) is essential for speech production.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Auditory reflexes involve inferior colliculus.</li>
+        <li><b>B:</b> Visual processing centers are in the occipital lobe.</li>
+        <li><b>D:</b> Language comprehension is associated with Wernicke’s area.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q11">
+  <b>11. Wernicke’s area is most closely associated with:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Coordination of balance</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. Language reception and comprehension</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Voluntary motor initiation</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Thermoregulation and thirst</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Wernicke’s area, located in the temporal lobe, supports language comprehension.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cerebellum coordinates balance and refined movement.</li>
+        <li><b>C:</b> Motor cortex in frontal lobe initiates voluntary movement.</li>
+        <li><b>D:</b> Hypothalamus regulates temperature and thirst.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q12">
+  <b>12. A lesion to the prefrontal cortex would most likely lead to:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Loss of primary visual perception</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Loss of basic breathing rhythm</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Complete inability to coordinate gait due to ataxia</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Increased impulsivity and poor long-term planning</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The prefrontal cortex supervises executive functions; lesions often cause disinhibition and poor judgment/planning.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Visual cortex is in occipital lobe.</li>
+        <li><b>B:</b> Breathing rhythm is brainstem (pons/medulla).</li>
+        <li><b>C:</b> Ataxia is typically cerebellar.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q13">
+  <b>13. Which lobe contains the primary visual cortex?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Temporal</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Frontal</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Parietal</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Occipital</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The occipital lobe contains the visual cortex (striate cortex).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Temporal lobe contains auditory cortex and Wernicke’s area.</li>
+        <li><b>B:</b> Frontal lobe contains motor and prefrontal cortices.</li>
+        <li><b>C:</b> Parietal lobe contains somatosensory cortex and spatial processing.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q14">
+  <b>14. Contralateral control in the nervous system means that:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Each hemisphere controls the same side of the body for all functions</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. The left hemisphere primarily controls the right side of the body</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Hearing is processed only ipsilaterally</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Language is always located in the right hemisphere</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Many motor and somatosensory pathways are contralateral: one hemisphere influences the opposite side of the body.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Many functions are contralateral, not always ipsilateral.</li>
+        <li><b>C:</b> Auditory pathways are often bilateral; not only ipsilateral.</li>
+        <li><b>D:</b> Language is usually left-dominant in most individuals.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q15">
+  <b>15. Split-brain patients with severed corpus callosum best illustrate that the corpus callosum:</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Relays sensory information to the cortex</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Produces cerebrospinal fluid</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Connects and shares information between cerebral hemispheres</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Regulates hunger and thirst</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The corpus callosum is the major fiber bundle connecting the two hemispheres; severing it limits interhemispheric transfer.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Thalamus is the primary sensory relay.</li>
+        <li><b>B:</b> CSF is produced by choroid plexus in ventricles.</li>
+        <li><b>D:</b> Hypothalamus regulates hunger and thirst.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<div class="passage-header">
+  <span>Passage 1: Drives, Homeostasis, and Endocrine Output</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A research team studies how forebrain structures regulate homeostasis and motivated behavior. In one experiment, rats receive targeted lesions in different hypothalamic regions and are monitored for feeding behavior, body mass changes, and water intake over two weeks.</p>
+  <p>Group X shows profound reduction in eating and drinking immediately after surgery, requiring tube feeding for survival. Group Y shows dramatic overeating despite normal access to food, and gains substantial weight. A third group displays disrupted sleep patterns and abnormal thermoregulation when placed in cool or warm environments.</p>
+  <p>Separately, investigators test dehydration responses. They observe that rising plasma osmolarity triggers increased release of a hormone from the posterior pituitary. Tracing studies show the releasing neurons originate in the hypothalamus and project axons to the posterior pituitary.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Match lesion → behavior: lack of eating/drinking suggests <span class="key">lateral hypothalamus</span> damage; overeating/obesity suggests <span class="key">VMH</span> damage.</li>
+    <li>Sleep/temperature disruption points toward <span class="key">anterior hypothalamus</span> roles.</li>
+    <li>Dehydration response: posterior pituitary releases <span class="key">ADH</span> made in the hypothalamus.</li>
+    <li>Choose the option whose mechanism best fits the evidence pattern.</li>
+  </ol>
+</div>
+
+<div class="question" id="q16">
+  <b>16. A patient presents with hyperorality, decreased fear responses, and hypersexual behavior after temporal lobe surgery that included amygdala damage. Which syndrome best fits?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Klüver–Bucy syndrome</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Parkinson’s disease</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Locked-in syndrome</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Broca’s aphasia</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Klüver–Bucy syndrome is linked to amygdala lesions and includes hyperorality, hypersexuality, and reduced fear.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Parkinson’s involves basal ganglia degeneration with tremor/rigidity.</li>
+        <li><b>C:</b> Locked-in syndrome is due to brainstem lesions affecting motor output.</li>
+        <li><b>D:</b> Broca’s aphasia is impaired speech production due to frontal lesion.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q17">
+  <b>17. In a feeding study, a rat becomes obese after a targeted lesion. Which hypothalamic nucleus is most likely damaged?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Thalamus</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">B. Ventromedial hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Lateral hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Pineal gland</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> VMH lesions remove satiety signaling and can cause hyperphagia and obesity.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Thalamus is sensory relay.</li>
+        <li><b>C:</b> LH lesions reduce eating/drinking.</li>
+        <li><b>D:</b> Pineal gland regulates circadian rhythms.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q18">
+  <b>18. A patient has intact intelligence but cannot consolidate new long-term memories. Which structure most directly explains the deficit?</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. Hippocampus</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Inferior colliculus</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Medulla oblongata</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Occipital cortex</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Hippocampal dysfunction causes anterograde amnesia with preserved intelligence.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Inferior colliculus mediates auditory reflex processing.</li>
+        <li><b>C:</b> Medulla controls vital autonomic functions.</li>
+        <li><b>D:</b> Occipital cortex is visual processing.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Emotion, Fear, and Memory After Temporal Lobe Surgery</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 29-year-old patient undergoes removal of portions of the medial temporal lobe to treat severe epilepsy. After surgery, the patient’s general intelligence is largely intact, but they cannot reliably remember new names or events from day to day.</p>
+  <p>Family members report the patient seems unusually fearless. The patient approaches unfamiliar animals without caution and shows diminished reaction to threatening stimuli. Clinicians review classic work linking particular limbic structures to defensive behavior and to consolidation of new memories.</p>
+  <p>Because the resection included multiple nearby structures, the team emphasizes that some symptoms may arise from more than one damaged region, and careful matching of symptoms to mechanisms is required.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>New long-term memory formation failure points to <span class="key">hippocampus</span> → <span class="key">anterograde amnesia</span>.</li>
+    <li>Reduced fear/aggression aligns with <span class="key">amygdala</span> involvement.</li>
+    <li>When symptoms overlap, identify which structure is the most direct causal driver for each symptom.</li>
+    <li>Pick the choice that matches the specific deficit described in the stem.</li>
+  </ol>
+</div>
+
+<div class="question" id="q19">
+  <b>19. A patient with a left frontal lesion speaks in short, effortful phrases but comprehension is relatively preserved. Which region is most likely affected?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Primary visual cortex</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Amygdala</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Wernicke’s area</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. Broca’s area</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Broca’s area supports speech production; lesions cause nonfluent (expressive) aphasia with relatively preserved comprehension.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Visual cortex lesions impair vision.</li>
+        <li><b>B:</b> Amygdala relates to fear/aggression.</li>
+        <li><b>C:</b> Wernicke’s lesions impair comprehension with fluent but nonsensical speech.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q20">
+  <b>20. A clinician notes that a patient can hear tones but struggles to comprehend spoken language. Which cortical region is most implicated?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Primary motor cortex</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. Wernicke’s area</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Cerebellum</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Wernicke’s area supports language comprehension; deficits can occur despite intact basic auditory sensation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Hypothalamus regulates homeostasis and drives.</li>
+        <li><b>B:</b> Motor cortex initiates movement.</li>
+        <li><b>D:</b> Cerebellum coordinates movement and balance.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q21">
+  <b>21. A subject has severe resting tremor and jerky movements. Which structure dysfunction best aligns with this presentation?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Thalamus</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Somatosensory cortex</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">C. Basal ganglia</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Pineal gland</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Basal ganglia circuit dysfunction is associated with Parkinsonian tremor and abnormal movement control.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Thalamus is sensory relay, not classic Parkinson site.</li>
+        <li><b>B:</b> Somatosensory cortex processes touch/pressure/temperature/pain.</li>
+        <li><b>D:</b> Pineal regulates circadian rhythms.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Language, Laterality, and the Corpus Callosum</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A patient with intractable epilepsy undergoes surgery that severs the corpus callosum to limit seizure spread. After recovery, the patient speaks fluently and follows spoken instructions.</p>
+  <p>In a lab task, an object is placed in the patient’s left hand while eyes are closed. The patient can manipulate it correctly but cannot name it aloud. When the same object is placed in the right hand, the patient names it immediately.</p>
+  <p>The experimenters explain that most language functions are lateralized to a dominant hemisphere in most people, and that severing the corpus callosum prevents information from crossing between hemispheres.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Left-hand sensory input projects mainly to the <span class="key">right hemisphere</span> (contralateral).</li>
+    <li>Speech/language is usually in the <span class="key">left (dominant) hemisphere</span>. Without the <span class="key">corpus callosum</span>, info can’t cross.</li>
+    <li>So the object can be recognized but not named when only the left hand is used.</li>
+    <li>Select the answer that explicitly ties severed interhemispheric transfer to the observed naming deficit.</li>
+  </ol>
+</div>
+
+<div class="question" id="q22">
+  <b>22. A patient shows poor impulse control, inappropriate comments, and diminished long-term planning after injury. Which region is most likely damaged?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Primary visual cortex</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Cerebellum</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Medulla</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. Prefrontal cortex</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Prefrontal cortex lesions cause disinhibition and impaired executive function (planning, impulse control).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Visual cortex is occipital.</li>
+        <li><b>B:</b> Cerebellum damage causes ataxia/coordination deficits.</li>
+        <li><b>C:</b> Medulla controls autonomic survival functions.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q23">
+  <b>23. An object placed in the left hand of a split-brain patient cannot be named. This is best explained because:</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Left-hand somatosensory input projects to the right hemisphere, which cannot communicate to the language-dominant left hemisphere</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Left hand projects ipsilaterally to the left hemisphere in all cases</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. The hippocampus is removed, preventing all speech</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. The thalamus is severed in split-brain surgery</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Left-hand input is processed predominantly by the right hemisphere; without corpus callosum, that information cannot reach the left hemisphere language areas to be named.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Somatosensory pathways are largely contralateral.</li>
+        <li><b>C:</b> Hippocampal loss affects memory consolidation, not primary speech naming in this mechanism.</li>
+        <li><b>D:</b> Split-brain surgery severs corpus callosum, not thalamus.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q24">
+  <b>24. Which pairing best matches typical dominant vs nondominant hemisphere specialization?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Dominant: autonomic survival reflexes; Nondominant: breathing rhythm</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">B. Dominant: language and analytic processing; Nondominant: holistic/spatial and emotional tone</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Dominant: circadian rhythm; Nondominant: hunger</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Dominant: faces; Nondominant: words</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Dominant (usually left) supports language/logic/math; nondominant (usually right) supports spatial/holistic processing and emotional tone.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Survival reflexes and breathing rhythms are brainstem functions.</li>
+        <li><b>C:</b> Circadian rhythms and hunger are hypothalamus/pineal, not hemisphere dominance.</li>
+        <li><b>D:</b> This reverses typical associations.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

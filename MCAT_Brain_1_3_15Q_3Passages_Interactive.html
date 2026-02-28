@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Brain Structure & Mapping (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+  .reasoning-box .key{ color:#0f4fa0; font-weight:700; }
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Brain Structure & Mapping </div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (Correct: C) -->
+<div class="question" id="q1">
+  <b>1. Which meningeal layer is directly connected to the skull?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Arachnoid mater</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Choroid plexus</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Dura mater</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Pia mater</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The dura mater is the outermost meningeal layer and is attached to the inner surface of the skull.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Arachnoid mater is the middle, weblike layer.</li>
+        <li><b>B:</b> Choroid plexus produces cerebrospinal fluid; it is not a meningeal layer.</li>
+        <li><b>D:</b> Pia mater is the delicate inner layer adherent to brain tissue.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (Correct: A) -->
+<div class="question" id="q2">
+  <b>2. Cerebrospinal fluid (CSF) is produced primarily by specialized cells that line the:</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Ventricles</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Dura mater</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Pituitary stalk</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Cerebellar cortex</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> CSF is produced by specialized cells lining the ventricles (via the choroid plexus).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> The meninges help protect and resorb CSF but do not primarily produce it.</li>
+        <li><b>C:</b> Pituitary structures regulate endocrine output, not CSF production.</li>
+        <li><b>D:</b> Cerebellar cortex coordinates movement but does not produce CSF.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (Correct: D) -->
+<div class="question" id="q3">
+  <b>3. Which statement best captures the evolutionary trend described for brain organization?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. The brainstem is the most recent structure and controls long-term planning</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. The forebrain developed earlier than the hindbrain and supports breathing</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Higher brain structures are older and control basic survival</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. More primitive survival functions are located lower; more complex functions are located higher</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Earlier-evolving regions (hindbrain/midbrain = brainstem) are lower and manage vital functions; later-evolving regions (forebrain, cortex) support complex cognition.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Brainstem is primitive, not recent; long-term planning is cortical.</li>
+        <li><b>B:</b> Breathing is largely hindbrain/brainstem; forebrain developed later.</li>
+        <li><b>C:</b> Basic survival functions are controlled by older, lower structures—not higher.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (Correct: B) -->
+<div class="question" id="q4">
+  <b>4. Which region is most directly associated with breathing and heart rate regulation?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Cerebellum</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Medulla oblongata</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Basal ganglia</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Thalamus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The medulla oblongata regulates vital autonomic functions including breathing and heart rate.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cerebellum coordinates posture and refined movement.</li>
+        <li><b>C:</b> Basal ganglia are involved in movement initiation and control.</li>
+        <li><b>D:</b> Thalamus is a sensory relay station.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (Correct: B) -->
+<div class="question" id="q5">
+  <b>5. Damage to which structure would most directly produce clumsiness, slurred speech, and loss of balance?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Cerebellum</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Reticular formation</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Inferior colliculus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The cerebellum refines motor movements and balance; damage causes ataxia, clumsiness, and coordination deficits.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Hypothalamus regulates homeostasis (hunger, thirst, emotion).</li>
+        <li><b>C:</b> Reticular formation contributes to arousal and alertness.</li>
+        <li><b>D:</b> Inferior colliculus is involved in auditory reflexes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (Correct: D) -->
+<div class="question" id="q6">
+  <b>6. The superior colliculus is primarily associated with:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Long-term planning and impulse control</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Breathing rhythm generation</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Auditory reflexes to sudden noise</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. Visual sensorimotor reflexes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The superior colliculus receives visual input and participates in involuntary visual reflex responses.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> These are cortical functions (especially prefrontal cortex).</li>
+        <li><b>B:</b> Breathing rhythm is a brainstem/pons-medulla function.</li>
+        <li><b>C:</b> Auditory reflexes involve the inferior colliculus.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (Correct: A) -->
+<div class="question" id="q7">
+  <b>7. Which structure is best described as a sensory relay station that routes information to the cortex?</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Thalamus</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Pons</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Cerebellum</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Amygdala</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The thalamus relays and filters sensory information en route to the cerebral cortex (major sensory relay).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Pons helps relay information within the brain and contributes to breathing.</li>
+        <li><b>C:</b> Cerebellum coordinates movement.</li>
+        <li><b>D:</b> Amygdala is part of the limbic system, important for emotion (fear/aggression).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (Correct: C) -->
+<div class="question" id="q8">
+  <b>8. The limbic system is most strongly associated with:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Cerebrospinal fluid production</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Auditory and visual colliculi reflexes</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Emotion and memory processes</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Primary motor output to skeletal muscle</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The limbic system is linked to emotion and memory; it mediates states like fear, aggression, pleasure, and pain processing.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> CSF is produced in ventricles by choroid plexus.</li>
+        <li><b>B:</b> Colliculi are midbrain structures for sensorimotor reflexes.</li>
+        <li><b>D:</b> Motor output is mediated by motor cortex/basal ganglia/cerebellar circuits.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (Correct: A) -->
+<div class="question" id="q9">
+  <b>9. During embryonic development, the rhombencephalon divides into structures that become the:</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Medulla oblongata, pons, and cerebellum</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Superior and inferior colliculi</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Cerebral cortex and basal ganglia</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Thalamus and hypothalamus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The hindbrain (rhombencephalon) forms myelencephalon (medulla) and metencephalon (pons and cerebellum).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Colliculi are midbrain (mesencephalon) structures.</li>
+        <li><b>C:</b> These are telencephalon derivatives (forebrain).</li>
+        <li><b>D:</b> These come from the diencephalon (forebrain).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (Correct: C) -->
+<div class="question" id="q10">
+  <b>10. Which mapping method is noninvasive and measures broad patterns of electrical activity using scalp electrodes?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. CT</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. rCBF</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. EEG</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. PET</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> An electroencephalogram (EEG) records electrical activity from the scalp and is commonly used for sleep and seizure studies.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> CT uses X-rays to generate cross-sectional images.</li>
+        <li><b>B:</b> rCBF measures blood flow changes using a tracer gas and detection of radioactivity.</li>
+        <li><b>D:</b> PET uses radioactive tracer uptake to image metabolic activity.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (Correct: B) -->
+<div class="question" id="q11">
+  <b>11. Which technique relies on the assumption that increased neural activity increases regional blood flow and uses an inhaled radioactive gas?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. CT</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. rCBF</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. EEG</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. MRI</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Regional cerebral blood flow (rCBF) detects neural activity indirectly by measuring increased blood flow; historically it can involve inhalation of a harmless radioactive gas.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> CT uses X-rays and does not measure blood flow dynamics in this way.</li>
+        <li><b>C:</b> EEG measures electrical activity directly, not blood flow.</li>
+        <li><b>D:</b> MRI uses magnetic fields and hydrogen atoms; fMRI measures blood flow changes but not via inhaled radioactive gas in this description.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (Correct: D) -->
+<div class="question" id="q12">
+  <b>12. A surgeon stimulates a conscious patient’s cortex during an operation, and the patient reports seeing flashes of light. The stimulated area is most likely the:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Motor cortex</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Somatosensory cortex</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Reticular formation</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Visual cortex</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Electrical stimulation of the visual cortex can evoke visual percepts (phosphenes), experienced as flashes of light.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Motor cortex stimulation produces muscle movements.</li>
+        <li><b>B:</b> Somatosensory cortex stimulation produces tactile sensations.</li>
+        <li><b>C:</b> Reticular formation influences arousal, not specific visual percepts.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (Correct: D) -->
+<div class="question" id="q13">
+  <b>13. Which brain-imaging method produces cross-sectional images using multiple X-rays taken at different angles?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. PET</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. EEG</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. MRI</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. CT</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> CT (CAT) scans reconstruct cross-sectional images from multiple X-rays taken at different angles.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> PET uses a radioactive tracer (often glucose) to image uptake/metabolic activity.</li>
+        <li><b>B:</b> EEG records electrical activity from scalp electrodes.</li>
+        <li><b>C:</b> MRI uses magnetic resonance of hydrogen nuclei; fMRI tracks blood flow changes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (Correct: B) -->
+<div class="question" id="q14">
+  <b>14. Which statement best describes why interpreting lesion studies in humans can be challenging?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Human lesions are always limited to one structure, so data are too clean</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Lesions are rarely isolated, so deficits may reflect damage to multiple structures</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Lesions only occur in the spinal cord</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Lesions cannot affect behavior because the brain lacks pain receptors</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Human brain lesions often damage multiple regions, making it difficult to attribute a deficit to a single structure-function relationship.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> It is the opposite: lesions are often not isolated.</li>
+        <li><b>C:</b> Lesions can occur throughout the brain, not only the spinal cord.</li>
+        <li><b>D:</b> Lack of pain receptors explains awake surgery, not lesion interpretation challenges.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (Correct: C) -->
+<div class="question" id="q15">
+  <b>15. Which method uses a magnetic field interacting with hydrogen atoms to map hydrogen-dense regions of the body?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. CT</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. PET</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. MRI</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. EEG</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> MRI uses magnetic resonance of hydrogen atoms to generate detailed structural images; fMRI uses related methods to track blood flow changes.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> CT uses X-ray imaging.</li>
+        <li><b>B:</b> PET tracks radioactive tracer uptake.</li>
+        <li><b>D:</b> EEG measures electrical signals from the scalp.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<div class="passage-header">
+  <span>Passage 1: Emergency Neurology and Brainstem Signs</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 62-year-old patient is brought to the emergency department after a sudden collapse. On arrival, the patient has irregular breathing and episodes of bradycardia. The neurological exam shows that the patient is difficult to arouse, and gag and cough reflexes are weak.</p>
+  <p>CT imaging rules out a large cortical hemorrhage, but the clinician suspects damage near the junction where the brain meets the spinal cord. The clinician explains to trainees that this region contains structures essential for basic survival functions such as breathing, heart rate control, and vital reflexes like vomiting and coughing.</p>
+  <p>The team also notes that higher cortical functions (language and planning) appear less immediately affected than autonomic stability, suggesting a lesion in a more primitive, lower brain region rather than in the cerebral cortex.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Match symptoms to region: abnormal breathing/heart rate + weak vital reflexes → points to the <span class="key">medulla</span> (hindbrain/brainstem).</li>
+    <li>Use the hierarchy idea: <span class="key">brainstem</span> controls survival functions; <span class="key">cortex</span> supports higher cognition.</li>
+    <li>Rule out distractors: <span class="key">cerebellum</span> problems are coordination/balance, not primary respiration/HR failure.</li>
+    <li>Pick the structure that best explains the mechanism implied by the clinical evidence.</li>
+  </ol>
+</div>
+
+<!-- Q16 (Correct: A) -->
+<div class="question" id="q16">
+  <b>16. A patient with severe damage at the brain–spinal cord junction develops irregular breathing and unstable heart rate. Which structure is most likely affected?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Medulla oblongata</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Cerebellum</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Basal ganglia</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Thalamus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The medulla oblongata regulates vital autonomic functions including respiration and heart rate; damage here can be life-threatening.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Cerebellar damage causes coordination and balance problems, not primary breathing/HR failure.</li>
+        <li><b>C:</b> Basal ganglia affect movement initiation and control.</li>
+        <li><b>D:</b> Thalamus is a sensory relay station.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (Correct: B) -->
+<div class="question" id="q17">
+  <b>17. In an awake cortical mapping procedure, stimulation of one site causes a subject’s hand to move involuntarily. The electrode is most likely over the:</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Inferior colliculus</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">B. Motor cortex</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Visual cortex</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Cerebellum</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Stimulation of the motor cortex elicits contralateral muscle movements, enabling surgeons to map motor areas.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Inferior colliculus is midbrain auditory reflex circuitry, not cortical hand movement control.</li>
+        <li><b>C:</b> Visual cortex stimulation produces flashes of light/visual percepts.</li>
+        <li><b>D:</b> Cerebellum refines movement but is not typically mapped by direct cortical stimulation in this way.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (Correct: A) -->
+<div class="question" id="q18">
+  <b>18. A researcher wants high-resolution three-coordinate targeting to create a precisely defined lesion in an animal brain. Which tool/method is most directly suited?</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. Stereotactic instruments with implanted electrodes</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. rCBF tracer gas</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. CT scan alone</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. EEG scalp electrodes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Stereotactic instruments provide precise 3D targeting; implanted electrodes can then apply heat/cold/electricity to create defined lesions.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> rCBF measures blood flow patterns; it does not lesion tissue.</li>
+        <li><b>C:</b> CT can image structure but does not create lesions with high precision by itself.</li>
+        <li><b>D:</b> EEG is noninvasive recording, not precision lesioning.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Awake Surgery and Cortical Mapping</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>During a neurosurgical procedure to remove a tumor near the cortex, the patient is kept awake under local anesthesia. The surgeon applies a small electrode to the exposed cortical surface in short pulses while the patient performs simple tasks and reports subjective experiences.</p>
+  <p>When the electrode is placed over one region, the patient’s hand briefly moves without voluntary intent. When the electrode is moved to another region, the patient reports seeing brief flashes of light, even though the operating room lighting is unchanged.</p>
+  <p>The surgeon explains that mapping functional regions helps avoid removing tissue critical for movement or perception. Because the brain tissue itself lacks pain receptors, local anesthesia at the scalp is sufficient for the mapping portion of the procedure.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate stimulation → function: hand movement suggests <span class="key">motor cortex</span>; flashes of light suggest <span class="key">visual cortex</span>.</li>
+    <li>Use the method logic: electrical stimulation causes neurons to fire, revealing the <span class="key">functional map</span> of nearby cortex.</li>
+    <li>Don’t overreach: this is cortical mapping, not deep nuclei or brainstem reflex testing.</li>
+    <li>Choose the option that matches the specific effect produced by stimulation.</li>
+  </ol>
+</div>
+
+<!-- Q19 (Correct: D) -->
+<div class="question" id="q19">
+  <b>19. A sleep researcher needs a noninvasive tool to detect broad brain activity patterns in real time during REM sleep. Which is most appropriate?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Volkmann’s canal imaging</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. PET with radioactive sugar only</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Extirpation lesion study</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. EEG</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> EEG uses scalp electrodes to record broad neural electrical activity and is widely used in sleep studies.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Volkmann’s canals are bone structures, unrelated to brain mapping.</li>
+        <li><b>B:</b> PET can image metabolic activity but is less temporally precise and involves radioactivity; EEG is the classic for sleep staging.</li>
+        <li><b>C:</b> Lesion studies are invasive and not real-time monitoring tools.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (Correct: C) -->
+<div class="question" id="q20">
+  <b>20. A patient’s brain imaging shows increased blood flow specifically in auditory cortex while listening to music. Which mapping principle is being used?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. CSF production increases to active regions to nourish them</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Hydrogen atoms align with magnetic fields only in bone</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. Neural activity is inferred from increased regional blood flow</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. X-rays directly measure neuronal firing</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Methods like rCBF and fMRI rely on the relationship between increased neural activity and increased blood flow to infer active regions.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> CSF cushions and nourishes but is not the mapping signal for functional activation.</li>
+        <li><b>B:</b> MRI involves hydrogen throughout tissues, not only bone.</li>
+        <li><b>D:</b> X-rays (CT) show structure but do not directly measure firing.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (Correct: C) -->
+<div class="question" id="q21">
+  <b>21. A subject has a lesion that includes both cerebellum and pons, and displays slurred speech and balance issues. Why is structure–function attribution difficult here?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Because the cerebellum is not involved in movement</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Because the pons is part of the forebrain</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">C. Because multiple damaged structures could contribute to the same deficits</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Because lesions never affect behavior</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> When multiple structures are damaged, observed impairments can reflect contributions from any of them, complicating causal attribution.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cerebellum is central to coordination and balance.</li>
+        <li><b>B:</b> The pons is part of the hindbrain/brainstem, not forebrain.</li>
+        <li><b>D:</b> Lesions can strongly affect behavior and function.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Choosing a Brain-Mapping Tool for a Study</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A research team wants to study brain activity during REM sleep and also wants to identify which brain regions increase activity during a music-listening task. Because the team is working with human participants, they prioritize noninvasive methods whenever possible.</p>
+  <p>For the sleep study, they need a method that can record broad patterns of neural activity over time and can be used repeatedly without damaging tissue. For the music study, they want a method that can compare activity between brain regions based on physiological signals that correlate with neuronal activation.</p>
+  <p>The team debates options including placing electrodes on the scalp, injecting a radioactive tracer, measuring blood flow changes, and creating experimental lesions in animals. They also note that some techniques provide better temporal resolution while others provide better spatial localization.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Match question to tool: broad, time-resolved electrical patterns in sleep → <span class="key">EEG</span>.</li>
+    <li>For regional activation, use blood-flow coupling: increased neural activity → increased <span class="key">regional blood flow</span> (rCBF/fMRI).</li>
+    <li>Be careful with constraints: “noninvasive” rules out lesioning; “radioactive tracer” suggests <span class="key">PET</span> or rCBF.</li>
+    <li>Pick the method whose measurement matches the evidence you need (electrical vs blood flow vs structure).</li>
+  </ol>
+</div>
+
+<!-- Q22 (Correct: D) -->
+<div class="question" id="q22">
+  <b>22. A clinician suspects meningitis. Which structure(s) are inflamed in this condition?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. The ventricles only</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. The colliculi</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. The basal ganglia</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. The meninges (dura, arachnoid, pia)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Meningitis is inflammation of the meninges, the three connective tissue layers surrounding the brain and spinal cord.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Ventricles contain CSF but meningitis refers to meningeal inflammation.</li>
+        <li><b>B:</b> Colliculi are midbrain nuclei involved in sensorimotor reflexes.</li>
+        <li><b>C:</b> Basal ganglia are deep nuclei involved in movement.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (Correct: A) -->
+<div class="question" id="q23">
+  <b>23. A patient has impaired reflexive reactions to sudden loud noises but intact basic hearing. Which midbrain nucleus is most implicated?</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Inferior colliculus</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Superior colliculus</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Thalamus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The inferior colliculus receives auditory input and participates in reflexive responses to loud sounds.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Superior colliculus is visual reflex processing.</li>
+        <li><b>C:</b> Hypothalamus regulates homeostasis (hunger, thirst, emotion).</li>
+        <li><b>D:</b> Thalamus is a relay station but the passage emphasizes colliculi for reflexes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (Correct: B) -->
+<div class="question" id="q24">
+  <b>24. A neuroimaging technique is chosen to monitor neural activity indirectly by tracking blood-flow changes using MRI principles. Which method is being described?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Extirpation</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">B. fMRI</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. EEG</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. CT</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Functional MRI (fMRI) uses MRI principles and measures blood-flow–related changes that correlate with neural activity.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Extirpation is surgical removal/lesioning, not imaging.</li>
+        <li><b>C:</b> EEG measures electrical activity directly.</li>
+        <li><b>D:</b> CT uses X-rays for structure.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

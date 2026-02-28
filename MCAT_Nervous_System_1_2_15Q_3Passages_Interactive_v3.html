@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Nervous System Basics (Ch. 1.2) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+  .reasoning-box .key{ color:#0f4fa0; font-weight:700; }
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Nervous System Basics (Ch. 1.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (Correct: B) -->
+<div class="question" id="q1">
+  <b>1. Which pair correctly lists the major components of the central nervous system (CNS)?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Cranial nerves and spinal nerves</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Brain and spinal cord</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Autonomic nerves and somatic nerves</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Ganglia and peripheral nerves</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The CNS is composed of the brain and spinal cord; all other nerve fibers and ganglia are classified as part of the PNS.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cranial and spinal nerves are part of the PNS (even though they connect to the CNS).</li>
+        <li><b>C:</b> Somatic and autonomic divisions are subdivisions of the PNS, not the CNS.</li>
+        <li><b>D:</b> Ganglia and peripheral nerves lie outside the brain/spinal cord and are PNS.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (Correct: D) -->
+<div class="question" id="q2">
+  <b>2. Afferent neurons are best described as neurons that:</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Release hormones directly into blood</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Connect two neurons within a ganglion</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Carry motor commands from the CNS to muscles</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Carry sensory information toward the CNS</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Afferent (sensory) neurons transmit information from receptors to the spinal cord/brain.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Hormone secretion is an endocrine function, not a defining feature of afferent neurons.</li>
+        <li><b>B:</b> Interneurons link neurons, especially within the CNS, but this is not the definition of afferent.</li>
+        <li><b>C:</b> That describes efferent (motor) output.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (Correct: A) -->
+<div class="question" id="q3">
+  <b>3. Which statement best distinguishes interneurons from sensory and motor neurons?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Interneurons are predominantly located in the CNS and link neurons within circuits</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Interneurons are the primary neurons found in peripheral nerves</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Interneurons carry commands from CNS to glands and muscles</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Interneurons carry signals from receptors to the CNS</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Interneurons are abundant within the brain and spinal cord and connect other neurons, commonly mediating reflex arcs and processing.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Peripheral nerves mainly contain sensory and motor axons rather than interneurons.</li>
+        <li><b>C:</b> That is motor (efferent) function.</li>
+        <li><b>D:</b> That is sensory (afferent) function.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (Correct: C) -->
+<div class="question" id="q4">
+  <b>4. A reflex arc that rapidly withdraws a foot from a painful stimulus primarily demonstrates that:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. The brain must process pain before any muscle response can occur</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Only the sympathetic nervous system can mediate reflexes</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Spinal interneurons can initiate motor output before conscious awareness</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Motor neurons transmit information toward the CNS</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Reflex arcs can be mediated at the spinal cord via interneurons, producing rapid withdrawal before the brain fully processes the pain.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Conscious processing is slower; reflexes can occur before awareness.</li>
+        <li><b>B:</b> Reflex arcs can involve somatic motor pathways and do not require sympathetic activation.</li>
+        <li><b>D:</b> Motor neurons are efferent and carry signals away from the CNS.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (Correct: C) -->
+<div class="question" id="q5">
+  <b>5. Which structure is considered part of the peripheral nervous system (PNS) but is an outgrowth of the CNS?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Cerebellum</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Thalamus</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">C. Optic nerve</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Spinal cord</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The optic (and olfactory) nerves are structurally outgrowths of the CNS but are classified as cranial nerves within the PNS.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cerebellum is in the brain (CNS).</li>
+        <li><b>B:</b> Thalamus is a brain structure (CNS).</li>
+        <li><b>D:</b> Spinal cord is CNS.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (Correct: A) -->
+<div class="question" id="q6">
+  <b>6. The somatic nervous system is most directly responsible for:</b>
+  <div class="choice" onclick="selectChoice('q6', this, true)">A. Voluntary control of skeletal muscle and conscious sensation from skin/joints</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Automatic control of heart rate and bronchi diameter</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Hormone release from the adrenal medulla</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Regulation of glandular secretion and gut peristalsis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The somatic nervous system includes sensory and motor neurons serving skin, joints, and skeletal muscles, supporting conscious sensation and voluntary movement.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> That is autonomic control (sympathetic/parasympathetic).</li>
+        <li><b>C:</b> Adrenal medulla hormone release is tied to sympathetic activity, not somatic.</li>
+        <li><b>D:</b> That is primarily autonomic (parasympathetic) control.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (Correct: D) -->
+<div class="question" id="q7">
+  <b>7. Which set of functions is most characteristic of the autonomic nervous system (ANS)?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Memory formation and language</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Voluntary movement and proprioception</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Vision and hearing</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. Heartbeat, respiration, digestion, and glandular secretion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The ANS regulates involuntary functions including heart rate, respiratory activity, digestion, and secretions.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> These are higher CNS functions, not ANS.</li>
+        <li><b>B:</b> Voluntary movement is somatic.</li>
+        <li><b>C:</b> Vision and hearing are sensory systems; regulation is not the defining role of ANS.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (Correct: B) -->
+<div class="question" id="q8">
+  <b>8. During a calm post-meal state, which response is most consistent with parasympathetic activity?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Release of epinephrine into blood</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Increased peristalsis and exocrine secretions</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Decreased digestion and reduced secretions</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Increased heart rate and bronchodilation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Parasympathetic (“rest-and-digest”) activity promotes digestion by increasing peristalsis and exocrine secretions.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Epinephrine release is associated with sympathetic activation via the adrenal medulla.</li>
+        <li><b>C:</b> Sympathetic activity inhibits digestion.</li>
+        <li><b>D:</b> This describes sympathetic activity.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (Correct: A) -->
+<div class="question" id="q9">
+  <b>9. A patient under acute stress shows dilated pupils, reduced GI motility, and increased blood glucose. Which division is primarily active?</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Sympathetic nervous system</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Somatic nervous system</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Enteric nervous system</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Parasympathetic nervous system</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The sympathetic system mediates fight-or-flight responses, including pupil dilation, decreased digestion, and increased glucose availability.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Somatic controls voluntary skeletal muscle and conscious sensation.</li>
+        <li><b>C:</b> Enteric system controls local gut circuits but is modulated by sympathetic/parasympathetic tone.</li>
+        <li><b>D:</b> Parasympathetic promotes digestion and energy conservation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (Correct: C) -->
+<div class="question" id="q10">
+  <b>10. Which neurotransmitter is most directly responsible for parasympathetic responses at target organs?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Serotonin</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Histamine</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Acetylcholine</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Dopamine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Acetylcholine is the primary neurotransmitter used by parasympathetic postganglionic neurons at target tissues.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Serotonin is involved in mood and other CNS functions.</li>
+        <li><b>B:</b> Histamine is a mediator in immune/allergic responses.</li>
+        <li><b>D:</b> Dopamine is prominent in CNS reward/motor pathways.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (Correct: B) -->
+<div class="question" id="q11">
+  <b>11. Which pairing correctly matches direction of information flow with neuron type?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Afferent: within CNS only; Efferent: within PNS only</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. Afferent: receptor to CNS; Efferent: CNS to muscle/gland</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Afferent: CNS to muscle; Efferent: receptor to CNS</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Afferent: CNS to gland; Efferent: receptor to CNS</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Afferent neurons bring sensory input to the CNS, while efferent neurons carry motor output from CNS to effectors.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Both afferent and efferent pathways involve PNS and CNS connections.</li>
+        <li><b>C:</b> This reverses afferent and efferent.</li>
+        <li><b>D:</b> This also reverses directionality.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (Correct: D) -->
+<div class="question" id="q12">
+  <b>12. Which statement best describes the relationship between the sympathetic and parasympathetic branches?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. They are always active together and always produce identical effects</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Only one branch innervates any given organ</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. They control only skeletal muscle</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. They are antagonistic and often produce opposite effects on the same organ</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Sympathetic and parasympathetic branches often act in opposition (antagonistically) on many organs (e.g., heart and GI tract).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> They often have opposite effects, not identical.</li>
+        <li><b>B:</b> Many organs receive dual innervation (both branches).</li>
+        <li><b>C:</b> They primarily regulate smooth/cardiac muscle and glands, not skeletal muscle.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (Correct: D) -->
+<div class="question" id="q13">
+  <b>13. A student notes that “autonomic” resembles “automatic.” This is most useful for remembering that the ANS primarily regulates:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Conscious movement decisions</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Voluntary reflex suppression</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Learning and memory consolidation</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Automatic functions like heart rate and digestion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The autonomic nervous system manages involuntary, automatic functions such as heartbeat, respiration, digestion, and thermoregulation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Voluntary decisions are cortical/CNS functions and somatic output.</li>
+        <li><b>B:</b> Reflex modulation occurs in CNS circuits but is not the defining ANS role.</li>
+        <li><b>C:</b> Learning/memory are CNS cognitive functions.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (Correct: B) -->
+<div class="question" id="q14">
+  <b>14. Which scenario best demonstrates an efferent signal?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Pain receptors in the foot sending action potentials to the spinal cord</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. A motor neuron firing to contract the quadriceps muscle</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. A touch receptor in the skin activating a sensory pathway</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Light detected by the retina transmitting information toward the brain</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Efferent (motor) neurons transmit commands from the CNS to effectors like skeletal muscle.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> That is afferent (sensory) signaling.</li>
+        <li><b>C:</b> Touch receptor signaling toward CNS is afferent.</li>
+        <li><b>D:</b> Sensory input toward the CNS is afferent.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (Correct: C) -->
+<div class="question" id="q15">
+  <b>15. In the classic “step on a nail” reflex example, which component most directly triggers immediate leg muscle contraction before brain processing?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Cerebral cortex motor planning</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Cranial nerve nuclei</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Spinal cord interneurons</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. PNS ganglia controlling skeletal muscle</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Interneurons within the spinal cord can rapidly activate motor neurons as part of reflex arcs.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cortical processing is slower than spinal reflex pathways.</li>
+        <li><b>B:</b> Cranial nuclei are in the brainstem and are not required for a spinal withdrawal reflex.</li>
+        <li><b>D:</b> Skeletal muscle activation is via somatic motor neurons; “PNS ganglia” are not the main reflex integrator.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<div class="passage-header">
+  <span>Passage 1: Pain, Reflexes, and Circuit Organization</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>During a lab practical, a student accidentally steps on a sharp tack. The student immediately withdraws the affected foot and shifts body weight onto the other leg. A moment later, the student reports feeling a sharp pain and looks down to inspect the injury.</p>
+  <p>The instructor notes that several neuron types are involved in the sequence. A receptor in the skin detects the noxious stimulus and sends a signal toward the spinal cord. Within the spinal cord, the incoming signal is relayed through a local circuit that can activate muscles in both legs.</p>
+  <p>The instructor emphasizes that the rapid motor response can occur before the conscious perception of pain is fully processed in the brain. However, information about the injury still travels upward so that the student can make a voluntary decision about what to do next.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Direction matters: receptor → CNS uses <span class="key">afferent</span> neurons; CNS → muscle uses <span class="key">efferent</span> neurons.</li>
+    <li>Look for fast control: the withdrawal happens via a <span class="key">spinal reflex arc</span> using <span class="key">interneurons</span>.</li>
+    <li>Timing clue: movement occurs before conscious report → reflex precedes cortical processing.</li>
+    <li>Avoid traps: skeletal muscle is controlled by <span class="key">somatic</span> motor neurons, not autonomic output.</li>
+  </ol>
+</div>
+
+<!-- Q16 (Correct: A) -->
+<div class="question" id="q16">
+  <b>16. Based on the scenario, the initial pain signal traveling from the foot to the spinal cord is carried by:</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Afferent sensory neurons</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Efferent motor neurons</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Interneurons projecting to glands</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Parasympathetic postganglionic neurons</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Pain receptors send signals toward the CNS via afferent (sensory) neurons.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Motor neurons carry signals from CNS to effectors.</li>
+        <li><b>C:</b> Interneurons link neurons within CNS circuits; they are not the initial peripheral pain carriers.</li>
+        <li><b>D:</b> Parasympathetic neurons regulate involuntary organs, not somatic pain transmission.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (Correct: B) -->
+<div class="question" id="q17">
+  <b>17. If a medication selectively increases parasympathetic tone, which change would best match its effects?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Decreased peristalsis and reduced secretions</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">B. Increased peristalsis and increased glandular secretion</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Bronchodilation and increased heart rate</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Pupil dilation and epinephrine release</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Parasympathetic activation promotes rest-and-digest: increased peristalsis and exocrine secretions.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This reflects sympathetic inhibition of digestion.</li>
+        <li><b>C:</b> This is sympathetic.</li>
+        <li><b>D:</b> These are sympathetic fight-or-flight effects.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (Correct: A) -->
+<div class="question" id="q18">
+  <b>18. A researcher records that a reflexive muscle response occurs before a subject reports conscious pain perception. Which conclusion is best supported?</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. Interneurons in the spinal cord can generate motor output independent of conscious control</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Autonomic motor neurons directly control skeletal muscle contraction</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Only cranial nerves can mediate reflexes</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Reflex arcs require the cerebral cortex to initiate movement</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Spinal reflex arcs can initiate motor responses via interneurons before conscious cortical processing completes.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Skeletal muscle is controlled by somatic motor neurons, not autonomic motor neurons.</li>
+        <li><b>C:</b> Spinal nerves and spinal cord circuits can mediate many reflexes.</li>
+        <li><b>D:</b> Cortical initiation is not required for spinal reflexes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Autonomic Balance in Two Clinical Scenarios</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Two patients present with contrasting physiologic states. Patient A is brought to the clinic immediately after narrowly avoiding a car accident. Their heart rate is elevated, pupils are dilated, and they report reduced appetite and slowed bowel activity during the event.</p>
+  <p>Patient B arrives for a follow-up appointment shortly after eating a large meal. Their heart rate is lower than baseline, they feel relaxed and sleepy, and bowel sounds are prominent on exam with increased digestive activity.</p>
+  <p>A resident explains that the autonomic nervous system contains two branches that often produce opposite effects. The resident predicts that medications shifting autonomic tone can change both cardiovascular and gastrointestinal function in predictable directions.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Classify each state: acute stress signs → <span class="key">sympathetic</span>; relaxed post-meal digestion → <span class="key">parasympathetic</span>.</li>
+    <li>Match effects: sympathetic ↑ <span class="key">heart rate</span>, ↓ <span class="key">digestion</span>; parasympathetic ↑ <span class="key">peristalsis/secretions</span> and lowers heart rate.</li>
+    <li>Use antagonism: the branches are often <span class="key">oppositional</span> on the same organ systems.</li>
+    <li>Check for fight-or-flight markers: pupil dilation and glucose mobilization align with sympathetic tone.</li>
+  </ol>
+</div>
+
+<!-- Q19 (Correct: D) -->
+<div class="question" id="q19">
+  <b>19. A patient has damage limited to the spinal cord. Which function is most directly compromised relative to the PNS?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Signal transduction at skin mechanoreceptors</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Release of acetylcholine at sweat glands</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Conduction of action potentials in peripheral sensory axons</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. Processing and integration of interneuronal circuits for reflexes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Spinal cord damage disrupts CNS integration—particularly interneuronal processing needed for reflex arcs and signal relay.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Receptors are in peripheral tissues and can still transduce stimuli.</li>
+        <li><b>B:</b> Sweat gland control is autonomic and peripheral; this answer is not the most direct CNS-only deficit here.</li>
+        <li><b>C:</b> Peripheral axons are part of the PNS and may remain intact if the cord alone is damaged.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (Correct: C) -->
+<div class="question" id="q20">
+  <b>20. A clinician wants to test whether a nerve carries information toward or away from the CNS. Which observation would identify an afferent pathway?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Signals originate in the brainstem and travel to the intestine</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Stimulation causes contraction of a skeletal muscle</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. Signals originate at a receptor and travel to the spinal cord</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Stimulation causes glandular secretion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Afferent pathways carry information from receptors toward the CNS (spinal cord/brain).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Brainstem-to-intestine is efferent autonomic signaling.</li>
+        <li><b>B:</b> Muscle contraction typically reflects efferent output.</li>
+        <li><b>D:</b> Glandular secretion reflects efferent autonomic output.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (Correct: C) -->
+<div class="question" id="q21">
+  <b>21. A patient experiences chronic stress with persistent sympathetic activation. Which long-term pattern is most consistent with the text’s description?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Increased exocrine secretions and bronchoconstriction</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Increased sleepiness after meals due to sympathetic dominance</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">C. Decreased digestion/peristalsis, increased blood glucose availability</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Increased digestion and peristalsis, decreased heart rate</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Sympathetic activation inhibits digestion/peristalsis and increases glucose availability for action.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Bronchoconstriction and increased secretions are parasympathetic tendencies.</li>
+        <li><b>B:</b> Post-meal sleepiness is associated with parasympathetic dominance.</li>
+        <li><b>D:</b> That is more parasympathetic.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Mapping Structures to CNS vs PNS</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A neuroscience demonstration uses a simplified wiring diagram. The instructor labels the brain and spinal cord as the processing center and highlights bundles of nerves leaving the spinal cord to reach peripheral tissues. The instructor also notes cranial nerves that emerge directly from the brain.</p>
+  <p>A student points out that some cranial nerves have special structural relationships to the CNS. The instructor agrees, explaining that certain cranial nerves are outgrowths of CNS tissue but are still classified within the peripheral nervous system because they lie outside the brain and spinal cord proper.</p>
+  <p>To test understanding, the instructor asks the class to categorize several structures as CNS or PNS and to predict whether those structures would primarily carry incoming sensory information, outgoing motor commands, or local processing within circuits.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Use the definition: CNS = <span class="key">brain + spinal cord</span>; nerves and ganglia outside are PNS.</li>
+    <li>Special case: <span class="key">optic/olfactory</span> nerves are CNS outgrowths but still counted as PNS cranial nerves.</li>
+    <li>Then map roles: sensory input to CNS is <span class="key">afferent</span>; commands from CNS are <span class="key">efferent</span>; <span class="key">interneurons</span> are mainly CNS.</li>
+    <li>If unsure, ask: is it inside the brain/spinal cord (CNS) or a nerve outside (PNS)?</li>
+  </ol>
+</div>
+
+<!-- Q22 (Correct: D) -->
+<div class="question" id="q22">
+  <b>22. A patient has impaired sweating and piloerection responses to temperature changes. This most directly implicates dysfunction in the:</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Somatic nervous system</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Interneurons of the hippocampus</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Cerebellum</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. Autonomic nervous system</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Sweating and piloerection are autonomic outputs used for thermoregulation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Somatic controls voluntary skeletal muscle actions.</li>
+        <li><b>B:</b> Hippocampal interneurons relate to memory circuits.</li>
+        <li><b>C:</b> Cerebellum coordinates movement, not autonomic thermoregulation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (Correct: A) -->
+<div class="question" id="q23">
+  <b>23. Which pairing best matches the goal of parasympathetic activation described in the passage?</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Conserve energy and promote digestion</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Maximize oxygen delivery by bronchodilation and tachycardia</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Suppress all glandular secretion</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Increase blood glucose by stimulating epinephrine release</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Parasympathetic activity conserves energy and promotes rest-and-digest responses.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> That is sympathetic physiology.</li>
+        <li><b>C:</b> Parasympathetic generally increases many exocrine secretions.</li>
+        <li><b>D:</b> Epinephrine release and glucose mobilization are sympathetic-associated.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (Correct: B) -->
+<div class="question" id="q24">
+  <b>24. A patient’s heart rate increases while their digestion slows during a frightening event. Which explanation best accounts for the antagonism observed?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Interneurons are the only neuron type that can synapse on glands</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">B. The ANS contains two branches that often oppose each other on the same organ systems</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. The CNS cannot influence peripheral organs once signals leave the brain</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. The somatic nervous system controls involuntary smooth muscle of the gut</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Sympathetic and parasympathetic branches often act antagonistically: sympathetic increases heart rate and inhibits digestion; parasympathetic does the opposite.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Autonomic motor neurons synapse on glands; interneurons are mostly CNS circuit neurons.</li>
+        <li><b>C:</b> CNS influences organs through PNS pathways.</li>
+        <li><b>D:</b> Gut smooth muscle is autonomic, not somatic.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

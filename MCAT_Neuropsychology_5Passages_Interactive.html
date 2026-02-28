@@ -1,0 +1,565 @@
+<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><title>MCAT — Neuropsychology (5 Passages × 5 Questions)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .question{ background:#fff; padding:15px; margin-bottom:18px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function toggleReason(pid){ toggleReasoning(pid); }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head><body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Neuropsychology & Nervous System</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+<div class="passage-header">
+  <span>Passage 1: Reflexes, Pathways, and Divisions of the Nervous System</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A research assistant tests reaction patterns in volunteers exposed to a sudden, unexpected pinprick on the finger. Participants rapidly withdraw the hand before they can verbalize what happened. A fraction of a second later, they report pain and can describe where the stimulus occurred.</p>
+<p>To map the pathway, the team records activity from peripheral nerves and notes that signals travel from the skin toward the spinal cord, then immediately out to muscles controlling the forearm. Separate recordings show that sensory information also ascends to the brain for conscious perception.</p>
+<p>The assistant repeats the experiment while asking participants to deliberately keep the hand still. Some participants can partially suppress the movement, but only after the initial withdrawal is already underway. The team concludes that two routes are operating: a rapid circuit that prioritizes speed, and a slower route that contributes awareness and voluntary control.</p>
+</div>
+<div class="reasoning-box" id="p1-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Identify whether the signal travels <b>toward</b> the CNS (sensory/afferent) or <b>away</b> from the CNS (motor/efferent).</li>
+  <li>Reflex withdrawal before awareness implies a <b>spinal reflex arc</b> using <b>interneurons</b>.</li>
+  <li>Conscious perception requires ascending pathways; voluntary override is slower because it depends on cortical processing.</li>
+</ol>
+</div>
+
+<div class="question" id="q1">
+  <b>1. The rapid withdrawal before conscious awareness most strongly implies that the initial motor command is generated in the:</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Thalamus via endocrine control</div><div class="choice" onclick="selectChoice('q1', this, false)">B. Occipital cortex via visual processing</div><div class="choice" onclick="selectChoice('q1', this, false)">C. Cerebellum via long-term planning</div><div class="choice" onclick="selectChoice('q1', this, true)">D. Spinal cord via a reflex arc</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> A reflex arc can be integrated in the spinal cord using interneurons, allowing a fast motor response before conscious perception occurs in the brain.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Thalamus via endocrine control — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> Occipital cortex via visual processing — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Cerebellum via long-term planning — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q2">
+  <b>2. The nerve fibers that carried information from the finger toward the spinal cord are best classified as:</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Motor (efferent) neurons</div><div class="choice" onclick="selectChoice('q2', this, true)">B. Sensory (afferent) neurons</div><div class="choice" onclick="selectChoice('q2', this, false)">C. Interneurons</div><div class="choice" onclick="selectChoice('q2', this, false)">D. Neuroendocrine cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Signals from receptors in the periphery traveling toward the CNS are carried by sensory (afferent) neurons.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Motor (efferent) neurons — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Interneurons — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Neuroendocrine cells — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q3">
+  <b>3. The participant’s ability to partially suppress movement only after withdrawal has started is best explained by:</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Voluntary somatic control requires cortical processing that lags behind the spinal reflex</div><div class="choice" onclick="selectChoice('q3', this, false)">B. Parasympathetic activation is slower than sympathetic activation</div><div class="choice" onclick="selectChoice('q3', this, false)">C. The thalamus blocks all sensory signals until the cortex approves</div><div class="choice" onclick="selectChoice('q3', this, false)">D. Reflexes require the hypothalamus to release hormones first</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The spinal reflex is fast and begins before conscious control; voluntary suppression requires processing in higher brain regions and thus occurs later.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>B:</b> Parasympathetic activation is slower than sympathetic activation — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> The thalamus blocks all sensory signals until the cortex approves — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Reflexes require the hypothalamus to release hormones first — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q4">
+  <b>4. Which statement best matches the division of the PNS that controls the muscle contraction used to withdraw the hand?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Autonomic division only</div><div class="choice" onclick="selectChoice('q4', this, false)">B. Endocrine system via pituitary hormones</div><div class="choice" onclick="selectChoice('q4', this, false)">C. Parasympathetic branch of the autonomic system</div><div class="choice" onclick="selectChoice('q4', this, true)">D. Somatic division of the PNS</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Skeletal muscle movement is controlled by the somatic division of the PNS, even when initiated reflexively.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Autonomic division only — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> Endocrine system via pituitary hormones — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Parasympathetic branch of the autonomic system — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q5">
+  <b>5. If the same stimulus caused increased heart rate and sweating, the most direct nervous system explanation would be activation of the:</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Parasympathetic branch of the autonomic system</div><div class="choice" onclick="selectChoice('q5', this, false)">B. Somatic division of the PNS</div><div class="choice" onclick="selectChoice('q5', this, true)">C. Sympathetic branch of the autonomic system</div><div class="choice" onclick="selectChoice('q5', this, false)">D. Cerebellum</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Fight-or-flight physiological responses like increased heart rate and sweating are mediated by the sympathetic branch of the autonomic nervous system.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Parasympathetic branch of the autonomic system — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> Somatic division of the PNS — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Cerebellum — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Lesion Evidence and Forebrain Function</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>In a clinical case series, Patient A reports that sounds are intact but spoken language seems “like noise.” Patient B can understand language but struggles to produce fluent speech, using short, effortful phrases. Patient C experiences normal hearing and speech but develops profound difficulty forming new long-term memories after surgery.</p>
+<p>Neuroimaging shows that each patient has focal damage in different regions of the forebrain. The clinicians emphasize that these cases illustrate localization of function: different brain regions contribute disproportionately to distinct cognitive and behavioral tasks.</p>
+<p>In follow-up testing, Patient C can repeat a phone number immediately after hearing it but forgets the conversation later. Patient B can sing familiar lyrics more smoothly than they can produce spontaneous speech. The team proposes that memory consolidation and language production rely on partially separable circuits.</p>
+</div>
+<div class="reasoning-box" id="p2-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Map each symptom cluster: speech <b>production</b> (frontal), speech <b>perception</b> (temporal), memory <b>consolidation</b> (hippocampus).</li>
+  <li>Short-term intact with long-term impaired suggests a <b>consolidation</b> deficit.</li>
+  <li>Use what is spared vs impaired to infer which system is disrupted.</li>
+</ol>
+</div>
+
+<div class="question" id="q6">
+  <b>6. Patient C’s pattern (intact immediate recall but impaired formation of new long-term memories) most strongly implicates damage to the:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Medulla oblongata</div><div class="choice" onclick="selectChoice('q6', this, false)">B. Occipital lobe</div><div class="choice" onclick="selectChoice('q6', this, false)">C. Cerebellum</div><div class="choice" onclick="selectChoice('q6', this, true)">D. Hippocampus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> The hippocampus is critical for consolidating new long-term declarative memories; short-term maintenance can remain relatively intact.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Medulla oblongata — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> Occipital lobe — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Cerebellum — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q7">
+  <b>7. Patient B’s difficulty producing fluent speech is most consistent with dysfunction in a region primarily located in the:</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Frontal lobe</div><div class="choice" onclick="selectChoice('q7', this, false)">B. Parietal lobe</div><div class="choice" onclick="selectChoice('q7', this, false)">C. Occipital lobe</div><div class="choice" onclick="selectChoice('q7', this, false)">D. Hindbrain</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Speech production and executive planning are strongly associated with frontal-lobe regions.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>B:</b> Parietal lobe — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Occipital lobe — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Hindbrain — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q8">
+  <b>8. Patient A’s intact hearing but impaired comprehension of spoken language most strongly suggests dysfunction in the:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Basal ganglia</div><div class="choice" onclick="selectChoice('q8', this, false)">B. Cerebellum</div><div class="choice" onclick="selectChoice('q8', this, true)">C. Temporal lobe</div><div class="choice" onclick="selectChoice('q8', this, false)">D. Reticular formation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> The temporal lobe is heavily involved in auditory processing and speech perception; comprehension deficits with preserved hearing point to higher-level auditory-language regions.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Basal ganglia — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> Cerebellum — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Reticular formation — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q9">
+  <b>9. Patient B can sing familiar lyrics more smoothly than they can generate spontaneous speech. The best inference is that:</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Some highly practiced vocal sequences may rely on partially distinct circuits from spontaneous speech generation</div><div class="choice" onclick="selectChoice('q9', this, false)">B. All language functions are fully localized to a single cortical area</div><div class="choice" onclick="selectChoice('q9', this, false)">C. Singing requires the hypothalamus to control the pituitary</div><div class="choice" onclick="selectChoice('q9', this, false)">D. Speech production is controlled only by the occipital lobe</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Differential sparing suggests that overlearned sequences (like singing) can be supported by circuits that are not identical to those needed for spontaneous speech.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>B:</b> All language functions are fully localized to a single cortical area — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Singing requires the hypothalamus to control the pituitary — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Speech production is controlled only by the occipital lobe — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q10">
+  <b>10. Which additional finding would best support the idea that the thalamus acts as a relay station for sensory information?</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. Disrupted transmission of multiple sensory modalities to cortex despite intact peripheral receptors</div><div class="choice" onclick="selectChoice('q10', this, false)">B. Complete loss of voluntary muscle movement with intact sensation</div><div class="choice" onclick="selectChoice('q10', this, false)">C. Increased secretion of cortisol during stress</div><div class="choice" onclick="selectChoice('q10', this, false)">D. Improved long-term memory consolidation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> If peripheral receptors work but sensory information fails to reach cortex across multiple modalities, a relay disruption consistent with thalamic involvement is supported.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>B:</b> Complete loss of voluntary muscle movement with intact sensation — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Increased secretion of cortisol during stress — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Improved long-term memory consolidation — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Neurotransmitters, Hormones, and Arousal States</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A student volunteers for a sleep lab study. During a baseline night, the student reports normal sleep onset and wakefulness. On a second night, the student takes a medication that increases inhibitory signaling in the brain and reports feeling calmer but slower to respond the next morning.</p>
+<p>During a separate stress test, the student is startled by a loud noise. Heart rate rises, pupils dilate, and the student feels “on edge.” Blood samples taken minutes later show elevated cortisol.</p>
+<p>The supervising physician explains that rapid arousal responses are coordinated by autonomic pathways, while slower endocrine responses involve hormone release. The physician also notes that many neurotransmitters affect both cognition and movement, and imbalances can produce characteristic behavioral changes.</p>
+</div>
+<div class="reasoning-box" id="p3-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Match effects to messengers: inhibitory → <b>GABA/glycine</b>; arousal → <b>epinephrine/norepinephrine</b>; stress hormone → <b>cortisol</b>.</li>
+  <li>Separate fast autonomic responses from slower endocrine responses.</li>
+  <li>Use roles: movement/posture → <b>dopamine</b>; mood/sleep → <b>serotonin</b>; skeletal muscle → <b>acetylcholine</b>.</li>
+</ol>
+</div>
+
+<div class="question" id="q11">
+  <b>11. A drug that increases inhibitory signaling in the brain is most directly consistent with enhancing the effects of:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Glutamate</div><div class="choice" onclick="selectChoice('q11', this, true)">B. GABA</div><div class="choice" onclick="selectChoice('q11', this, false)">C. Dopamine</div><div class="choice" onclick="selectChoice('q11', this, false)">D. Epinephrine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> GABA (and glycine) are major inhibitory “stabilizers.” Enhancing them tends to decrease neural excitability.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Glutamate — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Dopamine — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Epinephrine — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q12">
+  <b>12. The immediate rise in heart rate and pupil dilation after a loud noise is most directly mediated by the:</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Sympathetic branch of the autonomic system</div><div class="choice" onclick="selectChoice('q12', this, false)">B. Somatic nervous system</div><div class="choice" onclick="selectChoice('q12', this, false)">C. Parasympathetic branch of the autonomic system</div><div class="choice" onclick="selectChoice('q12', this, false)">D. Hippocampus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Fight-or-flight changes are mediated by sympathetic autonomic activation.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>B:</b> Somatic nervous system — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Parasympathetic branch of the autonomic system — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Hippocampus — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q13">
+  <b>13. The elevated cortisol detected minutes after the stressor most directly indicates activation of the:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Pineal gland</div><div class="choice" onclick="selectChoice('q13', this, false)">B. Adrenal medulla</div><div class="choice" onclick="selectChoice('q13', this, true)">C. Adrenal cortex</div><div class="choice" onclick="selectChoice('q13', this, false)">D. Thyroid parafollicular cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Cortisol is released from the adrenal cortex as part of a slower hormonal stress response.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Pineal gland — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> Adrenal medulla — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Thyroid parafollicular cells — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q14">
+  <b>14. If a patient develops tremor and difficulty initiating movement, which neurotransmitter imbalance is most directly suggested?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Reduced acetylcholine at the neuromuscular junction</div><div class="choice" onclick="selectChoice('q14', this, false)">B. Excess serotonin signaling</div><div class="choice" onclick="selectChoice('q14', this, true)">C. Reduced dopamine signaling</div><div class="choice" onclick="selectChoice('q14', this, false)">D. Excess glutamate signaling only in the occipital lobe</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Dopamine supports smooth movement and posture; reduced dopamine is associated with movement initiation deficits and tremor.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Reduced acetylcholine at the neuromuscular junction — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> Excess serotonin signaling — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Excess glutamate signaling only in the occipital lobe — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q15">
+  <b>15. Which statement best links the endocrine and nervous systems as described?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. The cerebellum directly secretes cortisol into the bloodstream</div><div class="choice" onclick="selectChoice('q15', this, true)">B. The hypothalamus can influence endocrine release by communicating with the anterior pituitary</div><div class="choice" onclick="selectChoice('q15', this, false)">C. The occipital lobe controls gonadal hormone secretion through EEG patterns</div><div class="choice" onclick="selectChoice('q15', this, false)">D. The thalamus produces testosterone during fight-or-flight</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The hypothalamus integrates neural signals with endocrine control via connections to the anterior pituitary.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> The cerebellum directly secretes cortisol into the bloodstream — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> The occipital lobe controls gonadal hormone secretion through EEG patterns — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> The thalamus produces testosterone during fight-or-flight — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 4: Methods for Studying Brain–Behavior Relationships</span>
+  <button class="reason-btn" id="p4-btn" onclick="toggleReasoning('p4')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A neuroscience lab compares three approaches to studying the brain. In one project, researchers examine patients with naturally occurring lesions from stroke and compare behavioral deficits across individuals. In another project, researchers apply brief electrical stimulation to a specific brain region during surgery and record immediate changes in perception or movement.</p>
+<p>In a third project, researchers use a noninvasive technique that measures electrical activity over time while participants perform a task. They find that some brain signals change within milliseconds of a stimulus, allowing them to infer when the brain is processing information, even if they cannot pinpoint an exact deep structure with high precision.</p>
+<p>The lab director reminds trainees that each method trades off spatial and temporal resolution, invasiveness, and causal interpretability. Combining evidence across methods often yields the strongest inference about function.</p>
+</div>
+<div class="reasoning-box" id="p4-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Lesion studies ask “what changes after damage?” and can implicate networks.</li>
+  <li>Electrical stimulation can provide more <b>causal</b> evidence.</li>
+  <li>EEG offers high <b>temporal</b> resolution but limited localization for deep sources.</li>
+</ol>
+</div>
+
+<div class="question" id="q16">
+  <b>16. The noninvasive method that detects millisecond-scale changes in electrical activity is most consistent with:</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Electroencephalography (EEG)</div><div class="choice" onclick="selectChoice('q16', this, false)">B. Ablative lesion surgery</div><div class="choice" onclick="selectChoice('q16', this, false)">C. Measuring cortisol via blood draw</div><div class="choice" onclick="selectChoice('q16', this, false)">D. Genetic sequencing of neurons</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> EEG records electrical activity with excellent temporal resolution on the millisecond scale.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>B:</b> Ablative lesion surgery — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Measuring cortisol via blood draw — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Genetic sequencing of neurons — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q17">
+  <b>17. Which method provides the strongest evidence for a causal role of a region in a behavior?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Comparing people with different lesion locations after stroke</div><div class="choice" onclick="selectChoice('q17', this, true)">B. Applying electrical stimulation and observing immediate behavioral change</div><div class="choice" onclick="selectChoice('q17', this, false)">C. Measuring regional cerebral blood flow during a task only</div><div class="choice" onclick="selectChoice('q17', this, false)">D. Surveying participants about their mood after a task</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Stimulation that produces immediate behavioral effects supports a causal link between the region and the function.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Comparing people with different lesion locations after stroke — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Measuring regional cerebral blood flow during a task only — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Surveying participants about their mood after a task — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q18">
+  <b>18. A key limitation of lesion studies is that:</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. They always have perfect control over lesion size and location</div><div class="choice" onclick="selectChoice('q18', this, true)">B. Naturally occurring lesions may affect multiple regions or pathways</div><div class="choice" onclick="selectChoice('q18', this, false)">C. They measure neural activity with millisecond precision</div><div class="choice" onclick="selectChoice('q18', this, false)">D. They cannot be compared across different patients</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Real lesions are heterogeneous and can disrupt networks, complicating localization to one precise structure.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> They always have perfect control over lesion size and location — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> They measure neural activity with millisecond precision — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> They cannot be compared across different patients — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q19">
+  <b>19. If the goal is to learn when the brain distinguishes two sounds, the best choice is:</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Studying only the spinal cord reflex arc</div><div class="choice" onclick="selectChoice('q19', this, false)">B. Surgical lesioning of the temporal lobe</div><div class="choice" onclick="selectChoice('q19', this, false)">C. Measuring hormone concentrations after the task</div><div class="choice" onclick="selectChoice('q19', this, true)">D. EEG recording during the task</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Timing questions are best served by EEG’s high temporal resolution.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Studying only the spinal cord reflex arc — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> Surgical lesioning of the temporal lobe — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Measuring hormone concentrations after the task — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q20">
+  <b>20. Which result would most strongly suggest that a stimulation site lies in a motor-related circuit?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Stimulation eliminates all sensations of touch</div><div class="choice" onclick="selectChoice('q20', this, false)">B. Stimulation increases visual acuity immediately</div><div class="choice" onclick="selectChoice('q20', this, false)">C. Stimulation decreases blood glucose via insulin release</div><div class="choice" onclick="selectChoice('q20', this, true)">D. Stimulation produces a brief involuntary muscle contraction in the contralateral hand</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Evoked movement implies motor circuitry; contralateral effects are common for motor pathways.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Stimulation eliminates all sensations of touch — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> Stimulation increases visual acuity immediately — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Stimulation decreases blood glucose via insulin release — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 5: Development, Primitive Reflexes, and Nature–Nurture Evidence</span>
+  <button class="reason-btn" id="p5-btn" onclick="toggleReasoning('p5')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A pediatric clinic evaluates an 8-month-old infant whose parents worry about motor development. The infant can sit with support and reach for objects but has not yet started crawling. During the exam, the physician checks several primitive reflexes and observes that a strong grasping reflex is still present.</p>
+<p>The physician explains that many primitive reflexes are typical early in life but should diminish as cortical control and voluntary motor systems mature. The physician also notes that developmental milestones have a typical range and that variability of one to two months can still be normal.</p>
+<p>Later, the family asks whether a trait such as anxiety is “genetic or environmental.” The physician describes family studies, twin concordance studies, and adoption studies as ways to estimate the relative contributions of genes and environment, emphasizing that most traits reflect both.</p>
+</div>
+<div class="reasoning-box" id="p5-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Persistent primitive reflexes can suggest slower maturation of higher control systems.</li>
+  <li>Gross motor skills progress <b>head→toe</b> and <b>core→periphery</b>; small timing variation can be normal.</li>
+  <li>Nature vs nurture: compare family frequency, MZ vs DZ twin concordance, and adoption similarity to biological vs adoptive parents.</li>
+</ol>
+</div>
+
+<div class="question" id="q21">
+  <b>21. The persistence of a strong grasping reflex at 8 months most directly suggests:</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Primitive reflexes strengthen with age because the occipital cortex dominates</div><div class="choice" onclick="selectChoice('q21', this, false)">B. The sympathetic nervous system is permanently damaged</div><div class="choice" onclick="selectChoice('q21', this, true)">C. Some higher-level voluntary control may be maturing more slowly than expected</div><div class="choice" onclick="selectChoice('q21', this, false)">D. The infant’s hippocampus cannot consolidate memories</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Primitive reflexes typically fade as cortical voluntary control increases; persistence can indicate delayed maturation of inhibitory control.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Primitive reflexes strengthen with age because the occipital cortex dominates — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> The sympathetic nervous system is permanently damaged — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> The infant’s hippocampus cannot consolidate memories — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q22">
+  <b>22. Which observation best supports head-to-toe and core-to-periphery motor development?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Fine finger dexterity improves before trunk stability</div><div class="choice" onclick="selectChoice('q22', this, false)">B. Dreaming ability appears only after adolescence</div><div class="choice" onclick="selectChoice('q22', this, false)">C. Complex sentences appear before babbling</div><div class="choice" onclick="selectChoice('q22', this, true)">D. Neck/trunk control improves before coordinated walking</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Motor development typically proceeds from proximal stability (neck/trunk) toward distal coordinated skills like walking.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Fine finger dexterity improves before trunk stability — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> Dreaming ability appears only after adolescence — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Complex sentences appear before babbling — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q23">
+  <b>23. Monozygotic twins show higher concordance for a trait than dizygotic twins. Best inference:</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Genetic factors contribute to the trait</div><div class="choice" onclick="selectChoice('q23', this, false)">B. The trait is entirely environmental</div><div class="choice" onclick="selectChoice('q23', this, false)">C. Adoption studies are invalid</div><div class="choice" onclick="selectChoice('q23', this, false)">D. The trait cannot be studied scientifically</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Higher concordance in genetically identical twins supports a genetic contribution to the trait.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>B:</b> The trait is entirely environmental — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> Adoption studies are invalid — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> The trait cannot be studied scientifically — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q24">
+  <b>24. In an adoption study, a child’s trait correlates more strongly with biological parents than adoptive parents. This suggests:</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. The trait is caused only by parenting style</div><div class="choice" onclick="selectChoice('q24', this, true)">B. A stronger genetic contribution than shared rearing environment for that trait</div><div class="choice" onclick="selectChoice('q24', this, false)">C. The trait is determined solely by the thalamus</div><div class="choice" onclick="selectChoice('q24', this, false)">D. The trait is caused only by primitive reflexes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Greater similarity to biological than adoptive parents supports genetic influence beyond the shared postnatal environment.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> The trait is caused only by parenting style — doesn’t match the evidence-based inference required by the scenario.</li><li><b>C:</b> The trait is determined solely by the thalamus — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> The trait is caused only by primitive reflexes — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+
+<div class="question" id="q25">
+  <b>25. Which statement best reflects the physician’s conclusion about nature vs nurture?</b>
+  <div class="choice" onclick="selectChoice('q25', this, false)">A. Either genes or environment matters, but not both</div><div class="choice" onclick="selectChoice('q25', this, false)">B. Only neurotransmitters determine personality traits</div><div class="choice" onclick="selectChoice('q25', this, true)">C. Most traits reflect contributions from both genetics and environment</div><div class="choice" onclick="selectChoice('q25', this, false)">D. Only early childhood environment determines adult behavior</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Most traits arise from interaction between genetic predispositions and environmental context.</p>
+<p><b>Other choices:</b></p>
+<ul><li><b>A:</b> Either genes or environment matters, but not both — doesn’t match the evidence-based inference required by the scenario.</li><li><b>B:</b> Only neurotransmitters determine personality traits — doesn’t match the evidence-based inference required by the scenario.</li><li><b>D:</b> Only early childhood environment determines adult behavior — doesn’t match the evidence-based inference required by the scenario.</li></ul>
+
+  </div></details>
+</div>
+
+</body></html>

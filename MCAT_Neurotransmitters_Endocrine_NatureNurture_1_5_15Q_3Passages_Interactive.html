@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Neurotransmitters, Endocrine Links, Nature vs Nurture (Ch. 1.5) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+  .reasoning-box .key{ color:#0f4fa0; font-weight:700; }
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Neurotransmitters, Endocrine Links, Nature vs Nurture (Ch. 1.5)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (Correct: A) -->
+<div class="question" id="q1">
+  <b>1. A drug that mimics a neurotransmitter by binding the same receptor and producing the same response is best described as a(n):</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. Agonist</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Antagonist</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Second messenger</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Reuptake inhibitor</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> An agonist binds to a receptor and activates it, producing a biological response similar to the endogenous ligand/neurotransmitter.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> An antagonist blocks receptor activation or prevents the neurotransmitter from exerting its effect.</li>
+        <li><b>C:</b> Second messengers are intracellular signaling molecules downstream of receptor activation.</li>
+        <li><b>D:</b> A reuptake inhibitor blocks transporter-mediated clearance but does not necessarily mimic binding at the receptor.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (Correct: C) -->
+<div class="question" id="q2">
+  <b>2. Which pairing most accurately matches neurotransmitter with a common function?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Endorphins — circadian rhythm regulation</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Glutamate — inhibitory stabilization</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">C. Acetylcholine — voluntary muscle control and parasympathetic signaling</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Dopamine — primary sensory relay</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Acetylcholine is used at neuromuscular junctions for voluntary skeletal muscle control and is the primary neurotransmitter for the parasympathetic nervous system.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Circadian rhythms are classically linked to melatonin (pineal), not endorphins.</li>
+        <li><b>B:</b> Glutamate is typically excitatory; inhibitory stabilization is more associated with GABA/glycine.</li>
+        <li><b>D:</b> Dopamine is important for movement/posture and reward-related processing; sensory relay is thalamic, not dopamine.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (Correct: D) -->
+<div class="question" id="q3">
+  <b>3. Acetylcholine is used by all of the following EXCEPT:</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. A portion of sympathetic signaling to sweat glands</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Parasympathetic nervous system</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Efferent limb of the somatic nervous system</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Most postganglionic sympathetic signaling to target organs</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Most postganglionic sympathetic neurons use norepinephrine at target organs; acetylcholine is used by the somatic efferent pathway, parasympathetic postganglionic neurons, and the unusual sympathetic fibers to sweat glands.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Sweat glands are a key exception: postganglionic sympathetic fibers there are cholinergic.</li>
+        <li><b>B:</b> Parasympathetic postganglionic neurons commonly release acetylcholine at targets.</li>
+        <li><b>C:</b> Somatic motor neurons release acetylcholine at the neuromuscular junction.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (Correct: B) -->
+<div class="question" id="q4">
+  <b>4. A key difference emphasized between epinephrine and norepinephrine is that epinephrine is more often:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Released only at synapses as a local neurotransmitter</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Secreted from the adrenal medulla to act systemically as a hormone</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Associated with low arousal and sleep</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. The primary neurotransmitter of the parasympathetic nervous system</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Norepinephrine often acts locally as a neurotransmitter, whereas epinephrine is commonly secreted by the adrenal medulla into the bloodstream as a hormone to produce systemic effects.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This describes norepinephrine more than epinephrine.</li>
+        <li><b>C:</b> Epinephrine is associated with arousal and fight-or-flight, not low arousal.</li>
+        <li><b>D:</b> Parasympathetic signaling uses acetylcholine.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (Correct: B) -->
+<div class="question" id="q5">
+  <b>5. Low levels of norepinephrine are associated with which condition according to the passage?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Mania</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Depression</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Anterograde amnesia</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Parkinson’s disease</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The text links low norepinephrine to depression and high norepinephrine to anxiety/mania.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> High norepinephrine is associated with anxiety and mania, not low norepinephrine.</li>
+        <li><b>C:</b> Anterograde amnesia is linked to hippocampal damage (e.g., H.M.).</li>
+        <li><b>D:</b> Parkinson’s disease is linked to loss of dopaminergic neurons in basal ganglia.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (Correct: D) -->
+<div class="question" id="q6">
+  <b>6. Which neurotransmitter is generally inhibitory in the CNS and produces hyperpolarization of the postsynaptic membrane?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Serotonin</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Dopamine</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Glutamate</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. GABA</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> GABA produces inhibitory postsynaptic potentials and stabilizes neural activity by hyperpolarizing the postsynaptic membrane.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Serotonin is a monoamine involved in mood, sleep, and eating; it is not primarily described as the main inhibitory neurotransmitter here.</li>
+        <li><b>B:</b> Dopamine is associated with movement/posture and reward-related processes.</li>
+        <li><b>C:</b> Glutamate is typically excitatory in the CNS.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (Correct: A) -->
+<div class="question" id="q7">
+  <b>7. Which neurotransmitter is described as excitatory in the CNS and is also one of the twenty proteinogenic amino acids?</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Glutamate</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. GABA</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Glycine</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Endorphins</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Glutamate is a proteinogenic amino acid and is generally excitatory in the CNS.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> GABA is inhibitory and not one of the twenty proteinogenic amino acids.</li>
+        <li><b>C:</b> Glycine can serve as an inhibitory neurotransmitter in the CNS.</li>
+        <li><b>D:</b> Endorphins are peptide neuromodulators with opioid-like painkilling effects.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (Correct: C) -->
+<div class="question" id="q8">
+  <b>8. The dopamine hypothesis of schizophrenia proposes that many symptoms arise from:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Complete loss of acetylcholine in the PNS</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Damage to the hippocampus and anterograde amnesia</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Too much dopamine or oversensitivity to dopamine signaling</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Too little dopamine in the basal ganglia</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The dopamine hypothesis suggests delusions/hallucinations/agitation can result from excess dopamine signaling or dopamine receptor oversensitivity.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Acetylcholine loss in the PNS would impair neuromuscular and autonomic function, not explain schizophrenia.</li>
+        <li><b>B:</b> Hippocampal damage explains memory consolidation deficits, not schizophrenia’s core psychotic symptoms.</li>
+        <li><b>D:</b> Loss of dopaminergic neurons in basal ganglia is more tied to Parkinson’s disease.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (Correct: C) -->
+<div class="question" id="q9">
+  <b>9. Which pattern best matches the treatment link described for Parkinson’s disease vs schizophrenia?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Parkinson’s: endorphins; Schizophrenia: melatonin</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Parkinson’s: serotonin agonists; Schizophrenia: glycine antagonists</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. Parkinson’s: L-DOPA to increase dopamine; Schizophrenia: dopamine blockers</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Parkinson’s: dopamine blockers; Schizophrenia: L-DOPA</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Parkinson’s disease is treated by increasing dopamine (e.g., L-DOPA), while many antipsychotics for schizophrenia block dopamine receptors and can cause extrapyramidal motor side effects.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Endorphins and melatonin are not primary treatments for these conditions.</li>
+        <li><b>B:</b> These pairings are not the classic mechanisms described.</li>
+        <li><b>D:</b> This reverses the described treatments.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (Correct: A) -->
+<div class="question" id="q10">
+  <b>10. Serotonin is most closely associated with regulating:</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. Mood, sleep, eating, and dreaming</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Primary sensory relay to cortex</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Heart rate via the medulla</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Voluntary skeletal muscle contraction</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Serotonin is described as a monoamine involved in mood, eating, sleeping, and dreaming.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Primary sensory relay is a thalamic function, not serotonin’s.</li>
+        <li><b>C:</b> Heart rate control is a brainstem function; serotonin is not described here as the primary controller.</li>
+        <li><b>D:</b> Voluntary skeletal muscle contraction uses acetylcholine at the neuromuscular junction.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (Correct: B) -->
+<div class="question" id="q11">
+  <b>11. Endorphins are best described as:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Inhibitory monoamines that decrease wakefulness</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. Peptide neuromodulators with relatively slower, longer-lasting effects and opioid-like pain relief</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Fast synaptic neurotransmitters that act only on ion channels</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Steroid hormones from the adrenal cortex</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Endorphins are peptide neuromodulators (neuropeptides) that function as natural painkillers with actions similar to opioids; they tend to have slower, longer-lasting effects than classic transmitters.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Endorphins are not described as inhibitory monoamines; serotonin/norepinephrine are monoamines.</li>
+        <li><b>C:</b> Many neuropeptides act through more complex signaling than simple ion channels, often slower.</li>
+        <li><b>D:</b> Cortisol is a steroid hormone from adrenal cortex; endorphins are peptides produced in the brain.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (Correct: D) -->
+<div class="question" id="q12">
+  <b>12. The hypothalamus links the nervous and endocrine systems primarily by regulating the pituitary through the:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Hepatic portal system</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Coronary circulation</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Cerebral aqueduct</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Hypophyseal portal system</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The hypothalamus regulates the anterior pituitary via releasing hormones carried in the hypophyseal portal system connecting the two structures.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Hepatic portal connects gut and liver.</li>
+        <li><b>B:</b> Coronary circulation supplies the heart.</li>
+        <li><b>C:</b> Cerebral aqueduct is part of CSF flow, not endocrine control.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (Correct: D) -->
+<div class="question" id="q13">
+  <b>13. Which statement best describes why family studies alone cannot separate genetic from environmental effects?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Family members share genes but never share environments</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Family studies measure concordance only in twins</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Family members share environments but never share genes</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Family members share both genes and environment, confounding interpretation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Families often share both genetic similarity and a common environment, making it difficult to attribute trait similarity to one factor alone.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Family members often share environment too.</li>
+        <li><b>B:</b> Concordance comparisons of MZ vs DZ twins are characteristic of twin studies.</li>
+        <li><b>C:</b> Family members share genes as well.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (Correct: B) -->
+<div class="question" id="q14">
+  <b>14. A key assumption used to interpret twin-study differences between monozygotic and dizygotic twins is that:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. MZ twins share 50% of genes and DZ share 100%</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. MZ and DZ twins typically share similar environments, so differences in concordance reflect genetic influence</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Adopted children share more genes with adoptive parents than biological parents</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. DZ twins are always raised apart</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Twin studies often assume MZ and DZ twins share comparable environments; higher concordance in MZ vs DZ pairs is interpreted as evidence of genetic contribution.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> MZ twins share ~100% of genes; DZ twins share ~50% on average.</li>
+        <li><b>C:</b> Adopted children share genes with biological, not adoptive, parents.</li>
+        <li><b>D:</b> DZ twins can be raised together; “raised apart” is a specific design, not a default condition.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (Correct: C) -->
+<div class="question" id="q15">
+  <b>15. Adoption studies most directly help disentangle nature vs nurture by comparing a child’s traits to their:</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Different brain regions during EEG recordings</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Monozygotic twin raised apart vs dizygotic twin raised together</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Adoptive relatives vs biological relatives</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Plasma levels of neurotransmitters vs hormones</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Adoption studies compare similarity between adoptees and biological relatives (genes) versus adoptive relatives (shared environment) to infer genetic vs environmental contributions.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> EEG is brain activity mapping, not nature-nurture disentanglement.</li>
+        <li><b>B:</b> That describes a twin-study design, not adoption study.</li>
+        <li><b>D:</b> This compares biochemical measures, not genetic/environmental family designs.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<div class="passage-header">
+  <span>Passage 1: Neurochemistry and Drug Mechanisms</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A neuroscience team tests two experimental drugs in a rodent model of anxiety. Drug A binds to the same receptor as a naturally occurring neurotransmitter and produces a similar downstream effect. Drug B binds at the same receptor site but prevents the neurotransmitter from producing its usual effect. Both drugs cross the blood–brain barrier.</p>
+  <p>During a stress-induction task, rodents also show reduced pain behaviors despite exposure to a mild noxious stimulus. The investigators suspect that endogenous neuromodulators are contributing to analgesia.</p>
+  <p>Separately, the team compares neurotransmitter profiles across conditions and observes that some molecules act rapidly at synapses, while others have slower, longer-lasting effects consistent with peptide signaling.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate definitions: mimics transmitter at the same receptor → <span class="key">agonist</span>; blocks transmitter action → <span class="key">antagonist</span>.</li>
+    <li>Stress-related analgesia points to <span class="key">endorphins</span> (opioid-like natural painkillers).</li>
+    <li>Peptide neuromodulators tend to be <span class="key">slower</span> and <span class="key">longer-lasting</span> than classic fast neurotransmitters.</li>
+    <li>Pick the answer that matches the mechanism (receptor activation vs blockade), not just the drug’s label.</li>
+  </ol>
+</div>
+
+<!-- Q16 (Correct: A) -->
+<div class="question" id="q16">
+  <b>16. In the scenario, a medication described as a receptor antagonist would most directly be expected to:</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Prevent a neurotransmitter from activating its receptor</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Bind a receptor and mimic the neurotransmitter’s effect</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Convert a neurotransmitter into a hormone in the adrenal cortex</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Increase neurotransmitter synthesis by the presynaptic neuron</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> An antagonist blocks receptor activation (or blocks binding), thereby reducing or preventing the neurotransmitter’s effect at the postsynaptic cell.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> That defines an agonist.</li>
+        <li><b>C:</b> Conversion to hormones is not the definition of antagonism.</li>
+        <li><b>D:</b> Some drugs can alter synthesis, but antagonist specifically refers to blocking receptor action.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (Correct: B) -->
+<div class="question" id="q17">
+  <b>17. A patient has reduced fear responses and shows diminished pain perception during extreme stress. Which mechanism best matches the neurochemical explanation?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Decreased glutamate release causing global paralysis</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">B. Endorphin release producing opioid-like analgesia</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Loss of acetylcholine at the neuromuscular junction</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Reduced melatonin secretion from the pineal gland</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Endorphins are natural painkillers with opioid-like effects; stress can increase endogenous analgesia, reducing perceived pain.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Reduced glutamate does not specifically explain analgesia and would broadly reduce excitation; paralysis is not the expected framing.</li>
+        <li><b>C:</b> ACh loss at NMJ would weaken skeletal muscle contraction, not specifically analgesia.</li>
+        <li><b>D:</b> Melatonin regulates circadian rhythms, not acute analgesia.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (Correct: A) -->
+<div class="question" id="q18">
+  <b>18. A dehydrated subject shows increased release of a hormone from the posterior pituitary that increases water reabsorption. Which hormone is most consistent?</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. ADH (vasopressin)</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Testosterone</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Cortisol</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Oxytocin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> ADH (vasopressin) is released from the posterior pituitary in response to high plasma osmolarity and promotes water reabsorption.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Testosterone is primarily produced by gonads and adrenal cortex in smaller amounts.</li>
+        <li><b>C:</b> Cortisol is produced by adrenal cortex.</li>
+        <li><b>D:</b> Oxytocin is also posterior pituitary but is linked to labor and lactation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Endocrine Links to the Brain Under Stress and Dehydration</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A medical student observes that an anxious patient has a rapid heart rate and reports feeling ‘keyed up.’ In discussion, a resident explains that the sympathetic response can be mediated both by local neurotransmission and by systemic hormone release.</p>
+  <p>Later the same day, the team evaluates a dehydrated athlete with elevated plasma osmolarity. Laboratory testing supports increased water conservation by the kidneys. The attending reminds the group that a hormone released from the posterior pituitary increases water reabsorption.</p>
+  <p>In a teaching diagram, the attending highlights that the hypothalamus sits at the interface of the nervous system and endocrine control and regulates pituitary output through a specialized portal circulation.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate local vs systemic: sympathetic neurotransmission often uses <span class="key">norepinephrine</span>, while systemic hormone release uses <span class="key">epinephrine</span> from the adrenal medulla.</li>
+    <li>Dehydration (high osmolarity) triggers posterior pituitary release of <span class="key">ADH</span> to increase water reabsorption.</li>
+    <li>The brain–endocrine bridge is the <span class="key">hypothalamus</span>, which regulates the pituitary via the <span class="key">hypophyseal portal system</span>.</li>
+    <li>Use the stimulus → hormone → effect chain to select the best answer.</li>
+  </ol>
+</div>
+
+<!-- Q19 (Correct: D) -->
+<div class="question" id="q19">
+  <b>19. A researcher wants a study design that best separates genetic similarity from shared environment when examining a behavioral trait. Which design is strongest?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Survey of hormone levels in one classroom</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Case series of unrelated individuals living together</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Family study comparing siblings in one household</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. Twin study comparing MZ and DZ twins raised apart</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Comparing MZ and DZ twins raised apart reduces shared-environment confounding and leverages known genetic relatedness differences, strengthening inference about genetic contribution.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Hormone surveys do not isolate genetic vs environmental sources of behavior.</li>
+        <li><b>B:</b> Unrelated individuals share environment but not genes; it does not directly compare genetic similarity levels.</li>
+        <li><b>C:</b> Families share both genes and environment, confounding interpretation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (Correct: C) -->
+<div class="question" id="q20">
+  <b>20. An adopted child’s IQ correlates more strongly with their biological parents’ IQ than with their adoptive parents’ IQ. This finding most strongly supports:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Twin concordance is irrelevant</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. IQ is entirely determined by environment</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. IQ has a heritable component</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Adoptive parents contribute more genes than biological parents</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Greater similarity to biological relatives (who share genes) than adoptive relatives (who share environment) suggests a genetic (heritable) influence on IQ.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Twin concordance can still provide relevant evidence; this statement is not supported.</li>
+        <li><b>B:</b> The result points away from environment-only determination.</li>
+        <li><b>D:</b> Adoptive parents do not contribute genes to the adoptee.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (Correct: C) -->
+<div class="question" id="q21">
+  <b>21. A participant shows resting tremor and postural instability. Which neurotransmitter abnormality best matches the described mechanism?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Overproduction of serotonin causing mania</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Reduced glycine causing increased inhibition</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">C. Loss of dopaminergic neurons affecting basal ganglia circuits</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Excess dopamine signaling in cortical association areas</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Parkinson’s disease is associated with loss of dopaminergic neurons affecting basal ganglia, leading to resting tremor, jerky movements, and postural instability.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Serotonin oversupply is discussed in relation to manic states, not Parkinsonian tremor.</li>
+        <li><b>B:</b> Reduced glycine would decrease inhibition, not increase it.</li>
+        <li><b>D:</b> Excess dopamine signaling is more tied to schizophrenia hypothesis than Parkinson’s tremor mechanism.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Nature vs Nurture Study Designs</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A behavioral genetics group investigates whether a trait is more influenced by heredity or environment. In one dataset, rates of a psychiatric diagnosis are higher among biological relatives of affected individuals than in the general population. However, the researchers note that relatives often share the same household environment.</p>
+  <p>In another dataset, concordance rates for the same trait are compared between monozygotic (identical) and dizygotic (fraternal) twins. The researchers also identify a subgroup of twins who were raised apart in different families.</p>
+  <p>Finally, the researchers analyze adopted individuals and compare trait similarity to biological parents versus adoptive parents. They aim to choose the design that most cleanly separates shared genes from shared environments.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Family studies are limited because family members share <span class="key">genes</span> and <span class="key">environment</span> (confound).</li>
+    <li>Twin studies use genetic relatedness: <span class="key">MZ</span> (~100% shared genes) vs <span class="key">DZ</span> (~50%); higher MZ concordance supports genetics.</li>
+    <li>Strongest separation comes from <span class="key">twins raised apart</span> and from <span class="key">adoption studies</span> comparing biological vs adoptive relatives.</li>
+    <li>Pick the choice that best isolates genetic similarity while holding environment constant (or vice versa).</li>
+  </ol>
+</div>
+
+<!-- Q22 (Correct: D) -->
+<div class="question" id="q22">
+  <b>22. A clinician prescribes a dopamine-blocking antipsychotic. A predictable side effect described in the passage is:</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Improved fine motor coordination</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Immediate loss of all long-term memory</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Increased REM sleep from melatonin release</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. Extrapyramidal motor symptoms</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Dopamine blockers can produce extrapyramidal motor side effects by interfering with basal ganglia dopamine signaling.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Blocking dopamine tends to worsen movement, not improve it.</li>
+        <li><b>B:</b> Long-term memory loss is linked to hippocampal dysfunction, not typical dopamine blockade.</li>
+        <li><b>C:</b> Melatonin is pineal; dopamine blockers are not described as inducing melatonin-driven REM changes here.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (Correct: A) -->
+<div class="question" id="q23">
+  <b>23. A stress response includes systemic release of epinephrine. The endocrine source that directly releases this hormone is the:</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Adrenal medulla</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Anterior pituitary</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Pineal gland</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Adrenal cortex</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The adrenal medulla releases epinephrine and norepinephrine into the bloodstream as part of sympathetic activation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Anterior pituitary releases tropic hormones regulating other glands.</li>
+        <li><b>C:</b> Pineal gland secretes melatonin.</li>
+        <li><b>D:</b> Adrenal cortex produces corticosteroids like cortisol and also sex hormones.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (Correct: B) -->
+<div class="question" id="q24">
+  <b>24. Which observation would most strongly argue for a genetic contribution to a trait rather than a purely environmental explanation?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Everyone in one neighborhood adopts the same habit</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">B. MZ twins raised apart show high similarity for the trait</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. A trait increases after an environmental toxin exposure</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Unrelated classmates share the trait after one semester</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> High similarity among genetically identical individuals raised apart indicates genetics contributes beyond shared environment.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This supports cultural/environmental transmission.</li>
+        <li><b>C:</b> This supports an environmental cause.</li>
+        <li><b>D:</b> This suggests shared environment or social influence.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

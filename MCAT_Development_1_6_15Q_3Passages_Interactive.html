@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Development: Neurulation, Reflexes, Motor Milestones (Ch. 1.6) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+  .reasoning-box .key{ color:#0f4fa0; font-weight:700; }
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Development: Neurulation, Reflexes, Motor Milestones (Ch. 1.6)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (Correct: D) -->
+<div class="question" id="q1">
+  <b>1. Neurulation begins at approximately what gestational age?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. 8–10 weeks</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. 12–14 weeks</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. 1–2 weeks</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">D. 3–4 weeks</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The text states neurulation begins around 3–4 weeks’ gestational age, when the ectoderm begins to furrow over the notochord.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> By 8–10 weeks many organ systems are already further developed; neurulation is earlier.</li>
+        <li><b>B:</b> This is well into fetal development, long after neurulation.</li>
+        <li><b>C:</b> This is typically too early for neurulation; implantation and early gastrulation occur around this timeframe.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (Correct: B) -->
+<div class="question" id="q2">
+  <b>2. During neurulation, the ectoderm forms a neural groove and neural folds. Cells at the leading edge of the neural folds are called:</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Somites</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">B. Neural crest cells</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Alar plate cells</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Basal plate cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Neural crest cells are at the leading edge of the neural fold and later migrate to form diverse tissues.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Somites are mesodermal segments that give rise to vertebrae, skeletal muscle, and dermis.</li>
+        <li><b>C:</b> Alar plate differentiates into sensory neurons within the neural tube.</li>
+        <li><b>D:</b> Basal plate differentiates into motor neurons within the neural tube, not migratory crest.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (Correct: A) -->
+<div class="question" id="q3">
+  <b>3. Which structure ultimately develops into the central nervous system (CNS)?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Neural tube</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Umbilical cord</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Placenta</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Neural crest</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The neural tube closes and ultimately forms the CNS (brain and spinal cord).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Umbilical cord connects fetus to placenta; it does not form CNS.</li>
+        <li><b>C:</b> Placenta supports nutrient/waste exchange but does not become CNS tissue.</li>
+        <li><b>D:</b> Neural crest cells migrate to form structures like dorsal root ganglia and melanocytes, not the CNS proper.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (Correct: C) -->
+<div class="question" id="q4">
+  <b>4. The alar plate and basal plate of the neural tube primarily differentiate into, respectively:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Motor neurons; sensory neurons</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Sympathetic neurons; parasympathetic neurons</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Sensory neurons; motor neurons</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Glial cells; neurons</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The alar plate becomes sensory neurons, while the basal plate becomes motor neurons.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This reverses the correct mapping.</li>
+        <li><b>B:</b> Autonomic divisions are not the primary alar/basal plate distinction.</li>
+        <li><b>D:</b> Both plates are neuronal patterning regions; this pairing is not what the text specifies.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (Correct: A) -->
+<div class="question" id="q5">
+  <b>5. Which is a correct example of a tissue derived from neural crest cells?</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Dorsal root ganglia</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Cerebral cortex</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Neural tube alar plate</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Anterior pituitary</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The passage lists neural crest derivatives such as dorsal root ganglia and melanocytes.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Cerebral cortex derives from the telencephalon (neural tube), not neural crest.</li>
+        <li><b>C:</b> Alar plate is part of the neural tube and becomes sensory neurons but is not a neural crest derivative.</li>
+        <li><b>D:</b> Anterior pituitary is derived from oral ectoderm (Rathke’s pouch), not neural crest.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (Correct: C) -->
+<div class="question" id="q6">
+  <b>6. A pregnant patient takes a medication strongly linked historically to limb malformations in the fetus. Which drug best matches this description?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Penicillin</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Metformin</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Thalidomide</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Ibuprofen</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Thalidomide is the classic teratogen associated with missing/malformed limbs and other organ defects when taken during pregnancy.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Penicillin is not classically associated with limb malformations.</li>
+        <li><b>B:</b> Metformin is not known for the characteristic limb defects described here.</li>
+        <li><b>D:</b> NSAIDs have risks but are not the classic historical limb-malformation teratogen described.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (Correct: B) -->
+<div class="question" id="q7">
+  <b>7. Neural tube defects such as spina bifida most directly result from:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Failure of the placenta to form</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Failure of the neural tube to close completely</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Failure of fertilization</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Failure of the notochord to develop</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Neural tube defects occur when the neural tube fails to close completely, leading to malformations like spina bifida and anencephaly.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Placental failure causes severe pregnancy complications but not specifically neural tube closure defects.</li>
+        <li><b>C:</b> Fertilization failure prevents pregnancy rather than causing neural tube defects.</li>
+        <li><b>D:</b> Notochord abnormalities can affect patterning, but the direct mechanism stated is incomplete neural tube closure.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (Correct: D) -->
+<div class="question" id="q8">
+  <b>8. A ‘critical period’ in development is best defined as a time when:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. All reflexes disappear permanently</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Genes have no influence on behavior</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Learning is impossible regardless of environment</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Certain skills require specific environmental input to be learned normally</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Critical periods are windows when specific environmental factors are needed; absence can make learning later difficult or impossible.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Reflex disappearance is developmental but not the definition of critical periods.</li>
+        <li><b>B:</b> Genes still influence behavior; critical periods relate to environmental timing effects.</li>
+        <li><b>C:</b> Critical periods do not imply learning is always impossible; they imply reduced plasticity later.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (Correct: C) -->
+<div class="question" id="q9">
+  <b>9. The rooting reflex is most directly related to:</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Toilet training readiness</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Visual tracking of objects</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. Feeding behavior in infants</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Maintaining balance while standing</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Rooting is turning the head toward a cheek stimulus, helping the infant locate a nipple for feeding.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Toilet training is a later milestone (around age 3 for bowel/bladder control).</li>
+        <li><b>B:</b> Visual tracking is a fine motor/visual skill, not rooting.</li>
+        <li><b>D:</b> Balance is related to vestibular/cerebellar function and later gross motor development.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (Correct: D) -->
+<div class="question" id="q10">
+  <b>10. The Moro reflex typically disappears by about:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. 24 months</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Birth</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. 12 months</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">D. 4 months</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The passage notes the Moro reflex usually disappears after about four months; persistence to one year suggests developmental issues.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This is far later than expected for Moro reflex.</li>
+        <li><b>B:</b> It is present in neonates; it does not disappear at birth.</li>
+        <li><b>C:</b> Persistence to one year is concerning; disappearance is usually much earlier.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (Correct: B) -->
+<div class="question" id="q11">
+  <b>11. Which reflex is characterized by the big toe extending while the other toes fan outward when the sole is stimulated?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Grasping</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. Babinski</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Moro</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Rooting</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The Babinski reflex involves extension of the big toe and fanning of the other toes upon sole stimulation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Grasping is finger closure around an object placed in the hand.</li>
+        <li><b>C:</b> Moro is the startle reflex with arm extension then withdrawal.</li>
+        <li><b>D:</b> Rooting is head turning toward cheek stimulation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (Correct: A) -->
+<div class="question" id="q12">
+  <b>12. Which statement best captures the theme of gross motor development described?</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Gross motor skills progress in a head-to-toe direction and from core to extremities</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Gross motor skills develop randomly depending on culture</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Gross motor skills progress from extremities to core</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Fine motor skills always develop before gross motor skills</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The text emphasizes gross motor skills develop head-to-toe and core before extremities (proximal-to-distal).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> There is a consistent order across infants; environment can affect rate, not basic sequence.</li>
+        <li><b>C:</b> This reverses the described core-to-extremity theme.</li>
+        <li><b>D:</b> Typically gross motor milestones (head control, sitting) precede many fine motor tasks.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (Correct: B) -->
+<div class="question" id="q13">
+  <b>13. Fine motor skills are best exemplified by:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Walking alone</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. Pincer grasp</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Sitting with support</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Crawling</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Fine motor skills involve small muscles and precise movements; a pincer grasp is a classic fine motor milestone.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Walking is gross motor (large muscle groups).</li>
+        <li><b>C:</b> Sitting with support is gross motor/postural control.</li>
+        <li><b>D:</b> Crawling is gross motor.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (Correct: A) -->
+<div class="question" id="q14">
+  <b>14. Stranger anxiety and separation anxiety typically emerge at approximately:</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. 7 months and 1 year, respectively</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Birth and 4 weeks, respectively</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. 5 years and 6 years, respectively</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. 2 years and 3 years, respectively</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The passage states stranger anxiety develops around 7 months and separation anxiety around 1 year.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> These are too early for the typical emergence described.</li>
+        <li><b>C:</b> These are much later and do not match typical infancy milestones.</li>
+        <li><b>D:</b> These are later than described.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (Correct: D) -->
+<div class="question" id="q15">
+  <b>15. Parallel play is most characteristic of approximately what age?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. 1 year</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. 6 months</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. 5 years</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">D. 2 years</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Parallel play (playing alongside others without influencing each other) is described as developing around age two.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Around 1 year, onlooker play is more characteristic per the passage.</li>
+        <li><b>B:</b> At 6 months, play is more solitary and exploratory; social patterns are not parallel play yet.</li>
+        <li><b>C:</b> By 5 years, peer conformity and more interactive play are typical.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<div class="passage-header">
+  <span>Passage 1: Neurulation and Teratogenic Risk</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 27-year-old pregnant patient presents for prenatal counseling after learning a close relative had a child with a neural tube defect. The patient asks when the nervous system begins forming and what exposures might increase risk early in pregnancy.</p>
+  <p>The clinician explains that early nervous system development begins when ectoderm overlying the notochord forms a neural groove and neural folds. Cells at the leading edge of the folds migrate widely and later contribute to multiple tissues, while the closing tube itself becomes the central nervous system.</p>
+  <p>The clinician emphasizes that certain medications and maternal exposures can disrupt early development. The patient reports taking an antiepileptic medication before knowing she was pregnant and is worried because she read about spina bifida. They discuss that failure of neural tube closure can produce different malformations depending on location and severity.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Time window: neurulation occurs around <span class="key">3–4 weeks</span>, so early exposures matter.</li>
+    <li>Structure mapping: <span class="key">neural tube</span> → CNS; <span class="key">neural crest</span> → migratory derivatives (e.g., DRG, melanocytes).</li>
+    <li>Mechanism for spina bifida: <span class="key">incomplete neural tube closure</span> during neurulation.</li>
+    <li>Choose the answer that links the exposure to the specific developmental failure described.</li>
+  </ol>
+</div>
+
+<!-- Q16 (Correct: C) -->
+<div class="question" id="q16">
+  <b>16. A fetus is diagnosed with spina bifida on prenatal imaging. Which developmental process most directly failed?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Migration of neural crest cells into melanocytes</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Formation of the placenta</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">C. Closure of the neural tube during neurulation</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Division of the prosencephalon into telencephalon</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Spina bifida is a neural tube defect caused by incomplete closure of the neural tube during neurulation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Neural crest migration affects peripheral structures like DRG and melanocytes, not neural tube closure.</li>
+        <li><b>B:</b> Placental formation issues cause different complications, not specifically spina bifida.</li>
+        <li><b>D:</b> Forebrain subdivision occurs later and is not the defining failure for spina bifida.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (Correct: A) -->
+<div class="question" id="q17">
+  <b>17. An infant’s Moro reflex persists strongly at 12 months. Which interpretation best matches the passage?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Suggestive of developmental difficulties and warrants concern</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Evidence of advanced motor development</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Likely normal; Moro typically persists into toddlerhood</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Indicative of superior fine motor control</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The Moro reflex usually disappears after ~4 months; persistence at one year suggests developmental difficulties.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Persistence suggests concern, not advanced development.</li>
+        <li><b>C:</b> Moro does not typically persist into toddlerhood.</li>
+        <li><b>D:</b> Moro is a primitive reflex, not a measure of fine motor control.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (Correct: B) -->
+<div class="question" id="q18">
+  <b>18. A newborn automatically turns the head toward a nipple that brushes the cheek. Which reflex is being demonstrated?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Grasping</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Rooting</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Moro</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Babinski</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Rooting is automatic head turning toward a cheek stimulus to facilitate feeding.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Grasping is finger closure around an object placed in the hand.</li>
+        <li><b>C:</b> Moro is a startle response with arm extension and crying.</li>
+        <li><b>D:</b> Babinski involves toe fanning with sole stimulation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Primitive Reflexes and Neurologic Assessment</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>During a 9-month well-child visit, a physician checks for primitive reflexes as part of neurologic screening. The infant startles when the head position changes abruptly, extending the arms and then slowly withdrawing them with crying.</p>
+  <p>The parents report that this response has been present since birth and seems unchanged. On exam, the physician also tests foot sole stimulation and observes whether the big toe extends with fanning of the other toes.</p>
+  <p>The physician explains that many primitive reflexes are expected to disappear at predictable times, and persistence beyond typical ranges can indicate developmental concerns or neuromuscular problems.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify the reflex pattern: arm extension then withdrawal/crying → <span class="key">Moro reflex</span>.</li>
+    <li>Use timing: Moro typically disappears by about <span class="key">4 months</span>; persistence near 1 year is concerning.</li>
+    <li>Toe fanning with sole stimulation is <span class="key">Babinski reflex</span>, which is primitive in infants.</li>
+    <li>Select the option that uses both the reflex identity and the expected developmental timeline.</li>
+  </ol>
+</div>
+
+<!-- Q19 (Correct: C) -->
+<div class="question" id="q19">
+  <b>19. A pediatrician notes a delayed sequence where a child develops strong finger dexterity but still lacks trunk stability. Which theme does this violate?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Social skills develop before motor skills</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Fine motor always precedes gross motor in normal development</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Motor development proceeds core (proximal) before extremities (distal)</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Motor development proceeds randomly with no order</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The passage emphasizes a core-to-extremity (proximal-to-distal) pattern: trunk stability generally precedes refined distal control.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Social development follows its own trajectory and does not universally precede motor milestones.</li>
+        <li><b>B:</b> Fine motor does not always precede gross motor; trunk/posture typically develops early.</li>
+        <li><b>D:</b> There is a typical order; it is not random.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (Correct: D) -->
+<div class="question" id="q20">
+  <b>20. A child in an enriched environment learns to crawl and walk slightly earlier than peers but in the same order. This best supports the idea that:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Gross motor skills develop from toes to head</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Motor milestones are entirely learned and not innate</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Primitive reflexes persist longer in enriched environments</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. The environment can influence the rate of learning without changing the typical sequence</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The text notes motor skills tend to emerge in a consistent order (innate programming), while enriched environments can speed the rate.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The theme described is head-to-toe, not toes-to-head.</li>
+        <li><b>B:</b> Consistency in order suggests innate programming contributes; environment modifies rate.</li>
+        <li><b>C:</b> No claim that enrichment prolongs primitive reflexes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (Correct: D) -->
+<div class="question" id="q21">
+  <b>21. A pregnant individual has daily alcohol use and the fetus shows slowed growth and neurodevelopmental delay. Which statement best matches the passage’s framing?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Alcohol exposure is protective against neural tube defects</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Alcohol exposure affects only postnatal milestones, not prenatal growth</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Alcohol exposure is linked only to limb malformations</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. Alcohol exposure is described as affecting both physical and psychological growth</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The passage states daily alcohol use leads to slowed growth physically and psychologically.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Alcohol is not protective; it is harmful.</li>
+        <li><b>B:</b> The passage explicitly notes prenatal impacts on growth.</li>
+        <li><b>C:</b> Limb malformations are classically linked to thalidomide.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Motor and Social Milestones</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A daycare program compares development among toddlers from varied home environments. Many children begin by mastering head control, then sitting and trunk stability, and only later show confident walking and running.</p>
+  <p>Staff observe that some children in more educationally enriched settings reach milestones slightly earlier, but the overall sequence—posture control before coordinated gait—appears consistent.</p>
+  <p>Socially, staff note that toddlers first play alone, then watch other children play, and later begin to play side-by-side without coordinating their actions. The director explains that these patterns reflect developmental themes rather than exact dates.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Gross motor theme: development is <span class="key">head-to-toe</span> and <span class="key">core before extremities</span>.</li>
+    <li>Environment effect: enrichment can change the <span class="key">rate</span>, but usually not the <span class="key">order</span> of milestones.</li>
+    <li>Social play progression: solitary → onlooker → <span class="key">parallel play</span>.</li>
+    <li>Pick answers that match the described pattern rather than a memorized exact age when not required.</li>
+  </ol>
+</div>
+
+<!-- Q22 (Correct: C) -->
+<div class="question" id="q22">
+  <b>22. Which prenatal infection is specifically noted as being able to cross the placenta and cause cataracts, deafness, and heart defects?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Influenza</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Hepatitis</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Rubella</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Varicella</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The passage highlights rubella (German measles) as crossing the placenta and causing cataracts, deafness, heart defects, and intellectual disability.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Influenza can be linked to defects but the classic cataracts/deafness/heart defects triad is rubella.</li>
+        <li><b>B:</b> Hepatitis is linked to birth defects in the passage broadly but not this classic description.</li>
+        <li><b>D:</b> Varicella can cause congenital issues but the described classic set is rubella.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (Correct: A) -->
+<div class="question" id="q23">
+  <b>23. A child’s play style progresses from solitary exploration to watching others play, then to playing alongside peers without interaction. The last stage is best labeled:</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Parallel play</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Solitary play</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Cooperative play</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Onlooker play</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Parallel play is playing alongside each other without influencing each other’s behavior (around age two).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Solitary play is earlier and individual.</li>
+        <li><b>C:</b> Cooperative play involves coordinated interaction, typically later.</li>
+        <li><b>D:</b> Onlooker play is watching others play (often around age 1).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (Correct: B) -->
+<div class="question" id="q24">
+  <b>24. Which of the following is the best example of a gross motor milestone?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Scribbling with a crayon</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">B. Walking alone</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Tracking objects to midline</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Pincer grasp</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Walking alone uses large muscle groups and whole-body motion, making it a gross motor skill.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Scribbling is fine motor.</li>
+        <li><b>C:</b> Tracking is fine motor/visual tracking.</li>
+        <li><b>D:</b> Pincer grasp is fine motor.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>
