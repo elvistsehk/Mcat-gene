@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Prokaryotes (Ch. 1.3) (15Q + 3 Passages)</title>
+<style>
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+</style>
+<script>
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Biology — Prokaryotes (Ch. 1.3)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A microorganism has a single circular chromosome localized to a nucleoid region and lacks membrane-bound organelles. Which additional feature is most consistent with this organism?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. A nucleus enclosed by a double membrane</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. 40S and 60S ribosomal subunits</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. A 30S and 50S ribosome (70S total)</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Mitochondria that generate ATP via cristae</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Prokaryotes lack a nucleus and membrane-bound organelles, and they have 70S ribosomes composed of 30S and 50S subunits.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> A nucleus is a defining feature of eukaryotes.</li>
+<li><b>C:</b> Mitochondria are membrane-bound organelles found in eukaryotes.</li>
+<li><b>D:</b> 40S and 60S subunits are eukaryotic (80S) ribosomes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A cell uses histones and initiates translation with methionine, yet divides by binary fission and contains a single circular chromosome. Which domain best fits these traits?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Viruses</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Bacteria</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Eukarya</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Archaea</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Archaea share several gene-expression features with eukaryotes (histones, translation initiation with methionine, similar RNA polymerases) but are prokaryotic in organization (circular chromosome; binary fission/budding).</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Bacteria generally use histone-like proteins; true histones are characteristic of archaea (in this context).</li>
+<li><b>C:</b> Eukaryotes have linear chromosomes and divide by mitosis/meiosis, not binary fission.</li>
+<li><b>D:</b> Viruses are not cellular and do not divide by binary fission.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. Which bacterial shape classification correctly matches the morphology described: ‘rod-shaped’?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Cocci</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Spirilli</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Hyphae</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Bacilli</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Rod-shaped bacteria are called bacilli; cocci are spherical and spirilli are spiral-shaped.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> Cocci are spherical, not rod-shaped.</li>
+<li><b>C:</b> Spirilli are spiral-shaped.</li>
+<li><b>D:</b> Hyphae describes filamentous fungal structures, not typical bacterial shapes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. A Gram stain yields deep purple cells after crystal violet and counterstain. Which envelope feature most directly explains this result?</b>
+  <div class="choice" onclick="selectChoice('q4', this, true)">A. A thick peptidoglycan layer that retains crystal violet</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. A mitochondrial inner membrane rich in cristae</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. A thin peptidoglycan layer plus an outer membrane with LPS</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Absence of a cell wall and presence of sterols</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Gram-positive bacteria have a thick peptidoglycan wall that traps crystal violet, producing a purple appearance.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Thin peptidoglycan plus an outer membrane with LPS describes gram-negative bacteria, which typically counterstain pink/red.</li>
+<li><b>C:</b> Most bacteria have a cell wall; sterols are associated with eukaryotic membranes.</li>
+<li><b>D:</b> Mitochondria are eukaryotic organelles, not part of a bacterial envelope.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A patient develops a severe inflammatory response to bacterial lipopolysaccharide (LPS). The bacterium is most likely:</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Gram-positive</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Archaeal</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Eukaryotic</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">D. Gram-negative</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> LPS is a major component of the gram-negative outer membrane and can strongly trigger inflammation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Gram-positive bacteria have thick peptidoglycan and lipoteichoic acid rather than LPS.</li>
+<li><b>C:</b> Archaea have distinct envelope chemistry and are not characterized by LPS in this context.</li>
+<li><b>D:</b> Eukaryotic cells do not have bacterial LPS.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. Penicillin becomes less effective when a bacterium acquires an enzyme that blocks peptidoglycan cross-linking inhibition. Penicillin’s primary target is best described as:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. A microtubule motor that powers flagellar beating</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">B. An enzyme that catalyzes peptidoglycan cross-linking</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. A channel that transports DNA through the nuclear pore</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. A ribosomal subunit that binds tRNA in the A site</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Penicillin interferes with the cross-linking of peptidoglycan, weakening the cell wall and causing osmotic lysis.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Many antibiotics do target ribosomes, but penicillin targets cell wall cross-linking enzymes.</li>
+<li><b>C:</b> Microtubule beating is eukaryotic cilia/flagella; bacterial flagella rotate via a basal body motor.</li>
+<li><b>D:</b> Bacteria lack a nuclear envelope and nuclear pores.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. A bacterium has an outer membrane with LPS and a periplasmic space. Where is the thin peptidoglycan layer located?</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Adjacent to the plasma membrane, within the periplasmic space</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Inside the nucleoid region around DNA</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Outside the outer membrane, exposed directly to the environment</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Only at the base of the flagellum</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Gram-negative bacteria have a thin peptidoglycan layer located between the inner (plasma) membrane and outer membrane, in the periplasm.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> In gram-negatives, the outer membrane is most external; peptidoglycan is not exposed outside it.</li>
+<li><b>C:</b> Peptidoglycan is a cell wall component, not a DNA-packaging structure.</li>
+<li><b>D:</b> Peptidoglycan surrounds the cell and is not restricted to flagellar structures.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. Which statement correctly contrasts bacterial and eukaryotic flagella?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Eukaryotic flagella are powered by ATP synthase embedded in the flagellar membrane</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Bacterial flagella rotate using a basal body motor; eukaryotic flagella beat via microtubule sliding in a 9 + 2 axoneme</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Both are made of actin filaments and beat using myosin</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Both are composed of flagellin and rotate at the same frequency</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Bacterial flagella are flagellin-based rotary structures (filament–hook–basal body). Eukaryotic flagella/cilia are microtubule-based 9 + 2 structures that bend via motor-driven sliding.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Actin–myosin is not the core system for ciliary/flagellar motility.</li>
+<li><b>C:</b> Flagellin is bacterial; eukaryotic axonemes are tubulin-based and do not rotate like bacterial flagella.</li>
+<li><b>D:</b> ATP synthase is not the motor for eukaryotic flagellar beating; dynein is.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. A bacterium swims toward a nutrient gradient. This behavior is best termed:</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Chemotaxis</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Phototropism</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Conjugation</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Pinocytosis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Chemotaxis is movement toward or away from chemical stimuli, often mediated by flagella.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Phototropism is directional growth in response to light (plants).</li>
+<li><b>C:</b> Pinocytosis is eukaryotic endocytosis; bacteria do not use it as their primary nutrient uptake mechanism in this framing.</li>
+<li><b>D:</b> Conjugation is horizontal DNA transfer via sex pili, not movement.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. Which pairing correctly matches oxygen tolerance category with metabolic capability?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Obligate aerobe — harmed by oxygen because it forms reactive radicals</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Facultative anaerobe — uses aerobic metabolism when oxygen is present and switches to anaerobic pathways when it is absent</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Aerotolerant anaerobe — uses oxygen for oxidative phosphorylation</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Obligate anaerobe — requires oxygen for metabolism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Facultative anaerobes can toggle between aerobic and anaerobic metabolism depending on oxygen availability.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Obligate anaerobes do not require oxygen and are often harmed by it.</li>
+<li><b>C:</b> Obligate aerobes require oxygen and typically handle reactive oxygen species.</li>
+<li><b>D:</b> Aerotolerant anaerobes do not use oxygen for metabolism (but are not harmed by it).</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. A bacterial species dies rapidly when exposed to oxygen because it accumulates reactive oxygen radicals. Which category best describes it?</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Obligate anaerobe</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Facultative anaerobe</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Obligate aerobe</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Aerotolerant anaerobe</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Obligate anaerobes are harmed by oxygen; reactive oxygen species can accumulate and cause lethal damage.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Obligate aerobes require oxygen.</li>
+<li><b>C:</b> Facultative anaerobes can grow with oxygen present.</li>
+<li><b>D:</b> Aerotolerant anaerobes tolerate oxygen even if they do not use it.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. A bacterium lacks mitochondria but still performs electron transport and ATP generation. Where are the electron transport chain components located?</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. In the plasma membrane</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. In the rough endoplasmic reticulum</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. In the peroxisome membrane</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. In the nuclear envelope</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Prokaryotes lack mitochondria; their plasma membrane houses the electron transport chain components used for ATP generation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Bacteria lack a nuclear envelope.</li>
+<li><b>C:</b> Prokaryotes lack ER.</li>
+<li><b>D:</b> Peroxisomes are eukaryotic organelles and are not part of bacterial physiology.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A bacterial plasmid carries genes that are not required for survival but provide a selective advantage. Which example best fits this description?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Histone genes required to package linear chromosomes</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Genes for core metabolism that are essential in all environments</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">C. Antibiotic resistance genes</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Ribosomal RNA genes required for translation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Plasmids commonly encode nonessential but beneficial traits, such as antibiotic resistance or virulence factors.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> rRNA genes are essential and generally chromosomal.</li>
+<li><b>C:</b> Core essential genes are typically in the chromosome, not on optional plasmids.</li>
+<li><b>D:</b> Bacteria have circular chromosomes and do not require histones for linear chromosome packaging as in eukaryotes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. During conjugation, genetic material transfer is unidirectional from a donor to a recipient via a bridge formed by sex pili. Which change most directly converts a recipient into a new donor in future conjugation events?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Loss of peptidoglycan cross-linking</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Acquisition of the F factor plasmid</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Replacement of 30S/50S ribosomes with 40S/60S ribosomes</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Infection by a bacteriophage carrying host DNA</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The F factor encodes the machinery for sex pilus formation; receiving it converts an F− cell into an F+ cell capable of donating.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Cell wall integrity does not determine donor status.</li>
+<li><b>C:</b> Phage-mediated DNA transfer is transduction, not conversion into an F+ donor.</li>
+<li><b>D:</b> Ribosome size is unrelated to conjugation machinery.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. A bacterial cell with an integrated F factor begins conjugation, attempting to transfer chromosomal genes at high frequency, but the conjugation bridge often breaks before transfer completes. This donor is best described as:</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. A plasmid-free mutant</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Hfr (high frequency of recombination)</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. F−</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. A bacteriophage</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Integration of the F factor into the bacterial genome produces an Hfr strain capable of transferring chromosomal genes during conjugation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> F− lacks the F factor and cannot initiate conjugation as a donor.</li>
+<li><b>C:</b> A bacteriophage is a viral vector used in transduction.</li>
+<li><b>D:</b> A plasmid-free mutant would not explain chromosomal transfer starting from an integrated sex factor.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1: Choosing an Antibiotic in the Emergency Department -->
+<div class="passage-header">
+  <span>Passage 1: Choosing an Antibiotic in the Emergency Department</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 19-year-old patient presents with fever and rapidly worsening hypotension. Blood cultures grow a bacterium whose envelope includes an outer membrane rich in lipopolysaccharide (LPS). The clinical team suspects the patient’s symptoms are partly driven by an intense inflammatory response to components of the bacterial surface.</p>
+  <p>The organism is treated with a drug that inhibits peptidoglycan cross-linking. Within hours, microscopy shows swelling and lysis in a subset of the bacteria, but many survive and later regrow. Further testing reveals that surviving cells produce an enzyme that prevents the antibiotic from effectively disrupting the cell wall.</p>
+  <p>The team debates switching to an antibiotic that binds the bacterial ribosome. They prefer a target that differs substantially from the host’s protein synthesis machinery to minimize toxicity.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify the envelope clue: <b>LPS + outer membrane</b> → <b>gram-negative</b> bacteria.</li>
+    <li>Use mechanism clues: blocking <b>peptidoglycan cross-linking</b> weakens the wall → <b>osmotic lysis</b>; regrowth implies <b>resistance</b> in survivors.</li>
+    <li>For ribosome selectivity, compare subunits: bacteria have <b>30S/50S</b> vs eukaryotes <b>40S/60S</b>.</li>
+    <li>Pick answers that connect multiple passage clues (LPS + cell wall + resistance + ribosomes), not just one phrase.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. Based on Passage 1, which Gram stain result is most consistent with the described organism?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. No staining because there is no cell wall</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Deep purple cells that retain crystal violet</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">C. Pink-red cells after counterstain with safranin</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Green staining because LPS is a pigment</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> An outer membrane with LPS is characteristic of gram-negative bacteria, which do not retain crystal violet well and therefore take up the safranin counterstain (pink-red).</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> Purple retention is typical of gram-positive thick peptidoglycan walls.</li>
+<li><b>C:</b> Most bacteria have cell walls; the passage describes a complex envelope, not wall absence.</li>
+<li><b>D:</b> LPS is not a pigment that determines a ‘green’ Gram stain.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Which inference best explains why the clinicians consider switching to a ribosome-targeting antibiotic to minimize host toxicity?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Bacterial ribosomes differ in size (30S/50S) from eukaryotic ribosomes (40S/60S), allowing selective targeting</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Human cells lack ribosomes, so ribosomal drugs cannot affect the host</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Bacterial ribosomes are located in a nucleus that drugs cannot enter</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Viruses provide ribosomes to bacteria, so bacteria do not need their own</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Selective toxicity is possible because bacterial ribosomes (70S) differ structurally from eukaryotic ribosomes (80S).</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Human cells rely on ribosomes for protein synthesis.</li>
+<li><b>C:</b> Bacteria do not have a nucleus.</li>
+<li><b>D:</b> Viruses do not supply ribosomes; they use host ribosomes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. The survival and regrowth after treatment most directly supports which conclusion about the antibiotic and the bacterial population?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Lysis indicates the drug targets the nucleoid and prevents DNA replication</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Some cells possess (or acquire) a resistance mechanism that prevents effective disruption of peptidoglycan cross-linking</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. The antibiotic must dissolve the outer membrane regardless of resistance</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. All cells are genetically identical and cannot differ in sensitivity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Survival of a subset plus identification of an enzyme that blocks the drug’s effect is evidence of resistance being present or selected within the population.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> A membrane detergent mechanism would not be described as ‘inhibits peptidoglycan cross-linking.’</li>
+<li><b>C:</b> Even within a population, resistance genes/plasmids or mutations can create sensitivity differences; the passage directly notes a resistance enzyme.</li>
+<li><b>D:</b> Swelling/lysis after wall failure is osmotic; it does not imply direct nucleoid targeting.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2: An Oxygen Gradient in a Wound -->
+<div class="passage-header">
+  <span>Passage 2: An Oxygen Gradient in a Wound</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Researchers sample bacteria from different depths of an infected wound. Near the surface, oxygen levels are relatively high; deeper in the wound, oxygen becomes scarce. Two bacterial isolates are studied: Isolate X grows only in oxygen-rich culture, while Isolate Y grows both with and without oxygen but switches to a fermentation-like pathway when oxygen is removed.</p>
+  <p>When Isolate Z from the deepest region is briefly exposed to oxygen, its viable count plummets. Biochemical assays reveal rapid accumulation of reactive oxygen-containing radicals in Z after exposure.</p>
+  <p>To compare energy generation, investigators measure ATP production. In the oxygen-rich condition, X shows evidence of electron transport occurring at the cell membrane rather than within mitochondria.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate growth patterns into categories: <b>only with O₂</b> → obligate aerobe; <b>with or without O₂</b> → facultative anaerobe; <b>dies in O₂</b> → obligate anaerobe.</li>
+    <li>Use the mechanistic clue: <b>ROS accumulation</b> after O₂ exposure supports oxygen toxicity in obligate anaerobes.</li>
+    <li>For ETC location: prokaryotes lack mitochondria, so ETC proteins are in the <b>plasma membrane</b>.</li>
+    <li>Select answers that integrate observations + mechanism, not just definitions.</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. Based on Passage 2, Isolate Y is best classified as a:</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Obligate anaerobe</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Aerotolerant anaerobe</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Obligate aerobe</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. Facultative anaerobe</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Y grows with oxygen but can switch to anaerobic metabolism when oxygen is absent—this is the definition of a facultative anaerobe.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Obligate anaerobes cannot survive oxygen-rich conditions.</li>
+<li><b>C:</b> Obligate aerobes cannot grow without oxygen.</li>
+<li><b>D:</b> Aerotolerant anaerobes do not use oxygen for metabolism; Y does when oxygen is present.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. Which isolate is most consistent with the category ‘obligate anaerobe’?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. None; obligate anaerobes do not exist</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Isolate Y</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. Isolate Z</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Isolate X</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Z dies upon oxygen exposure and accumulates reactive oxygen radicals, matching obligate anaerobe oxygen sensitivity.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> X requires oxygen and fits an obligate aerobe.</li>
+<li><b>C:</b> Y can grow with or without oxygen (facultative).</li>
+<li><b>D:</b> Obligate anaerobes are common and clinically relevant.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. The finding that X performs electron transport at the cell membrane rather than in mitochondria is best explained because:</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Mitochondria are present but too small to detect</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Electron transport occurs only in the nucleoid region</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Prokaryotes lack membranes, so electron transport occurs in the cytosol</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. Prokaryotes lack mitochondria, so the plasma membrane houses the electron transport chain</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Bacteria lack mitochondria; the plasma membrane contains ETC components that create a proton gradient for ATP synthesis.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Prokaryotes do have membranes (plasma membrane).</li>
+<li><b>C:</b> Mitochondria are eukaryotic organelles and are absent in bacteria.</li>
+<li><b>D:</b> The nucleoid contains DNA; ETC is membrane-associated.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3: Tracing the Spread of Resistance Genes in a Hospital Ward -->
+<div class="passage-header">
+  <span>Passage 3: Tracing the Spread of Resistance Genes in a Hospital Ward</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A hospital microbiology lab tracks an outbreak of a multidrug-resistant bacterial strain. Sequencing shows that resistance genes are carried on a circular DNA element that is not required for basic survival but provides a clear advantage in the presence of antibiotics.</p>
+  <p>In one experiment, researchers mix resistant donor cells with sensitive recipient cells. After incubation, many recipients acquire resistance even when no bacteriophage is detected. Microscopy shows physical cell–cell contact structures connecting donors to recipients.</p>
+  <p>In a second experiment, cell-free supernatant from lysed resistant bacteria is added to a sensitive culture. Some sensitive cells become resistant without any cell–cell contact. Finally, when a bacteriophage that previously infected resistant bacteria is used to infect sensitive bacteria, resistance appears in a subset of the newly infected cells.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify the DNA element: circular, nonessential, advantageous → <b>plasmid</b>.</li>
+    <li>Match each experiment to mechanism: <b>contact bridge</b> → conjugation; <b>cell-free DNA uptake</b> → transformation; <b>phage vector</b> → transduction.</li>
+    <li>Use what’s excluded: ‘no bacteriophage’ rules out transduction in the first experiment.</li>
+    <li>Pick answers that reflect experimental design (how DNA moved), not just that resistance increased.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. The circular DNA element carrying resistance genes in Passage 3 is most accurately described as a:</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Centromere</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Linear mitochondrial DNA</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Chromosomal DNA required for survival</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. Plasmid</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Plasmids are extrachromosomal circular DNA molecules that can carry nonessential but advantageous genes such as antibiotic resistance.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Core chromosomal DNA is part of the genome and is generally required for survival.</li>
+<li><b>C:</b> Centromeres are eukaryotic chromosome structures.</li>
+<li><b>D:</b> Mitochondrial DNA is eukaryotic and not the bacterial element described.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. The first experiment (donors + recipients with contact bridges and no phage) most strongly indicates:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Transformation</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Binary fission</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. Conjugation</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Transduction</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Conjugation requires direct cell–cell contact via a conjugation bridge/sex pilus to transfer DNA.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Transduction requires a bacteriophage, which is absent here.</li>
+<li><b>C:</b> Transformation is uptake of naked DNA without cell contact.</li>
+<li><b>D:</b> Binary fission is reproduction, not horizontal gene transfer.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. Which mechanism best explains resistance appearing after adding lysed-cell supernatant in the second experiment?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Conjugation</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Mitosis</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. Transformation</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Transduction</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Transformation is uptake of foreign DNA from the environment, consistent with DNA released into the supernatant after lysis.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Conjugation requires cell–cell contact.</li>
+<li><b>C:</b> Transduction requires a bacteriophage vector.</li>
+<li><b>D:</b> Mitosis is eukaryotic cell division, not bacterial recombination.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

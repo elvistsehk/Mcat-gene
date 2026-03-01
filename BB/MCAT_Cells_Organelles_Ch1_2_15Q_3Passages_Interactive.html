@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Cells &amp; Organelles (Ch. 1.2) (15Q + 3 Passages)</title>
+<style>
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+</style>
+<script>
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Biology — Cells &amp; Organelles (Ch. 1.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A eukaryotic cell is engineered so that transcription occurs in one compartment while translation occurs in another. Which structure is most directly responsible for creating these distinct environments?</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. The nuclear envelope (double membrane surrounding the nucleus)</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. The Golgi apparatus</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. The plasma membrane</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. The nucleolus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The nuclear envelope separates nucleoplasm from cytoplasm, enabling transcription (and RNA processing) to be spatially separated from translation; nuclear pores then regulate exchange.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> Plasma membrane separates cell from outside, not nucleus from cytoplasm.</li>
+<li><b>B:</b> Nucleolus synthesizes rRNA; it does not create the nucleus–cytoplasm boundary.</li>
+<li><b>D:</b> Golgi modifies/sorts proteins; it is not the boundary enabling transcription/translation compartmentalization.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A cell shows a prominent dark body within the nucleus and high rRNA output. Which structure is most consistent with this observation?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Chromatin (heterochromatin)</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Nuclear pore complex</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Mitochondrial matrix</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Nucleolus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> The nucleolus is a dense nuclear subregion where rRNA is synthesized and ribosomal subunits are assembled; it often appears as a darker spot.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> Nuclear pores mediate transport across the nuclear envelope; they are not the rRNA synthesis site.</li>
+<li><b>C:</b> Heterochromatin is tightly packed DNA and is generally transcriptionally inactive.</li>
+<li><b>D:</b> The mitochondrial matrix is inside mitochondria, not in the nucleus.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. A mutation reduces the surface area of the inner mitochondrial membrane without changing total mitochondrial volume. Which function is most directly impaired?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Ribosomal RNA synthesis</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Glycolysis in the cytosol</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Lysosomal hydrolysis of endocytosed cargo</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Electron transport chain capacity for oxidative phosphorylation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> ETC complexes are embedded in the inner mitochondrial membrane; cristae increase membrane surface area and therefore increase ETC and ATP synthase capacity.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> Glycolysis occurs in the cytosol and does not depend on mitochondrial inner membrane surface area.</li>
+<li><b>C:</b> rRNA synthesis occurs in the nucleolus.</li>
+<li><b>D:</b> Lysosomal degradation depends on lysosomal enzymes, not mitochondrial membrane surface area.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. A student uses endosymbiotic theory to predict a feature of mitochondria. Which finding would best support that prediction?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Mitochondria store hydrolytic enzymes to digest cellular debris</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Mitochondria are assembled only during mitosis from Golgi-derived vesicles</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Mitochondria replicate by binary fission and contain their own genetic material</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Mitochondria are continuous with the nuclear envelope</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Serial endosymbiosis proposes that mitochondria originated from engulfed prokaryotes, consistent with semi-autonomy (own genes + binary fission).</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Golgi-derived vesicles are part of the secretory pathway, not mitochondrial biogenesis.</li>
+<li><b>C:</b> Hydrolytic enzymes are characteristic of lysosomes.</li>
+<li><b>D:</b> The ER is contiguous with the nuclear envelope; mitochondria are not.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A cell receives an internal damage signal and begins an orderly, energy-dependent self-destruction program. Based on organelle function, which event is most likely to initiate this process?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Swelling of the cytosol due to osmotic imbalance</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Release of mitochondrial factors that activate apoptotic pathways</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Upregulation of actin polymerization at the cleavage furrow</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Increased storage of triacylglycerols in lipid droplets</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Mitochondria can trigger apoptosis by releasing pro-apoptotic factors that activate caspases and related pathways, leading to controlled cell dismantling.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> Osmotic swelling is more consistent with necrotic injury, not programmed apoptosis.</li>
+<li><b>C:</b> Lipid storage is not a canonical trigger for apoptosis.</li>
+<li><b>D:</b> Cleavage furrow actin dynamics relate to cytokinesis, not initiation of apoptosis.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. A toxic compound causes lysosomal membranes to rupture. Which immediate consequence best explains why this can lead to apoptosis?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. ATP synthase reverses and hydrolyzes ATP</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Nuclear pores permanently close, stopping transcription</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Hydrolytic enzymes leak into the cytosol and degrade cellular components</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Microtubules depolymerize and block vesicle traffic</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Lysosomes sequester hydrolytic enzymes; membrane rupture releases these enzymes, causing autolysis and promoting programmed cell death.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> ATP synthase behavior depends on proton gradient; it is not the key effect of lysosomal rupture here.</li>
+<li><b>C:</b> Microtubule disruption affects transport but does not directly explain enzyme-mediated autolysis.</li>
+<li><b>D:</b> Nuclear pore closure would impede transport but is not the primary lethal mechanism described for lysosomal rupture.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. A secreted peptide hormone is synthesized on ribosomes and enters the lumen of an organelle during translation. Which organelle is most directly involved?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Smooth endoplasmic reticulum</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Peroxisome</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Centriole</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. Rough endoplasmic reticulum</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> RER is studded with ribosomes and co-translationally translocates secretory proteins into its lumen for processing and trafficking.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> SER lacks ribosomes and is primarily for lipid synthesis and detoxification.</li>
+<li><b>C:</b> Peroxisomes specialize in H2O2-related reactions and very-long-chain fatty acid β-oxidation.</li>
+<li><b>D:</b> Centrioles organize microtubules; they do not import translating peptides into a lumen.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. A protein is modified by addition of carbohydrate groups and then sorted into vesicles destined for the plasma membrane. Which organelle most directly performs this modification-and-sorting role?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Nucleolus</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Intermediate filaments</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Mitochondrion</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Golgi apparatus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> The Golgi modifies cellular products (e.g., glycosylation) and sorts them into vesicles for specific destinations, including secretion and membrane insertion.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Nucleolus is for rRNA synthesis.</li>
+<li><b>C:</b> Mitochondria generate ATP; they are not the main glycosylation/sorting center.</li>
+<li><b>D:</b> Intermediate filaments provide tensile support; they do not modify proteins.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. A cell lacks functional peroxisomes. Which metabolic change is most likely to occur?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Failure of chromosome segregation due to absent kinetochores</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">B. Impaired β-oxidation of very long chain fatty acids with altered handling of hydrogen peroxide</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Complete loss of protein secretion because ribosomes cannot form</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Impaired glycolysis due to loss of ATP production</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Peroxisomes contain hydrogen peroxide and participate in β-oxidation of very long chain fatty acids; dysfunction leads to VLCFA accumulation and disturbed H2O2 metabolism.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Glycolysis occurs in the cytosol and does not require peroxisomes.</li>
+<li><b>C:</b> Chromosome segregation depends on microtubules/kinetochores, not peroxisomes.</li>
+<li><b>D:</b> Ribosomes form primarily in the nucleolus; peroxisomes are not required for ribosome formation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. A drug selectively disrupts actin polymerization. Which cellular process is most directly affected?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Glycosylation of secreted proteins</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Assembly of the 9 + 2 axoneme in cilia</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Synthesis of rRNA in the nucleus</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">D. Formation of the cleavage furrow during cytokinesis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Microfilaments are composed of actin; they form the contractile ring (cleavage furrow) that pinches a dividing cell into two daughter cells.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Cilia/flagella axonemes are microtubule-based, not actin-based.</li>
+<li><b>C:</b> Glycosylation is a Golgi function.</li>
+<li><b>D:</b> rRNA synthesis occurs in the nucleolus.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. A vesicle must travel from the cell periphery toward the centrosome. Which cytoskeletal system and motor protein pair best supports this movement?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Microtubules with myosin</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Intermediate filaments with myosin</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Microtubules with dynein</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Microfilaments with kinesin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Microtubules provide long-distance tracks; dynein generally moves toward the minus end, which is oriented toward the centrosome in many cells.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> Kinesin typically moves toward the plus end (often toward the periphery) and is a microtubule motor, not an actin motor.</li>
+<li><b>C:</b> Intermediate filaments are not used as motor tracks; myosin is an actin motor.</li>
+<li><b>D:</b> Myosin is not a microtubule motor.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. A microscope image shows an organelle of motility with a 9 + 2 arrangement. Which conclusion is most justified?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. It is a bacterial flagellum built from tubulin</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. It is an actin-based structure that uses myosin to beat</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. It is a eukaryotic cilium or flagellum built from microtubules</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. It is an intermediate-filament bundle specialized for tension</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> The 9 + 2 axoneme is characteristic of eukaryotic cilia/flagella and is composed of microtubule doublets with two central microtubules.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Bacterial flagella are chemically and structurally different and are not 9 + 2 tubulin microtubules.</li>
+<li><b>C:</b> Beating cilia are microtubule-based; actin–myosin is for contraction/shape changes, not the 9 + 2 axoneme.</li>
+<li><b>D:</b> Intermediate filaments resist tension but do not form 9 + 2 motility organelles.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A dividing cell shows paired cylindrical structures migrating to opposite poles and organizing the mitotic spindle. What is the microtubule arrangement within each of these structures?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Nine doublets plus two central microtubules</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. Nine triplets of microtubules arranged in a ring</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. A single hollow microtubule surrounded by intermediate filaments</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Two microtubule singlets surrounded by actin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Centrioles (in the centrosome) consist of nine triplets of microtubules and organize the spindle apparatus during mitosis.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Nine doublets plus two central microtubules describes the axoneme of cilia/flagella, not centrioles.</li>
+<li><b>C:</b> Actin is not the defining arrangement of centrioles.</li>
+<li><b>D:</b> Intermediate filaments do not define centriole ultrastructure.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. A tissue sample forms the functional units of an organ and lines a lumen; cells are tightly joined and sit on a basement membrane. How should this tissue be classified?</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Epithelial tissue</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Nervous tissue</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Connective tissue</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Muscle tissue</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Epithelia line body surfaces and cavities, are tightly joined, and rest on a basement membrane; they often make up the parenchyma (functional portion).</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Connective tissue primarily contributes to the stroma and extracellular matrix support framework.</li>
+<li><b>C:</b> Muscle tissue specializes in contraction.</li>
+<li><b>D:</b> Nervous tissue specializes in signaling.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. Which statement best explains why viruses are not considered living organisms under classical cell theory?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. They are enclosed by a phospholipid bilayer like eukaryotic cells</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. They cannot reproduce independently and may carry genetic information as RNA rather than DNA</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. They are always larger than bacterial cells</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. They lack any genetic material</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Virions require a host to replicate (violating the ‘cells arise from preexisting cells’ framework) and can use RNA genomes, conflicting with the DNA-centric genetic-information tenet.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Viruses do have genetic material (DNA or RNA).</li>
+<li><b>C:</b> Viruses are generally smaller than bacteria.</li>
+<li><b>D:</b> Some viruses are enveloped, but this does not define them as living; many lack a lipid envelope.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1: Very-Long-Chain Fatty Acids and Oxidative Stress -->
+<div class="passage-header">
+  <span>Passage 1: Very-Long-Chain Fatty Acids and Oxidative Stress</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A pediatric clinic evaluates two infants with hypotonia and developmental delay. Blood testing in both infants reveals elevated very-long-chain fatty acids (VLCFAs). The clinician suspects a defect in an organelle responsible for β-oxidation of VLCFAs and for handling a reactive oxygen species that is routinely produced during cellular metabolism.</p>
+  <p>In fibroblasts from Infant A, electron microscopy shows normal mitochondria with prominent cristae, but few small, spherical vesicles normally present in the cytoplasm. In fibroblasts from Infant B, those vesicles appear normal in number, but the cells show increased markers of oxidative damage and an unusually high concentration of hydrogen peroxide.</p>
+  <p>To distinguish the two cases, the lab treats both cell lines with a compound that increases catalase activity specifically in the organelle that normally contains hydrogen peroxide. After treatment, oxidative damage markers decrease substantially in one cell line but not the other.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>First identify which organelle is being tested by the clues: <b>VLCFA β-oxidation</b> + <b>hydrogen peroxide handling</b> points to <b>peroxisomes</b> (catalase lives there).</li>
+    <li>Then separate <b>organelle absence</b> (few vesicles seen) from <b>organelle present but enzyme imbalance</b> (high H₂O₂).</li>
+    <li>Use the intervention: boosting <b>catalase</b> only helps if the organelle is present but the oxidative stress is due to insufficient breakdown of H₂O₂.</li>
+    <li>Finally, predict downstream effects by matching metabolism to compartment: peroxisomes handle <b>VLCFAs</b>, while mitochondria focus on ATP production via <b>ETC on cristae</b>.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. Which infant most likely has an impairment in catalase-mediated breakdown of hydrogen peroxide, rather than a failure to form the organelle itself?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Neither infant, because hydrogen peroxide is harmless</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">B. Infant B</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Both infants equally, because catalase is mitochondrial</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Infant A</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Infant B has peroxisomes present but abnormally high H₂O₂ and oxidative damage; catalase boosting reduces damage in only the line where peroxisomes exist but H₂O₂ detox is limiting.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> Infant A’s fibroblasts show few of the relevant vesicles, suggesting reduced organelle abundance/biogenesis rather than isolated catalase activity.</li>
+<li><b>C:</b> Catalase is classically associated with peroxisomes, not mitochondria.</li>
+<li><b>D:</b> Hydrogen peroxide is reactive and must be managed; it can contribute to oxidative damage.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Based on Passage 1, the organelle implicated in VLCFA accumulation is best described as:</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. A membrane-bound compartment that contains hydrogen peroxide and participates in β-oxidation of very long chain fatty acids</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. A stack of sacs that glycosylates and sorts secretory proteins</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. A non–membrane-bound region in the nucleus where rRNA is synthesized</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. A double-membraned compartment with cristae where oxidative phosphorylation occurs</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The passage explicitly links VLCFA β-oxidation and H₂O₂ handling—core peroxisomal functions—indicating a membrane-bound organelle with catalase and related enzymes.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> This describes mitochondria (double membrane + cristae) rather than the VLCFA/H₂O₂ organelle highlighted.</li>
+<li><b>C:</b> This describes the nucleolus.</li>
+<li><b>D:</b> This describes the Golgi apparatus.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. If Infant A’s defect primarily reduces the number of the implicated organelles, which additional cellular change is most consistent with that defect?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Loss of chromosome segregation because kinetochores are absent</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Inability to complete transcription because nuclear pores disappear</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Impaired synthesis of certain phospholipids due to loss of a compartment contributing enzymes for lipid-related pathways</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Failure of cytokinesis because actin cannot polymerize</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Peroxisomes contribute to lipid metabolism (including aspects of phospholipid synthesis) and harbor enzymes for specific metabolic pathways; fewer peroxisomes can reduce these functions.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Nuclear pores are part of the nuclear envelope, not peroxisomes.</li>
+<li><b>C:</b> Cytokinesis depends on actin microfilaments.</li>
+<li><b>D:</b> Chromosome segregation depends on microtubules and kinetochores, not peroxisomes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2: Airway Defense and Motility -->
+<div class="passage-header">
+  <span>Passage 2: Airway Defense and Motility</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A group of researchers studies recurrent respiratory infections in a cohort of patients. Nasal epithelial biopsies show that the lining cells are tightly packed, rest on a basement membrane, and display apical projections that normally move mucus toward the throat.</p>
+  <p>High-speed video microscopy reveals that the projections beat weakly and with poor coordination. Ultrastructural analysis identifies a defect in the motor apparatus required for sliding of cylindrical protein polymers arranged as nine outer pairs with two central components.</p>
+  <p>When fluorescently labeled vesicles are tracked in these epithelial cells, cargo that should move inward toward the centrosome accumulates near the plasma membrane, suggesting impaired transport along the same polymer system.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Start with tissue ID: a lining on a <b>basement membrane</b> with tight junctions is <b>epithelium</b>; apical projections moving mucus are <b>cilia</b>.</li>
+    <li>Recognize structure: <b>9 + 2</b> plus a motor defect points to <b>microtubules</b> and their motors (especially <b>dynein</b> for ciliary beating).</li>
+    <li>Link intracellular transport: long-distance vesicle traffic uses <b>kinesin/dynein</b> on microtubules; inward (toward centrosome/minus end) is typically <b>dynein</b>.</li>
+    <li>Choose answers that require connecting multiple cues (tissue + cytoskeleton + motor direction), not just naming a structure.</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. Which cytoskeletal component is most directly responsible for the 9 + 2 architecture described in Passage 2?</b>
+  <div class="choice" onclick="selectChoice('q19', this, true)">A. Microtubules (tubulin polymers)</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Intermediate filaments (keratin, vimentin, etc.)</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Microfilaments (actin polymers)</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Collagen fibers of the extracellular matrix</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The 9 + 2 axoneme is the hallmark of eukaryotic cilia/flagella and is built from microtubules composed of tubulin.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Actin microfilaments form the cleavage furrow and cell cortex, not the 9 + 2 axoneme.</li>
+<li><b>C:</b> Intermediate filaments provide tensile strength; they do not form axonemes.</li>
+<li><b>D:</b> Collagen is extracellular and not a cytoskeletal polymer inside cilia.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. The impaired beating in Passage 2 most strongly implicates which motor protein function?</b>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. Dynein-driven sliding of microtubule doublets</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Kinesin-driven sliding of actin filaments</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Myosin-driven walking on intermediate filaments</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Ribosome-driven movement of mucus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Ciliary motility relies on dynein arms that use ATP to generate sliding between microtubule doublets, which is converted into bending (beating).</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Kinesin is a microtubule motor but is not the dynein arm mechanism for ciliary beating; actin filaments are not the axoneme.</li>
+<li><b>C:</b> Myosin is an actin motor; intermediate filaments are not motor tracks.</li>
+<li><b>D:</b> Ribosomes synthesize proteins and do not generate ciliary movement.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. The vesicle-transport finding (cargo stuck near the membrane instead of moving toward the centrosome) is most consistent with reduced activity of:</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Kinesin</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Histones</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Actin</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. Dynein</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> In many cells, microtubule minus ends are anchored near the centrosome; dynein generally moves cargo toward the minus end (inward). Reduced dynein activity would leave cargo at the periphery.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Kinesin typically moves toward microtubule plus ends (often outward toward the cell periphery).</li>
+<li><b>C:</b> Actin supports short-range cortical transport and cytokinesis, not the primary long-range inward tracking described.</li>
+<li><b>D:</b> Histones package DNA and are unrelated to vesicle transport.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3: Secreted Proteins and Cellular Trafficking -->
+<div class="passage-header">
+  <span>Passage 3: Secreted Proteins and Cellular Trafficking</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>An endocrine cell line is engineered to express a fluorescent version of a peptide hormone. Under normal conditions, fluorescence is observed first in a perinuclear reticular network, then in a series of stacked sacs, and finally in small vesicles that fuse with the plasma membrane to release the hormone.</p>
+  <p>A researcher adds a drug that disrupts vesicular trafficking from the reticular network to the stacked sacs. After treatment, the hormone fluorescence accumulates in the reticular network, secretion drops sharply, and the stacked sacs appear fragmented. Electron microscopy also shows that hydrolytic compartments in the cytoplasm receive fewer newly delivered enzymes.</p>
+  <p>In a separate experiment, another mutant cell line retains normal trafficking but shows failure to tag certain proteins with chemical groups needed for proper sorting; as a result, some enzymes that should be delivered to hydrolytic compartments are instead secreted.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Map the pathway: perinuclear <b>reticular network</b> = <b>rough ER</b> (protein entry during translation), stacked sacs = <b>Golgi</b>, then <b>secretory vesicles</b> → membrane.</li>
+    <li>Use the intervention: blocking ER→Golgi traffic causes buildup in ER and decreases secretion—so questions will test <b>where</b> proteins are made and <b>how</b> they’re routed.</li>
+    <li>Hydrolytic compartments are <b>lysosomes</b>; they need enzymes that are processed/sorted by the Golgi (often via chemical tags/signals).</li>
+    <li>When a sorting tag fails, predict <b>misdelivery</b> (e.g., lysosomal enzymes secreted) rather than a failure of protein synthesis.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. In Passage 3, the “perinuclear reticular network” where the hormone first appears most likely corresponds to:</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Smooth endoplasmic reticulum</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Nucleolus</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Rough endoplasmic reticulum</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Peroxisome</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Secreted proteins are translated on ribosomes bound to the rough ER and enter the ER lumen co-translationally; a perinuclear reticular network is classic ER morphology.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> SER is for lipid synthesis/detox and lacks ribosomes.</li>
+<li><b>C:</b> Nucleolus is for rRNA synthesis, not peptide hormone trafficking.</li>
+<li><b>D:</b> Peroxisomes handle VLCFA β-oxidation and H₂O₂-related reactions, not the secretory pathway.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. Blocking trafficking from the reticular network to the stacked sacs would most directly reduce which cellular process?</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Golgi-mediated modification and sorting of the hormone into secretory vesicles</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Transcription of the hormone gene in the nucleus</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Assembly of the mitotic spindle by centrioles</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Polymerization of keratin intermediate filaments</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> If ER→Golgi transport is blocked, proteins cannot reach the Golgi for processing (e.g., glycosylation) and sorting into vesicles, so secretion falls.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Transcription can continue even if trafficking is blocked; the block is post-translational trafficking.</li>
+<li><b>C:</b> Mitotic spindle organization is a microtubule/centriole function unrelated to secretory trafficking.</li>
+<li><b>D:</b> Intermediate filament polymerization affects structural integrity, not ER→Golgi processing.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. The mutant that fails to “tag” proteins for proper sorting and instead secretes enzymes that should go to hydrolytic compartments most directly implicates dysfunction of the:</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Nuclear envelope</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">B. Golgi apparatus</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Actin cleavage furrow</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Mitochondrial matrix</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The Golgi modifies proteins by adding chemical groups and sorting them via signals/tags to destinations including lysosomes. If tagging fails, lysosomal enzymes can be misrouted and secreted.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Mitochondria are for energy metabolism, not protein sorting tags.</li>
+<li><b>C:</b> The nuclear envelope separates nucleus/cytoplasm and controls transport, but it is not where sorting tags for lysosomal delivery are added.</li>
+<li><b>D:</b> Cleavage furrow actin dynamics relate to cytokinesis.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

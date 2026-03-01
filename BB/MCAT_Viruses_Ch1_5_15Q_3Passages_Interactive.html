@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Viruses (Ch. 1.5) (15Q + 3 Passages)</title>
+<style>
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+</style>
+<script>
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Biology — Viruses, Prions &amp; Viroids (Ch. 1.5)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A researcher isolates an infectious agent that cannot synthesize proteins unless it is inside a host cell. Which missing component most directly explains why this agent is an obligate intracellular parasite?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. A cell wall made of peptidoglycan</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Ribosomes for translation</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. A mitochondrion for oxidative phosphorylation</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. A plasma membrane</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Viruses lack ribosomes and therefore must hijack host ribosomes, tRNA, amino acids, and enzymes to translate viral proteins—making them obligate intracellular parasites.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Some viruses have envelopes; lack of a plasma membrane is not the key reason they cannot synthesize proteins.</li>
+<li><b>C:</b> Cell walls are bacterial structures; viruses are acellular and do not require peptidoglycan.</li>
+<li><b>D:</b> Viruses do not need their own mitochondria because they use host ATP and metabolic machinery.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A disinfectant protocol is redesigned for an outbreak on hospital surfaces. Which virus type is most likely to persist longest on dry surfaces and resist detergents?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Enveloped virus</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Bacteriophage (always killed by heat)</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">C. Nonenveloped virus</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Retrovirus (always fragile)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Nonenveloped viruses lack a lipid envelope and are generally more resistant to heat, detergents, and desiccation, allowing longer environmental persistence.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>A:</b> Enveloped viruses have lipid envelopes that are sensitive to detergents and drying.</li>
+<li><b>C:</b> Retroviruses are enveloped, but the key distinction is envelope vs none.</li>
+<li><b>D:</b> Bacteriophages vary; persistence is driven mainly by envelope presence/absence here.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. A virus has a single-stranded RNA genome that can be directly translated by host ribosomes immediately after entry. Which genome classification best fits?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Viroid</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Negative-sense RNA virus</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">C. Positive-sense RNA virus</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Double-stranded DNA virus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Positive-sense RNA functions like mRNA and can be directly translated by host ribosomes.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Negative-sense RNA must first be converted to a complementary strand before translation.</li>
+<li><b>C:</b> dsDNA viruses generally require transcription to mRNA, often involving the nucleus.</li>
+<li><b>D:</b> Viroids are small circular ssRNA pathogens (classically plant) and do not encode proteins like typical viruses.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. Which statement best explains why negative-sense RNA viruses must carry an RNA replicase in the virion?</b>
+  <div class="choice" onclick="selectChoice('q4', this, true)">A. They must synthesize a complementary RNA strand that can serve as mRNA for translation</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Host ribosomes can only translate DNA, not RNA</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. They must reverse transcribe RNA into DNA before any translation can occur</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. They must integrate into the host genome to be replicated</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Negative-sense RNA cannot be directly translated; an RNA-dependent RNA polymerase (replicase) is needed to produce a complementary (+) strand that can be translated.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Ribosomes translate RNA (mRNA), not DNA directly.</li>
+<li><b>C:</b> Reverse transcription is a retrovirus feature, not required for all negative-sense RNA viruses.</li>
+<li><b>D:</b> Integration into host DNA is not required for negative-sense RNA viruses in general.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A viral particle carries two identical single-stranded RNA molecules and an enzyme that synthesizes DNA from RNA. After infection, viral DNA becomes part of the host genome. Which virus type is described?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Viroid</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Prion</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">C. Retrovirus</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Positive-sense RNA virus without a DNA intermediate</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Retroviruses are enveloped ssRNA viruses that carry reverse transcriptase, make a DNA intermediate, and integrate into the host genome for long-term persistence.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Positive-sense RNA viruses generally replicate in the cytoplasm without integrating into host DNA.</li>
+<li><b>C:</b> Prions are infectious proteins with no nucleic acid genome.</li>
+<li><b>D:</b> Viroids are small circular ssRNA pathogens and are not defined by reverse transcriptase–driven integration.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. A DNA virus infects a human cell and must generate mRNA. According to the passage, which subcellular location is most directly required for transcription of most DNA viruses?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Rough endoplasmic reticulum</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Lysosome</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Mitochondrial matrix</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. Nucleus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Most DNA viruses must enter the nucleus to be transcribed into mRNA; the mRNA is then translated in the cytoplasm.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> RER is for translation/translocation of secreted proteins, not DNA transcription.</li>
+<li><b>C:</b> The mitochondrial matrix is not the typical site of viral genome transcription.</li>
+<li><b>D:</b> Lysosomes degrade material; they are not a transcription site.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. A virus exits a host cell by budding/extrusion, leaving the cell alive and able to continue producing virus. Which description best matches this state?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. A strictly lytic cycle that maximizes immediate host-cell death</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. A prion-like propagation of misfolded proteins</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. A lysogenic cycle in which no viral proteins are ever produced</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. A productive cycle that allows continued use of the host cell</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Extrusion/budding can preserve host viability, enabling ongoing viral production—often described as a productive infection.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Lytic infection typically ends with cell lysis and death.</li>
+<li><b>C:</b> Lysogeny can be relatively quiescent, but the key feature here is active release without lysis.</li>
+<li><b>D:</b> Prions propagate by protein misfolding, not by budding of virions.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. A bacteriophage attaches to a bacterium but does not enter the cell. Instead, it delivers only its genome across the bacterial envelope. Which structural component most directly enables this genome delivery?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Envelope glycoproteins that mediate budding</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Capsid proteins that fuse with the bacterial plasma membrane</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Tail sheath acting like a syringe</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Host cell ribosomes that pull in viral DNA</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Bacteriophages use their tail sheath to inject genetic material into bacteria, while leaving the capsid outside.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Many phages are nonenveloped and do not fuse like enveloped animal viruses.</li>
+<li><b>C:</b> Budding/envelope glycoproteins describe enveloped viruses, not classic phage injection.</li>
+<li><b>D:</b> Ribosomes translate mRNA; they do not import DNA across membranes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. A bacteriophage integrates into the host bacterial genome and is replicated as the bacterium divides, sometimes for many generations, until environmental stress triggers excision. Which cycle is described?</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Lysogenic cycle</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Lytic cycle</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Binary fission of a virus</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Productive extrusion cycle</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Integration as a prophage/provirus with replication alongside the host genome defines lysogeny; stress can induce excision back to a lytic phase.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> The lytic cycle rapidly produces virions and ends with host lysis.</li>
+<li><b>C:</b> Extrusion describes budding from eukaryotic cells, not prophage integration in bacteria.</li>
+<li><b>D:</b> Viruses do not divide by binary fission; they are assembled.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. During prophage excision from a bacterial genome, the phage accidentally carries adjacent bacterial genes into the next host. This event most directly contributes to:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Transformation</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Translation</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Conjugation</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">D. Transduction</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> When a phage packages and transfers host bacterial DNA between bacteria, the process is transduction.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Transformation is uptake of naked DNA from the environment.</li>
+<li><b>C:</b> Conjugation is DNA transfer via a sex pilus and cell–cell contact.</li>
+<li><b>D:</b> Translation is protein synthesis, not DNA transfer.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. A mutation eliminates CCR5 on a person’s white blood cells. Based on the passage, what is the most direct consequence regarding HIV infection?</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. HIV has difficulty binding and entering these cells, reducing susceptibility</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. HIV switches to infecting bacteria instead</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. HIV can still enter because receptors are not required</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. HIV becomes a nonenveloped virus and resists detergents</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Viruses require specific host receptors for entry; HIV uses CCR5 for infection of certain white blood cells, so loss of CCR5 can confer resistance.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Receptor binding is essential for viral tropism; without the receptor the cell is effectively ‘invisible.’</li>
+<li><b>C:</b> HIV is not a bacteriophage and does not infect bacteria.</li>
+<li><b>D:</b> Envelope status is viral; it does not change because a host receptor is absent.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. An infectious agent contains no nucleic acid and causes disease by converting a normal α-helical protein into a β-pleated sheet–rich form that aggregates. What is this agent?</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Prion</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Negative-sense RNA virus</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Bacteriophage</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Viroid</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Prions are infectious proteins that propagate by inducing misfolding (often α-helix → β-sheet), leading to insoluble aggregates.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Viroids are small circular ssRNA and do contain nucleic acid.</li>
+<li><b>C:</b> Negative-sense RNA viruses contain RNA genomes and require replicase.</li>
+<li><b>D:</b> Bacteriophages are viruses with nucleic acid genomes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A plant pathogen is a short circular single-stranded RNA that can silence genes by binding complementary RNA sequences. Which term best describes it?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Prion</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Prophage</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Retrovirus</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Viroid</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Viroids are small circular ssRNA pathogens (classically in plants) that can disrupt gene expression through RNA–RNA interactions and gene silencing.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Prions are proteins without nucleic acids.</li>
+<li><b>C:</b> Retroviruses are enveloped ssRNA viruses that reverse transcribe and integrate.</li>
+<li><b>D:</b> A prophage is integrated bacteriophage DNA in bacteria.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. Hepatitis D virus (HDV) alone is described as relatively innocuous but becomes pathogenic when co-infecting with hepatitis B virus (HBV). Which inference best fits the passage’s explanation?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. HDV becomes an enveloped bacteriophage inside hepatocytes</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. HBV reverse transcribes HDV RNA into DNA for integration</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">C. HDV’s gene-silencing effects become clinically significant in hepatocytes during coinfection with HBV</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. HDV provides ribosomes to HBV, enabling HBV protein synthesis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> The passage notes HDV can exert gene-silencing effects and that disease emerges particularly during coinfection with HBV in hepatocytes.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Viruses do not provide ribosomes; they use host ribosomes.</li>
+<li><b>C:</b> Reverse transcription is not attributed to HBV in the provided passage.</li>
+<li><b>D:</b> Bacteriophages infect bacteria, not human hepatocytes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. A bacteriophage quickly hijacks bacterial machinery, produces many virions, and lyses the host cell. In bacteriophage terminology, this phage is best described as:</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Viroid</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Virulent</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Prophage</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Temperate</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Phages in the lytic phase are termed virulent; they prioritize rapid replication and host lysis.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Temperate phages can enter lysogeny (integration) rather than immediate lysis.</li>
+<li><b>C:</b> A prophage is the integrated viral genome during lysogeny, not the phage classification for immediate lysis.</li>
+<li><b>D:</b> Viroids are subviral circular ssRNA plant pathogens, not bacteriophages.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1: Two Outbreaks, Two Disinfection Failures -->
+<div class="passage-header">
+  <span>Passage 1: Two Outbreaks, Two Disinfection Failures</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A university clinic experiences two outbreaks of respiratory illness in separate dormitories. In Dorm A, cases rise quickly but decline after custodial staff begin routine cleaning with detergent-based wipes. In Dorm B, however, new cases continue for days despite the same cleaning protocol, and environmental swabs from doorknobs remain positive even after surfaces dry.</p>
+  <p>Electron microscopy of virions from Dorm A reveals a lipid-containing envelope with surface proteins. Virions from Dorm B lack an envelope and appear to have only a protein coat surrounding the genome. Both viruses bind specific receptors on epithelial cells, but only Dorm A’s virus is readily inactivated by heat and desiccation.</p>
+  <p>To reduce transmission, the infection-control team considers adding an alcohol-based sanitizer, increasing drying time, and emphasizing hand hygiene. They also note that in Dorm A, infected cells release virus over multiple days without widespread cell lysis, while in Dorm B, infected cells frequently burst after accumulating large numbers of virions.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Classify by structure: <b>lipid envelope</b> vs <b>no envelope</b> predicts sensitivity to <b>detergents/desiccation</b>.</li>
+    <li>Link persistence: if swabs stay positive after drying + detergent cleaning, suspect a <b>nonenveloped</b> virus that resists desiccation.</li>
+    <li>For release: <b>budding/extrusion</b> keeps cells alive (productive infection); <b>lysis</b> spills virions but kills the cell.</li>
+    <li>Use multiple clues together (cleaning response + EM structure + release behavior) rather than one sentence.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. Which dorm’s outbreak is most consistent with a nonenveloped virus, and why?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Dorm B, because nonenveloped viruses resist detergents and desiccation and can persist on dry surfaces</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Dorm A, because enveloped viruses are harder to kill</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Dorm A, because envelopes protect viruses from drying</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Dorm B, because envelopes make viruses resistant to alcohol</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Dorm B remains positive after drying and detergent cleaning; nonenveloped viruses lack a fragile lipid envelope and therefore persist longer under these conditions.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Enveloped viruses are generally easier to inactivate because detergents disrupt the lipid envelope.</li>
+<li><b>C:</b> Envelopes are sensitive to desiccation; they do not protect strongly against drying.</li>
+<li><b>D:</b> Alcohol and detergents tend to disrupt lipid envelopes; envelopes do not confer resistance here.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. The observation that Dorm A’s infected cells release virus over multiple days without widespread lysis most directly suggests which progeny-release mechanism?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Lysogenic integration with no virion production</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">B. Extrusion/budding that preserves host-cell viability</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Immediate host-cell lysis after genome injection</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Prion-like templated misfolding of host proteins</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Budding/extrusion allows continuous release of virions while keeping the host cell alive, enabling sustained production over time.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Lysis would kill cells and typically end long-term production in that cell.</li>
+<li><b>C:</b> Pure lysogeny would not match active, ongoing release of virions.</li>
+<li><b>D:</b> Prions do not form virions or use budding for release.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. If the infection-control team must choose one additional intervention most likely to preferentially reduce Dorm A’s virus transmission, which choice best follows from the passage?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Target bacterial ribosomes to block viral protein synthesis</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Increase use of detergents/alcohol-based agents that disrupt lipid envelopes</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Avoid detergents because they stabilize viral envelopes</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Rely only on drying time because nonenveloped viruses are most sensitive to desiccation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Dorm A’s virus is enveloped and sensitive to detergents/heat/desiccation; strengthening envelope-disrupting sanitizers should preferentially reduce it.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Nonenveloped viruses tend to resist desiccation; ‘drying time only’ is not a targeted strategy and does not follow from the evidence.</li>
+<li><b>C:</b> Detergents disrupt envelopes; they do not stabilize them.</li>
+<li><b>D:</b> Viruses lack ribosomes; antibiotics against bacterial ribosomes would not stop viral translation on host ribosomes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2: A Newly Discovered RNA Virus -->
+<div class="passage-header">
+  <span>Passage 2: A Newly Discovered RNA Virus</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A team isolates an RNA virus from patients with acute gastroenteritis. After entry into cultured human cells, viral proteins appear within minutes. Early translation occurs even when nuclear import is chemically blocked, and viral replication factories are visualized in the cytoplasm.</p>
+  <p>When purified virions are analyzed, researchers detect an enzyme that can synthesize RNA using an RNA template. However, no DNA intermediate is detected during infection. In a separate assay, the viral genome is added to a cell-free translation system containing ribosomes, tRNA, and amino acids. Protein is produced without adding any other viral components.</p>
+  <p>A related virus from the same family is found to have a genome that cannot be translated in the cell-free system unless an RNA-dependent RNA polymerase is added. This related virus also shows a longer ‘eclipse period’ before protein production is detected in infected cells.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Use where/when translation happens: rapid cytoplasmic protein production + nuclear blockade suggests an <b>RNA virus</b> translated in the cytoplasm.</li>
+    <li>Cell-free translation is decisive: if the naked genome produces protein, it behaves like <b>positive-sense RNA</b> (mRNA-like).</li>
+    <li>If translation requires added polymerase, the genome likely starts as <b>negative-sense RNA</b> and must be copied to (+) RNA first.</li>
+    <li>Exclude retrovirus: the passage finds <b>no DNA intermediate</b> and emphasizes RNA→RNA copying.</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. The primary isolate is most likely a:</b>
+  <div class="choice" onclick="selectChoice('q19', this, true)">A. Positive-sense single-stranded RNA virus</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Negative-sense single-stranded RNA virus</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Retrovirus that obligatorily forms a DNA intermediate</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Double-stranded DNA virus requiring nuclear transcription</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Its genome can be directly translated in a ribosome-based cell-free system, indicating it functions like mRNA (positive-sense RNA).</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Negative-sense RNA cannot be directly translated and must first be copied into a complementary (+) strand.</li>
+<li><b>C:</b> Retroviruses produce a DNA intermediate via reverse transcriptase; the passage finds no DNA intermediate.</li>
+<li><b>D:</b> dsDNA viruses typically require nuclear transcription to generate mRNA, inconsistent with early translation despite nuclear import blockade.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. Why does the related virus exhibit a longer eclipse period before protein production?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. It must convert α-helices to β-sheets to assemble virions</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. It must integrate into host DNA and wait for cell division</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. It must first synthesize a complementary RNA strand before translation can begin</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Its capsid must enter the nucleus to be translated by nuclear ribosomes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> A longer delay is expected if the incoming genome is negative-sense and must be converted to a translatable (+) RNA by an RNA-dependent RNA polymerase.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Translation occurs on cytosolic ribosomes; there are no ‘nuclear ribosomes’ for translation.</li>
+<li><b>C:</b> α→β conversion describes prion biology, not RNA virus replication kinetics.</li>
+<li><b>D:</b> Integration into host DNA is characteristic of retroviruses, not required for generic negative-sense RNA viruses.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. Which virion-associated enzyme is most essential for initiating infection by the related virus?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. DNA-dependent RNA polymerase II</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">B. RNA-dependent RNA polymerase (RNA replicase)</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Catalase</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Reverse transcriptase</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Negative-sense RNA viruses must carry RNA replicase to generate the complementary (+) strand that can be translated by host ribosomes.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Reverse transcriptase is used by retroviruses to make DNA from RNA.</li>
+<li><b>C:</b> Host RNA polymerase II transcribes DNA to RNA in the nucleus; it does not copy RNA genomes in the cytoplasm.</li>
+<li><b>D:</b> Catalase is unrelated to viral genome replication.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3: Persistent Phage Infection and Gene Transfer -->
+<div class="passage-header">
+  <span>Passage 3: Persistent Phage Infection and Gene Transfer</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A microbiology lab studies a bacteriophage that infects a strain of Escherichia coli. Under nutrient-poor conditions, infected bacteria continue to divide, and phage DNA is detected in the bacterial chromosome across many generations. During this period, the culture shows reduced susceptibility to infection by a second, unrelated phage strain.</p>
+  <p>After exposure to ultraviolet radiation, many bacteria in the culture lyse and release large numbers of phage particles. Sequencing of some released phage particles reveals that they carry a small segment of bacterial DNA adjacent to the original phage integration site.</p>
+  <p>When these phage particles infect a new bacterial strain, some recipients acquire the bacterial gene segment and display a new phenotype. The investigators conclude that environmental stress can switch the phage’s strategy and can also contribute to genetic exchange between bacteria.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Quiet heritable phase: phage DNA in chromosome across generations = <b>lysogenic cycle</b> (prophage).</li>
+    <li>Superinfection clue: lysogeny can reduce susceptibility to other phages (superinfection exclusion).</li>
+    <li>After UV, widespread lysis + many particles indicates induction to the <b>lytic cycle</b>.</li>
+    <li>Phage carrying adjacent bacterial DNA supports <b>transduction</b> (phage-mediated gene transfer).</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. During nutrient-poor conditions, the phage is most likely in which state, and what is the strongest evidence?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Lytic state, supported by bacterial division</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Lysogenic state, supported by phage DNA integrated in the bacterial chromosome across many generations</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Transformation state, supported by DNA in the chromosome</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Productive budding state, supported by reduced superinfection</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Integration of phage DNA as a prophage and replication with the host genome defines lysogeny; persistence across generations is the key evidence.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> In the lytic cycle, the host typically lyses after virion production rather than dividing for many generations.</li>
+<li><b>C:</b> Budding/extrusion is typical of enveloped animal viruses, not bacteriophages in bacteria.</li>
+<li><b>D:</b> Transformation is uptake of naked DNA from the environment, not phage genome integration.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. The appearance of bacterial DNA within some released phage particles after UV exposure most directly indicates:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Gene silencing by circular ssRNA</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Conjugation via sex pili</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Reverse transcription of bacterial RNA into DNA</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">D. Transduction due to packaging of host DNA during prophage excision</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> When a phage transfers bacterial genes between bacteria after accidentally packaging host DNA, the mechanism is transduction.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Conjugation requires cell–cell contact and pili, not phage particles.</li>
+<li><b>C:</b> Reverse transcription is a retrovirus process, not typical bacteriophage behavior here.</li>
+<li><b>D:</b> Gene silencing by circular ssRNA describes viroids, not bacteriophage gene transfer.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. Why might the lysogenic phase reduce susceptibility of the bacterium to superinfection by other phages?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Because lysogeny eliminates all viral receptors on human cells</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Because the prophage supplies ribosomes that outcompete other phages</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Because the bacterium no longer has a cell membrane receptor for nutrients</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Presence of an integrated prophage can interfere with successful infection by additional phages</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> An integrated prophage can confer superinfection exclusion, making infection by additional phages less successful, consistent with the passage’s observation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Nutrient receptors are not the key evidence; the passage points to phage–host interactions that reduce superinfection.</li>
+<li><b>C:</b> Viruses do not supply ribosomes.</li>
+<li><b>D:</b> This is a bacterium–phage system; human receptors are irrelevant.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>
