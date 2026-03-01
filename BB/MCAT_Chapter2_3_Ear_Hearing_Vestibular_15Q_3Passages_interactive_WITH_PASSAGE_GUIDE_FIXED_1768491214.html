@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Practice — Hearing & Vestibular (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:22px; font-weight:bold; margin-bottom:20px; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{ background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06); }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+  .section-header{ background:#0f4fa0; color:#fff; padding:12px 15px; border-radius:8px; font-size:18px; font-weight:bold; margin-top:5px; margin-bottom:12px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold; display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff; border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:20px; font-weight:bold; margin-top:35px; margin-bottom:10px; }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; line-height:1.85; box-shadow:0 1px 3px rgba(0,0,0,0.08);
+                 text-align: justify; text-justify: inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .passage-header{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .passage-toggle-btn{ background:rgba(255,255,255,0.92); border:1px solid rgba(255,255,255,0.55);
+                       color:#0b3f8e; padding:7px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+                       font-size:13px; box-shadow:0 1px 2px rgba(0,0,0,0.12); white-space:nowrap; }
+  .passage-toggle-btn:hover{ transform: translateY(-1px); }
+  .passage-guide{ display:none; background:#ffffff; border-left:5px solid #1565c0; border-radius:8px;
+                  padding:12px 14px; margin: 0 0 14px 0; line-height:1.75;
+                  box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .passage-guide h4{ margin:0 0 8px 0; color:#0f4fa0; font-size:16px; }
+  .passage-guide ul{ margin:8px 0 0 18px; }
+  .passage-guide li{ margin:6px 0; }
+
+</style>
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct');
+    const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none';
+    if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct':'incorrect');
+    const fbC=q.querySelector('.fb-correct');
+    const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct');
+      const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none';
+      if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn=document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+
+  function togglePassageGuide(id){
+    const el=document.getElementById(id);
+    if(!el) return;
+    const open = (el.style.display === 'block');
+    el.style.display = open ? 'none' : 'block';
+    const btn=document.querySelector('[data-guide="'+id+'"]');
+    if(btn){ btn.textContent = open ? 'How to reason' : 'Hide reasoning'; }
+  }
+
+</script>
+</head>
+<body>
+  <div class="main-header">
+    👂 MCAT Practice — Hearing & Vestibular Sense (15Q + 3 Passages × 3Q)
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+<div class="section-header">📝 15 Standalone Questions</div>
+
+<div class="question" id="q1">
+  <b>1. A sound wave first reaches the pinna (auricle). The primary function of the pinna is to:</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. Channel sound waves into the external auditory canal</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Convert vibrations directly into action potentials</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Equalize pressure between middle ear and environment</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Detect rotational acceleration</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The pinna/auricle collects and funnels sound into the external auditory canal, directing waves toward the tympanic membrane.</div>
+  </details>
+</div>
+
+<div class="question" id="q2">
+  <b>2. Which pairing correctly matches a sound property to the tympanic membrane’s vibration?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Loudness → frequency of vibration</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">B. Pitch → frequency of vibration</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Pitch → amplitude of vibration</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Timbre → membrane thickness</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Pitch corresponds to frequency (faster vibration = higher pitch). Loudness is more closely tied to amplitude/intensity.</div>
+  </details>
+</div>
+
+<div class="question" id="q3">
+  <b>3. The ossicles of the middle ear transmit vibrations from the tympanic membrane to the:</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Round window</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Basilar membrane</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">C. Oval window</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Tectorial membrane</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Malleus → incus → stapes; the stapes footplate drives the oval window, transmitting vibration into the cochlea.</div>
+  </details>
+</div>
+
+<div class="question" id="q4">
+  <b>4. The Eustachian tube is most directly involved in:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Transducing sound into neural signals</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Amplifying sound via lever action</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Producing endolymph</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. Equalizing pressure between the middle ear and the environment</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The Eustachian tube connects the middle ear to the nasopharynx and equalizes pressure across the tympanic membrane.</div>
+  </details>
+</div>
+
+<div class="question" id="q5">
+  <b>5. Which fluid is potassium-rich and fills the membranous labyrinth?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Perilymph</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Endolymph</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Cerebrospinal fluid</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Aqueous humor</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Endolymph is K+-rich and fills the membranous labyrinth; perilymph surrounds it within the bony labyrinth.</div>
+  </details>
+</div>
+
+<div class="question" id="q6">
+  <b>6. Why is the round window important for hearing mechanics?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. It is where the vestibulocochlear nerve exits the cochlea</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">B. It allows perilymph movement because inner-ear fluids are essentially incompressible</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. It contains the organ of Corti</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. It contains otoliths for linear acceleration</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Stapes motion at the oval window pushes perilymph. The round window provides compliance so perilymph can move even though fluid is nearly incompressible.</div>
+  </details>
+</div>
+
+<div class="question" id="q7">
+  <b>7. Hair cells in the organ of Corti primarily transduce mechanical vibration into:</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Electrical signals (receptor potentials) that can drive neural activity</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Hormonal signals released into the bloodstream</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Direct contraction of ossicles</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Changes in aqueous humor drainage</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Bending stereocilia opens ion channels and produces receptor potentials, which ultimately drive signaling via CN VIII to the CNS.</div>
+  </details>
+</div>
+
+<div class="question" id="q8">
+  <b>8. In place theory of hearing, high-frequency sounds maximally vibrate hair cells located:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. At the apex of the cochlea (far from oval window)</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Near the oval window (base of the cochlea)</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Only in the vestibule</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Only in semicircular canals</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">High-frequency pitch peaks at the base near the oval window; low-frequency pitch peaks toward the apex.</div>
+  </details>
+</div>
+
+<div class="question" id="q9">
+  <b>9. Which structure detects linear acceleration (e.g., elevator motion) as part of vestibular sense?</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Utricle and saccule</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Semicircular canals</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Inferior colliculus</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Medial geniculate nucleus</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Utricle and saccule detect linear acceleration using otoliths that lag during motion and bend underlying hair cells.</div>
+  </details>
+</div>
+
+<div class="question" id="q10">
+  <b>10. The semicircular canals are most specialized for detecting:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Light intensity</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Pitch via tonotopic mapping</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Rotational acceleration of the head</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Blood pressure changes</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Semicircular canals detect rotational acceleration: endolymph lags during head rotation, bending hair cells in the ampulla.</div>
+  </details>
+</div>
+
+<div class="question" id="q11">
+  <b>11. In the auditory pathway, most sound information ascends to the thalamic nucleus called the:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Lateral geniculate nucleus (LGN)</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. Medial geniculate nucleus (MGN)</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Suprachiasmatic nucleus (SCN)</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Ventral posterior nucleus (VPN)</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Auditory signals relay in the MGN of the thalamus before projecting to auditory cortex in the temporal lobe (LGN is for vision/light).</div>
+  </details>
+</div>
+
+<div class="question" id="q12">
+  <b>12. Which structure is most associated with localizing the source of a sound?</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Superior olive</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Superior colliculus</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Primary visual cortex</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Basilar membrane apex</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Some auditory pathway fibers project to the superior olive, which helps localize sound sources.</div>
+  </details>
+</div>
+
+<div class="question" id="q13">
+  <b>13. The inferior colliculus is most directly associated with:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Color processing</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. Startle reflex and certain eye-fixation/vestibulo–ocular reflex functions</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Conscious taste perception</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Pressure equalization in the middle ear</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Inferior colliculus participates in reflex circuitry (e.g., startle) and helps coordinate certain reflexive responses during head/eye movements.</div>
+  </details>
+</div>
+
+<div class="question" id="q14">
+  <b>14. Which statement best summarizes “tonotopic organization” of the cochlea?</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Different frequencies activate different locations along the basilar membrane</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Sound intensity is mapped only in the vestibule</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Only the tectorial membrane encodes pitch</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. All frequencies maximally activate the same hair cells</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Tonotopy maps frequency to place: which basilar membrane region (which hair cells) is most active indicates pitch.</div>
+  </details>
+</div>
+
+<div class="question" id="q15">
+  <b>15. Which statement correctly links brain region and lobe for most auditory perception?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Auditory cortex → occipital lobe</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Auditory cortex → frontal lobe only</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Auditory cortex → parietal lobe only</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">D. Auditory cortex → temporal lobe</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Auditory cortex is in the temporal lobe; most sound information ultimately projects there for processing.</div>
+  </details>
+</div>
+
+<div class="passage-header"><span>📘 Passage 1 — Middle-ear pressure, ossicles, and cochlear fluid mechanics</span><button class="passage-toggle-btn" data-guide="pg1" onclick="togglePassageGuide('pg1')">How to reason</button></div>
+<div class="passage-guide" id="pg1"><h4>How to reason from this passage</h4>
+<ul>
+  <li><b>Tag each structure → function</b>: Eustachian tube (pressure equalization), ossicles (mechanical transmission), oval window (entry), round window (pressure release for incompressible fluid).</li>
+  <li><b>Identify the failure point</b>: a retracted tympanic membrane during descent points to pressure mismatch → Eustachian tube.</li>
+  <li><b>Use the “incompressible fluid” rule</b>: if perilymph cannot displace, basilar membrane vibration falls → hair-cell stimulation drops.</li>
+  <li><b>Convert to question logic</b>: when asked “why hearing decreases,” look for which step reduces basilar membrane motion (oval/round window mechanics).</li>
+</ul></div>
+
+<div class="passage-box">
+
+<p>A 21-year-old develops severe ear discomfort during airplane descent. Otoscopic examination shows an intact tympanic membrane that appears retracted. Audiometry shows transient conductive hearing loss. The clinician explains that the middle ear is connected to the nasopharynx by the Eustachian tube, which normally equalizes pressure.</p>
+
+<p>To explore sound conduction, researchers model the middle ear as a mechanical linkage: malleus → incus → stapes. Vibrations from the tympanic membrane are transmitted to the stapes footplate at the oval window of the cochlea.</p>
+
+<p>Inside the cochlea, perilymph transmits the vibration through fluid spaces surrounding the hearing apparatus. Because fluid is essentially incompressible, a membrane-covered opening called the round window allows perilymph to move back and forth, enabling vibration of the basilar membrane under the organ of Corti.</p>
+
+<p>The researchers predict that dysfunction at any step that reduces movement at the oval window or prevents perilymph displacement will diminish basilar membrane vibration and reduce sensory transduction by hair cells.</p>
+
+</div>
+
+<div class="question" id="q16">
+  <b>16. The retracted tympanic membrane during descent most directly suggests impaired function of which structure?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Eustachian tube</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Round window</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Utricle</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Auditory cortex</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Failure of the Eustachian tube to equalize pressure during descent creates a pressure differential that retracts the tympanic membrane and reduces conduction.</div>
+  </details>
+</div>
+
+<div class="question" id="q17">
+  <b>17. In the mechanical linkage described, vibrations are delivered to the cochlea primarily via the:</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Round window</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Ampulla</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Optic chiasm</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Oval window</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The stapes footplate drives the oval window, transmitting vibration into the cochlea.</div>
+  </details>
+</div>
+
+<div class="question" id="q18">
+  <b>18. Blocking motion at the round window would reduce hair-cell stimulation mainly because it would:</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Prevent pressure equalization in the middle ear</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Prevent otolith bending in the vestibule</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Prevent perilymph displacement since cochlear fluid is incompressible</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Directly silence the MGN</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The round window provides compliance for perilymph movement. Without it, perilymph cannot move effectively, reducing basilar membrane vibration and hair-cell stimulation.</div>
+  </details>
+</div>
+
+<div class="passage-header"><span>📘 Passage 2 — Place theory, basilar membrane mapping, and selective pitch loss</span><button class="passage-toggle-btn" data-guide="pg2" onclick="togglePassageGuide('pg2')">How to reason</button></div>
+<div class="passage-guide" id="pg2"><h4>How to reason from this passage</h4>
+<ul>
+  <li><b>Translate the mapping</b>: cochlea is <b>tonotopic</b> → frequency is encoded by <b>place</b> along the basilar membrane.</li>
+  <li><b>Anchor points</b>: high frequency peaks near the <b>base/oval window</b>; low frequency peaks near the <b>apex</b>.</li>
+  <li><b>Lesion logic</b>: damage at one location predicts a <b>selective pitch loss</b> (not a global deficit).</li>
+  <li><b>Pathway check</b>: CN VIII → brainstem → <b>MGN</b> → temporal auditory cortex; use this to eliminate vision (LGN/occipital) distractors.</li>
+</ul></div>
+
+<div class="passage-box">
+
+<p>Researchers deliver pure tones of different frequencies while recording auditory-nerve responses. They emphasize that the cochlea is tonotopically organized: different sound frequencies activate different locations along the basilar membrane.</p>
+
+<p>High-frequency tones peak near the base close to the oval window, whereas low-frequency tones peak toward the apex farther from the oval window. Hair cells in the organ of Corti sit on the basilar membrane and generate receptor potentials when their stereocilia bend.</p>
+
+<p>Signals travel via the vestibulocochlear nerve to the brainstem and typically relay through the medial geniculate nucleus (MGN) of the thalamus before reaching auditory cortex in the temporal lobe.</p>
+
+<p>Based on this mapping, the team predicts that localized damage in specific basilar membrane regions will produce frequency-specific hearing deficits.</p>
+
+</div>
+
+<div class="question" id="q19">
+  <b>19. A lesion restricted to the basal portion of the basilar membrane would most strongly impair detection of:</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Low-frequency tones</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Visual motion</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Rotational acceleration</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. High-frequency tones</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">High-frequency pitch peaks at the base (close to the oval window). Basal lesions therefore impair high-pitch detection most.</div>
+  </details>
+</div>
+
+<div class="question" id="q20">
+  <b>20. Cochlear tonotopy implies that pitch is encoded mainly by:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. The amount of pressure in the Eustachian tube</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. The amount of perilymph present</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. Which hair-cell location is maximally vibrated along the basilar membrane</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. The activity of the superior olive only</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Place theory: different frequencies peak at different basilar membrane locations; the activated location signals pitch.</div>
+  </details>
+</div>
+
+<div class="question" id="q21">
+  <b>21. Which pathway best matches the flow of information described for hearing?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Optic nerve → LGN → occipital cortex</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Olfactory nerve → cortex without thalamic relay</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Somatosensory nerves → spinal cord → parietal cortex</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. Vestibulocochlear nerve → brainstem → MGN → auditory cortex (temporal lobe)</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The passage describes CN VIII to brainstem, then relay at MGN, then projection to auditory cortex in temporal lobe.</div>
+  </details>
+</div>
+
+<div class="passage-header"><span>📘 Passage 3 — Vestibular hair cells: linear vs rotational acceleration</span><button class="passage-toggle-btn" data-guide="pg3" onclick="togglePassageGuide('pg3')">How to reason</button></div>
+<div class="passage-guide" id="pg3"><h4>How to reason from this passage</h4>
+<ul>
+  <li><b>Classify the motion</b>: linear (elevator/acceleration) vs rotational (spinning/turning head).</li>
+  <li><b>Match structure</b>: linear → <b>utricle/saccule</b> with <b>otoliths</b>; rotational → <b>semicircular canals</b> with <b>ampulla</b>.</li>
+  <li><b>Inertia principle</b>: otoliths or endolymph <b>lag behind</b> during motion → hair-cell bending → receptor potential.</li>
+  <li><b>Differential deficit</b>: normal rotation but poor linear sensing → points to utricle/saccule (not canals).</li>
+</ul></div>
+
+<div class="passage-box">
+
+<p>A student studies balance perception using two motion paradigms: (1) elevator-like linear acceleration and (2) rapid head rotation in a swivel chair. The student notes that vestibular receptors use hair cells, but they are located in different inner-ear structures than the organ of Corti.</p>
+
+<p>For linear acceleration, the utricle and saccule (vestibule) contain hair cells topped with otoliths. During acceleration, otoliths resist motion due to inertia, bending stereocilia and changing receptor potentials.</p>
+
+<p>For rotational acceleration, the three semicircular canals end in ampullae containing hair cells. When the head rotates, endolymph lags behind due to inertia, bending hair cells in the ampulla.</p>
+
+<p>The student predicts that selective damage to vestibular substructures will disrupt only one class of acceleration sensing.</p>
+
+</div>
+
+<div class="question" id="q22">
+  <b>22. Which structure is most critical for sensing elevator-like linear acceleration?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Semicircular canals</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Organ of Corti</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Utricle and saccule</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. MGN</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Linear acceleration is sensed by utricle and saccule where otoliths bend the underlying hair cells.</div>
+  </details>
+</div>
+
+<div class="question" id="q23">
+  <b>23. During head rotation, vestibular hair cells are stimulated primarily because:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Endolymph moves faster than the head and pushes hair cells forward</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Perilymph becomes compressible</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Otoliths dissolve and change K+ concentration</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">D. Endolymph lags due to inertia and bends hair cells in the ampulla</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Rotation causes endolymph to lag due to inertia; this deflects hair bundles in the ampulla and changes receptor potentials.</div>
+  </details>
+</div>
+
+<div class="question" id="q24">
+  <b>24. A patient senses rotation normally but has impaired linear-acceleration detection. The most likely affected structure is:</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Superior olive</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Inferior colliculus</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. Utricle/saccule</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Semicircular canals</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Normal rotation suggests semicircular canals are intact. Impaired linear acceleration points to utricle/saccule dysfunction.</div>
+  </details>
+</div>
+
+</body>
+</html>

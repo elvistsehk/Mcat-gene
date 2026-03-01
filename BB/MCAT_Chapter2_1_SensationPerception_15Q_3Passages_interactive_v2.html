@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Chapter 2.1 — Sensation & Perception (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:22px; font-weight:bold; margin-bottom:20px; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{ background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06); }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+  .section-header{ background:#0f4fa0; color:#fff; padding:12px 15px; border-radius:8px; font-size:18px; font-weight:bold; margin-top:5px; margin-bottom:12px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold; display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff; border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:20px; font-weight:bold; margin-top:35px; margin-bottom:10px; }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; line-height:1.80; box-shadow:0 1px 3px rgba(0,0,0,0.08);
+                 text-align: justify; text-justify: inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .passage-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#0f4fa0; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:14px; box-shadow:0 1px 2px rgba(0,0,0,0.12); }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .reasoning-box{ display:none; background:#fff; padding:14px 15px; border-radius:8px; margin:-10px 0 20px 0; line-height:1.75; box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:6px solid #0f4fa0; }
+  .reasoning-box ol{ margin:8px 0 0 20px; }
+  .reasoning-box .key{ color:#0f4fa0; font-weight:700; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){ if (fbC) fbC.style.display='flex'; if (fbI) fbI.style.display='none'; }
+    else { if (fbC) fbC.style.display='none'; if (fbI) fbI.style.display='flex'; }
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + '-reason');
+    const btn = document.getElementById(pid + '-btn');
+    if(!box || !btn) return;
+    const isOpen = box.style.display === 'block';
+    box.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? 'How to reason' : 'Hide reasoning';
+  }
+</script>
+
+</head>
+<body>
+  <div class="main-header">
+    👁️🧠 MCAT Practice — Chapter 2.1 Sensation & Perception (15Q + 3 Passages × 3Q)
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+<div class="section-header">📝 15 Standalone Questions</div>
+
+<div class="question" id="q1">
+  <b>1. Which statement best distinguishes sensation from perception as described in the passage?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Sensation is the interpretation of meaning in the cortex, whereas perception is the conversion of stimuli into action potentials.</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Sensation is transduction of physical stimuli into neural signals; perception is CNS processing that assigns significance to those signals.</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Sensation occurs only in the spinal cord, whereas perception occurs only in peripheral nerves.</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Sensation requires prior learning, whereas perception is entirely innate and reflexive.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Sensation aligns with transduction: converting physical/chemical energy into neural signals (action potentials and neurotransmitter signaling). Perception refers to how the CNS processes and interprets those signals to assign meaning. Perception is therefore more influenced by experience, attention, motives, and expectations.</div>
+  </details>
+</div>
+
+<div class="question" id="q2">
+  <b>2. A stimulus that is below the absolute threshold will most directly result in which outcome?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. The stimulus reaches the CNS but does not become conscious (subliminal).</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. The stimulus is transduced but misinterpreted due to bias.</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">C. The stimulus is not transduced into action potentials and therefore does not reach the CNS.</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. The stimulus is detected only after repeated exposure due to adaptation.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The absolute threshold is the minimum stimulus energy needed for transduction. Below it, receptors do not generate action potentials, so no sensory signal is delivered to the CNS for interpretation.</div>
+  </details>
+</div>
+
+<div class="question" id="q3">
+  <b>3. Which example best illustrates the difference between a distal stimulus and a proximal stimulus?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. A candle flame (distal) and the photons from the flame reaching the retina (proximal).</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Neurotransmitter release in the cortex (distal) and action potentials in a sensory neuron (proximal).</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. A ganglion (distal) and the spinal cord (proximal).</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. A person’s expectation of a sound (distal) and their report of hearing it (proximal).</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Distal stimuli are physical objects in the environment; proximal stimuli are the energy forms those objects produce that directly contact receptors (photons, sound waves, heat, pressure, dissolved/volatile chemicals).</div>
+  </details>
+</div>
+
+<div class="question" id="q4">
+  <b>4. Which receptor type is most directly responsible for detecting rotational acceleration in the inner ear?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Thermoreceptors</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Mechanoreceptors (hair cells responding to fluid movement)</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Osmoreceptors</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Nociceptors</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Inner-ear hair cells are mechanoreceptors. They transduce mechanical movement of fluid into electrical signals, supporting hearing and vestibular senses (including rotational and linear acceleration).</div>
+  </details>
+</div>
+
+<div class="question" id="q5">
+  <b>5. Ganglia are best described as:</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Collections of neuron cell bodies found outside the central nervous system.</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Bundles of myelinated axons found exclusively inside the brain.</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Synapses between two cortical association areas.</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Fluid-filled cavities that resorb cerebrospinal fluid.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Ganglia are clusters of neuron cell bodies in the PNS. Sensory signals often pass through sensory ganglia before traveling along pathways to brain projection areas.</div>
+  </details>
+</div>
+
+<div class="question" id="q6">
+  <b>6. A stimulus is strong enough to be transduced and sent to the CNS but is not consciously perceived. This best describes:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. A stimulus below the absolute threshold</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. A stimulus below the difference threshold</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. A stimulus below the threshold of conscious perception (subliminal perception)</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. A stimulus above the threshold of conscious perception (supraliminal perception)</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Subliminal perception means the stimulus exceeds the absolute threshold (so it reaches the CNS) but does not exceed the threshold of conscious perception (so it is not registered by attention/consciousness systems).</div>
+  </details>
+</div>
+
+<div class="question" id="q7">
+  <b>7. A participant can barely detect a faint odor when it is present. Which threshold is being measured most directly?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Difference threshold (JND)</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Threshold of conscious perception</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">C. Absolute threshold</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Weber fraction</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Detecting the minimum intensity needed to sense that a stimulus is present (not comparing two stimuli) tests the absolute threshold: the minimum intensity that can be transduced.</div>
+  </details>
+</div>
+
+<div class="question" id="q8">
+  <b>8. Which scenario best reflects a difference threshold (just-noticeable difference) rather than an absolute threshold?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Determining whether a tone is present or absent at very low intensity</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Determining whether a flashlight is on in an otherwise dark room</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Determining the smallest change in weight that a person can reliably notice while holding a backpack</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Determining whether a smell reaches the olfactory epithelium</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Difference threshold (JND) is the smallest change in magnitude needed to perceive two stimuli as different. It is a &#x27;change detection&#x27; problem, not a &#x27;presence/absence&#x27; problem.</div>
+  </details>
+</div>
+
+<div class="question" id="q9">
+  <b>9. In discrimination testing for pitch, a participant hears a 440 Hz tone followed by a slightly higher tone. The experimenter increases the second tone until the participant reports a change. The recorded interval most directly represents:</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. The participant’s absolute threshold for hearing</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">B. The participant’s just-noticeable difference (difference threshold) for pitch near 440 Hz</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. The participant’s visual detection bias</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. The participant’s threshold of conscious perception for touch</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">In discrimination testing, the stimulus is varied until the participant first notices a difference. That smallest detectable change is the difference threshold (JND) in that stimulus range.</div>
+  </details>
+</div>
+
+<div class="question" id="q10">
+  <b>10. Weber’s law predicts that, for many senses, the just-noticeable difference is best expressed as:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. A constant absolute difference, independent of the starting magnitude</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. A percentage (ratio) of the original stimulus magnitude</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. A value determined only by receptor type, not stimulus magnitude</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. A function of conscious attention, unrelated to stimulus energy</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Weber’s law: ΔI/I ≈ constant. JND is proportional to the baseline intensity, so it is most meaningfully expressed as a fraction/percentage of the original stimulus.</div>
+  </details>
+</div>
+
+<div class="question" id="q11">
+  <b>11. A person’s JND for a 440 Hz tone is 3 Hz. Using Weber’s law, what frequency difference would be predicted to be just noticeable around 1000 Hz?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. 3 Hz</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. 5 Hz</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. 7 Hz (approximately)</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. 30 Hz</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Compute the Weber fraction: 3/440 ≈ 0.0068. Apply to 1000 Hz: 0.0068×1000 ≈ 6.8 Hz, ~7 Hz. The key is proportional (percent) change, not a fixed 3 Hz difference.</div>
+  </details>
+</div>
+
+<div class="question" id="q12">
+  <b>12. In signal detection theory, a false alarm occurs when a participant:</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Reports that a signal was present on a catch trial (no signal presented)</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Fails to report a signal on a noise trial (signal presented)</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Correctly reports that no signal was present on a catch trial</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Correctly reports that a signal was present on a noise trial</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Catch trial = no signal. False alarm = saying &#x27;signal&#x27; when none occurred. Hits/misses happen on noise trials (signal-present). Correct negative happens on catch trials.</div>
+  </details>
+</div>
+
+<div class="question" id="q13">
+  <b>13. A participant is told to expect that their name will be called in a noisy crowd. Compared with a participant not given this information, signal detection theory most directly predicts an increase in:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Correct negatives only, without changing any errors</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. False alarms and hits (a more liberal criterion)</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Misses and correct negatives (a more liberal criterion)</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Absolute threshold of the auditory receptors</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Expectations shift decision criterion (bias). A more liberal criterion increases &#x27;yes&#x27; responses: more hits when signal is present, but more false alarms when signal is absent. This does not necessarily change receptor absolute threshold.</div>
+  </details>
+</div>
+
+<div class="question" id="q14">
+  <b>14. Which statement best captures the main idea of sensory adaptation in this chapter?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Adaptation makes absolute thresholds drop to zero over time.</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Adaptation helps the nervous system prioritize changes by reducing responsiveness to constant, unchanging stimuli.</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Adaptation eliminates the need for transduction in sensory receptors.</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Adaptation occurs only in vision and never in hearing or touch.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The passage describes adaptation as helping mind and body focus on the most relevant stimuli—often changes. Constant stimulation becomes less noticeable, so changes stand out more relative to the background.</div>
+  </details>
+</div>
+
+<div class="question" id="q15">
+  <b>15. After spending several minutes in a cold pool, the water feels less cold even though the temperature has not changed. This example is best categorized as:</b>
+  <div class="choice" onclick="selectChoice('q15', this, true)">A. Sensory adaptation that can include both physiological and perceptual components</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. A decrease in the absolute threshold for thermoreceptors to zero</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. A violation of Weber’s law</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. A change in distal stimuli without change in proximal stimuli</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Perceived cold decreases despite constant stimulus intensity. Adaptation can involve receptor-level physiology and/or perceptual attention/interpretation shifts that reduce responsiveness to constant stimuli.</div>
+  </details>
+</div>
+
+<div class="passage-header">  <span>📘 Passage 1 - Campfire Signals and Conscious Perception</span>  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button></div>
+
+<div class="passage-box">
+
+  <p>A group of students sits near a campfire after sunset. One student, Ana, notices the flickering light immediately. Another student, Ben, is focused on a conversation and does not report seeing the flicker until someone points it out. Both students’ retinas receive photons from the fire, and both can later describe the crackling sounds and warmth when asked.</p>
+
+  <p>A researcher explains that the campfire itself is a distal stimulus, while photons, sound waves, and heat that contact sensory receptors are proximal stimuli. The researcher emphasizes that receptors transduce proximal stimuli into electrical signals that travel through sensory pathways and ganglia to projection areas in the brain.</p>
+
+  <p>To study perception, the researcher presents brief, very dim flashes of light while participants complete a demanding reading task. The flashes are calibrated to be above the minimum intensity that can activate photoreceptors, but are sometimes missed when participants are distracted.</p>
+
+</div>
+
+
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify what is <span class="key">distal</span> (object in the environment) vs <span class="key">proximal</span> (energy reaching receptors).</li>
+    <li>If receptors are activated, the <span class="key">absolute threshold</span> is exceeded. If it’s not reported, think about the <span class="key">threshold of conscious perception</span> and <span class="key">attention</span>.</li>
+    <li>When the stem mentions “pointed out” or “noticed after cue,” consider <span class="key">top-down</span> influences and awareness rather than transduction failure.</li>
+    <li>Choose the option that matches the implied mechanism (signal reached CNS but not awareness vs never transduced).</li>
+  </ol>
+</div>
+
+
+<div class="question" id="q16">
+  <b>16. Ben’s failure to report the flicker until it is pointed out is most consistent with the idea that the flicker signals were:</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Below the absolute threshold, so no transduction occurred</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Unable to reach the CNS because ganglia exist only inside the brain</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Below the difference threshold between distal and proximal stimuli</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Above the absolute threshold but below the threshold of conscious perception while his attention was elsewhere</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Because photons reached Ben’s retina, transduction could occur (absolute threshold exceeded). However, his lack of report until prompted suggests the signal did not reach conscious awareness due to attentional focus—i.e., it fell below the threshold of conscious perception at that moment.</div>
+  </details>
+</div>
+
+<div class="question" id="q17">
+  <b>17. Which pairing correctly identifies a distal stimulus and a proximal stimulus from the passage?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Campfire = distal; photons reaching the retina = proximal</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Photons reaching the retina = distal; campfire = proximal</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Action potentials in the optic nerve = distal; campfire = proximal</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Projection areas in the brain = distal; sound waves = proximal</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Distal stimulus is the physical object (campfire). Proximal stimulus is the energy contacting receptors (photons at the retina). Neural signals are downstream consequences, not distal/proximal stimuli.</div>
+  </details>
+</div>
+
+<div class="question" id="q18">
+  <b>18. The dim flashes are above photoreceptor activation level but are sometimes not reported during reading. Which threshold is most directly implicated by the role of attention?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Absolute threshold</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Difference threshold</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Threshold of conscious perception</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Weber fraction</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">If photoreceptors are activated, the absolute threshold is surpassed. Failure to report the stimulus under distraction indicates that the limiting factor is conscious awareness/attention—i.e., the threshold of conscious perception.</div>
+  </details>
+</div>
+
+<div class="passage-header">  <span>📘 Passage 2 - Discrimination Testing, Weber’s Law, and Adaptation</span>  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button></div>
+
+<div class="passage-box">
+
+  <p>A psychophysics lab investigates pitch perception. Participants hear a 440 Hz reference tone followed by a second tone that is slightly higher. After each pair, participants answer whether the two tones sound different. The experimenter increases the second tone in small steps until the participant first reports a difference; this smallest detectable change is recorded as the just-noticeable difference (JND).</p>
+
+  <p>In a second phase, participants repeat the task using a 1000 Hz reference tone. The lab expects the absolute change needed for a JND to be larger at 1000 Hz than at 440 Hz, even if the percentage change is similar. The lab describes this pattern as consistent with Weber’s law.</p>
+
+  <p>Finally, participants sit in constant loud background noise for 10 minutes before repeating the pitch task. Many participants then require a slightly larger frequency separation to notice a change, suggesting an effect of adaptation on sensitivity to small differences.</p>
+
+</div>
+
+
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Determine if the task is <span class="key">presence/absence</span> (absolute threshold) or <span class="key">change detection</span> (difference threshold/JND).</li>
+    <li>Apply Weber’s law: JND scales with baseline magnitude (<span class="key">ΔI/I ≈ constant</span>), so higher baselines need larger absolute changes.</li>
+    <li>For adaptation, ask: does constant stimulation make you <span class="key">less sensitive</span> to small changes? That would <span class="key">increase</span> the JND.</li>
+    <li>Use the passage trend (more noise exposure → larger JND) to eliminate options that predict increased sensitivity.</li>
+  </ol>
+</div>
+
+
+<div class="question" id="q19">
+  <b>19. The method used (increasing the comparison tone until the participant first reports a difference) is best described as:</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Signal detection theory because it tracks false alarms and misses</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. A test of subliminal perception because the tones never reach the CNS</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. A measure of absolute threshold because it tests whether any tone is present</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. Psychophysical discrimination testing used to estimate a difference threshold (JND)</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">This procedure is classic discrimination testing: vary the stimulus gradually and record the smallest change that produces a perceived difference. That value is the difference threshold (JND) for pitch in that range.</div>
+  </details>
+</div>
+
+<div class="question" id="q20">
+  <b>20. If the JND at 440 Hz corresponds to a 0.68% change, which comparison tone would be predicted to be just noticeably different from 1000 Hz?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. 1001 Hz</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. 1003 Hz</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. 1030 Hz</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. 1007 Hz</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Apply Weber’s law: Δf/f ≈ constant. Δf = 0.0068×1000 ≈ 6.8 Hz. Thus the just-noticeable comparison tone is ~1007 Hz.</div>
+  </details>
+</div>
+
+<div class="question" id="q21">
+  <b>21. After constant background noise, participants require larger frequency differences. This most directly suggests adaptation:</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Lowered the difference threshold by increasing sensitivity</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Had no effect because adaptation is only visual</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Eliminated transduction in auditory receptors</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. Increased the difference threshold by reducing responsiveness to small changes</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Adaptation often reduces responsiveness to constant stimulation. If you need a larger change to notice a difference, the difference threshold has increased—indicating reduced sensitivity to small changes after exposure.</div>
+  </details>
+</div>
+
+<div class="passage-header">  <span>📘 Passage 3 - Signal Detection in a Noisy Environment</span>  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button></div>
+
+<div class="passage-box">
+
+  <p>A hospital researcher studies how well nurses detect a soft alarm tone in a busy ward. During each trial, the ward audio either contains the alarm tone mixed into background noise or contains only background noise. After each trial, nurses indicate whether they heard the alarm.</p>
+
+  <p>Half of the nurses are told, “The alarm is likely to occur in the next few trials,” while the other half receive no expectation cue. The researcher records the rate of hits, misses, false alarms, and correct negatives. Nurses sometimes feel they ‘almost heard something’ even on trials with no alarm, especially when expecting the alarm.</p>
+
+  <p>In a separate task, the researcher plays extremely brief alarm bursts that are strong enough to be transduced by auditory receptors, but so brief and subtle that many nurses do not consciously notice them unless their attention is directed toward listening.</p>
+
+</div>
+
+
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Classify each trial: signal present vs signal absent (catch trial). Then map responses to <span class="key">hit/miss/false alarm/correct negative</span>.</li>
+    <li>If expectation increases “yes” responses, that’s a <span class="key">more liberal criterion</span> → more <span class="key">hits</span> and more <span class="key">false alarms</span>.</li>
+    <li>Brief bursts that are transduced but not consciously noticed highlight <span class="key">absolute threshold</span> vs <span class="key">conscious threshold</span>.</li>
+    <li>Pick the answer that connects the decision rule/bias (criterion) rather than receptor sensitivity.</li>
+  </ol>
+</div>
+
+
+<div class="question" id="q22">
+  <b>22. A ‘miss’ occurs when a nurse:</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Reports hearing the alarm when it was not presented</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Correctly reports hearing the alarm when it was presented</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Correctly reports no alarm on a trial with no alarm</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. Fails to report hearing the alarm on a trial in which the alarm was presented</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">On signal-present (noise) trials, outcomes are hit or miss. A miss is failing to detect/report the signal even though it was presented.</div>
+  </details>
+</div>
+
+<div class="question" id="q23">
+  <b>23. Compared with the no-cue group, the expectation cue would most directly be predicted to increase:</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Hits and false alarms</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Misses and correct negatives</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Hits and correct negatives</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Misses and false alarms</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Expectation shifts criterion toward saying &#x27;yes.&#x27; This increases hits when the alarm is present, but also increases false alarms when it is absent. This is a bias effect central to signal detection theory.</div>
+  </details>
+</div>
+
+<div class="question" id="q24">
+  <b>24. The brief alarm bursts are transduced but often not consciously noticed unless attention is directed to listening. This best illustrates the distinction between:</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Weber’s law and discrimination testing</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Distal and proximal stimuli</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Absolute threshold and difference threshold</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Absolute threshold and threshold of conscious perception</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">If bursts are transduced, they exceed absolute threshold. If they are not consciously noticed, they do not exceed the threshold of conscious perception. This is the definition of subliminal perception: above absolute threshold but below conscious threshold.</div>
+  </details>
+</div>
+
+</body>
+</html>

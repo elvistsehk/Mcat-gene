@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Chapter 2.2 — Vision (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:22px; font-weight:bold; margin-bottom:20px; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{ background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06); }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+  .section-header{ background:#0f4fa0; color:#fff; padding:12px 15px; border-radius:8px; font-size:18px; font-weight:bold; margin-top:5px; margin-bottom:12px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold; display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff; border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:20px; font-weight:bold; margin-top:35px; margin-bottom:10px; }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; line-height:1.85; box-shadow:0 1px 3px rgba(0,0,0,0.08);
+                 text-align: justify; text-justify: inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .passage-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#0f4fa0; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:14px; box-shadow:0 1px 2px rgba(0,0,0,0.12); }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .reasoning-box{ display:none; background:#fff; padding:14px 15px; border-radius:8px; margin:-10px 0 20px 0; line-height:1.75; box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:6px solid #0f4fa0; }
+  .reasoning-box ol{ margin:8px 0 0 20px; }
+  .reasoning-box .key{ color:#0f4fa0; font-weight:700; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){ if (fbC) fbC.style.display='flex'; if (fbI) fbI.style.display='none'; }
+    else { if (fbC) fbC.style.display='none'; if (fbI) fbI.style.display='flex'; }
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + '-reason');
+    const btn = document.getElementById(pid + '-btn');
+    if(!box || !btn) return;
+    const isOpen = box.style.display === 'block';
+    box.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? 'How to reason' : 'Hide reasoning';
+  }
+</script>
+
+</head>
+<body>
+  <div class="main-header">
+    👁️ MCAT Practice — Chapter 2.2 Vision (15Q + 3 Passages × 3Q)
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+<div class="section-header">📝 15 Standalone Questions</div>
+
+<div class="question" id="q1">
+  <b>1. Incoming light passes through the cornea before reaching deeper structures. According to the passage, the cornea primarily:</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Contains photoreceptors that transduce light into neural signals</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Gathers and focuses incoming light as a clear, dome-like window</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Adjusts its shape via accommodation to focus at varying distances</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Drains aqueous humor into the canal of Schlemm</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The chapter describes the cornea as a clear, dome-like window that &#x27;gathers and focuses the incoming light.&#x27; Accommodation is lens shape change via ciliary muscle; aqueous drainage is via the canal of Schlemm; photoreceptors are in the retina.</div>
+  </details>
+</div>
+
+<div class="question" id="q2">
+  <b>2. Which structure is described as the thick, structural &#x27;white of the eye&#x27; that covers most of the exposed eye?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Sclera</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Choroid</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Retina</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Cornea</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The sclera is the thick structural outer layer (the &#x27;white of the eye&#x27;). The cornea is the clear front window; the choroid is a vascular layer; the retina is the neural layer containing photoreceptors.</div>
+  </details>
+</div>
+
+<div class="question" id="q3">
+  <b>3. Aqueous humor is produced by the ciliary body and drains into which structure mentioned in the chapter?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Vitreous humor</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Lens capsule</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">C. Canal of Schlemm</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Optic disk</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Aqueous humor is produced by the ciliary body and drains into the canal of Schlemm. Vitreous humor is a gel behind the lens; the optic disk is where the optic nerve exits and lacks photoreceptors.</div>
+  </details>
+</div>
+
+<div class="question" id="q4">
+  <b>4. Which autonomic pattern correctly matches the iris muscles described in the chapter?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Sympathetic stimulation constricts the pupil via the constrictor pupillae</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Parasympathetic stimulation dilates the pupil via the dilator pupillae</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Sympathetic stimulation dilates the pupil via the dilator pupillae</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Parasympathetic stimulation dilates the pupil via the dilator pupillae</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The iris contains dilator pupillae (sympathetic → opens/dilates pupil) and constrictor pupillae (parasympathetic → constricts pupil). MCAT often maps this to fight-or-flight vs rest-and-digest physiology.</div>
+  </details>
+</div>
+
+<div class="question" id="q5">
+  <b>5. Accommodation is best described as:</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Drainage of aqueous humor from the anterior chamber to regulate pressure</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Changing lens shape via ciliary muscle contraction to focus at varying distances</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. The crossing of nasal retinal fibers at the optic chiasm</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Parallel analysis of color, motion, and depth in separate cortical pathways</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Accommodation refers to focusing at different distances by changing lens curvature. The ciliary muscle (part of the ciliary body) contracts under parasympathetic control, pulling on suspensory ligaments and reshaping the lens.</div>
+  </details>
+</div>
+
+<div class="question" id="q6">
+  <b>6. The duplexity (duplicity) theory of vision states that the retina contains two photoreceptor types specialized for:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Sound and touch</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Motion and depth</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Light-dark detection and color detection</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Smell and taste</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Duplexity theory = rods and cones. Rods specialize in light/dark detection (especially in dim light), whereas cones specialize in color vision and fine detail.</div>
+  </details>
+</div>
+
+<div class="question" id="q7">
+  <b>7. Which statement best explains why rods support vision in reduced illumination?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Rods are concentrated only in the fovea, maximizing acuity in dim light</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Rods are highly sensitive and contain a single pigment type, rhodopsin</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Rods come in three wavelength-specific types (S, M, L)</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Rods have low convergence onto ganglion cells, preserving fine detail</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Rods are more functional in reduced illumination because they are easier to stimulate (high photon sensitivity) and all rods contain one pigment type, rhodopsin. Fovea is cone-only, S/M/L are cone types, and rods generally have higher convergence (lower resolution).</div>
+  </details>
+</div>
+
+<div class="question" id="q8">
+  <b>8. Visual acuity is best at the fovea because the fovea contains:</b>
+  <div class="choice" onclick="selectChoice('q8', this, true)">A. Only cones and a very high cone density</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Only rods and a very high rod density</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. No photoreceptors, creating a blind spot</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Only ganglion cells, maximizing action potentials</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The macula has a high concentration of cones, and the fovea (center of the macula) contains only cones. Cones support fine detail in bright light, so acuity peaks at the fovea.</div>
+  </details>
+</div>
+
+<div class="question" id="q9">
+  <b>9. The optic disk produces a blind spot because it is:</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. A region with only rods, which cannot detect color</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. A region with only cones, which saturate in bright light</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. Devoid of photoreceptors where the optic nerve exits the eye</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. The area of highest cone concentration</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">At the optic disk, the optic nerve leaves the eye. The chapter states this region is devoid of photoreceptors (no rods or cones), creating a blind spot.</div>
+  </details>
+</div>
+
+<div class="question" id="q10">
+  <b>10. In the retinal circuit described, rods and cones synapse directly onto:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Ganglion cells</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Bipolar cells</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. LGN neurons</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Feature detector cells</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Photoreceptors synapse onto bipolar cells, which then synapse onto ganglion cells; ganglion axons form the optic nerve. LGN and feature detectors are later in the pathway.</div>
+  </details>
+</div>
+
+<div class="question" id="q11">
+  <b>11. As more photoreceptors converge (through bipolar neurons) onto a single ganglion cell, what happens to spatial resolution?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Resolution increases because more receptors create more detailed output</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Resolution is unchanged because ganglion cells encode each receptor separately</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Resolution decreases because signals are pooled and details are pruned</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Resolution decreases only for cones but not for rods</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Ganglion output represents combined activity from many receptors. Greater convergence improves sensitivity but averages spatial information, reducing fine detail (lower resolution). Rod pathways typically show higher convergence than cone pathways.</div>
+  </details>
+</div>
+
+<div class="question" id="q12">
+  <b>12. Horizontal and amacrine cells contribute most directly to:</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Edge detection by accentuating contrasts between adjacent inputs</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Accommodation by changing lens curvature</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Crossing of nasal fibers at the optic chiasm</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Secretion of aqueous humor</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The chapter explains that horizontal and amacrine cells integrate local input and accentuate small differences between nearby signals, increasing perceived contrast—key for edge/boundary detection.</div>
+  </details>
+</div>
+
+<div class="question" id="q13">
+  <b>13. At the optic chiasm, which retinal fibers cross to the opposite side?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Temporal fibers only</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. Nasal fibers only</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. All fibers from the left eye only</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. All fibers from both eyes</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">A core rule emphasized: only nasal retinal fibers cross at the optic chiasm; temporal fibers remain ipsilateral.</div>
+  </details>
+</div>
+
+<div class="question" id="q14">
+  <b>14. Which sequence best represents the primary pathway for conscious visual processing described?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Optic nerve → superior colliculus → LGN → occipital cortex</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Retina → optic nerve → optic chiasm → optic tract → LGN → optic radiations → visual cortex (occipital lobe)</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Cornea → iris → canal of Schlemm → retina → occipital cortex</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Retina → hippocampus → amygdala → visual cortex</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Main conscious pathway: retina (ganglion axons) → optic nerve → partial crossing at optic chiasm → optic tracts → synapse in LGN (thalamus) → optic radiations → occipital visual cortex.</div>
+  </details>
+</div>
+
+<div class="question" id="q15">
+  <b>15. Which pairing best matches parvocellular vs magnocellular processing?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Parvocellular: high temporal/low spatial; Magnocellular: high spatial/low temporal</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Parvocellular: motion detection; Magnocellular: fine color detail</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Parvocellular: high color/spatial resolution for detailed form; Magnocellular: high temporal resolution for motion with low spatial detail</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Parvocellular: depth via binocular neurons; Magnocellular: edge detection via horizontal cells</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Parvocellular layers support fine detail/color (high spatial resolution) but low temporal resolution; magnocellular layers support motion (high temporal resolution) but blurrier detail (low spatial resolution), often fed by peripheral vision.</div>
+  </details>
+</div>
+
+<div class="passage-header">  <span>📘 Passage 1 - Eye Pressure, Accommodation, and Autonomic Control</span>  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button></div>
+
+<div class="passage-box">
+
+  <p>A 24-year-old medical student reports intermittent blurry vision after long study sessions. During an eye exam, the clinician notes that the student’s pupils are larger than expected in a brightly lit room. The student also reports that focusing on nearby text feels difficult after drinking several cups of coffee before late-night studying.</p>
+
+  <p>To investigate, the clinician administers a drug that increases parasympathetic signaling to the eye. Minutes later, the student’s pupils become smaller and near vision improves. However, the clinician also worries about intraocular pressure because the student’s family history includes glaucoma. The clinician explains that the front of the eye is bathed in aqueous humor that must drain appropriately to maintain normal pressure.</p>
+
+  <p>A follow-up test suggests partial blockage of the eye’s drainage pathway. The clinician emphasizes that fluid is produced by the ciliary body, flows through the anterior segment, and drains through a specialized channel. If drainage is impaired, pressure can rise and damage neural structures that transmit visual signals to the brain.</p>
+
+</div>
+
+
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Pupil size: <span class="key">sympathetic</span> → dilator pupillae → dilation; <span class="key">parasympathetic</span> → constrictor pupillae → constriction.</li>
+    <li>Near vision improvement after parasympathetic boost points to <span class="key">accommodation</span> (ciliary muscle changes lens curvature).</li>
+    <li>Eye pressure/glaucoma clues point to aqueous humor <span class="key">outflow</span>; drainage problem → think <span class="key">canal of Schlemm</span>.</li>
+    <li>Choose the option that links the drug’s autonomic effect to the specific structure in the passage.</li>
+  </ol>
+</div>
+
+
+<div class="question" id="q16">
+  <b>16. The pupil constriction after increasing parasympathetic signaling is best explained by activation of which iris muscle?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Dilator pupillae, causing dilation</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Sphincter of Schlemm, causing constriction</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Ciliary muscle, causing dilation</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Constrictor pupillae, causing constriction</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Parasympathetic stimulation constricts the pupil by contracting the constrictor pupillae (as described in the chapter). The dilator pupillae is sympathetic. The ciliary muscle is for accommodation, not pupil size.</div>
+  </details>
+</div>
+
+<div class="question" id="q17">
+  <b>17. The improved near vision after boosting parasympathetic signaling most directly reflects enhanced:</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Edge detection in the retina</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Magnocellular motion processing in the LGN</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Crossing of temporal fibers at the optic chiasm</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Accommodation via ciliary muscle contraction changing lens shape</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Accommodation is lens shape change controlled by the ciliary muscle under parasympathetic control. Stronger parasympathetic drive can facilitate focusing for near tasks by altering lens curvature.</div>
+  </details>
+</div>
+
+<div class="question" id="q18">
+  <b>18. The drainage channel whose blockage can raise intraocular pressure corresponds to the:</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. Canal of Schlemm</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Optic chiasm</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Vitreous humor</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Macula</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Aqueous humor is produced by the ciliary body and drains into the canal of Schlemm. Reduced outflow elevates intraocular pressure, risking optic nerve damage (a classic glaucoma mechanism).</div>
+  </details>
+</div>
+
+<div class="passage-header">  <span>📘 Passage 2 - Retina Circuitry and Visual Acuity in Dim vs Bright Light</span>  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button></div>
+
+<div class="passage-box">
+
+  <p>Researchers compare visual performance under two conditions. In bright daylight, participants identify tiny letters presented at the center of their visual field. At night, the same participants attempt to detect the presence of a faint moving shape in their peripheral vision while walking along a dimly lit street.</p>
+
+  <p>The researchers explain that the central retina contains a region with an especially high concentration of cones, and that the centermost portion of that region contains only cones. They also note that rods are far more numerous overall and are distributed widely across the retina, becoming more common as one moves away from the retinal center.</p>
+
+  <p>To explore how retinal wiring affects detail, the researchers measure how many photoreceptors feed into single ganglion cells. They find that in many peripheral regions, large numbers of photoreceptors converge onto each ganglion cell. Participants in these regions detect faint stimuli well but struggle to discriminate fine details.</p>
+
+</div>
+
+
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Bright, detailed central vision → <span class="key">cones</span> + <span class="key">fovea</span> (high acuity).</li>
+    <li>Dim, peripheral detection → <span class="key">rods</span> (high sensitivity) and often <span class="key">magnocellular</span> strengths for motion.</li>
+    <li>High convergence improves sensitivity but reduces <span class="key">spatial resolution</span> (pooling signals → less detail).</li>
+    <li>Use the passage’s contrast (faint detection good, detail poor) to pick the convergence explanation.</li>
+  </ol>
+</div>
+
+
+<div class="question" id="q19">
+  <b>19. Which specialized retinal region contains only cones and supports maximal visual acuity in bright light?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Optic disk</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Superior colliculus</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Canal of Schlemm</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. Fovea</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The chapter states the fovea (center of the macula) contains only cones. Cones support fine detail in bright light, producing maximal acuity at the fovea.</div>
+  </details>
+</div>
+
+<div class="question" id="q20">
+  <b>20. The night-time task emphasizes detecting a faint moving peripheral stimulus. Which combination best fits this scenario?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Cones + parvocellular cells</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Cones + magnocellular cells</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Rods + parvocellular cells</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Rods + magnocellular cells</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Dim-light sensitivity is driven by rods (high photon sensitivity, rhodopsin). Motion detection is a magnocellular strength (high temporal resolution), and magnocellular pathways often rely on peripheral input. Therefore rods + magnocellular processing best matches.</div>
+  </details>
+</div>
+
+<div class="question" id="q21">
+  <b>21. Why does high convergence of photoreceptors onto one ganglion cell reduce fine detail discrimination?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. It prevents ganglion cells from generating action potentials</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. It removes the blind spot at the optic disk</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. It eliminates the optic chiasm crossing</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. It pools signals across space, improving sensitivity but reducing spatial resolution</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">High convergence averages information over a larger retinal area. This increases sensitivity (helpful in dim light) but &#x27;prunes details&#x27; so spatial resolution drops—making fine detail discrimination worse.</div>
+  </details>
+</div>
+
+<div class="passage-header">  <span>📘 Passage 3 - Visual Field Terminology, Optic Chiasm, and Reflexive Pathways</span>  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button></div>
+
+<div class="passage-box">
+
+  <p>A neuroscience class demonstrates visual field mapping. A student fixates on a central point while an assistant briefly flashes a stimulus slightly to the student’s left. The instructor reminds the class that, because of geometry, objects in one side of visual space stimulate a specific side of the retina in each eye.</p>
+
+  <p>Next, the instructor introduces nasal versus temporal terminology for both visual fields and retinal fibers. For the student’s right eye, the flashed object is in the nasal visual field because photons must cross the nose to reach that eye. Those photons, however, strike the temporal retinal fibers of the right eye. For the left eye, the same object is in the temporal visual field and strikes nasal retinal fibers of the left eye.</p>
+
+  <p>Finally, the instructor explains that at the optic chiasm only nasal retinal fibers cross. After the chiasm, signals travel in optic tracts. Some fibers synapse in the thalamus (LGN) before reaching the occipital visual cortex, while other fibers branch to midbrain structures that coordinate reflexive responses to sudden light changes.</p>
+
+</div>
+
+
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Visual geometry: each eye’s <span class="key">nasal visual field</span> hits <span class="key">temporal retina</span>, and <span class="key">temporal visual field</span> hits <span class="key">nasal retina</span>.</li>
+    <li>At the optic chiasm, only <span class="key">nasal retinal fibers</span> cross; temporal fibers stay ipsilateral.</li>
+    <li>Conscious pathway goes through <span class="key">LGN</span> → visual cortex; reflexive eye movements/light reflexes use midbrain targets like <span class="key">superior colliculus</span>.</li>
+    <li>Pick the option that matches the specific step (field→retina mapping vs chiasm crossing vs reflex target).</li>
+  </ol>
+</div>
+
+
+<div class="question" id="q22">
+  <b>22. In the example, the flash is in the nasal visual field of the right eye. Which fibers of the right retina does it stimulate?</b>
+  <div class="choice" onclick="selectChoice('q22', this, true)">A. Temporal fibers</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Nasal fibers</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Both equally</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. No fibers (optic disk)</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Key rule: for each eye, nasal visual field stimulates temporal retinal fibers (and temporal visual field stimulates nasal fibers). The passage explicitly states nasal field of the right eye → temporal fibers of the right retina.</div>
+  </details>
+</div>
+
+<div class="question" id="q23">
+  <b>23. Which fibers cross at the optic chiasm?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Temporal fibers from both eyes</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. All fibers from the right eye only</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. All fibers from the left eye only</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">D. Nasal fibers from both eyes</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Only nasal retinal fibers cross at the optic chiasm. This rearrangement ensures that information from the left visual world is processed in the right hemisphere and vice versa.</div>
+  </details>
+</div>
+
+<div class="question" id="q24">
+  <b>24. The rapid reflexive alignment of the eyes after a sudden bright flash is attributed to projections to the:</b>
+  <div class="choice" onclick="selectChoice('q24', this, true)">A. Superior colliculus</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Hippocampus</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Cerebellum</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Anterior cingulate cortex</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The chapter states that some optic tract fibers bypass the thalamus and project to the superior colliculi in the midbrain, which control reflexive responses to visual stimuli and reflexive eye movements.</div>
+  </details>
+</div>
+
+</body>
+</html>

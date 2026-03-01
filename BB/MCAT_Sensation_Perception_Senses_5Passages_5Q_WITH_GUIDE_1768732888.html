@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Practice — Sensation, Perception & Sensory Systems (5 Passages × 5Q)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:22px; font-weight:bold; margin-bottom:20px; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{ background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06); }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+  .section-header{ background:#0f4fa0; color:#fff; padding:12px 15px; border-radius:8px; font-size:18px; font-weight:bold; margin-top:5px; margin-bottom:12px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold; display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff; border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:20px; font-weight:bold; margin-top:35px; margin-bottom:10px; }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; line-height:1.85; box-shadow:0 1px 3px rgba(0,0,0,0.08);
+                 text-align: justify; text-justify: inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .passage-header{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .passage-toggle-btn{ background:rgba(255,255,255,0.92); border:1px solid rgba(255,255,255,0.55);
+                       color:#0b3f8e; padding:9px 14px; border-radius:10px; cursor:pointer; font-weight:bold;
+                       font-size:15px; box-shadow:0 1px 2px rgba(0,0,0,0.12); white-space:nowrap; }
+  .passage-toggle-btn:hover{ transform: translateY(-1px); }
+  .passage-guide{ display:none; background:#ffffff; border-left:5px solid #1565c0; border-radius:8px;
+                  padding:12px 14px; margin: 0 0 14px 0; line-height:1.75;
+                  box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .passage-guide h4{ margin:0 0 8px 0; color:#0f4fa0; font-size:16px; }
+  .passage-guide ul{ margin:8px 0 0 18px; }
+  .passage-guide li{ margin:6px 0; }
+
+
+
+/* How-to-reason button (ensure consistent size across passages) */
+.passage-header button[data-guide]{
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255,255,255,0.95);
+  color: #1565c0;
+  border: 1px solid rgba(0,0,0,0.18);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+  flex: 0 0 auto;
+  min-height: 32px;
+  line-height: 1.1;
+
+  transform: none;
+  letter-spacing: 0.1px;}
+.passage-header button[data-guide]:active{ transform: translateY(1px); }
+.passage-header button[data-guide]:hover{ filter: brightness(0.98); }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct');
+    const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none';
+    if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct':'incorrect');
+    const fbC=q.querySelector('.fb-correct');
+    const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct');
+      const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none';
+      if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn=document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+
+  function togglePassageGuide(id){
+    const el=document.getElementById(id);
+    if(!el) return;
+    const open = (el.style.display === 'block');
+    el.style.display = open ? 'none' : 'block';
+    const btn=document.querySelector('[data-guide="'+id+'"]');
+    if(btn){ btn.textContent = open ? 'How to reason' : 'Hide reasoning'; }
+  }
+
+
+</script>
+</head>
+
+<body>
+
+<div class="main-header">
+    🧠 MCAT Practice — Sensation, Perception & Sensory Systems (5 Passages × 5Q)
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+<div class="section-header">Passage-Based Questions (5 passages × 5 questions)</div>
+<div class="passage-header"><span>📘 Passage 1 — Thresholds, adaptation, and just-noticeable differences</span>
+<button data-guide="pg1" onclick="togglePassageGuide('pg1')">How to reason</button></div>
+<div class="passage-guide" id="pg1"><h4>How to reason from this passage</h4>
+<ul>
+<li><b>Classify the threshold first</b>: ask whether the manipulation changes <i>transduction</i> (absolute threshold) or <i>awareness/attention</i> (conscious threshold).</li>
+<li><b>Use percent change logic</b>: for JND questions, test whether the passage implies a roughly constant <i>ratio</i> (Weber’s law) rather than a constant absolute difference.</li>
+<li><b>Track time</b>: if detection changes after prolonged exposure, consider <i>adaptation</i> (physiological and/or attentional).</li>
+<li><b>Convert observations to predictions</b>: if background noise increases, expect more misses/false alarms unless the decision rule changes.</li>
+</ul></div>
+<div class="passage-box">
+<p>A psychophysics lab measures light sensitivity using brief flashes on a dark screen. In each trial, a flash may be presented (signal) or absent (catch). Participants report whether they saw a flash.</p>
+<p>At baseline, participants detect a 2.0-unit flash about half the time. When the same 2.0-unit flash is presented for a longer duration (200 ms instead of 20 ms), detection rises substantially even though intensity is unchanged.</p>
+<p>Next, participants stare at a dim grey background for 3 minutes before trials begin. After this exposure, they require a larger intensity to notice small changes in brightness around the background level, even though they still detect very bright flashes easily.</p>
+<p>Finally, the lab compares just-noticeable differences (JNDs). When the reference flash is 10 units, the average JND is 1 unit; when the reference is 20 units, the average JND is 2 units.</p>
+</div>
+<div class="question" id="q1">
+  <b>1. The improvement in detection when flash duration increases (20 ms → 200 ms) most directly reflects a change in which concept?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Absolute threshold (transduction) for photoreceptors</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Threshold of conscious perception (signal large/long enough to enter awareness)</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Difference threshold (JND) for brightness discrimination</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Weber’s constant for vision</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Intensity is unchanged, but making the stimulus last longer allows the CNS to accumulate enough evidence for awareness. That matches the <b>threshold of conscious perception</b>: the signal must be large enough and/or long enough to reach conscious awareness. The <b>absolute threshold</b> is about whether photons trigger transduction at all, not whether the subject becomes aware.</p>
+  </details>
+</div>
+<div class="question" id="q2">
+  <b>2. After staring at the dim grey background, participants need a larger change in brightness to notice a difference near that background. Which mechanism best explains this pattern?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. A drop in the absolute threshold, making weak stimuli easier to transduce</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">B. Sensory adaptation shifting sensitivity so small deviations from the adapted baseline are harder to detect</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Improved parvocellular processing increasing spatial resolution</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Crossing of nasal retinal fibers at the optic chiasm</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>The key clue is <b>time on a constant stimulus</b> (3 minutes). Adaptation reduces responsiveness to an unchanging input, so the system becomes less sensitive to small changes around that baseline—effectively increasing the <b>difference threshold</b> near the adapted level. It does not imply easier transduction (choice A) or anything about optic chiasm (D).</p>
+  </details>
+</div>
+<div class="question" id="q3">
+  <b>3. The JND data (10→1; 20→2) most strongly support which conclusion?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Brightness discrimination depends on a constant absolute difference in intensity</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. The absolute threshold doubles when the reference intensity doubles</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">C. Weber’s law holds across this range because ΔI/I is approximately constant</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Signal detection outcomes are unaffected by stimulus magnitude</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Compute the ratio: 1/10 = 0.10 and 2/20 = 0.10. Because <b>ΔI/I</b> stays constant, the results fit <b>Weber’s law</b>. This is a proportional (percent) rule, not a constant absolute difference.</p>
+  </details>
+</div>
+<div class="question" id="q4">
+  <b>4. Suppose the lab increases “noise” by adding random screen flicker on some catch trials. If participants keep the same decision criterion, which outcome is most likely to increase?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Correct negatives</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Misses only</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Hits only</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. False alarms</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>More background flicker makes ambiguous sensations more common on trials with <b>no real signal</b>. With the same criterion, participants will sometimes label noise as a signal, increasing <b>false alarms</b>. Hits can also change, but the most direct prediction with more noise is a higher false-alarm rate.</p>
+  </details>
+</div>
+<div class="question" id="q5">
+  <b>5. Which manipulation would most specifically lower the absolute threshold (not merely the conscious threshold) for the flash detection task?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Telling participants that flashes will occur more often</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Rewarding correct “yes” responses more than correct “no” responses</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Increasing flash duration while keeping intensity constant</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">D. Increasing flash intensity so photoreceptors are more likely to transduce the stimulus</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>The <b>absolute threshold</b> is about the minimum stimulus energy needed for <b>transduction</b>. Raising intensity increases the probability that photoreceptors reach the receptor potential needed to trigger downstream signaling. The other choices mainly shift attention/criterion (signal detection) or conscious threshold (duration).</p>
+  </details>
+</div>
+<div class="passage-header"><span>📘 Passage 2 — Signal detection and response bias in a screening task</span>
+<button data-guide="pg2" onclick="togglePassageGuide('pg2')">How to reason</button></div>
+<div class="passage-guide" id="pg2"><h4>How to reason from this passage</h4>
+<ul>
+<li><b>Make the 2×2 table</b>: signal present vs absent crossed with “yes” vs “no”. Map choices to hit/miss/false alarm/correct negative.</li>
+<li><b>Ask about payoffs</b>: if misses are costly, expect a <i>liberal</i> criterion (more hits + more false alarms). If false alarms are costly, expect a <i>conservative</i> criterion (fewer false alarms + more misses).</li>
+<li><b>Separate sensitivity from bias</b>: improved sensory evidence changes hit and false-alarm patterns differently than a shifted decision rule.</li>
+<li><b>Use context</b>: expectations and motives affect perception judgments without changing receptor transduction.</li>
+</ul></div>
+<div class="passage-box">
+<p>A hospital tests two training messages for clinicians interpreting a faint auditory alarm in a busy ward. In every trial, an alarm tone is either present at low intensity (signal trials) or absent (catch trials) while background machine noise continues.</p>
+<p>Group L is told: “Missing an alarm can be dangerous—err on the side of responding.” Group C is told: “False alarms disrupt care—respond only when you are confident.” Both groups hear the same physical stimuli.</p>
+<p>After training, Group L responds “alarm present” far more often than Group C. Group L also calls for assistance on some catch trials. Group C misses a larger fraction of the low-intensity alarms but almost never responds on catch trials.</p>
+<p>A third group receives noise-canceling headsets that reduce ward noise without changing the alarm tone itself.</p>
+</div>
+<div class="question" id="q6">
+  <b>6. Relative to Group C, Group L most likely shows which pattern of outcomes?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Fewer hits and fewer false alarms</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">B. More hits and more false alarms</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. More correct negatives and fewer misses</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Fewer hits and more correct negatives</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Group L is explicitly encouraged to avoid <b>misses</b>, which shifts the criterion to be more <b>liberal</b>. Liberal responding increases “yes” responses on both signal and catch trials → <b>hits increase</b> but <b>false alarms also increase</b>.</p>
+  </details>
+</div>
+<div class="question" id="q7">
+  <b>7. The difference between Group L and Group C is best described as a change in:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Absolute threshold at the cochlea</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Auditory cortex tonotopic organization</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">C. Response criterion / decision bias in signal detection</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Place theory of pitch along the basilar membrane</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Both groups receive the <b>same physical stimuli</b>; the instructions change their willingness to say “alarm present.” That is a shift in <b>response bias/criterion</b>, not a change in peripheral transduction or pitch encoding.</p>
+  </details>
+</div>
+<div class="question" id="q8">
+  <b>8. When Group L calls for assistance on a catch trial (no alarm tone), this outcome is classified as a:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Hit</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Miss</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Correct negative</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. False alarm</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>On a <b>catch</b> trial, no signal is presented. Reporting “signal present” anyway is a <b>false alarm</b>. Hits require a real signal, and correct negatives require correctly saying “no signal.”</p>
+  </details>
+</div>
+<div class="question" id="q9">
+  <b>9. Compared with Group L using no headsets, the noise-canceling headset group should most directly show:</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Higher sensitivity: fewer false alarms and fewer misses at the same criterion</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. A more liberal bias: more false alarms and more hits</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. A lower absolute threshold for vestibular hair cells</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. A shift from top-down to bottom-up processing only</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Reducing background noise improves the <b>signal-to-noise ratio</b>. With clearer evidence, participants can better distinguish signal from noise, decreasing both <b>misses</b> and <b>false alarms</b> (improved sensitivity). This differs from merely shifting the criterion (bias).</p>
+  </details>
+</div>
+<div class="question" id="q10">
+  <b>10. If the hospital increases the penalty for false alarms while keeping stimuli constant, which change is most likely?</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. Fewer false alarms and more misses (a more conservative criterion)</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. More false alarms and more hits (a more liberal criterion)</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Lower JND for alarm frequency (Weber’s law change)</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. More retinal disparity signals</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Making false alarms more costly encourages a <b>conservative</b> criterion: clinicians say “alarm present” less often. That reduces <b>false alarms</b> but increases <b>misses</b> on weak signal trials.</p>
+  </details>
+</div>
+<div class="passage-header"><span>📘 Passage 3 — Visual pathways, lesions, and parallel processing</span>
+<button data-guide="pg3" onclick="togglePassageGuide('pg3')">How to reason</button></div>
+<div class="passage-guide" id="pg3"><h4>How to reason from this passage</h4>
+<ul>
+<li><b>Translate fields to retina</b>: objects in the left visual field stimulate the right side of each retina; remember temporal field ↔ nasal retina (and vice versa).</li>
+<li><b>Only nasal retinal fibers cross</b> at the optic chiasm—use this to predict hemianopsias from lesions.</li>
+<li><b>Map processing streams</b>: parvocellular → fine detail/color (high spatial, low temporal); magnocellular → motion (high temporal, low spatial).</li>
+<li><b>Use “dissociations”</b>: if motion is impaired but detail is intact (or vice versa), infer selective pathway disruption.</li>
+</ul></div>
+<div class="passage-box">
+<p>A patient reports bumping into objects on the left side while walking, but can still read fine print when looking directly at it. Visual acuity at the center of gaze is normal.</p>
+<p>On testing, the patient fails to detect stimuli presented in the left visual field of either eye. Pupillary light reflexes are intact. MRI shows a lesion affecting the right optic tract.</p>
+<p>In a separate task, the patient can accurately describe the color and shape of stationary objects presented in the intact visual field, but has unusual difficulty judging the direction of rapidly moving dots.</p>
+<p>Clinicians suspect that, in addition to the optic-tract lesion, a cortical processing stream is disproportionately affected.</p>
+</div>
+<div class="question" id="q11">
+  <b>11. The pattern “left visual field loss in both eyes” most specifically indicates damage to which structure?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Left optic nerve</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Optic chiasm (crossing fibers only)</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Right optic tract</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Left lateral geniculate nucleus</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>After the optic chiasm, information is organized by <b>visual field</b>: the <b>right optic tract</b> carries information about the <b>left visual field</b> from both eyes. A right optic-tract lesion therefore produces a left homonymous hemianopia.</p>
+  </details>
+</div>
+<div class="question" id="q12">
+  <b>12. Intact pupillary light reflexes despite the field cut most strongly suggest that:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. The retina is not required for reflexes</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. The lesion is limited to the fovea</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Nasal retinal fibers did not cross at the chiasm</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Some visual fibers can branch to midbrain reflex pathways even if cortical perception is impaired</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Pupillary reflexes involve pathways to midbrain structures (e.g., superior colliculus/pretectal areas) and do not require full cortical visual perception. Thus, intact reflexes can coexist with cortical/tract lesions that disrupt conscious field perception.</p>
+  </details>
+</div>
+<div class="question" id="q13">
+  <b>13. The difficulty judging direction of rapidly moving dots is most consistent with disproportionate disruption of:</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Magnocellular (motion) processing with high temporal resolution</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Parvocellular (form) processing with high spatial resolution</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Cones in the fovea</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Binocular neurons mediating retinal disparity</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Rapid motion judgments rely heavily on the <b>magnocellular</b> stream, which specializes in <b>high temporal resolution</b>. Parvocellular pathways are better for fine, stationary detail and color.</p>
+  </details>
+</div>
+<div class="question" id="q14">
+  <b>14. Which observation would best support preserved parvocellular function in this patient?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Failure to detect dim flashes in reduced illumination</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Accurate discrimination of fine shape boundaries and color in stationary stimuli</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Inability to maintain balance during head rotation</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Loss of smell without loss of taste</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Parvocellular processing supports <b>fine spatial detail</b> and color, especially for relatively <b>stationary</b> objects. Accurate shape-edge and color discrimination therefore indicates preserved parvocellular contributions.</p>
+  </details>
+</div>
+<div class="question" id="q15">
+  <b>15. A lesion confined to the optic chiasm would most likely produce which visual deficit?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Left homonymous hemianopia</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Bitemporal hemianopia</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Right homonymous hemianopia</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Central scotoma sparing peripheral vision</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>The optic chiasm contains the <b>crossing nasal retinal fibers</b>, which carry information from the <b>temporal visual fields</b> of both eyes. Damaging the chiasm therefore causes loss of both temporal fields → <b>bitemporal hemianopia</b>.</p>
+  </details>
+</div>
+<div class="passage-header"><span>📘 Passage 4 — Hearing vs vestibular signals in the inner ear</span>
+<button data-guide="pg4" onclick="togglePassageGuide('pg4')">How to reason</button></div>
+<div class="passage-guide" id="pg4"><h4>How to reason from this passage</h4>
+<ul>
+<li><b>Match structure to acceleration</b>: utricle/saccule = linear; semicircular canals = rotational.</li>
+<li><b>Track the fluid</b>: endolymph moves within the membranous labyrinth and bends hair cells; perilymph cushions/transmits vibrations around it.</li>
+<li><b>Use place theory</b>: high pitch peaks near the oval window; low pitch at the apex.</li>
+<li><b>Separate pathway nodes</b>: MGN is the thalamic relay to auditory cortex; superior olive (localization) and inferior colliculus (startle) are parallel targets.</li>
+</ul></div>
+<div class="passage-box">
+<p>A diver experiences severe vertigo when turning their head quickly, but their hearing thresholds on standard audiometry are normal. Symptoms are worst when rotating in the horizontal plane and improve when the head is kept still.</p>
+<p>In a second patient, loud sounds are perceived, but high-pitched tones are selectively diminished. Imaging suggests stiffening near the base of the cochlea close to the oval window.</p>
+<p>A third patient reports that rapid head turns trigger nystagmus and difficulty keeping the eyes fixed on a target. Clinicians suspect disruption of a reflex that links vestibular input to eye movements.</p>
+<p>All three patients have otherwise intact central nervous system function.</p>
+</div>
+<div class="question" id="q16">
+  <b>16. The diver’s vertigo during rapid head rotation most strongly implicates dysfunction in the:</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Utricle and saccule</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Organ of Corti on the basilar membrane</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Medial geniculate nucleus</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Semicircular canals and their ampullae</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Rotational acceleration is detected by the <b>semicircular canals</b>, where endolymph movement bends hair cells in the <b>ampullae</b>. Normal hearing thresholds argue against cochlear (sound) receptor failure.</p>
+  </details>
+</div>
+<div class="question" id="q17">
+  <b>17. Selective reduction of high-pitched tone perception is most consistent with decreased vibration of hair cells located:</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Near the oval window (base of the cochlea)</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. At the apex of the cochlea, far from the oval window</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Only in the utricle</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Only in the saccule</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>By <b>place theory</b>, high frequencies peak near the <b>base</b> of the cochlea close to the <b>oval window</b>. Low frequencies peak toward the apex. Stiffening near the base would disproportionately reduce high-pitch transduction.</p>
+  </details>
+</div>
+<div class="question" id="q18">
+  <b>18. Which fluid is potassium-rich and directly bathes the stereocilia of cochlear hair cells?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Perilymph</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Endolymph</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Cerebrospinal fluid</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Aqueous humor</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>The <b>membranous labyrinth</b> is filled with <b>endolymph</b>, a potassium-rich fluid that surrounds hair-cell stereocilia. The surrounding bony labyrinth contains <b>perilymph</b>, which cushions and transmits mechanical vibrations.</p>
+  </details>
+</div>
+<div class="question" id="q19">
+  <b>19. The third patient’s difficulty keeping the eyes fixed during head turns most directly involves which brain structure mentioned in the auditory/vestibular pathways?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Lateral geniculate nucleus</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Superior colliculus</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Inferior colliculus (vestibulo–ocular/startle-related integration)</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Broca’s area</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>The passage notes that the <b>inferior colliculus</b> participates in startle-related circuitry and helps maintain gaze during head movement (vestibulo–ocular reflex context). Disruption of vestibular input can therefore impair stable eye fixation during rapid turns.</p>
+  </details>
+</div>
+<div class="question" id="q20">
+  <b>20. A lesion that interrupts the thalamic relay for auditory information to cortex would most directly affect the:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Lateral geniculate nucleus (LGN)</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Optic radiations</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. Medial geniculate nucleus (MGN)</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Basal ganglia</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Auditory information ascends to the <b>medial geniculate nucleus (MGN)</b> of the thalamus before reaching auditory cortex. LGN is for vision (light), not hearing.</p>
+  </details>
+</div>
+<div class="passage-header"><span>📘 Passage 5 — Object recognition with incomplete cues: top-down, bottom-up, and Gestalt</span>
+<button data-guide="pg5" onclick="togglePassageGuide('pg5')">How to reason</button></div>
+<div class="passage-guide" id="pg5"><h4>How to reason from this passage</h4>
+<ul>
+<li><b>Decide whether the stimulus is incomplete</b>: missing contours invites Gestalt principles (closure, subjective contours, good continuation).</li>
+<li><b>Look for priming/expectations</b>: if context changes what people “see,” that’s top-down influence.</li>
+<li><b>Choose the simplest stable interpretation</b>: prägnanz predicts the brain will prefer regular, symmetric, simple shapes.</li>
+<li><b>Depth cue logic</b>: monocular cues (relative size, interposition, motion parallax) vs binocular cues (retinal disparity, convergence) can be tested by removing one eye or restricting motion.</li>
+</ul></div>
+<div class="passage-box">
+<p>Researchers show participants a series of black-and-white displays containing only a few “pac-man” cutouts and partial line segments. Many participants report seeing a bright triangle floating in front of the shapes, despite no triangle being drawn.</p>
+<p>In another condition, participants are first told that the study is about “warning signs” and are briefly shown the word STOP. When the ambiguous display appears, they more often report seeing an octagonal outline rather than a triangle.</p>
+<p>To examine depth perception, the team presents a moving scene through a window while participants keep one eye closed. Nearby fence posts appear to sweep across the visual field quickly, while distant mountains seem to move very slowly.</p>
+<p>Finally, participants wear a headset that delivers slightly different images to each eye; they report strong depth even though the display panels are physically flat.</p>
+</div>
+<div class="question" id="q21">
+  <b>21. Seeing a bright triangle that is not actually drawn is best explained by:</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Subjective contours arising from Gestalt organization</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Failure of absolute threshold in photoreceptors</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Damage to the optic chiasm</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. A decrease in JND predicted by Weber’s law</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>The triangle is perceived without explicit edges, which is classic <b>subjective contours</b> (a Gestalt phenomenon). The brain infers missing boundaries from surrounding cues to create a coherent object.</p>
+  </details>
+</div>
+<div class="question" id="q22">
+  <b>22. The STOP priming manipulation most directly increases the influence of:</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Bottom-up processing only</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Top-down processing driven by expectations and memory</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Osmoreceptor transduction</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Auditory localization by the superior olive</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Priming changes what participants expect to see, so recognition is guided by <b>memories/expectations</b>. That is <b>top-down processing</b>. Bottom-up relies more purely on stimulus features and would not shift as strongly with a word prime.</p>
+  </details>
+</div>
+<div class="question" id="q23">
+  <b>23. The observation that nearby fence posts move faster across the visual field than distant mountains illustrates:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Retinal disparity</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Convergence</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. Motion parallax (a monocular depth cue)</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Color constancy</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>When you move relative to a scene (or the scene moves), <b>near objects</b> traverse the retina faster than far objects. This is <b>motion parallax</b>, a <b>monocular</b> depth cue.</p>
+  </details>
+</div>
+<div class="question" id="q24">
+  <b>24. Depth perceived from slightly different images delivered to each eye is primarily based on:</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Interposition</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Linear perspective</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Relative size</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Retinal disparity (a binocular cue)</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p>Providing slightly different images to the two eyes mimics natural <b>retinal disparity</b>, enabling binocular depth perception. VR displays exploit this cue to create a 3D experience from flat screens.</p>
+  </details>
+</div>
+<div class="question" id="q25">
+  <b>25. Across the ambiguous displays, the brain’s tendency to select the simplest, most symmetric interpretation is captured by the Gestalt law of:</b>
+  <div class="choice" onclick="selectChoice('q25', this, false)">A. Similarity</div>
+  <div class="choice" onclick="selectChoice('q25', this, false)">B. Proximity</div>
+  <div class="choice" onclick="selectChoice('q25', this, false)">C. Good continuation</div>
+  <div class="choice" onclick="selectChoice('q25', this, true)">D. Prägnanz</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand)</summary>
+    <p><b>Prägnanz</b> is the overarching principle that perceptual organization tends toward the <b>most regular, simple, and symmetric</b> interpretation. The other laws describe specific grouping rules that often serve this larger preference.</p>
+  </details>
+</div>
+</body>
+</html>

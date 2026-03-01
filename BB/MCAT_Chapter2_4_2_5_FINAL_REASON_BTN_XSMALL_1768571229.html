@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Practice — Chemical Senses, Somatosensation & Perception (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:22px; font-weight:bold; margin-bottom:20px; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{ background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06); }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+  .section-header{ background:#0f4fa0; color:#fff; padding:12px 15px; border-radius:8px; font-size:18px; font-weight:bold; margin-top:5px; margin-bottom:12px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold; display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff; border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:20px; font-weight:bold; margin-top:35px; margin-bottom:10px; }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; line-height:1.85; box-shadow:0 1px 3px rgba(0,0,0,0.08);
+                 text-align: justify; text-justify: inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .passage-header{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .passage-toggle-btn{ background:rgba(255,255,255,0.92); border:1px solid rgba(255,255,255,0.55);
+                       color:#0b3f8e; padding:9px 14px; border-radius:10px; cursor:pointer; font-weight:bold;
+                       font-size:15px; box-shadow:0 1px 2px rgba(0,0,0,0.12); white-space:nowrap; }
+  .passage-toggle-btn:hover{ transform: translateY(-1px); }
+  .passage-guide{ display:none; background:#ffffff; border-left:5px solid #1565c0; border-radius:8px;
+                  padding:12px 14px; margin: 0 0 14px 0; line-height:1.75;
+                  box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .passage-guide h4{ margin:0 0 8px 0; color:#0f4fa0; font-size:16px; }
+  .passage-guide ul{ margin:8px 0 0 18px; }
+  .passage-guide li{ margin:6px 0; }
+
+
+
+/* How-to-reason button (ensure consistent size across passages) */
+.passage-header button[data-guide]{
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255,255,255,0.95);
+  color: #1565c0;
+  border: 1px solid rgba(0,0,0,0.18);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+  flex: 0 0 auto;
+  min-height: 32px;
+  line-height: 1.1;
+
+  transform: none;
+  letter-spacing: 0.1px;}
+.passage-header button[data-guide]:active{ transform: translateY(1px); }
+.passage-header button[data-guide]:hover{ filter: brightness(0.98); }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct');
+    const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none';
+    if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct':'incorrect');
+    const fbC=q.querySelector('.fb-correct');
+    const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct');
+      const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none';
+      if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn=document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+
+  function togglePassageGuide(id){
+    const el=document.getElementById(id);
+    if(!el) return;
+    const open = (el.style.display === 'block');
+    el.style.display = open ? 'none' : 'block';
+    const btn=document.querySelector('[data-guide="'+id+'"]');
+    if(btn){ btn.textContent = open ? 'How to reason' : 'Hide reasoning'; }
+  }
+
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+    🧠 MCAT Practice — Chemical Senses, Somatosensation & Perception (15Q + 3 Passages × 3Q)
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+  <div class="section-header">Standalone Questions (15)</div>
+
+<div class="question" id="q1">
+  <b>1. Which statement best distinguishes sensation from perception?</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. Sensation is transduction of stimuli into neural signals; perception is CNS processing/interpretation of those signals</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Sensation occurs only in the CNS; perception occurs only in the PNS</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Sensation requires memory; perception does not</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Perception is the conversion of stimuli into action potentials; sensation is the interpretation</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Sensation aligns with transduction at sensory receptors (PNS → neural signals). Perception is the CNS processing that assigns meaning to those signals.</div>
+  </details>
+</div>
+<div class="question" id="q2">
+  <b>2. In the distal vs proximal stimulus framework, which pairing is correct?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Distal stimulus = energy reaching receptors; proximal stimulus = the object itself</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">B. Distal stimulus = the physical object; proximal stimulus = the immediate energy pattern that contacts receptors</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Distal stimulus = action potentials; proximal stimulus = neurotransmitter release</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Distal stimulus = thalamic relay; proximal stimulus = cortical processing</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">A distal stimulus is the external object (e.g., a campfire). Proximal stimuli are the photons/sound/heat/pressure patterns that actually interact with receptors.</div>
+  </details>
+</div>
+<div class="question" id="q3">
+  <b>3. Which sensory receptor type is primarily responsible for detecting painful or noxious stimuli?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Photoreceptors</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Mechanoreceptors</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">C. Nociceptors</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Osmoreceptors</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Nociceptors respond to painful/noxious stimuli. Photoreceptors detect light, mechanoreceptors detect pressure/movement, and osmoreceptors detect osmolarity.</div>
+  </details>
+</div>
+<div class="question" id="q4">
+  <b>4. Which description best matches the absolute threshold?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. The smallest difference between two stimuli that can be detected</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. The stimulus intensity at which 50% of trials produce a correct response in signal detection tasks</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. The lowest stimulus intensity that reaches the cortex and produces awareness</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. The minimum stimulus energy needed to activate a sensory system (to be transduced into neural signals)</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Absolute threshold is about sensation/transduction: below it, the stimulus is not converted into action potentials and does not reliably reach the CNS.</div>
+  </details>
+</div>
+<div class="question" id="q5">
+  <b>5. A stimulus is transduced and reaches the CNS but does not enter awareness. This is best described as being below which threshold?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Absolute threshold</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Threshold of conscious perception</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Difference threshold (jnd)</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Physiological zero</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Below the threshold of conscious perception, signals may reach the CNS but are not processed into conscious awareness (often termed subliminal perception).</div>
+  </details>
+</div>
+<div class="question" id="q6">
+  <b>6. Weber’s law is most directly summarized by which relationship?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. The just-noticeable difference is a constant absolute amount for all stimulus magnitudes</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Difference threshold depends only on receptor type and never on stimulus intensity</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. The just-noticeable difference is proportional to the original stimulus magnitude (ΔI/I ≈ constant)</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Hits and false alarms determine the absolute threshold</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Weber’s law: detection of change depends on relative (percent) change, so ΔI/I tends to be constant for a given modality in a given range.</div>
+  </details>
+</div>
+<div class="question" id="q7">
+  <b>7. In signal detection theory, a &#x27;false alarm&#x27; occurs when:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. A signal is present but the subject reports &#x27;no signal&#x27;</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. No signal is present but the subject reports perceiving a signal</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. A signal is present and the subject reports perceiving it</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. No signal is present and the subject correctly reports &#x27;no signal&#x27;</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">A false alarm is claiming a signal occurred on a catch trial (no signal presented). Hits = signal present &amp; detected; misses = signal present &amp; not detected; correct negatives = no signal &amp; correctly rejected.</div>
+  </details>
+</div>
+<div class="question" id="q8">
+  <b>8. Which statement best characterizes olfaction compared with other senses?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Smell detects only dissolved compounds, unlike taste</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Smell is the only sense that must relay through the thalamus before reaching cortex</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Smell uses mechanoreceptors located in papillae</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Smell is a chemical sense tuned to volatile/aerosolized compounds and is notable for not requiring a thalamic relay in the classic pathway description</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Olfaction detects volatile/aerosolized compounds via olfactory chemoreceptors in olfactory epithelium and is often taught as the sensory pathway that bypasses the thalamus on its route to higher brain regions.</div>
+  </details>
+</div>
+<div class="question" id="q9">
+  <b>9. Taste receptors are located in taste buds found within structures on the tongue called:</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Papillae</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Foveae</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Otoliths</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Scalae</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Taste buds sit in papillae on the tongue. Fovea is retinal, otoliths are vestibular, and scalae are in the cochlea.</div>
+  </details>
+</div>
+<div class="question" id="q10">
+  <b>10. Which somatosensory receptor is most associated with deep pressure and vibration?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Meissner corpuscles</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Pacinian corpuscles</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Ruffini endings</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Free nerve endings</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Pacinian corpuscles detect deep pressure and vibration. Meissner = light touch, Ruffini = stretch, free nerve endings = pain/temperature.</div>
+  </details>
+</div>
+<div class="question" id="q11">
+  <b>11. A two-point threshold is best defined as:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. The normal baseline skin temperature used to judge warm vs cold</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. The minimum distance between two stimuli on the skin that is perceived as two distinct points</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. The minimum stimulus intensity needed for transduction</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. The percent change needed to detect a difference in loudness</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Two-point threshold measures spatial acuity in touch: how far apart two points must be to be felt as two separate touches.</div>
+  </details>
+</div>
+<div class="question" id="q12">
+  <b>12. Physiological zero refers to:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. The resting membrane potential of sensory neurons</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. The temperature at which nociceptors stop firing</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. The baseline temperature of the skin that serves as the reference for warm vs cold judgments</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. The point at which Weber’s fraction equals zero</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Physiological zero is the normal skin temperature range used as a reference; objects feel cold if below it and warm if above it.</div>
+  </details>
+</div>
+<div class="question" id="q13">
+  <b>13. Gate theory of pain proposes that pain perception can be reduced because:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. The thalamus permanently blocks pain signals during injury</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Pain fibers do not synapse in the spinal cord</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Olfactory input inhibits nociceptors in the nose</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Spinal circuits can preferentially transmit non-pain touch inputs, decreasing forwarding of pain signals</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">In the classic gate model, competing touch inputs (e.g., pressure/rubbing) can modulate spinal transmission of nociceptive signals, reducing perceived pain.</div>
+  </details>
+</div>
+<div class="question" id="q14">
+  <b>14. Which pairing correctly matches processing style with its description?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Bottom-up processing — driven by expectations and memory templates</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Top-down processing — purely feature-by-feature assembly without context</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">C. Bottom-up processing — data-driven feature detection that builds the percept from sensory input</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Top-down processing — only occurs in the retina</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Bottom-up is data-driven (features → whole). Top-down uses expectations/memory to interpret the stimulus rapidly and can bias recognition.</div>
+  </details>
+</div>
+<div class="question" id="q15">
+  <b>15. Which Gestalt principle best explains perceiving a complete figure when parts of its outline are missing?</b>
+  <div class="choice" onclick="selectChoice('q15', this, true)">A. Closure</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Similarity</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Proximity</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Interposition</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Closure is the tendency to fill in gaps to perceive a whole, complete object even when contours are incomplete.</div>
+  </details>
+</div>
+<div class="section-header">Passage-Based Questions (3 passages × 3 questions)</div>
+<div class="passage-header"><span>📘 Passage 1 — Olfaction, taste, and the &#x27;flavor&#x27; illusion</span>
+<button data-guide="pg1" onclick="togglePassageGuide('pg1')">How to reason</button></div>
+<div class="passage-guide" id="pg1"><h4>How to reason from this passage</h4>
+<ul>
+<li><b>Separate chemical access routes</b>: ask whether the stimulus reaches <i>olfactory epithelium</i> (volatile/aerosolized) or <i>taste buds</i> (dissolved in saliva).</li>
+<li><b>Use pathway exceptions</b>: olfaction is the sensory pathway classically noted for bypassing a mandatory thalamic relay and projecting strongly to limbic regions (emotion/memory).</li>
+<li><b>Turn observations into constraints</b>: if basic tastes are intact but 'flavor' is gone, infer loss of smell rather than loss of taste.</li>
+<li><b>Prefer mechanistic answers</b>: choose options that explain <i>why</i> the data occur (binding/solubility/pathway routing), not options that merely restate the observation.</li>
+</ul></div>
+<div class="passage-box">
+<p>In a sensory lab, participants sample a warm soup under two conditions. In Condition 1, they eat normally. In Condition 2, they wear a nose clip that prevents airflow through the nasal cavity while tasting, but the soup contacts the tongue normally.</p>
+<p>A subset of participants also performs an odor-only task: they inhale faint vapor-phase compounds released from the soup while keeping the mouth closed and dry. During this task, many participants report vivid autobiographical memories even though they cannot describe the exact chemical identity of the odorant.</p>
+<p>Neuroimaging in the odor-only task shows strong activation in limbic-associated regions during odor presentation, whereas thalamic activation is less prominent than in comparable vision tasks.</p>
+</div>
+<div class="question" id="q16">
+  <b>16. Which interpretation best explains why odor presentation in the passage could evoke strong autobiographical memories even when participants cannot name the odorant?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Odors are detected by mechanoreceptors that project to motor cortex</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Taste buds directly synapse onto hippocampal neurons</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Memory formation requires the medial geniculate nucleus</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Olfactory signals project strongly to limbic regions involved in emotion/memory, promoting cue-triggered recall</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Odor cues are powerful memory triggers because olfactory pathways project to higher-order regions that include limbic circuitry. This direct limbic engagement supports emotion-linked retrieval even when explicit labeling (naming) of the odor is weak.</div>
+  </details>
+</div>
+<div class="question" id="q17">
+  <b>17. Based on the two tasting conditions, which outcome would most strongly support the claim that perceived &#x27;flavor&#x27; depends on integration of smell with taste?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. With the nose clip, participants still detect sweet/salty/sour but report reduced overall flavor complexity</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. With the nose clip, participants lose the ability to detect salty taste entirely</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Without the nose clip, participants cannot detect any basic tastes</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. With the nose clip, participants report stronger odor intensity during inhalation</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Blocking nasal airflow reduces olfactory input during eating, which should diminish the complex percept of flavor while leaving basic taste modalities intact (taste buds still receive dissolved compounds). That pattern specifically supports smell–taste integration.</div>
+  </details>
+</div>
+<div class="question" id="q18">
+  <b>18. A new compound in the soup is highly water-soluble but has negligible volatility at room temperature. Under the passage conditions, how would it most likely be detected?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Detected primarily by olfaction during the odor-only task</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Detected primarily by taste during soup sampling, but weakly (or not) by smell alone</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Detected only by photoreceptors because it is not volatile</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Detected only if it passes through the thalamus first</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Taste requires dissolved compounds, so a water-soluble nonvolatile chemical can stimulate taste buds during eating. Low volatility means fewer molecules reach olfactory epithelium via inhalation, so odor-only detection would be weak.</div>
+  </details>
+</div>
+<div class="passage-header"><span>📘 Passage 2 — Spinal cord hemisection and tactile testing</span>
+<button data-guide="pg2" onclick="togglePassageGuide('pg2')">How to reason</button></div>
+<div class="passage-guide" id="pg2"><h4>How to reason from this passage</h4>
+<ul>
+<li><b>Map modality → pathway behavior</b>: pressure/vibration vs pain/temperature can behave differently in the spinal cord (a classic lesion-style inference).</li>
+<li><b>Use side-of-body logic</b>: compare what is lost on each side below the lesion to infer where crossing occurs.</li>
+<li><b>Two-point threshold = spatial resolution</b>: smaller threshold → higher receptor density/smaller receptive fields.</li>
+<li><b>Gate-style reasoning</b>: if non-pain touch reduces pain, look for an answer involving spinal modulation of nociceptive transmission.</li>
+</ul></div>
+<div class="passage-box">
+<p>A patient presents after trauma with neurological findings consistent with a hemisection of the spinal cord at the right side of the thoracic level. Below the lesion, the patient cannot reliably detect vibration when a tuning fork is placed on the right ankle, but pinprick pain on the right leg is relatively preserved.</p>
+<p>In contrast, pinprick and temperature sensation are markedly reduced on the left leg below the lesion. The clinician also measures two-point discrimination: the fingertip resolves two points at 3 mm, but the patient’s lateral calf requires 50 mm.</p>
+<p>During a separate pain test, the clinician applies a firm, non-painful pressure near a painful stimulus and the patient reports that the pain intensity decreases.</p>
+</div>
+<div class="question" id="q19">
+  <b>19. Which conclusion best fits the sensory pattern described in the passage?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. A left hemisection is most likely because vibration loss is contralateral</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. A complete spinal transection is most likely because multiple modalities are affected</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. A right hemisection can produce ipsilateral loss of vibration/pressure with contralateral loss of pain/temperature below the lesion</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. The findings are best explained by primary damage to olfactory epithelium</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">The pattern—right-sided loss of vibration (pressure/vibration) with left-sided loss of pain/temperature—matches classic hemisection logic. It implies modality-dependent pathway behavior in the spinal cord, producing ipsilateral vs contralateral deficits below the lesion.</div>
+  </details>
+</div>
+<div class="question" id="q20">
+  <b>20. The large two-point threshold on the lateral calf compared with the fingertip is most directly explained by:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Greater cone density in the calf retina</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Higher physiological zero in the calf skin</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. More olfactory receptor subtypes in the calf</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Lower receptor density and larger receptive fields in the calf skin</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Two-point discrimination reflects spatial acuity. Regions like fingertips have dense innervation and small receptive fields, allowing small thresholds. The calf has fewer receptors per area and larger receptive fields, so two nearby points blur into one unless separated by a larger distance.</div>
+  </details>
+</div>
+<div class="question" id="q21">
+  <b>21. Which mechanism best accounts for the observation that firm, non-painful pressure reduced the perceived pain of a nearby painful stimulus?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Activation of touch pathways can suppress nociceptive signaling at the spinal cord level (a &#x27;gate&#x27; effect)</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Pressure chemically dissolves the pain stimulus before it reaches receptors</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Pain always decreases when the thalamus is bypassed</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Pressure activates photoreceptors that inhibit nociceptors</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">In the classic gate model, increased activity in non-pain touch pathways (pressure/vibration) can reduce transmission of pain signals in spinal circuits, lowering perceived pain intensity.</div>
+  </details>
+</div>
+<div class="passage-header"><span>📘 Passage 3 — Depth cues and perceptual organization in an ambiguous display</span>
+<button data-guide="pg3" onclick="togglePassageGuide('pg3')">How to reason</button></div>
+<div class="passage-guide" id="pg3"><h4>How to reason from this passage</h4>
+<ul>
+<li><b>Identify cue type</b>: binocular cues (retinal disparity, convergence) vs monocular cues (relative size, interposition, linear perspective, motion parallax).</li>
+<li><b>Separate bottom-up vs top-down</b>: bottom-up = data-driven features; top-down = expectations/priming/memory templates.</li>
+<li><b>Use Gestalt as the 'fill-in' engine</b>: when elements are incomplete/ambiguous, choose grouping rules (proximity, similarity, continuation, closure) that would simplify the scene.</li>
+<li><b>Translate the manipulation</b>: if one eye is patched, binocular cues drop; if labels/priming change recognition speed, top-down influence increased.</li>
+</ul></div>
+<div class="passage-box">
+<p>Researchers design a virtual scene containing sparse dots that can be interpreted as either two overlapping shapes or a single continuous contour, depending on how the dots are grouped. The display is shown under two conditions: binocular viewing (both eyes) and monocular viewing (one eye patched).</p>
+<p>Before the task, half of participants are primed with the instruction: &#x27;You will see an animal-related object.&#x27; The other half are told: &#x27;You will see a tool-related object.&#x27; Despite identical sensory input, primed participants tend to report the primed category more quickly.</p>
+<p>When the scene is animated so that the observer’s viewpoint shifts sideways, closer elements appear to move faster across the visual field than distant elements, improving depth judgments even under monocular viewing.</p>
+</div>
+<div class="question" id="q22">
+  <b>22. In the dot display, participants tend to perceive dots of similar brightness as belonging to the same shape even when intermingled with other dots. Which Gestalt principle best explains this grouping?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Proximity</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Similarity</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Closure</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Convergence</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Similarity groups elements that share visual properties (e.g., brightness, size, color). If dots of the same brightness are perceived as a unit, the brain is applying the similarity rule to organize an otherwise ambiguous display.</div>
+  </details>
+</div>
+<div class="question" id="q23">
+  <b>23. Which result from the passage most directly demonstrates top-down (conceptually driven) processing?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Depth improves when viewpoint shifts sideways</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Binocular viewing provides more depth than monocular viewing</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. Priming with &#x27;animal&#x27; vs &#x27;tool&#x27; changes the speed and category of object recognition despite identical sensory input</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Dots can be grouped into shapes</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Top-down processing uses expectations and memory. Priming changes interpretation and recognition speed without changing the sensory stimulus, so it provides strong evidence for concept-driven (top-down) influence.</div>
+  </details>
+</div>
+<div class="question" id="q24">
+  <b>24. When one eye is patched (monocular viewing), which depth cue described in the passage would still remain available and can improve depth judgments?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Retinal disparity</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Convergence angle between the two eyes</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Stereopsis from binocular comparison</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Motion parallax from viewpoint shifts</div>
+  <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation (click to expand/collapse)</summary>
+    <div class="explain-body">Retinal disparity and convergence require two eyes. Motion parallax is a monocular cue: as viewpoint changes, nearer objects move faster across the visual field than farther objects, providing strong depth information even with one eye.</div>
+  </details>
+</div>
+
+</body>
+</html>
