@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Endocrine — Chapter 5.1 (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>Chapter 5.1 — Hormone Structure, Signaling, and Classification</div>
+  <button class="reset-btn" onclick="resetAll()">Reset All</button>
+</div>
+<div class="section-label">Standalone Questions</div>
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A hormone causes a rapid increase in intracellular cAMP within seconds of binding its target cell, and the effect disappears minutes after the hormone is removed. Which description best fits this hormone’s mechanism?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Intracellular receptor that directly binds DNA response elements</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Membrane receptor that triggers a second-messenger cascade</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Membrane receptor that is itself a transcription factor</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Carrier-protein–bound hormone that slowly enters cells to alter gene expression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> A fast, transient response mediated by cAMP strongly suggests a peptide (or catecholamine) signaling through a membrane receptor and second messengers.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Steroid and thyroid hormones bind intracellular receptors and primarily change transcription over hours to days.</li>
+<li><b>C:</b> Most membrane receptors are not transcription factors; gene regulation is classically via intracellular receptors.</li>
+<li><b>D:</b> Carrier-bound, lipid-soluble hormones typically produce slower, longer-lived effects.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. Compared with peptide hormones, steroid hormones typically have which combination of properties?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Fast onset and short duration; freely soluble in blood</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Fast onset and long duration; stored in secretory vesicles</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Slow onset and short duration; act only via second messengers</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Slow onset and long duration; require carrier proteins in blood</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Steroid hormones are lipid-soluble, travel bound to carrier proteins, cross membranes, and alter transcription—so effects are slower but longer-lasting.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Peptides are water-soluble and tend to act quickly via second messengers, with shorter duration.</li>
+<li><b>B:</b> Steroids are not stored in vesicles for exocytosis; they are synthesized and diffuse out.</li>
+<li><b>C:</b> Steroids do not act only via second messengers; they commonly regulate gene transcription.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. A researcher increases the concentration of a thyroid hormone–binding protein in plasma. All else equal, which immediate change is most expected?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Decreased free (active) thyroid hormone concentration</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Increased hormone degradation in the liver due to faster delivery</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Decreased total thyroid hormone concentration</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Immediate increase in intracellular second messengers in target tissues</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> When more binding protein is available, a larger fraction of hormone becomes protein-bound, transiently lowering the free (bioactive) fraction until compensatory secretion restores the set point.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Binding proteins mainly change distribution between free and bound; they do not directly accelerate hepatic degradation.</li>
+<li><b>C:</b> Total hormone (free + bound) often rises when binding capacity rises; total does not fall immediately.</li>
+<li><b>D:</b> Thyroid hormones act intracellularly to regulate transcription, not by rapidly producing second messengers.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. Which hormone is most likely to be a tropic hormone?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Insulin acting on skeletal muscle glucose uptake</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Antidiuretic hormone acting on collecting duct water channels</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Gonadotropin-releasing hormone stimulating LH release</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Epinephrine increasing heart rate via β1 receptors</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Tropic hormones stimulate another endocrine gland to secrete hormones; GnRH from the hypothalamus stimulates the anterior pituitary to release LH/FSH.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Insulin acts directly on target tissues to change glucose uptake and metabolism.</li>
+<li><b>B:</b> ADH acts directly on kidney collecting ducts.</li>
+<li><b>D:</b> Epinephrine acts directly on multiple tissues; it is not primarily a hormone-that-stimulates-a-hormone.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A hormone’s receptor–hormone complex dimerizes and binds DNA to change transcription. Which hormone class is most consistent with this description?</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Steroid hormone</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Peptide hormone</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Autocrine cytokine acting locally</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Second messenger</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Dimerization and direct DNA binding are classic for intracellular nuclear receptors used by many steroid hormones (and thyroid hormone receptors).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Peptides cannot cross the membrane and usually signal via surface receptors and second messengers.</li>
+<li><b>C:</b> Autocrine describes range (self-targeting), not the chemical class or receptor mechanism.</li>
+<li><b>D:</b> Second messengers are intracellular intermediates, not hormones that bind DNA.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. A patient receives a medication that inhibits adenylate cyclase. Which hormone signal would be most directly impaired?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Cortisol increasing transcription of gluconeogenic enzymes</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Thyroxine increasing basal metabolic rate over weeks</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Glucagon raising hepatic cAMP to activate protein kinase A</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Aldosterone binding an intracellular receptor in kidney cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Adenylate cyclase generates cAMP, a second messenger used by many GPCR pathways, including glucagon signaling in liver.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Cortisol is a steroid hormone that acts through intracellular receptors and DNA binding.</li>
+<li><b>B:</b> Thyroxine acts via intracellular receptors; it does not require adenylate cyclase.</li>
+<li><b>D:</b> Aldosterone is a steroid hormone; signaling is not cAMP-dependent.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. Which statement best explains why peptide-hormone signaling can show large amplification?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Peptide hormones bind directly to DNA to upregulate many genes</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Peptide hormones are stored in carrier proteins that increase half-life</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Peptide hormones dimerize after binding to intracellular receptors</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. Each receptor activation can trigger production of many second-messenger molecules</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Signal cascades amplify because one activated receptor can activate multiple enzymes, generating many second-messenger molecules and downstream kinase activations.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Direct DNA binding is characteristic of steroid/thyroid hormone receptors, not peptide hormones.</li>
+<li><b>B:</b> Peptides are generally water-soluble and often do not require carriers; amplification is intracellular.</li>
+<li><b>C:</b> Dimerization with intracellular receptors is more typical of steroid hormone signaling.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. Which pair correctly matches the hormone type with its typical receptor location?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Peptide hormone — intranuclear receptor</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Steroid hormone — cytosolic or nuclear receptor</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Thyroxine — cell-surface GPCR</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Epinephrine — intranuclear receptor</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Steroid hormones are lipid-soluble and typically bind cytosolic or nuclear receptors that influence transcription.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Peptide hormones are charged and generally bind cell-surface receptors.</li>
+<li><b>C:</b> Thyroid hormones are amino acid derivatives but act like steroids via intracellular receptors.</li>
+<li><b>D:</b> Epinephrine is a catecholamine that signals through membrane GPCRs.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. A researcher observes that a hormone is inactive while bound to its plasma carrier protein. Which hormone is most likely to show this behavior?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Insulin</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Glucagon</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. Testosterone</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Epinephrine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Testosterone is a steroid hormone and is transported in blood bound to proteins (e.g., SHBG/albumin); the free fraction is biologically active.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Insulin is a peptide hormone that circulates largely free and acts rapidly.</li>
+<li><b>B:</b> Glucagon is a peptide hormone and typically circulates free.</li>
+<li><b>D:</b> Epinephrine is water-soluble and circulates largely unbound with rapid onset/offset.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. Which amino acid–derivative hormone is most likely to have slow onset but long duration, similar to steroid hormones?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Epinephrine</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Norepinephrine</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. ADH</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">D. Thyroxine (T4)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Thyroid hormones (T3/T4) are amino acid derivatives that bind intracellular receptors and regulate transcription, producing slower but longer-lived effects.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Epinephrine produces rapid, short-lived effects via GPCRs.</li>
+<li><b>B:</b> Norepinephrine also acts rapidly via GPCRs.</li>
+<li><b>C:</b> ADH is a peptide hormone, not an amino acid derivative.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. A hormone released from the pancreas increases glucose uptake by muscle cells without requiring an intermediary endocrine gland. This hormone is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Tropic</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. Direct</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Paracrine</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Juxtacrine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> A direct hormone acts on its target tissue without first stimulating another endocrine gland; insulin is the classic example.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Tropic hormones primarily stimulate another endocrine gland to secrete hormones (e.g., GnRH → LH/FSH).</li>
+<li><b>C:</b> Paracrine refers to local signaling range, not whether it stimulates another gland.</li>
+<li><b>D:</b> Juxtacrine requires cell-to-cell contact and is not the defining feature here.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. A patient has a mutation that prevents peptide hormones from being packaged into secretory vesicles. Which immediate consequence is most likely?</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Reduced regulated exocytosis of peptide hormones</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Inability of steroid hormones to diffuse out of endocrine cells</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Failure of steroid hormone receptors to dimerize</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Loss of thyroid hormone binding to nuclear receptors</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Peptide hormones are synthesized as preprohormones/prohormones, processed, packaged into vesicles, and released by regulated exocytosis; vesicle packaging defects reduce secretion.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Steroid hormones diffuse out after synthesis and do not require vesicles.</li>
+<li><b>C:</b> Steroid receptor dimerization is unrelated to peptide vesicle packaging.</li>
+<li><b>D:</b> Thyroid hormone receptors are intracellular and do not depend on peptide vesicle pathways.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. Catecholamines and thyroid hormones are both amino acid–derivative hormones. Which statement best distinguishes their typical mechanisms?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Both primarily bind intracellular receptors and directly alter gene transcription</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Both require carrier proteins and have slow onset but long duration</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Thyroid hormones act via GPCRs, whereas catecholamines act by binding DNA</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Catecholamines usually signal through membrane receptors with rapid effects, whereas thyroid hormones bind intracellular receptors with longer-lasting effects</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Catecholamines (epinephrine/norepinephrine) act quickly through cell-surface receptors and second messengers, while thyroid hormones (T3/T4) act more like steroids via intracellular receptors and transcriptional regulation.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Catecholamines generally do not bind intracellular receptors to directly regulate transcription.</li>
+<li><b>B:</b> Catecholamines are water-soluble and act rapidly; thyroid hormones are the slower, longer-acting members.</li>
+<li><b>C:</b> This reverses the typical mechanisms for these hormone groups.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. A hormone is synthesized from cholesterol in an endocrine cell. Which additional feature is most expected?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Stored in secretory granules until a stimulus triggers exocytosis</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Travels freely in plasma without binding proteins</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">C. Crosses the target-cell membrane and binds an intracellular receptor</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Acts only by opening ligand-gated ion channels on the target cell</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Cholesterol-derived hormones are steroids. They are lipid-soluble, diffuse across membranes, and bind intracellular receptors to regulate transcription.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This is typical of peptide hormones, not steroids.</li>
+<li><b>B:</b> Steroids generally require carrier proteins in blood because they are not water-soluble.</li>
+<li><b>D:</b> Ligand-gated ion channels are more typical for neurotransmitters than endocrine steroids.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. A clinician wants the most informative lab measurement of physiologically active hormone in a patient with abnormally high levels of a hormone-binding globulin. Which measurement is most useful?</b>
+  <div class="choice" onclick="selectChoice('q15', this, true)">A. Free hormone concentration</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Total hormone concentration</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Number of endocrine cells in the secreting gland</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Amount of carrier protein present</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The free (unbound) fraction is the biologically active fraction that can enter tissues and bind receptors; binding globulin levels can distort total hormone measurements.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Total hormone includes bound hormone, which may be inactive while bound.</li>
+<li><b>C:</b> Cell number does not directly reflect circulating active hormone at a given moment.</li>
+<li><b>D:</b> Carrier protein helps interpret labs, but free hormone best reflects biological activity.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages</div>
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Hepatocyte Signaling: Rapid vs Delayed Responses</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>In a study of hormone regulation of liver metabolism, cultured hepatocytes were exposed to two unknown hormones, Hormone A and Hormone B, at equal molar concentrations.</p>
+  <p>Within 15 seconds of adding Hormone A, intracellular cAMP rose sharply and protein kinase A activity increased. When the culture medium was replaced with hormone-free medium, cAMP returned to baseline within 3 minutes.</p>
+  <p>Hormone B produced no measurable change in cAMP, but after 4 hours the cells showed increased mRNA levels for a gluconeogenic enzyme and increased enzyme activity. The mRNA increase was blocked by actinomycin D, while the enzyme activity increase was reduced when a translation inhibitor was present.</p>
+  <p>Plasma samples from the animal model used in the study showed that Hormone A was mostly free in solution, whereas Hormone B was largely bound to a specific carrier protein. The investigators hypothesized that the two hormones act through different receptor locations and time scales.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate fast second-messenger effects from slower gene-expression effects: seconds–minutes suggests <b>membrane receptor + second messengers</b>; hours suggests <b>transcriptional regulation</b>.</li>
+    <li>Use molecular inhibitors as clues: blocking transcription implicates <b>DNA-level control</b>; blocking translation tests whether new proteins are needed.</li>
+    <li>Use plasma transport clues: mostly bound in blood points to <b>lipid-soluble hormones</b> that often require <b>carrier proteins</b>.</li>
+    <li>Pick the answer that connects multiple clues (time course + binding + inhibitors), not a single detail.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. In the experiment, Hormone A produces a rapid spike in cAMP that disappears quickly when washed out. Which classification best fits Hormone A?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Steroid hormone acting through an intranuclear receptor</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">B. Peptide hormone acting through a membrane receptor and second messengers</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Thyroid hormone acting through an intracellular receptor</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Steroid hormone that requires carrier proteins for activity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> A rapid, reversible cAMP response indicates a membrane receptor coupled to second messengers—typical of peptide hormones (and catecholamines).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Steroid signaling primarily changes transcription and is slower.</li>
+<li><b>C:</b> Thyroid hormones act like steroids with slower onset.</li>
+<li><b>D:</b> Carrier requirement is typical for steroids, but the key clue is the fast cAMP change.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Hormone B increases expression of a metabolic enzyme only after several hours, and the increase is blocked by actinomycin D (a transcription inhibitor). Which additional manipulation would most directly test whether new protein synthesis is required for Hormone B’s effect?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Add a sodium-channel blocker to prevent depolarization</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Add an adenylate cyclase inhibitor to prevent cAMP production</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">C. Add a translation inhibitor (e.g., cycloheximide) during hormone exposure</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Lower extracellular calcium to block vesicle fusion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Blocking translation tests whether the transcriptional changes must be translated into new protein for the functional effect (a common requirement for steroid/thyroid-like signaling).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Sodium channels and depolarization are not central to hormone B’s described transcriptional mechanism.</li>
+<li><b>B:</b> Adenylate cyclase inhibition targets cAMP pathways (more consistent with Hormone A).</li>
+<li><b>D:</b> Extracellular calcium and vesicle fusion relate to neurotransmitter release, not delayed transcriptional effects in hepatocytes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. Plasma measurements show that Hormone B is mostly protein-bound, whereas Hormone A circulates largely unbound. Which inference is most consistent with these findings?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Hormone A is likely lipid-soluble, and Hormone B is water-soluble</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Hormone A likely requires a carrier to cross the membrane, while Hormone B does not</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Hormone A must bind DNA directly because it is unbound in plasma</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">D. Hormone B is likely lipid-soluble and may have slower, longer-lasting effects than Hormone A</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Lipid-soluble hormones (steroids and thyroid hormones) often require carrier proteins and tend to have slower onset but longer duration due to transcriptional regulation.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This reverses the typical solubility and binding pattern.</li>
+<li><b>B:</b> Carriers are mainly needed for lipid-soluble hormones, not water-soluble ones.</li>
+<li><b>C:</b> Being unbound in plasma does not imply direct DNA binding; many peptide hormones circulate unbound and act via second messengers.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Pregnancy, Binding Proteins, and Thyroid Hormone Measurements</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 28-year-old pregnant patient in her second trimester has routine thyroid testing. She feels well, has no heat intolerance, and reports normal energy levels.</p>
+  <p>Her laboratory results show elevated total T4 but normal free T4 and a thyroid-stimulating hormone (TSH) level within the expected range for pregnancy. Additional testing reveals increased thyroxine-binding globulin (TBG) compared with nonpregnant reference values.</p>
+  <p>Her physician explains that during pregnancy, estrogen can increase hepatic production of certain plasma proteins, including hormone-binding globulins. As binding capacity rises, the distribution of hormone between free and bound pools changes until endocrine feedback restores the physiologically active fraction.</p>
+  <p>The patient asks why pregnancy is associated with high levels of multiple hormones, including progesterone, and why reference ranges for some endocrine tests differ during pregnancy.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Decide whether the key lab number is <b>total</b> or <b>free</b> hormone; only the free fraction is immediately bioactive.</li>
+    <li>Ask what happens when binding capacity increases: free hormone often <b>drops transiently</b> until feedback increases secretion.</li>
+    <li>Link hormone chemistry to transport: <b>steroids</b> are lipid-soluble and tend to be <b>carrier-bound</b>; many <b>peptides</b> circulate free.</li>
+    <li>Choose answers that explain the pattern (normal physiology despite altered totals), not answers that equate “high total” with disease.</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. A pregnant patient has elevated total T4 but normal free T4 and normal TSH, consistent with increased TBG. Which interpretation is most accurate?</b>
+  <div class="choice" onclick="selectChoice('q19', this, true)">A. Thyroid function is likely normal; increased binding protein raises total hormone without increasing the free fraction</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. The patient is hyperthyroid because total T4 is elevated</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. The patient is hypothyroid because binding proteins inactivate hormone irreversibly</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Thyroid hormone must be acting via second messengers because TSH is normal</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Increased TBG binds more hormone, raising total T4; the body can maintain free T4 near normal via feedback, so euthyroid physiology is possible despite high total levels.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Total hormone can be high simply due to more binding protein; symptoms and free hormone are more informative.</li>
+<li><b>C:</b> Binding is reversible; hormones can dissociate to become active.</li>
+<li><b>D:</b> TSH normal does not imply second-messenger signaling; thyroid hormones act intracellularly.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. If TBG suddenly increases, what is the most immediate change before compensation occurs?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Immediate increase in free T4</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">B. Transient decrease in free T4 due to increased binding capacity</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Immediate increase in thyroid hormone receptor density</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Immediate rise in intracellular cAMP in thyroid follicular cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> More binding sites initially sequester hormone, transiently lowering the free fraction until the thyroid increases secretion to re-establish equilibrium.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The free fraction would not increase immediately when binding capacity rises.</li>
+<li><b>C:</b> Receptor density changes are slower and not the first event.</li>
+<li><b>D:</b> cAMP in thyroid follicular cells is more related to TSH signaling, not the immediate effect of more TBG in plasma.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. Which hormone in the passage is most likely to be transported in blood primarily bound to a carrier protein?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Insulin</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Glucagon</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Epinephrine</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. Progesterone</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Progesterone is a steroid hormone and is lipid-soluble, so it circulates bound to carrier proteins.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Insulin is a peptide hormone and circulates mostly free.</li>
+<li><b>B:</b> Glucagon is a peptide hormone and circulates mostly free.</li>
+<li><b>C:</b> Epinephrine is water-soluble and has rapid onset/offset, circulating largely unbound.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Direct vs Tropic Hormones in the HPG Axis</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>To compare direct and tropic hormone signaling, a physiology class reviews the hypothalamus–pituitary–gonad (HPG) axis. Neurons in the hypothalamus secrete gonadotropin-releasing hormone (GnRH) into the hypophyseal portal system.</p>
+  <p>GnRH stimulates the anterior pituitary to release luteinizing hormone (LH) and follicle-stimulating hormone (FSH) into systemic circulation. LH then acts on the gonads to promote production of sex steroid hormones.</p>
+  <p>The class contrasts this with hormones such as insulin, which is released from the pancreas and acts directly on peripheral tissues to alter glucose uptake and metabolism without first stimulating another endocrine gland.</p>
+  <p>In a case study, a patient has damage confined to the anterior pituitary. Hypothalamic neurons are intact, but pituitary hormone output is markedly reduced. The clinician predicts downstream endocrine consequences based on the organization of the axis.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>First label each hormone as <b>direct</b> (acts on target tissue) or <b>tropic</b> (stimulates another endocrine gland).</li>
+    <li>Trace the pathway step-by-step: hypothalamus → pituitary → gonads; a lesion upstream causes downstream <b>decreases</b> in dependent hormones.</li>
+    <li>Use the definition, not the organ name: LH is tropic because it drives <b>another gland’s hormone secretion</b>.</li>
+    <li>Eliminate choices that confuse where a hormone is produced vs where it acts.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. In the hypothalamus–pituitary–gonad pathway described, which hormone is the best example of a tropic hormone?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Testosterone acting on skeletal muscle</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Estrogen acting on uterine tissue</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Luteinizing hormone (LH) stimulating the gonads to produce sex steroids</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Insulin stimulating glucose uptake</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> A tropic hormone’s defining feature is that it stimulates another endocrine gland; LH stimulates the gonads to secrete sex steroids.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Testosterone acts directly on target tissues (direct hormone action).</li>
+<li><b>B:</b> Estrogen also acts directly on target tissues.</li>
+<li><b>D:</b> Insulin is a direct hormone acting on metabolic tissues.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. A lesion destroys the anterior pituitary but leaves the hypothalamus intact. Which outcome is most likely?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. High LH and high sex steroid levels due to loss of negative feedback</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. Low LH/FSH and low gonadal steroid production despite normal GnRH release</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Normal LH/FSH release because pituitary hormones are produced in the hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Normal gonadal steroid production because GnRH acts directly on the gonads</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The anterior pituitary is required to secrete LH/FSH in response to GnRH; without it, gonadal stimulation falls and sex steroid production decreases.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Pituitary destruction prevents LH production regardless of feedback.</li>
+<li><b>C:</b> LH/FSH are produced in the anterior pituitary, not the hypothalamus.</li>
+<li><b>D:</b> GnRH primarily targets the pituitary, not the gonads, in this axis.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. Which statement best captures the general relationship between hormone chemistry and receptor location described in the chapter?</b>
+  <div class="choice" onclick="selectChoice('q24', this, true)">A. Lipid-soluble hormones tend to use intracellular receptors; water-soluble hormones tend to use membrane receptors</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Water-soluble hormones tend to require plasma carrier proteins to travel</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. All amino acid–derivative hormones bind intracellular receptors</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Peptide hormones typically dimerize and bind DNA directly</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Nonpolar (lipid-soluble) hormones like steroids cross membranes and often bind intracellular receptors, whereas polar (water-soluble) hormones like peptides typically bind membrane receptors and signal via second messengers.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Carrier proteins are mainly needed for lipid-soluble hormones, not water-soluble ones.</li>
+<li><b>C:</b> Amino acid derivatives vary: catecholamines use membrane receptors, while thyroid hormones use intracellular receptors.</li>
+<li><b>D:</b> Peptide hormones generally do not bind DNA directly; they signal through second messengers.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+</body>
+</html>

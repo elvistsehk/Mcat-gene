@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Cardiovascular System (Ch. 7.1) (15Q + 3 Passages)</title>
+<style>
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+  .kw{ color:#0f4fa0; font-weight:bold; }
+
+</style>
+<script>
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Biology — Cardiovascular System (Ch. 7.1)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. Which chamber directly pumps blood into the pulmonary arteries during systole?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. The right atrium</div><div class="choice" onclick="selectChoice('q1', this, true)">B. The right ventricle</div><div class="choice" onclick="selectChoice('q1', this, false)">C. The left atrium</div><div class="choice" onclick="selectChoice('q1', this, false)">D. The left ventricle</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: B</b></p>
+<p>Blood flows from the right ventricle through the pulmonary valve into the pulmonary arteries, which carry deoxygenated blood to the lungs.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Right atrium:</b> receives systemic venous return; it does not pump into the pulmonary artery.</li><li><b>Left atrium:</b> receives oxygenated blood from pulmonary veins.</li><li><b>Left ventricle:</b> pumps into the aorta for systemic circulation.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. Which valve prevents backflow from the left ventricle into the left atrium?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. The mitral (bicuspid) valve</div><div class="choice" onclick="selectChoice('q2', this, false)">B. The tricuspid valve</div><div class="choice" onclick="selectChoice('q2', this, false)">C. The aortic (semilunar) valve</div><div class="choice" onclick="selectChoice('q2', this, false)">D. The pulmonary (semilunar) valve</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: A</b></p>
+<p>The atrioventricular valve on the left side is the mitral valve; it closes during ventricular systole to prevent regurgitation into the left atrium.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Tricuspid:</b> right atrium → right ventricle.</li><li><b>Aortic valve:</b> left ventricle → aorta (prevents backflow from aorta).</li><li><b>Pulmonary valve:</b> right ventricle → pulmonary artery.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. Place the cardiac conduction pathway in the correct order of excitation.</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. AV node → SA node → Purkinje fibers → bundle of His</div><div class="choice" onclick="selectChoice('q3', this, false)">B. SA node → bundle of His → AV node → Purkinje fibers</div><div class="choice" onclick="selectChoice('q3', this, true)">C. SA node → AV node → bundle of His → Purkinje fibers</div><div class="choice" onclick="selectChoice('q3', this, false)">D. Purkinje fibers → bundle of His → AV node → SA node</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: C</b></p>
+<p>Normal excitation begins at the SA node, spreads across the atria, pauses at the AV node, then travels through the bundle of His and Purkinje fibers to coordinate ventricular contraction.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Choice B:</b> swaps the initiating pacemaker (SA) and the AV node.</li><li><b>Choice C:</b> incorrectly places the AV node after the His bundle.</li><li><b>Choice D:</b> reverses the entire sequence.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. Which statement best explains why the AV node delays the electrical signal?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. It initiates ventricular depolarization when the SA node fails</div><div class="choice" onclick="selectChoice('q4', this, false)">B. It prevents atrial contraction so ventricles fill passively</div><div class="choice" onclick="selectChoice('q4', this, false)">C. It increases the strength of ventricular contraction by releasing catecholamines</div><div class="choice" onclick="selectChoice('q4', this, true)">D. It allows the ventricles more time to fill before they contract</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: D</b></p>
+<p>The AV nodal delay ensures atrial contraction (including the atrial kick) precedes ventricular systole, optimizing end-diastolic volume.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>SA node failure backup:</b> AV node can serve as a pacemaker, but the <i>delay</i> is primarily for filling.</li><li><b>Prevents atrial contraction:</b> the atria still contract; the delay coordinates timing.</li><li><b>Catecholamines:</b> contractility changes are autonomic/hormonal, not the AV node’s job.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A patient is given a β-blocker after a myocardial infarction. Which immediate cardiovascular effect is most consistent with this therapy?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Increased heart rate and increased contractility to maintain cardiac output</div><div class="choice" onclick="selectChoice('q5', this, false)">B. Decreased systemic vascular resistance by opening venous valves</div><div class="choice" onclick="selectChoice('q5', this, true)">C. Decreased heart rate and decreased contractility, reducing myocardial oxygen demand</div><div class="choice" onclick="selectChoice('q5', this, false)">D. Increased stroke volume by strengthening the atrial kick</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: C</b></p>
+<p>β-blockers blunt sympathetic stimulation of the heart, lowering heart rate and contractility so the injured myocardium consumes less oxygen.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Increase HR/contractility:</b> that is sympathetic activation (opposite of β-blockade).</li><li><b>Venous valves:</b> are mechanical structures; drugs do not “open” them to lower resistance.</li><li><b>Atrial kick:</b> is a filling contribution; β-blockers do not specifically increase it.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. On an ECG, which electrical event most closely precedes ventricular contraction?</b>
+  <div class="choice" onclick="selectChoice('q6', this, true)">A. The QRS complex (ventricular depolarization)</div><div class="choice" onclick="selectChoice('q6', this, false)">B. The P wave (atrial repolarization)</div><div class="choice" onclick="selectChoice('q6', this, false)">C. The T wave (ventricular repolarization)</div><div class="choice" onclick="selectChoice('q6', this, false)">D. The PR segment (atrial mechanical systole)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: A</b></p>
+<p>Depolarization comes just before contraction. The QRS complex represents ventricular depolarization, which is immediately followed by ventricular systole.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>P wave:</b> represents atrial depolarization, not atrial repolarization.</li><li><b>T wave:</b> is ventricular repolarization, which occurs after ventricular contraction.</li><li><b>PR segment:</b> reflects conduction delay; it is not a primary depolarization spike.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. Which vessel type has a single endothelial cell layer and is the primary site of exchange of gases and nutrients?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Arteries</div><div class="choice" onclick="selectChoice('q7', this, false)">B. Veins</div><div class="choice" onclick="selectChoice('q7', this, false)">C. Arterioles</div><div class="choice" onclick="selectChoice('q7', this, true)">D. Capillaries</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: D</b></p>
+<p>Capillaries are one cell thick, allowing diffusion of O2/CO2, nutrients, and wastes between blood and tissues.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Arteries/arterioles:</b> have thicker walls with more smooth muscle for pressure control.</li><li><b>Veins:</b> are thin-walled but not specialized for exchange like capillaries.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. Which feature best distinguishes veins from arteries in the systemic circulation?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Veins have thicker smooth muscle to maintain high pressure</div><div class="choice" onclick="selectChoice('q8', this, true)">B. Veins have lower pressure and often contain valves to prevent backflow</div><div class="choice" onclick="selectChoice('q8', this, false)">C. Veins carry oxygenated blood, while arteries carry deoxygenated blood</div><div class="choice" onclick="selectChoice('q8', this, false)">D. Veins have the largest elastic recoil to sustain diastolic pressure</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: B</b></p>
+<p>Systemic veins are low-pressure, compliant vessels; many contain valves that help return blood against gravity and prevent pooling.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Thicker smooth muscle:</b> describes arteries/arterioles.</li><li><b>Oxygenation rule:</b> is reversed for systemic vessels; exceptions are pulmonary/umbilical.</li><li><b>Elastic recoil sustaining pressure:</b> is a key arterial property, not venous.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. Why is the right side of the heart less muscular than the left side?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. It receives oxygenated blood and therefore requires less force</div><div class="choice" onclick="selectChoice('q9', this, false)">B. It has fewer valves and therefore needs less muscle</div><div class="choice" onclick="selectChoice('q9', this, false)">C. It contains the SA node, which reduces mechanical workload</div><div class="choice" onclick="selectChoice('q9', this, true)">D. It pumps blood to the nearby lungs at lower resistance, so high pressure is unnecessary and could damage pulmonary vessels</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: D</b></p>
+<p>Pulmonary circulation is short and low resistance; excessive right-sided pressure would transmit to delicate pulmonary vasculature and cause injury.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Oxygenated blood:</b> right side receives deoxygenated blood from the body.</li><li><b>Valves:</b> both sides have AV and semilunar valves.</li><li><b>SA node location:</b> does not explain wall thickness; it sets rhythm.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. Which sequence correctly traces blood flow through the heart starting at the right atrium and ending at the aorta?</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. Right atrium → tricuspid valve → right ventricle → pulmonary valve → pulmonary arteries → lungs → pulmonary veins → left atrium → mitral valve → left ventricle → aortic valve → aorta</div><div class="choice" onclick="selectChoice('q10', this, false)">B. Right atrium → mitral valve → right ventricle → aortic valve → aorta</div><div class="choice" onclick="selectChoice('q10', this, false)">C. Right atrium → tricuspid valve → right ventricle → aorta → lungs → left atrium</div><div class="choice" onclick="selectChoice('q10', this, false)">D. Right atrium → pulmonary veins → left atrium → tricuspid valve → right ventricle → aorta</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: A</b></p>
+<p>This route reflects the two pumps in series: right heart to lungs (pulmonary circulation), then left heart to body (systemic circulation).</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>B:</b> assigns left-sided valve (mitral) to the right side and skips lungs.</li><li><b>C:</b> incorrectly sends right ventricle directly to aorta and misorders lung step.</li><li><b>D:</b> confuses pulmonary veins (return from lungs) and misroutes valves/chambers.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. Which statement about cardiac muscle explains coordinated ventricular contraction?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Cardiac myocytes are independent so each cell contracts at its own pace</div><div class="choice" onclick="selectChoice('q11', this, false)">B. Semilunar valves propagate the electrical signal to the ventricles</div><div class="choice" onclick="selectChoice('q11', this, true)">C. Gap junctions in intercalated discs electrically couple adjacent myocytes, allowing rapid spread of depolarization</div><div class="choice" onclick="selectChoice('q11', this, false)">D. Ventricles contract first, then atria contract to top off filling</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: C</b></p>
+<p>Intercalated discs contain gap junctions that permit ions to flow between cells, synchronizing depolarization and contraction across the myocardium.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Independent contraction:</b> would produce ineffective pumping.</li><li><b>Valves:</b> are mechanical structures, not electrical conductors.</li><li><b>Ventricle-first:</b> would reduce filling; normal order is atria then ventricles.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. During ventricular systole, which valve state is expected in a normal heartbeat?</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Atrioventricular valves closed; semilunar valves open (after ventricular pressure exceeds arterial pressure)</div><div class="choice" onclick="selectChoice('q12', this, false)">B. Atrioventricular valves open; semilunar valves closed</div><div class="choice" onclick="selectChoice('q12', this, false)">C. Both atrioventricular and semilunar valves open</div><div class="choice" onclick="selectChoice('q12', this, false)">D. Both atrioventricular and semilunar valves closed throughout systole</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: A</b></p>
+<p>As ventricles contract, AV valves close to prevent backflow into atria; once ventricular pressure surpasses aortic/pulmonary pressure, semilunar valves open to eject blood.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>AV open / semilunar closed:</b> describes ventricular filling (diastole).</li><li><b>Both open:</b> would cause backflow and loss of pressure.</li><li><b>Both closed throughout:</b> would prevent ejection; semilunar valves must open to pump blood out.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. Which heart sound is produced by closure of the atrioventricular valves?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. S1 (“lub”)</div><div class="choice" onclick="selectChoice('q13', this, false)">B. S2 (“dub”)</div><div class="choice" onclick="selectChoice('q13', this, false)">C. S3 (associated with rapid filling)</div><div class="choice" onclick="selectChoice('q13', this, false)">D. S4 (associated with stiff ventricle)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: A</b></p>
+<p>S1 occurs at the start of systole when the mitral and tricuspid valves close to prevent backflow into the atria.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>S2:</b> semilunar valve closure at the end of systole.</li><li><b>S3/S4:</b> extra sounds related to filling dynamics or stiffness, not AV closure.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. A person hyperactivates the sympathetic nervous system during a sprint. Which paired effects on the heart are most expected?</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Increased heart rate and increased contractility</div><div class="choice" onclick="selectChoice('q14', this, false)">B. Decreased heart rate and decreased contractility</div><div class="choice" onclick="selectChoice('q14', this, false)">C. Increased heart rate and decreased contractility</div><div class="choice" onclick="selectChoice('q14', this, false)">D. Decreased heart rate and increased contractility</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: A</b></p>
+<p>Sympathetic stimulation (fight-or-flight) increases SA node firing and enhances myocardial contractility to boost cardiac output during exertion.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Decreased HR:</b> is parasympathetic (vagal) effect.</li><li><b>Decreased contractility:</b> is not a typical sympathetic effect on the heart.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. If heart rate increases substantially while stroke volume stays constant, what happens to cardiac output?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. It decreases because diastolic filling time shortens</div><div class="choice" onclick="selectChoice('q15', this, true)">B. It increases proportionally (CO = HR × SV)</div><div class="choice" onclick="selectChoice('q15', this, false)">C. It stays constant because cardiac output is fixed near 5 L/min</div><div class="choice" onclick="selectChoice('q15', this, false)">D. It becomes zero because valves cannot open fast enough</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: B</b></p>
+<p>Cardiac output is defined as HR multiplied by SV. If SV is unchanged, raising HR raises CO, at least over physiologic ranges.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Shortened filling time:</b> can limit SV at extreme rates, but the question holds SV constant.</li><li><b>Fixed CO:</b> CO varies with exercise/rest.</li><li><b>CO becomes zero:</b> would require severe rhythm pathology, not simply higher HR with constant SV.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Palpitations and a Delayed Signal</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 34-year-old patient reports intermittent palpitations and lightheadedness during brisk walking. An ECG obtained during symptoms shows a normal P wave before each QRS complex, but the time between the onset of the P wave and the onset of the QRS complex is noticeably prolonged compared with a prior tracing. The clinician explains that a key junction in the cardiac conduction system intentionally slows impulse propagation.</p>
+  <p>On physical exam, the patient’s blood pressure is normal at rest. The clinician notes that most ventricular filling occurs passively when the ventricles relax, but atrial contraction contributes an additional volume of blood that can meaningfully support output in some patients. The clinician calls this contribution the atrial kick.</p>
+  <p>The clinician also explains that coordinated contraction relies on specialized cell-to-cell connections within cardiac muscle. These connections allow the electrical wave to spread efficiently so that the ventricles contract as a unit rather than as isolated patches.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify what is abnormal on the ECG : a prolonged time between atrial depolarization and ventricular depolarization points to slowed conduction between atria and ventricles.</li>
+    <li>Map the ECG interval to anatomy: the structure that produces a purposeful delay is the <span class="kw">AV node</span> .</li>
+    <li>Use the function of the delay: it supports ventricular filling before <span class="kw">systole</span>; link this to the idea of the atrial kick .</li>
+    <li>For coordination, look for the structural feature that enables rapid electrical spread: gap junctions in intercalated discs .</li>
+    <li>Choose the option that requires an inference from physiology (timing and mechanics), not a direct quote.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. In Passage 1, the prolonged time from the start of the P wave to the start of the QRS complex most directly implicates slowed conduction at which structure?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. The SA node</div><div class="choice" onclick="selectChoice('q16', this, false)">B. The bundle of His</div><div class="choice" onclick="selectChoice('q16', this, true)">C. The AV node</div><div class="choice" onclick="selectChoice('q16', this, false)">D. The Purkinje fibers</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: C</b></p>
+<p>The PR interval reflects conduction from atria to ventricles; the AV node is the physiologic site of delay, so slowed AV nodal conduction prolongs this interval.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>SA node:</b> sets the rhythm and begins atrial depolarization; it does not produce the atrioventricular delay.</li><li><b>Bundle of His/Purkinje fibers:</b> distribute signals through ventricles; issues here more strongly affect QRS morphology/ventricular activation timing.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Based on Passage 1, which change would most directly reduce the contribution of atrial contraction to ventricular filling?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Increased elasticity of the aorta</div><div class="choice" onclick="selectChoice('q17', this, false)">B. Closure of semilunar valves earlier in systole</div><div class="choice" onclick="selectChoice('q17', this, false)">C. Increased venous valves in the legs</div><div class="choice" onclick="selectChoice('q17', this, true)">D. Loss of coordinated atrial contraction prior to ventricular systole</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: D</b></p>
+<p>The atrial kick is the added blood delivered by atrial systole; if atria fail to contract effectively in coordination, that extra contribution falls.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Arterial elasticity:</b> affects pressure maintenance, not the atrial kick.</li><li><b>Semilunar timing:</b> affects ejection, not atrial filling contribution.</li><li><b>Leg vein valves:</b> influence venous return mechanics, not atrial contraction.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. Passage 1 mentions specialized connections that allow the ventricles to contract as a unit. Which structure provides direct electrical coupling between adjacent cardiac myocytes?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Tight junctions within endothelial cells</div><div class="choice" onclick="selectChoice('q18', this, true)">B. Gap junctions within intercalated discs</div><div class="choice" onclick="selectChoice('q18', this, false)">C. Desmosomes between red blood cells</div><div class="choice" onclick="selectChoice('q18', this, false)">D. Collagen fibers in valve leaflets</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: B</b></p>
+<p>Gap junctions permit ion flow between neighboring myocytes, propagating depolarization rapidly to synchronize contraction.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Tight junctions:</b> seal epithelial/endothelial layers; they are not for electrical conduction.</li><li><b>Desmosomes:</b> provide mechanical adhesion (intercalated discs have them too), but <i>electrical</i> coupling is via gap junctions.</li><li><b>Valve collagen:</b> provides mechanical strength, not electrical continuity.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Long Flight, Leg Pain, and Sudden Dyspnea</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 47-year-old patient returns from a long transoceanic flight and notices swelling and tenderness in one calf over the next day. Two days later, the patient develops sudden shortness of breath and sharp chest pain that worsens with deep inspiration. In the emergency department, the clinician suspects a clot that formed in the deep veins of the leg and traveled to the lungs.</p>
+  <p>The clinician explains that venous blood from the lower body must move upward against gravity to return to the heart, and that many large veins contain valves that reduce backward flow. The clinician also points out that veins are highly compliant and can hold a large fraction of total blood volume at any given time.</p>
+  <p>During the exam, the clinician asks the patient to flex the calf repeatedly and explains that contraction of surrounding skeletal muscle can squeeze veins and help propel blood toward the heart. The clinician warns that prolonged immobility can promote blood pooling and stasis, increasing the chance of clot formation.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>First, recognize the pattern: calf swelling after immobility suggests deep vein thrombosis ; sudden dyspnea/chest pain suggests pulmonary embolism .</li>
+    <li>Use the anatomy route: a venous clot from the leg reaches the right heart, then enters the pulmonary <span class="kw">arteries</span> and lodges in pulmonary vessels.</li>
+    <li>Connect structure to function: venous valves limit <span class="kw">backflow</span>; skeletal muscle pump helps overcome gravity.</li>
+    <li>Differentiate vessels: <span class="kw">veins</span> are low-<span class="kw">pressure</span> and compliant; <span class="kw">arteries</span> have more smooth muscle and elastic recoil.</li>
+    <li>Pick answers that explain mechanism (stasis, route, <span class="kw">pressure</span>) rather than simply naming the diagnosis.</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. In Passage 2, a clot that forms in a deep leg vein and embolizes to the lungs would most likely travel next through which cardiac chamber immediately before entering the pulmonary artery?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. The left atrium</div><div class="choice" onclick="selectChoice('q19', this, false)">B. The left ventricle</div><div class="choice" onclick="selectChoice('q19', this, true)">C. The right ventricle</div><div class="choice" onclick="selectChoice('q19', this, false)">D. The aorta</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: C</b></p>
+<p>Venous thrombi return via venae cavae to the right atrium, pass through the tricuspid valve to the right ventricle, then are ejected through the pulmonary valve into the pulmonary arteries.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Left atrium/left ventricle/aorta:</b> are part of systemic outflow after oxygenation; they are reached after blood passes through the lungs.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. Which feature described in Passage 2 most directly helps prevent venous backflow in the legs when a person is standing?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Thick arterial smooth muscle that maintains high pressure</div><div class="choice" onclick="selectChoice('q20', this, true)">B. One-way venous valves that close when blood moves backward</div><div class="choice" onclick="selectChoice('q20', this, false)">C. Semilunar heart valves that open during diastole</div><div class="choice" onclick="selectChoice('q20', this, false)">D. Capillary fenestrations that increase diffusion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: B</b></p>
+<p>Large veins use valves to prevent retrograde flow, especially in the lower extremities where gravity favors pooling.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Arterial smooth muscle:</b> is not a venous feature and does not prevent backflow in veins.</li><li><b>Semilunar valves:</b> are in the heart and relate to ejection/outflow.</li><li><b>Capillary fenestrations:</b> affect exchange, not directional flow.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. According to Passage 2, why does repeated calf muscle contraction help reduce the risk of clot formation during long periods of sitting?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. It increases the number of red blood cells to dilute clotting factors</div><div class="choice" onclick="selectChoice('q21', this, false)">B. It opens alveoli to improve oxygenation and dissolve clots</div><div class="choice" onclick="selectChoice('q21', this, false)">C. It decreases arterial recoil to lower systolic pressure</div><div class="choice" onclick="selectChoice('q21', this, true)">D. It promotes forward venous flow and reduces blood stasis by mechanically compressing veins</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: D</b></p>
+<p>Skeletal muscle contraction squeezes veins, pushing blood toward the heart (aided by valves), reducing pooling and stasis that predispose to thrombosis.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>RBC number:</b> is not acutely increased by calf flexion and would not be protective in that way.</li><li><b>Alveolar opening:</b> is unrelated to venous stasis in the legs.</li><li><b>Arterial recoil:</b> is not the mechanism of the skeletal muscle pump.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Hypertension, Arterial Elasticity, and Heart Sounds</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 62-year-old patient with long-standing hypertension is evaluated for exertional fatigue. The clinician explains that arteries are not just passive tubes: their elastic walls stretch during ventricular ejection and recoil during ventricular relaxation, helping to maintain blood flow between heartbeats.</p>
+  <p>On auscultation, the clinician hears the typical “lub dub” sequence and explains that each sound corresponds to valve closure. The clinician also notes that some extra sounds can occur when the ventricle is stiff or when pressures are abnormally high.</p>
+  <p>During counseling, the clinician emphasizes why the left ventricle must generate higher pressures than the right ventricle: systemic arteries create substantial resistance and the left ventricle must push blood to distant tissues. The clinician cautions that if the right ventricle generated systemic-level pressures, delicate pulmonary vessels would be exposed to damaging forces.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate the physiology: arterial elastic recoil helps sustain <span class="kw">pressure</span> during <span class="kw">diastole</span> when the <span class="kw">ventricle</span> is relaxed.</li>
+    <li>Map sounds to valves: <span class="kw">S1</span> is AV closure at the start of <span class="kw">systole</span>; <span class="kw">S2</span> is <span class="kw">semilunar</span> closure at the end of <span class="kw">systole</span>.</li>
+    <li>Link chronic hypertension to mechanics: increased <span class="kw">resistance</span> means the left <span class="kw">ventricle</span> must generate higher <span class="kw">pressure</span> (greater afterload ).</li>
+    <li>Use side-to-side comparison: the right <span class="kw">ventricle</span> serves low-<span class="kw">resistance</span> <span class="kw">pulmonary circulation</span>; high pressures would injure pulmonary vessels.</li>
+    <li>Choose the answer that follows from the chain of cause → effect rather than restating a definition.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. Passage 3 emphasizes that arterial elasticity helps maintain pressure during ventricular relaxation. If large arteries suddenly became much less elastic, what would be the most direct change in blood pressure profile?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Systolic pressure would become zero because the ventricle cannot contract</div><div class="choice" onclick="selectChoice('q22', this, false)">B. Mean arterial pressure would increase because arteries cannot stretch</div><div class="choice" onclick="selectChoice('q22', this, true)">C. Diastolic pressure would fall more than normal because recoil would be reduced</div><div class="choice" onclick="selectChoice('q22', this, false)">D. Pulse pressure would disappear because systolic and diastolic would become identical</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: C</b></p>
+<p>Elastic arteries store energy during systole and release it during diastole. Losing elasticity reduces this buffering, allowing pressure to drop more during diastole.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Systolic becomes zero:</b> systolic pressure comes from ventricular contraction; it would not become zero solely from reduced elasticity.</li><li><b>MAP increases:</b> less compliance often increases systolic pressure, but the key immediate change highlighted is loss of diastolic support.</li><li><b>Pulse pressure disappears:</b> it would not vanish; differences may actually widen.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. In Passage 3, which valve closure event most directly produces the second heart sound (S2)?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Closure of the mitral and tricuspid (AV) valves at the start of systole</div><div class="choice" onclick="selectChoice('q23', this, true)">B. Closure of the aortic and pulmonary (semilunar) valves at the end of systole</div><div class="choice" onclick="selectChoice('q23', this, false)">C. Opening of the aortic valve during ventricular ejection</div><div class="choice" onclick="selectChoice('q23', this, false)">D. Opening of the mitral valve during ventricular filling</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: B</b></p>
+<p>S2 corresponds to semilunar valve closure when ventricular pressure falls below arterial pressure at the end of systole, preventing backflow into ventricles.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>AV closure:</b> produces S1.</li><li><b>Valve opening:</b> is not what generates the classic heart sounds described.</li><li><b>Mitral opening:</b> occurs in diastole and is not S2.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. Passage 3 compares the left and right ventricles. Which inference best explains why the left ventricle must generate higher pressures?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Pulmonary arteries contain more smooth muscle than systemic arteries</div><div class="choice" onclick="selectChoice('q24', this, false)">B. The right atrium receives more blood than the left atrium</div><div class="choice" onclick="selectChoice('q24', this, false)">C. Oxygenated blood is more viscous and therefore requires less pressure to move</div><div class="choice" onclick="selectChoice('q24', this, true)">D. Systemic arteries create greater resistance and longer distribution distance, increasing afterload on the left ventricle</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+
+<p><b>Correct Answer: D</b></p>
+<p>Systemic circulation has higher resistance and longer path length; the left ventricle pumps against this higher afterload to deliver blood to distant tissues.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul class="why-others"><li><b>Pulmonary arteries:</b> are lower resistance relative to systemic circulation.</li><li><b>Atria receive volume:</b> in a closed circuit, flows match over time; the key difference is resistance/afterload.</li><li><b>Viscosity claim:</b> does not match the inference; higher viscosity would increase required pressure, not decrease it.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Digestion & Secretions (Ch. 9.1–9.2) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Digestion & Secretions (Ch. 9.1–9.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (Correct: B) -->
+<div class="question" id="q1">
+  <b>1. A student says, “Chewing a cracker breaks it into smaller pieces but does not change the molecules.” Which term best describes the chewing process?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Absorption</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Mechanical digestion</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Intracellular digestion</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Chemical digestion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Mechanical digestion is physical breakdown that increases surface area without cleaving chemical bonds.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Absorption is transport of digested products into circulation, not breaking food apart.</li>
+        <li><b>C:</b> Intracellular digestion refers to metabolic oxidation inside cells, not processing food in the lumen.</li>
+        <li><b>D:</b> Chemical digestion requires enzymatic bond cleavage (e.g., glycosidic or peptide bonds).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (Correct: D) -->
+<div class="question" id="q2">
+  <b>2. A patient develops reduced saliva volume after damage to autonomic fibers. Which nervous system division most directly promotes salivary gland secretion under normal conditions?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Enteric only (independent of autonomic input)</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Sympathetic</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Somatic motor</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Parasympathetic</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Digestive gland secretion is primarily stimulated by parasympathetic activity (rest-and-digest).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The enteric nervous system can operate locally, but major regulation comes from the autonomic system.</li>
+        <li><b>B:</b> Sympathetic input can increase viscosity but generally inhibits digestive secretions and motility.</li>
+        <li><b>C:</b> Somatic motor controls skeletal muscle, not exocrine gland secretion.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (Correct: A) -->
+<div class="question" id="q3">
+  <b>3. Food moves from the esophagus into the stomach when which structure relaxes?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Lower esophageal (cardiac) sphincter</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Anal sphincter</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Ileocecal valve</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Pyloric sphincter</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The lower esophageal sphincter opens to allow the bolus to enter the stomach.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> The anal sphincter controls defecation.</li>
+        <li><b>C:</b> The ileocecal valve separates small and large intestines.</li>
+        <li><b>D:</b> The pyloric sphincter controls emptying from stomach to duodenum.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (Correct: C) -->
+<div class="question" id="q4">
+  <b>4. During a fight-or-flight response, a person notices decreased gut motility. Which change best explains this effect?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Parasympathetic activation increases peristalsis</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Increased gastrin directly paralyzes intestinal smooth muscle</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Sympathetic activation decreases blood flow and slows peristalsis</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Enteric nervous system stops functioning entirely</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Sympathetic activity inhibits digestive processes and decreases blood flow to the GI tract, reducing motility.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Parasympathetic activity generally increases peristalsis and secretions.</li>
+        <li><b>B:</b> Gastrin mainly increases gastric acid secretion and stomach mixing; it is not the primary sympathetic mediator.</li>
+        <li><b>D:</b> The enteric system continues to function; it is heavily modulated, not “turned off.”</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (Correct: A) -->
+<div class="question" id="q5">
+  <b>5. A patient aspirates food into the airway while swallowing. Failure of which structure most directly allowed food to enter the larynx?</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Epiglottis</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Uvula</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Peyer’s patches</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Lower esophageal sphincter</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The epiglottis folds down to cover the laryngeal inlet during swallowing to prevent aspiration.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> The uvula helps close off the nasopharynx during swallowing but does not cover the larynx.</li>
+        <li><b>C:</b> Peyer’s patches are lymphoid aggregates in the small intestine.</li>
+        <li><b>D:</b> The LES prevents reflux from stomach to esophagus; it does not protect the airway.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (Correct: D) -->
+<div class="question" id="q6">
+  <b>6. The top third of the esophagus is primarily skeletal muscle. Which implication follows most directly?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. It performs most chemical digestion of proteins</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. It is entirely involuntary smooth muscle</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. It is controlled only by endocrine hormones</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. It can be influenced by voluntary (somatic) motor control at the start of swallowing</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Skeletal muscle is under somatic control; initiation of swallowing involves voluntary components in the upper esophagus/oropharynx.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> No significant chemical digestion occurs in the esophagus.</li>
+        <li><b>B:</b> The esophagus transitions from skeletal to smooth muscle; it is not entirely smooth muscle.</li>
+        <li><b>C:</b> Endocrine signals modulate digestion, but skeletal muscle contraction relies on motor neurons.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (Correct: B) -->
+<div class="question" id="q7">
+  <b>7. A student claims, “Salivary amylase begins digesting starch.” Which bond is most directly cleaved by this enzyme?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Ester bonds</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Glycosidic bonds</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Peptide bonds</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Phosphodiester bonds</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Amylase hydrolyzes glycosidic linkages in starch to produce maltose and dextrins.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Ester bonds in fats are targeted by lipases.</li>
+        <li><b>C:</b> Peptide bonds are cleaved by proteases (e.g., pepsin, trypsin).</li>
+        <li><b>D:</b> Phosphodiester bonds are found in nucleic acids and are cleaved by nucleases.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (Correct: C) -->
+<div class="question" id="q8">
+  <b>8. A patient with GERD experiences burning pain after meals due to reflux. Which physiologic defect most directly causes the reflux?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Lack of brush-border disaccharidases</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Failure of the epiglottis to close</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Weak lower esophageal sphincter</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Hyperactive pyloric sphincter</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> GERD commonly results from reduced tone/competence of the lower esophageal sphincter, allowing acid to reflux.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Disaccharidase deficiency causes malabsorption symptoms like bloating/diarrhea, not acid reflux.</li>
+        <li><b>B:</b> Epiglottis failure causes aspiration, not reflux.</li>
+        <li><b>D:</b> The pyloric sphincter regulates stomach emptying into the duodenum.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (Correct: D) -->
+<div class="question" id="q9">
+  <b>9. A medication disrupts the stomach’s protective lining, increasing ulcer risk. Which cell type’s secretion is most directly reduced?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. G-cell gastrin</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Parietal cell intrinsic factor</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Chief cell pepsinogen</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">D. Mucous cell bicarbonate-rich mucus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The mucus/bicarbonate barrier (from mucous cells) protects the stomach mucosa from acid and proteases; reducing it predisposes to gastritis/ulcers.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Gastrin increases acid secretion and mixing; it is not the protective layer itself.</li>
+        <li><b>B:</b> Intrinsic factor is for vitamin B12 absorption, not mucosal protection.</li>
+        <li><b>C:</b> Pepsinogen contributes to protein digestion but is not the protective coating.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (Correct: A) -->
+<div class="question" id="q10">
+  <b>10. Which combination correctly matches a stomach secretion with its primary role?</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. HCl — converts pepsinogen to pepsin and helps denature proteins</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Pepsin — activates trypsinogen in the duodenum</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Gastrin — neutralizes acid in the duodenum</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Intrinsic factor — emulsifies fats into micelles</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Stomach acid helps denature proteins, kill many microbes, and activates pepsin by converting pepsinogen to pepsin.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Enteropeptidase activates trypsinogen; pepsin digests proteins in the stomach.</li>
+        <li><b>C:</b> Secretin increases pancreatic bicarbonate; gastrin increases gastric acid secretion and mixing.</li>
+        <li><b>D:</b> Bile salts (not intrinsic factor) emulsify fats and form micelles.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (Correct: C) -->
+<div class="question" id="q11">
+  <b>11. A person cannot absorb vitamin B12 properly after autoimmune destruction of parietal cells. Which gastric product is most directly missing?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Pancreatic lipase</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Gastrin</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Intrinsic factor</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Bicarbonate</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Parietal cells produce intrinsic factor, which is required for normal vitamin B12 absorption.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Pancreatic lipase is produced by the pancreas and acts in the small intestine.</li>
+        <li><b>B:</b> Gastrin is secreted by G-cells, not parietal cells.</li>
+        <li><b>D:</b> Bicarbonate is part of mucous protection and pancreatic secretions; it is not the specific B12 cofactor.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (Correct: B) -->
+<div class="question" id="q12">
+  <b>12. A patient lacks lactase. Which outcome is most likely after consuming milk?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Protein digestion fails because pepsin cannot be activated</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. Lactose remains undigested, drawing water into the lumen and promoting diarrhea</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Fat digestion stops because bile salts are enzymes</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. B12 absorption increases because intrinsic factor is upregulated</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Undigested lactose causes osmotic diarrhea and can be fermented by bacteria, producing gas and bloating.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Pepsin activation depends on stomach acid, not lactase.</li>
+        <li><b>C:</b> Bile salts are not enzymes; fat digestion depends on emulsification plus lipase.</li>
+        <li><b>D:</b> Intrinsic factor relates to B12, unrelated to lactase deficiency.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (Correct: A) -->
+<div class="question" id="q13">
+  <b>13. A patient’s duodenum is exposed to acidic chyme. Which hormone most directly decreases gastric acid secretion and increases pancreatic bicarbonate secretion?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Secretin</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Gastrin</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Ghrelin</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. CCK</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Secretin reduces HCl secretion from parietal cells and increases pancreatic bicarbonate to neutralize acidic chyme.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Gastrin increases HCl secretion and stomach mixing.</li>
+        <li><b>C:</b> Ghrelin stimulates hunger; it is not the primary pH regulator here.</li>
+        <li><b>D:</b> CCK stimulates bile and pancreatic enzyme release and promotes satiety.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (Correct: D) -->
+<div class="question" id="q14">
+  <b>14. Why does bile most directly increase the effectiveness of pancreatic lipase in the small intestine?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Bile cleaves ester bonds in triglycerides</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Bile inactivates brush-border disaccharidases to slow carbohydrate digestion</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Bile converts pepsinogen to pepsin in the duodenum</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">D. Bile salts emulsify fats into micelles, increasing surface area and keeping lipids accessible in aqueous solution</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Bile salts are amphipathic and emulsify fats into micelles, increasing surface area and allowing water-soluble lipase to act efficiently.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Bile salts are not enzymes; lipase cleaves ester bonds.</li>
+        <li><b>B:</b> Bile does not inactivate disaccharidases; it primarily aids fat handling.</li>
+        <li><b>C:</b> Pepsinogen activation occurs in the acidic stomach, not the duodenum.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (Correct: C) -->
+<div class="question" id="q15">
+  <b>15. A patient has a mutation that prevents activation of trypsinogen in the small intestine. Which enzyme is most directly responsible for initiating trypsinogen activation under normal conditions?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Pancreatic amylase</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Pepsin</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Enteropeptidase</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Salivary lipase</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Enteropeptidase (enterokinase) activates trypsinogen to trypsin, which then triggers a protease activation cascade.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Pancreatic amylase digests starch, not protease zymogens.</li>
+        <li><b>B:</b> Pepsin is a stomach protease activated by low pH.</li>
+        <li><b>D:</b> Salivary lipase begins lipid hydrolysis in the mouth.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<div class="passage-header">
+  <span>Passage 1: Autonomic Control and Early Digestion</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A graduate student volunteers for a physiology study examining digestion under different stress conditions. On Day 1, the student arrives relaxed and is given a standardized starch-rich snack and a measured volume of water. Within minutes, the student produces abundant watery saliva, forms a cohesive bolus, and swallows without difficulty.</p>
+  <p>Investigators record robust peristaltic waves that move the bolus down the esophagus. They also observe normal, steady gastric mixing after the bolus reaches the stomach, and they note that the participant subjectively feels “sleepy” after finishing the snack.</p>
+  <p>On Day 2, the same snack is given immediately after the student completes a stressful public-speaking task. The student reports dry mouth and describes saliva as “thick and tacky.” The investigators record reduced gut motility and reduced blood flow to the digestive tract, and the student reports the first phase of swallowing feels more effortful even though food still reaches the stomach.</p>
+  <p>The investigators remind trainees that chewing increases the surface area of food without breaking covalent bonds, whereas enzymatic activity cleaves chemical bonds. They add that digestive activity is coordinated by local neural circuits in the gut wall, but is strongly modulated by autonomic input, and that the upper and lower esophagus differ in muscle type and control.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>First, connect stress to physiology: stress → **higher sympathetic** tone and **lower parasympathetic** tone.</li>
+    <li>Then map to GI effects: sympathetic tone ↓ **blood flow** and ↓ **peristalsis/motility**; parasympathetic tone normally ↑ secretions and motility.</li>
+    <li>For “tacky saliva,” recall that sympathetic input can ↑ **viscosity** and create a dry-mouth sensation.</li>
+    <li>For swallowing differences, use anatomy: upper esophagus has **skeletal** muscle (more somatic influence), lower esophagus is **smooth** muscle (autonomic/enteric).</li>
+    <li>For digestion type, classify actions: chewing = **mechanical**; enzymes breaking bonds = **chemical**.</li>
+  </ol>
+</div>
+
+<!-- Q16 (Correct: B) -->
+<div class="question" id="q16">
+  <b>16. Based on the study’s Day 2 findings, which change most directly explains the student’s reduced gut motility during stress?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Increased parasympathetic tone enhances peristalsis</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">B. Increased sympathetic tone inhibits digestive activity and slows peristalsis</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Increased intrinsic factor secretion relaxes intestinal smooth muscle</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Loss of enteric neurons eliminates all reflexive contractions</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Stress implies sympathetic activation, which inhibits digestion and decreases gut motility and blood flow.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Parasympathetic tone would increase motility and secretions, opposing the observed decrease.</li>
+        <li><b>C:</b> Intrinsic factor relates to vitamin B12 absorption and does not govern motility.</li>
+        <li><b>D:</b> Enteric function persists; modulation changes output rather than eliminating neurons.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (Correct: D) -->
+<div class="question" id="q17">
+  <b>17. The student’s “tacky” saliva on Day 2 is most consistent with which autonomic influence described in the passage?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Parasympathetic input increases saliva viscosity during stress</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Sympathetic input increases watery secretion to lubricate food</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Enteric neurons secrete saliva directly into the oral cavity</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Sympathetic input increases saliva viscosity, contributing to dry-mouth sensation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Under sympathetic activation, saliva becomes more viscous, producing a dry or tacky mouthfeel.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Parasympathetic stimulation promotes salivation rather than thick, scant saliva during stress.</li>
+        <li><b>B:</b> Watery salivation is more typical of parasympathetic stimulation.</li>
+        <li><b>C:</b> Enteric neurons regulate the GI tract wall, not salivary glands.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (Correct: A) -->
+<div class="question" id="q18">
+  <b>18. The student reports swallowing feels more effortful “at the start” on Day 2. Which feature of the pathway most plausibly allows partial voluntary compensation early in the process?</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. Upper esophagus contains skeletal muscle that can be influenced by somatic motor control</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. G-cells secrete gastrin to initiate swallowing reflexes</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Duodenal brush-border enzymes increase bolus propulsion by hydrolyzing starch</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Lower esophageal sphincter is skeletal muscle under direct voluntary control</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The upper third of the esophagus is skeletal muscle, allowing greater somatic influence during initiation than smooth muscle segments.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Gastrin regulates gastric secretion/motility, not the swallowing reflex.</li>
+        <li><b>C:</b> Brush-border enzymes act in the duodenum, not during swallowing.</li>
+        <li><b>D:</b> The lower esophageal sphincter is smooth muscle and autonomically regulated.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Acid, Protection, and Protein Digestion</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 48-year-old patient takes high doses of an over-the-counter pain medication for chronic back pain. Over several weeks, the patient develops epigastric discomfort that worsens shortly after meals. Endoscopy reveals inflamed gastric mucosa with a small ulcer.</p>
+  <p>The clinician explains that the stomach must maintain a harsh environment to help digest proteins and kill many microbes, yet it must also protect itself from autodigestion. The clinician notes that post-meal neural signals can increase gastric secretions and mixing, and that the gastric lining normally produces a barrier that resists both acidity and proteolysis.</p>
+  <p>In the gastric lumen, protein digestion is initiated by an enzyme that functions best at low pH. This enzyme is produced as an inactive precursor and becomes active only after exposure to the acidic environment. The clinician also explains that one cell type releases a protective secretion rich in bicarbonate, while another cell type releases a glycoprotein required for normal absorption of a specific vitamin later in digestion.</p>
+  <p>The patient asks why the pain medication increases ulcer risk and why symptoms often flare after meals rather than between meals, even when diet composition seems similar from day to day.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify what the drug disrupts: many NSAIDs reduce the stomach’s **mucus/bicarbonate** barrier → mucosa becomes vulnerable.</li>
+    <li>Link symptom timing: meal cues ↑ **parasympathetic (vagal)** input and hormones → ↑ acid secretion and gastric mixing.</li>
+    <li>Connect enzyme activation: low pH converts **pepsinogen** to **pepsin**, increasing proteolysis in the lumen.</li>
+    <li>Keep cell products straight: **mucous** cells protect; **parietal** cells make acid + **intrinsic factor**; **chief** cells make pepsinogen.</li>
+    <li>Then predict consequences: less protection + more acid/protease → worse post-meal irritation.</li>
+  </ol>
+</div>
+
+<!-- Q19 (Correct: C) -->
+<div class="question" id="q19">
+  <b>19. Which gastric secretion is most directly reduced by the pain medication described, thereby increasing ulcer risk?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Intrinsic factor</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Gastrin</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Bicarbonate-rich mucus</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Pepsinogen</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Reduced mucus/bicarbonate barrier exposes mucosa to acid and pepsin, increasing ulcer risk.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Intrinsic factor is for vitamin B12 absorption, not mucosal protection.</li>
+        <li><b>B:</b> Gastrin increases acid secretion; it is not the protective coating.</li>
+        <li><b>D:</b> Pepsinogen contributes to digestion but is not the main protective barrier.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (Correct: B) -->
+<div class="question" id="q20">
+  <b>20. After a meal, which sequence best explains why the patient’s symptoms flare more strongly?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Meal-related stimulation blocks pepsinogen production, causing undigested proteins to mechanically abrade the stomach</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">B. Meal-related stimulation increases acid secretion, activating proteolytic enzymes that can damage an unprotected mucosa</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Reduced vagal input lowers gastric secretions, worsening autodigestion</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Meal-related stimulation stops acid secretion, allowing bacterial overgrowth to erode the mucosa</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Post-meal stimulation increases HCl and pepsin activity; without protection, acid/proteolysis worsen pain and injury.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Blocking pepsinogen would reduce proteolysis; it would not explain symptom flare best.</li>
+        <li><b>C:</b> Vagal/parasympathetic input tends to increase, not decrease, gastric secretions after meals.</li>
+        <li><b>D:</b> Acid secretion rises after meals; stopping acid is not the described response.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (Correct: A) -->
+<div class="question" id="q21">
+  <b>21. Which additional finding would be most consistent with impaired function of the cell type that also secretes the glycoprotein mentioned?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Vitamin B12 deficiency due to loss of a required binding factor</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Failure to form micelles due to loss of bile salts</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Loss of pancreatic bicarbonate causing acidic duodenal pH</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Inability to hydrolyze lactose due to loss of lactase</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The glycoprotein is intrinsic factor from parietal cells; loss impairs vitamin B12 absorption, risking deficiency.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Bile salts are produced by the liver and released via gallbladder, not by gastric cells.</li>
+        <li><b>C:</b> Pancreatic bicarbonate is produced by the pancreas and stimulated by secretin.</li>
+        <li><b>D:</b> Lactase is a brush-border enzyme of the small intestine, not a gastric secretion.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Duodenal Digestion and Malabsorption Patterns</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Two patients present with post-meal gastrointestinal symptoms. Patient A reports bloating and flatulence after ice cream and soft cheeses, and sometimes develops watery diarrhea within hours. Patient B reports greasy, floating stools after fatty meals and notes that symptoms improve when eating very low-fat foods.</p>
+  <p>Neither patient has fever, and both have normal appetite. A clinician suspects that both cases involve incomplete breakdown of nutrients within the small intestine lumen, but the underlying missing factor differs between patients.</p>
+  <p>In a teaching session, the instructor reviews that the duodenum supplies brush-border enzymes that complete carbohydrate and peptide digestion. If a disaccharide cannot be cleaved, it can retain water osmotically and can be fermented by gut bacteria, producing gas as a byproduct.</p>
+  <p>The instructor also reviews that bile salts are amphipathic molecules that disperse dietary lipids into droplets and micelles, increasing surface area and keeping fats accessible in an aqueous environment. Water-soluble pancreatic lipase then cleaves ester bonds within lipids. The instructor adds that pancreatic bicarbonate creates a more alkaline pH that supports many digestive enzymes.</p>
+  <p>Trainees are asked to predict which missing factor best explains each patient’s symptoms and which hormones are expected to rise when acidic, fatty chyme enters the duodenum.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Use symptom patterns: gas + watery diarrhea after dairy → likely missing **lactase** (a brush-border disaccharidase).</li>
+    <li>For greasy, floating stools after fat, think impaired lipid handling: missing **bile** (micelles) and/or missing **lipase** (ester cleavage).</li>
+    <li>Map hormone triggers: acidic chyme → **secretin** (↑ bicarbonate, ↓ gastric acid, slows motility).</li>
+    <li>Map fat/amino acids triggers: **CCK** (↑ bile release and pancreatic enzymes; promotes satiety).</li>
+    <li>Separate steps: bile does **mechanical** dispersion (micelles); lipase does **chemical** digestion (bond hydrolysis).</li>
+  </ol>
+</div>
+
+<!-- Q22 (Correct: D) -->
+<div class="question" id="q22">
+  <b>22. Which deficiency most directly explains Patient A’s bloating, flatulence, and watery diarrhea after dairy consumption?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Defective enteropeptidase</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Absent bile salts</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Low intrinsic factor</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. Reduced lactase activity at the brush border</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Undigested lactose causes osmotic diarrhea and bacterial fermentation, producing gas after dairy intake.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Enteropeptidase affects protein digestion via trypsin activation, not lactose.</li>
+        <li><b>B:</b> Bile salt deficiency primarily impairs fat digestion and causes steatorrhea.</li>
+        <li><b>C:</b> Intrinsic factor affects vitamin B12 absorption, not acute dairy-triggered symptoms.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (Correct: B) -->
+<div class="question" id="q23">
+  <b>23. When fatty, amino acid–rich chyme enters the duodenum, which hormonal response best supports fat digestion?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Gastrin increases gastric acid to raise duodenal pH</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. CCK stimulates bile release and pancreatic enzyme secretion</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Secretin closes the pyloric sphincter permanently to stop chyme entry</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Ghrelin reduces pancreatic secretion to conserve energy</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> CCK is released in response to fats/amino acids and promotes bile and pancreatic secretions while promoting satiety.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Gastrin increases gastric acid; it does not raise duodenal pH.</li>
+        <li><b>C:</b> Secretin can slow gastric emptying but does not permanently close the pylorus.</li>
+        <li><b>D:</b> Ghrelin promotes hunger rather than coordinating fat digestion in the duodenum.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (Correct: C) -->
+<div class="question" id="q24">
+  <b>24. Patient B’s greasy, floating stools suggest impaired lipid processing. Which pairing best distinguishes the mechanical vs chemical steps of lipid digestion?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Mechanical: secretin; Chemical: CCK</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Mechanical: pepsin; Chemical: intrinsic factor</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. Mechanical: bile salt emulsification into micelles; Chemical: lipase hydrolysis of ester bonds</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Mechanical: pancreatic lipase; Chemical: bile salts</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Bile salts mechanically emulsify fats into micelles; pancreatic lipase chemically cleaves ester bonds in triglycerides.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Secretin and CCK are hormones regulating secretions, not the digestion steps themselves.</li>
+        <li><b>B:</b> Pepsin and intrinsic factor are gastric components, not primary small-intestine lipid digestion steps.</li>
+        <li><b>D:</b> Lipase performs chemical digestion; bile salts are not enzymes and mainly aid emulsification.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

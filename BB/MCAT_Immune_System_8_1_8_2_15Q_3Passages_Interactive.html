@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Immune System (Ch. 8.1–8.2) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Immune System (Ch. 8.1–8.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (Correct: C) -->
+<div class="question" id="q1">
+  <b>1. A patient develops symptoms within hours of cutting their hand while cooking. Immune cells in the tissue begin phagocytosis and release inflammatory cytokines without needing prior exposure to the microbe. Which description best matches the response?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Adaptive immunity; rapid and antigen-specific with immunologic memory</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Humoral immunity; driven primarily by antibodies secreted by plasma cells</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Innate immunity; rapid and nonspecific, poised to respond immediately</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Cell-mediated immunity; slower and dependent on clonal expansion of T-cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> A rapid response in tissues (phagocytosis + cytokines) that does not require prior antigen exposure is characteristic of innate (nonspecific) immunity.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Adaptive immunity is antigen-specific and generates memory, but it is slower to start.</li>
+        <li><b>B:</b> Humoral immunity is the antibody arm of adaptive immunity; antibodies are not produced immediately after a first exposure.</li>
+        <li><b>D:</b> Cell-mediated immunity relies on T-cell activation/expansion and is not the fastest first-line response after a new breach.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (Correct: A) -->
+<div class="question" id="q2">
+  <b>2. Which statement most accurately describes the status of B-cells immediately after they exit the bone marrow?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. They are mature but naïve because they have not yet encountered their specific antigen</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. They are already plasma cells actively secreting high-affinity IgG</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. They have completed maturation in the thymus and will kill infected cells directly</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. They can present only endogenous antigens via MHC class I</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> B-cells develop in bone marrow. When they leave, they are mature (receptor formed) but naïve (no antigen exposure yet).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Plasma cells form after activation (often in lymph nodes/spleen) and subsequent differentiation.</li>
+        <li><b>C:</b> Thymus maturation is for T-cells, not B-cells; cytotoxic killing is a T-cell function.</li>
+        <li><b>D:</b> All nucleated cells present endogenous peptides on MHC-I; B-cells can also present exogenous antigen on MHC-II when acting as APCs.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (Correct: C) -->
+<div class="question" id="q3">
+  <b>3. A clinician describes an immune cell that matures in a gland anterior to the heart and later helps coordinate immune responses and can directly kill virally infected cells. Which division of adaptive immunity is most associated with this cell?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Humoral immunity</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Complement-mediated immunity</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">C. Cell-mediated immunity</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Barrier immunity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> T-cells mature in the thymus (anterior to the heart). Their hallmark is cell-mediated immunity (coordination by helper T-cells, killing by cytotoxic T-cells).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Humoral immunity is antibody-driven (B-cells → plasma cells).</li>
+        <li><b>B:</b> Complement is mainly a nonspecific blood-protein defense (even if activated by antibodies).</li>
+        <li><b>D:</b> Barriers (skin/mucosa) are noncellular innate defenses, not adaptive T-cell functions.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (Correct: B) -->
+<div class="question" id="q4">
+  <b>4. Which leukocyte is classified as a granulocyte?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Monocyte</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Neutrophil</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Lymphocyte</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Macrophage</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Granulocytes contain prominent cytoplasmic granules and include neutrophils, eosinophils, and basophils (with mast cells closely related to basophils).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Monocytes are agranulocytes in blood.</li>
+        <li><b>C:</b> Lymphocytes (B-cells, T-cells, NK cells) are agranulocytes.</li>
+        <li><b>D:</b> Macrophages are tissue-resident derivatives of monocytes and are agranulocytes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (Correct: C) -->
+<div class="question" id="q5">
+  <b>5. A blood-borne phagocytic cell migrates into tissues and differentiates into a long-lived resident immune cell. Which starting cell in the bloodstream most directly gives rise to that resident population?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Basophil</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. B-lymphocyte</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Eosinophil</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">D. Monocyte</div>
+<div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Monocytes circulate in blood and become macrophages in tissues (including specialized resident forms such as microglia, Langerhans cells, and osteoclasts).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Basophils are granulocytes involved in allergic responses and histamine release.</li>
+        <li><b>B:</b> B-cells differentiate into plasma cells or memory B-cells, not macrophages.</li>
+        <li><b>D:</b> Eosinophils target parasites and participate in allergic inflammation; they do not become macrophages.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (Correct: D) -->
+<div class="question" id="q6">
+  <b>6. Complement can be activated by a pathway that involves antibody binding to a pathogen. Despite this, complement is considered part of innate immunity because:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Complement proteins are produced only after B-cells class-switch to IgG</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Complement requires antigen presentation on MHC-II to function</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Complement only targets viruses inside host cells</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. Complement acts broadly as a fixed, nonspecific protein system rather than a customizable antigen-specific response</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Complement is a set of preformed blood proteins that provide nonspecific defense (e.g., membrane attack on bacteria). Even when antibodies trigger the classical pathway, the system itself is not “tailored” like adaptive receptors.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Complement proteins are present in blood as part of innate defense, not made only after class switching.</li>
+        <li><b>B:</b> Complement does not require MHC-II antigen presentation to punch holes in bacterial membranes.</li>
+        <li><b>C:</b> Complement primarily targets extracellular microbes (especially bacteria), not viruses inside cells.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (Correct: A) -->
+<div class="question" id="q7">
+  <b>7. A patient with influenza reports fever, muscle aches, and malaise early in the illness. Nearby uninfected cells reduce protein synthesis and increase antigen presentation. Which mediator most directly contributes to this “flu-like” syndrome and antiviral state?</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Interferons released by virally infected cells</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Histamine released by mast cells</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Defensins released by keratinocytes</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Lysozyme secreted in tears and saliva</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Interferons are produced by virally infected cells and induce nearby cells to reduce protein synthesis, decrease permeability, and upregulate MHC I/II—improving detection and limiting viral spread. They also contribute to “flu-like” symptoms.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Histamine causes vasodilation and vascular leak in allergic/inflammatory responses, not the antiviral protein-synthesis shutdown.</li>
+        <li><b>C:</b> Defensins are antimicrobial enzymes on skin; they do not create a systemic antiviral state.</li>
+        <li><b>D:</b> Lysozyme breaks down bacterial cell walls (peptidoglycan), not viral replication.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (Correct: B) -->
+<div class="question" id="q8">
+  <b>8. A respiratory pathogen is trapped in mucus and moved upward by coordinated beating of epithelial structures toward the oropharynx to be swallowed. This protective mechanism relies primarily on:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Antibody class switching in B-cells</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Cilia-driven clearance along mucous membranes</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Cytotoxic T-cell–mediated apoptosis of infected epithelial cells</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Alternative complement activation requiring no antibodies</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The respiratory tract uses mucus + cilia to trap particulate matter/pathogens and move them toward the throat for removal—an innate, noncellular defense.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Class switching is an adaptive B-cell process that occurs after activation, not a mechanical barrier defense.</li>
+        <li><b>C:</b> Cytotoxic T-cells act later and kill infected cells; the prompt describes prevention of entry and clearance.</li>
+        <li><b>D:</b> Complement is a blood protein system and does not describe mucociliary transport.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (Correct: D) -->
+<div class="question" id="q9">
+  <b>9. A macrophage detects conserved microbial features and rapidly adjusts cytokine release to recruit the most effective set of immune cells for that category of invader. Which receptor system best enables this “category recognition”?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. T-cell receptors that undergo somatic recombination</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. B-cell receptors that undergo affinity maturation</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Fc receptors that bind antibody-coated targets</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">D. Pattern recognition receptors such as toll-like receptors</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> PRRs (including TLRs) recognize conserved pathogen-associated patterns and help innate cells decide which cytokines to release to recruit appropriate effector cells.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> TCR recombination creates antigen specificity in adaptive immunity, not broad “category” recognition.</li>
+        <li><b>B:</b> Affinity maturation is an adaptive process after B-cell activation.</li>
+        <li><b>C:</b> Fc receptors enable recognition of antibody-tagged targets (opsonization), which depends on adaptive antibodies.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (Correct: C) -->
+<div class="question" id="q10">
+  <b>10. A hepatocyte infected with an intracellular parasite displays peptides derived from proteins synthesized within the cell. Which antigen-presentation mechanism is most consistent with this situation?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Exogenous pathway via MHC class II</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Antigen display only by macrophages and dendritic cells</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Endogenous pathway via MHC class I on the infected nucleated cell</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Complement-mediated lysis requiring IgE to bind the pathogen</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> MHC-I is expressed on all nucleated cells and presents endogenous peptides (from inside the cell), allowing immune surveillance of infected or abnormal cells.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> MHC-II presents exogenous peptides and is primarily on professional antigen-presenting cells.</li>
+        <li><b>B:</b> While macrophages/dendritic cells are professional APCs, any nucleated cell can present via MHC-I.</li>
+        <li><b>D:</b> Complement does not require IgE, and this option mixes unrelated concepts.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (Correct: B) -->
+<div class="question" id="q11">
+  <b>11. A macrophage engulfs a bacterium from the extracellular environment, digests it, and then displays bacterial peptides on its surface to communicate with adaptive immune cells. Which pairing best matches this process?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Endogenous pathway; MHC class I</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. Exogenous pathway; MHC class II</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Exogenous pathway; MHC class I</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Endogenous pathway; MHC class II</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Antigens that originate outside the APC (engulfed microbes) are presented via the exogenous pathway on MHC-II.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> MHC-I is endogenous; the stem describes engulfed extracellular bacteria.</li>
+        <li><b>C:</b> MHC-I is not the primary route for phagocytosed extracellular peptides in classic MCAT framing.</li>
+        <li><b>D:</b> “Endogenous + MHC-II” mismatches both the source and the molecule class.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (Correct: A) -->
+<div class="question" id="q12">
+  <b>12. A tumor cell avoids detection by cytotoxic T-cells by decreasing surface expression of MHC class I. Which immune cell can still recognize and eliminate the tumor cell based on this change?</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Natural killer cell</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Plasma cell</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Basophil</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Naïve B-cell</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> NK cells can detect downregulation of MHC (“missing self”) and induce apoptosis in infected or cancerous cells, helping when T-cells can’t recognize the target.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Plasma cells secrete antibodies; they do not directly kill MHC-low tumor cells.</li>
+        <li><b>C:</b> Basophils mediate allergic inflammation via histamine release.</li>
+        <li><b>D:</b> Naïve B-cells require activation and mainly contribute through antibodies, not direct killing based on MHC levels.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (Correct: D) -->
+<div class="question" id="q13">
+  <b>13. A patient presents with wheezing and a suspected helminth infection after travel. Which leukocyte type would be expected to rise and to play a prominent role in this scenario?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Neutrophil</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Monocyte</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. NK cell</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Eosinophil</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Eosinophils are strongly associated with invasive parasitic infections and allergic-type responses; they contain red-orange granules and can contribute to inflammation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Neutrophils are most associated with acute bacterial infections and pus.</li>
+        <li><b>B:</b> Monocytes become macrophages and are general phagocytes, but eosinophils are the classic “parasite” clue.</li>
+        <li><b>C:</b> NK cells kill virus-infected and MHC-low cancer cells; they are not the main responders to helminths.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (Correct: C) -->
+<div class="question" id="q14">
+  <b>14. During an allergic response, a tissue-resident cell releases histamine, causing vasodilation and increased vascular permeability. The closest match to this cell is:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Neutrophil in the bloodstream</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Dendritic cell in the skin presenting antigen on MHC-II</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">C. Mast cell located in mucosa/epithelium</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Cytotoxic T-lymphocyte recognizing endogenous peptide on MHC-I</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Mast cells are basophil-like cells that reside in tissues (mucosa/epithelium) and release histamine in response to allergens, driving inflammatory changes in vessels.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Neutrophils are phagocytes targeting bacteria; histamine release is not their defining function.</li>
+        <li><b>B:</b> Dendritic cells present antigens to activate adaptive immunity; histamine release is more characteristic of mast cells/basophils.</li>
+        <li><b>D:</b> Cytotoxic T-cells kill infected cells; they do not release histamine to produce vasodilation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (Correct: A) -->
+<div class="question" id="q15">
+  <b>15. A complete blood count with differential shows 92% neutrophils. In the appropriate clinical context, which interpretation is most consistent with this finding?</b>
+  <div class="choice" onclick="selectChoice('q15', this, true)">A. A bacterial infection is likely</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. An invasive parasitic infection is most likely</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. A primary viral infection is strongly suggested by elevated eosinophils</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. A failure of antigen presentation on MHC-II is the most likely cause</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> A very high neutrophil fraction (neutrophilia) often points toward bacterial infection, especially acute bacterial inflammation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Parasites are more associated with eosinophilia.</li>
+        <li><b>C:</b> Viruses are not suggested by eosinophils; eosinophils point to parasites/allergy.</li>
+        <li><b>D:</b> MHC-II issues affect adaptive activation but do not directly explain a neutrophil-predominant differential pattern.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Barriers, the Gut, and Early Defense</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 6-year-old child scrapes a knee on a playground. The parents rinse the wound, cover it, and assume it will heal. By evening, the skin around the abrasion is red, warm, and tender. Overnight, the child develops a low-grade fever and the bandage becomes soaked with thick yellow drainage.</p>
+  <p>In clinic, the physician explains that the skin is usually a strong physical barrier and that normal skin secretions can inhibit microbes, but a break in the barrier provides a direct entry point for pathogens. The physician notes that early in a first-time infection, the body can still contain microbes quickly, even before a highly specific response develops.</p>
+  <p>During history-taking, the parents mention the child has had multiple antibiotic courses for ear infections over the past year and now has intermittent diarrhea after antibiotics. The physician explains that the gastrointestinal tract normally eliminates many pathogens through acidity in the stomach and also gains protection from the large population of resident bacteria that compete with invaders; disrupting that normal flora can change susceptibility to certain infections.</p>
+  <p>Two weeks later, the child’s younger sibling is born. The family asks why newborns can develop gastrointestinal infections more easily than older children. A nurse explains that the newborn gut has not yet developed a stable community of normal bacteria and that components in breast milk help protect mucosal surfaces while the infant’s immune system matures.</p>
+  <p>In discussing prevention, the physician adds that some circulating proteins can damage bacterial membranes and help contain infection even though those proteins are not “custom-made” to recognize only one bacterial species. The physician emphasizes that these defenses can operate rapidly alongside cellular responses at the site of injury.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify what is <b>barrier-based</b> (skin integrity, stomach acid, mucus/cilia, normal flora) vs what is <b>cell-based</b> (phagocytes, cytokines, inflammation).</li>
+    <li>If you see thick yellow drainage and acute local warmth/redness, think <b>acute bacterial inflammation</b> and which cell type dies in large numbers to form pus.</li>
+    <li>If antibiotics are followed by diarrhea, connect to <b>disrupted gut flora</b> and loss of competitive protection in the GI tract.</li>
+    <li>For newborn GI vulnerability, combine <b>underdeveloped immunity</b> with <b>lack of established microbiota</b> and mucosal protection from milk.</li>
+    <li>For “blood proteins that damage bacterial membranes,” map to <b>complement</b> and why it is <b>nonspecific</b>.</li>
+  </ol>
+</div>
+
+<!-- Q16 (Correct: B) -->
+<div class="question" id="q16">
+  <b>16. The thick yellow drainage from the scraped knee suggests accumulation of dead phagocytes at the infection site. Which innate immune cell is most directly responsible for this finding?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Eosinophil</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">B. Neutrophil</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Naïve B-cell</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Cytotoxic T-lymphocyte</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Thick yellow drainage (pus) often reflects collections of dead neutrophils plus debris after acute bacterial infection. Neutrophils are abundant, short-lived phagocytes that target bacteria.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Eosinophils are most associated with parasites and allergy, not classic pus-forming bacterial wounds.</li>
+        <li><b>C:</b> Naïve B-cells are adaptive cells; they do not form pus via short-lived phagocytosis.</li>
+        <li><b>D:</b> Cytotoxic T-cells kill infected host cells and are more central in intracellular (e.g., viral) infections.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (Correct: A) -->
+<div class="question" id="q17">
+  <b>17. The nurse’s explanation for newborn gastrointestinal susceptibility most strongly implies that breastfeeding can protect mucosal surfaces because breast milk provides:</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Antibodies effective on mucosal surfaces that help neutralize pathogens in the gut lumen</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Cytotoxic T-cells that directly kill infected intestinal epithelial cells</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Complement proteins that specifically adapt to the exact species encountered by the newborn</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Defensins that are synthesized only after antigen-specific memory forms</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Breast milk contains antibodies that are especially helpful on mucosal surfaces (classically secretory IgA), providing passive protection while the newborn immune system and microbiota mature.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Breast milk does not primarily protect by transferring cytotoxic T-cells for direct killing.</li>
+        <li><b>C:</b> Complement is not antigen-specific/adaptable; it is a fixed innate protein system.</li>
+        <li><b>D:</b> Defensins are innate antimicrobial molecules and do not require immunologic memory to exist.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (Correct: D) -->
+<div class="question" id="q18">
+  <b>18. The physician’s comment about circulating proteins that can damage bacterial membranes without being customized for a single species is most consistent with which inference?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. The proteins are secreted only by plasma cells after antigen exposure</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. The proteins function primarily by decreasing viral replication inside host cells</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. The proteins require presentation of antigen on MHC-II to be activated</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">D. The proteins are part of complement, an innate defense that acts broadly against bacteria</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The passage points to complement: blood proteins that can disrupt bacterial membranes. The key clue is that it is not custom-made for a specific species, matching innate nonspecific action.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Plasma cells (adaptive) secrete antibodies; complement proteins are not produced only after exposure.</li>
+        <li><b>B:</b> Decreasing viral replication is characteristic of interferons, not complement.</li>
+        <li><b>C:</b> Complement activation does not require MHC-II antigen presentation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Viral Evasion and Immune Surveillance</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Researchers culture human airway epithelial cells and infect them with a respiratory virus at low multiplicity of infection. Within hours, the infected cells secrete signaling proteins that diffuse through the culture. Neighboring uninfected cells respond by reducing overall protein synthesis, which limits viral replication if the virus spreads into those cells.</p>
+  <p>The same early signals also increase expression of antigen-presentation molecules on nearby cells. The researchers note that, even before any antibodies appear in a primary infection, the tissue environment can become “primed” for immune detection.</p>
+  <p>In a follow-up experiment, the team engineers a viral strain that decreases the infected cell’s surface display of one class of major histocompatibility complex molecules. When this engineered strain spreads, cytotoxic T-cells in co-culture show reduced activation, consistent with fewer “danger” signals coming from infected epithelial targets.</p>
+  <p>Unexpectedly, another immune cell population kills infected targets more efficiently in the engineered-strain condition than in the wild-type condition. The researchers propose that the viral modification shifts which immune surveillance pathway is most effective by altering how infected cells are “seen.”</p>
+  <p>They ask which mediator best explains the early antiviral tissue state, which immune cell type would gain an advantage against infected cells with reduced MHC display, and which antigen pathway would normally alert cytotoxic T-cells to virally infected epithelial cells.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Signals that create an antiviral state and increase antigen display point to <b>interferons</b>.</li>
+    <li>Cytotoxic T-cells depend on <b>MHC-I</b> on nucleated cells to detect <b>endogenous</b> viral peptides.</li>
+    <li>If a virus lowers <b>MHC-I</b>, predict cytotoxic T-cells work worse, but <b>NK cells</b> work better (missing self).</li>
+    <li>Match “which pathway normally alerts CTLs” to <b>endogenous presentation</b> on <b>MHC-I</b>.</li>
+    <li>Choose the answer that explains the <b>shift in killing efficiency</b> across immune mechanisms.</li>
+  </ol>
+</div>
+
+<!-- Q19 (Correct: C) -->
+<div class="question" id="q19">
+  <b>19. Which mediator best accounts for the early signaling proteins that reduce protein synthesis in nearby cells and enhance antigen presentation during viral infection?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Histamine released by basophils</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Complement proteins activated via the alternative pathway</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Interferons released by infected cells</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Lysozyme secreted by mucous membranes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The described antiviral state (reduced protein synthesis, decreased permeability, increased antigen presentation) is a classic interferon effect.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Histamine causes vasodilation and vascular leak; it does not directly shut down protein synthesis to block viruses.</li>
+        <li><b>B:</b> Complement targets microbes in blood/extracellular space, especially bacteria, and does not explain the intracellular antiviral state.</li>
+        <li><b>D:</b> Lysozyme targets bacteria by breaking peptidoglycan; viruses are not affected this way.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (Correct: B) -->
+<div class="question" id="q20">
+  <b>20. The engineered viral strain lowers surface display of a major histocompatibility complex class, reducing cytotoxic T-cell activation but increasing efficient killing by another immune population. Which immune cell is most consistent with this pattern?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Helper T-cell</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">B. Natural killer cell</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Eosinophil</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Plasma cell</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Lowered MHC-I makes targets harder for cytotoxic T-cells to detect but easier for NK cells to recognize as “missing self,” triggering apoptosis.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Helper T-cells mainly coordinate immune responses and require antigen presentation, rather than killing based on MHC downregulation.</li>
+        <li><b>C:</b> Eosinophils are linked to parasites/allergy; MHC-I downregulation is not their defining trigger.</li>
+        <li><b>D:</b> Plasma cells secrete antibodies and do not directly kill infected targets in this MHC-based surveillance logic.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (Correct: A) -->
+<div class="question" id="q21">
+  <b>21. In the absence of the engineered immune-evasion change, which antigen-presentation route would most directly alert cytotoxic T-cells to virus-infected epithelial cells?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Endogenous peptides presented on MHC class I by infected nucleated cells</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Exogenous peptides presented on MHC class II by macrophages</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Antibody-coated viruses presented by Fc receptors on basophils</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Complement-mediated formation of membrane attack complexes on infected cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Cytotoxic T-cells monitor MHC-I on nucleated cells for endogenous (intracellular) peptides. Viral proteins produced inside infected epithelial cells are displayed via this route.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> MHC-II exogenous presentation is key for activating helper T-cells and coordinating responses to extracellular pathogens.</li>
+        <li><b>C:</b> Fc receptors help immune cells bind antibody-coated targets, but cytotoxic T-cell recognition is primarily via TCR–MHC-I.</li>
+        <li><b>D:</b> Complement MAC is mainly effective against bacteria and is not the primary method for targeting virus-infected host cells.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Lymphoid Organs and Communication Hubs</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A college student presents with sore throat, fatigue, and a sensation of fullness under the jaw. A friend says, “Your glands are swollen,” but the clinician explains that the structures enlarging are lymph nodes responding to immune activation rather than endocrine glands. On exam, the nodes are tender and mobile, and the student also has enlarged tonsillar tissue.</p>
+  <p>The clinician reviews how immune defenses are coordinated across organs. Leukocytes are produced in bone marrow through hematopoiesis. Some immune cells then complete maturation in specialized sites before circulating. The clinician explains that lymph nodes filter lymph and provide a place for immune cells to communicate and mount a coordinated response, including activation of cells that can later produce antibodies.</p>
+  <p>Because the student reports recent travel and a brief episode of gastrointestinal symptoms, the clinician explains that the digestive tract is a common portal of entry for pathogens. Clusters of immune tissue positioned near the gut help sample potential invaders entering via food and water; these sites are grouped under gut-associated lymphoid tissue.</p>
+  <p>Finally, the student asks why they rarely get the same illness twice in the same season. The clinician notes that some immune responses leave behind long-lived cells that respond more rapidly and strongly when the same antigen is encountered again, which changes the speed and magnitude of future responses.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate anatomy language: “swollen glands” here are <b>lymph nodes</b> (lymphadenopathy), which swell with immune activation.</li>
+    <li>When a question asks “why they swell,” think <b>cell activation + proliferation</b> happening inside nodes.</li>
+    <li>For immune tissue near the gut, map the location clue to <b>GALT</b>, especially <b>Peyer’s patches</b> and appendix aggregates.</li>
+    <li>For “rarely get it twice,” look for <b>immunologic memory</b> as a defining feature of adaptive immunity.</li>
+    <li>Pick answers that connect the clinical observation to an <b>underlying mechanism</b>, not just a label.</li>
+  </ol>
+</div>
+
+<!-- Q22 (Correct: C) -->
+<div class="question" id="q22">
+  <b>22. Which inference from the passage best explains why the student’s neck “glands” enlarge and feel tender during the sore throat illness?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. The thymus secretes histamine into nearby ducts during infection</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Bone marrow temporarily stops hematopoiesis to prevent pathogen spread</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Lymph nodes are sites where immune cells communicate and activate, causing swelling during immune responses</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. The spleen enlarges first and then physically pushes lymph nodes outward</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Lymph nodes are immune hubs where cells are activated and proliferate; increased immune activity can produce lymphadenopathy (swelling and tenderness).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The thymus is for T-cell maturation; histamine is mainly released by mast cells/basophils and not through ducts.</li>
+        <li><b>B:</b> Bone marrow produces leukocytes; it does not “stop hematopoiesis” as a normal protective strategy.</li>
+        <li><b>D:</b> Lymph node swelling is due to local immune activation, not mechanical displacement by the spleen.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (Correct: D) -->
+<div class="question" id="q23">
+  <b>23. The passage describes immune tissue positioned near the gut that helps sample potential invaders entering through the digestive tract. Which location best matches that role?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Pericardium</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Thymus capsule</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Bone marrow sinusoid</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">D. Peyer’s patches in the small intestine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> GALT includes immune structures near the digestive tract such as Peyer’s patches in the small intestine (as well as tonsils/adenoids and lymphoid aggregates in the appendix), helping sample gut-associated antigens.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The pericardium is the sac around the heart; it is not gut-associated immune tissue.</li>
+        <li><b>B:</b> The thymus is for T-cell maturation, not for sampling gut antigens.</li>
+        <li><b>C:</b> Bone marrow produces immune cells but is not a gut-associated antigen-sampling site.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (Correct: B) -->
+<div class="question" id="q24">
+  <b>24. The clinician’s explanation that the student rarely gets the same illness twice in the same season most directly reflects which property of the immune system?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Innate immunity improves through somatic hypermutation after each infection</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">B. Adaptive immunity generates immunologic memory that speeds responses upon re-exposure</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Neutrophils develop long-lived specificity after leaving the thymus</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Complement proteins become antigen-specific after binding to antibodies once</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> A hallmark of adaptive immunity is immunologic memory: memory B-cells and memory T-cells enable faster, stronger responses to the same antigen later.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Somatic hypermutation and memory are adaptive B-cell features, not innate immunity.</li>
+        <li><b>C:</b> Neutrophils do not mature in the thymus and are short-lived innate cells without antigen specificity.</li>
+        <li><b>D:</b> Complement remains nonspecific; it does not become antigen-specific after interacting with antibodies.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

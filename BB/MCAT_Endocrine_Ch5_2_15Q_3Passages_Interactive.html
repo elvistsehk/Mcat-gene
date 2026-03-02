@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Endocrine System (Ch. 5.2) (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Biology — Endocrine System (Ch. 5.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (A) -->
+<div class="question" id="q1">
+  <b>1. A patient has persistently low serum calcium. Which coordinated hormone pattern would most directly restore blood calcium toward normal?</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. Increased PTH with increased activation of vitamin D</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Increased calcitonin with decreased PTH</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Increased calcitonin with increased urinary calcium retention</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Decreased PTH with increased phosphate retention in the kidney</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Parathyroid hormone (PTH) raises serum calcium by increasing bone resorption, decreasing renal calcium excretion, and increasing intestinal calcium absorption indirectly by activating vitamin D.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Calcitonin lowers serum calcium; decreasing PTH would worsen hypocalcemia.</li>
+        <li><b>C:</b> Calcitonin promotes calcium excretion and bone deposition, not retention in blood.</li>
+        <li><b>D:</b> Low PTH decreases serum calcium; phosphate handling described does not fix the core problem.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (B) -->
+<div class="question" id="q2">
+  <b>2. Which tissue synthesizes the catecholamines responsible for rapid fight-or-flight endocrine effects?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Adrenal cortex</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">B. Adrenal medulla</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Parathyroid glands</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Posterior pituitary</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The adrenal medulla (a modified sympathetic structure) produces epinephrine and norepinephrine, the major catecholamines mediating rapid stress responses.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The adrenal cortex makes steroid hormones (glucocorticoids, mineralocorticoids, and sex steroids).</li>
+        <li><b>C:</b> Parathyroids secrete PTH for calcium regulation.</li>
+        <li><b>D:</b> The posterior pituitary releases (but does not synthesize) ADH and oxytocin made in the hypothalamus.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (C) -->
+<div class="question" id="q3">
+  <b>3. A person who has not eaten since the previous evening begins mobilizing liver glycogen to maintain blood glucose. Which hormone is most directly responsible for initiating this response?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Insulin</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Somatostatin</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">C. Glucagon</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Calcitonin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> During fasting, low blood glucose stimulates pancreatic α-cells to secrete glucagon, which promotes glycogenolysis and gluconeogenesis to raise plasma glucose.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Insulin is secreted in the fed state and promotes glucose uptake and storage.</li>
+        <li><b>B:</b> Somatostatin inhibits both insulin and glucagon; it would blunt the fasting response.</li>
+        <li><b>D:</b> Calcitonin regulates calcium, not glucose.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (D) -->
+<div class="question" id="q4">
+  <b>4. A hormone increases water permeability in the collecting duct without directly increasing sodium reabsorption. Which downstream change is most expected?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Increased plasma osmolarity</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Increased urinary osmolarity with decreased blood volume</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Increased plasma sodium concentration with no change in blood volume</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. Decreased plasma osmolarity with increased blood volume</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> ADH (vasopressin) increases water reabsorption in the collecting duct. Reabsorbing free water increases blood volume and tends to dilute solutes, lowering plasma osmolarity.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> ADH typically lowers (not raises) plasma osmolarity by retaining water.</li>
+        <li><b>B:</b> ADH concentrates urine and increases blood volume (not decreases it).</li>
+        <li><b>C:</b> Retaining water alone does not increase plasma sodium; it tends to dilute sodium.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (D) -->
+<div class="question" id="q5">
+  <b>5. Which pairing correctly matches a hypothalamic hormone with the anterior pituitary hormone(s) it stimulates?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. TRH → ACTH</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. CRF → TSH</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. GnRH → prolactin</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">D. GnRH → FSH and LH</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Gonadotropin-releasing hormone (GnRH) from the hypothalamus stimulates the anterior pituitary to release follicle-stimulating hormone (FSH) and luteinizing hormone (LH).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> TRH stimulates TSH (and can also increase prolactin in some contexts), not ACTH.</li>
+        <li><b>B:</b> CRF (corticotropin-releasing factor) stimulates ACTH, not TSH.</li>
+        <li><b>C:</b> Prolactin is primarily inhibited by hypothalamic dopamine (PIF), not stimulated by GnRH.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (A) -->
+<div class="question" id="q6">
+  <b>6. A clinician explains that one endocrine axis uses a three-organ negative feedback loop: hypothalamus → anterior pituitary → endocrine gland → final hormone feeds back. Which statement best captures the receptor implication of this design?</b>
+  <div class="choice" onclick="selectChoice('q6', this, true)">A. The final hormone must have receptors in both the hypothalamus and the anterior pituitary</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. The final hormone must have receptors only in the endocrine gland that produced it</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. The hypothalamic releasing hormone must circulate at high levels in systemic blood to reach targets</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. The anterior pituitary hormone must inhibit the hypothalamus only through neural synapses</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> For a final hormone (e.g., cortisol, thyroid hormone, sex steroids) to inhibit upstream hormone release, the upstream organs must be able to detect it—meaning receptors must be present in both hypothalamus and anterior pituitary.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Feedback requires upstream sensing, not just action at peripheral targets.</li>
+        <li><b>C:</b> Hypothalamic releasing hormones travel in the hypophyseal portal system and are not typically high in systemic circulation.</li>
+        <li><b>D:</b> Negative feedback is primarily hormonal signaling, not necessarily neural synapses.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (B) -->
+<div class="question" id="q7">
+  <b>7. Which statement best distinguishes aldosterone from ADH in terms of osmolarity?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Both decrease plasma osmolarity because both reabsorb free water</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Aldosterone tends to preserve plasma osmolarity because water follows sodium reabsorption</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Aldosterone decreases plasma osmolarity more than ADH by retaining water without solute</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. ADH increases plasma osmolarity by increasing sodium reabsorption in the proximal tubule</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Aldosterone increases sodium reabsorption in the distal nephron; water follows sodium, so volume increases with minimal net change in osmolarity. ADH primarily increases water reabsorption, which can lower osmolarity.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Aldosterone retains sodium and water together; ADH retains water more selectively.</li>
+        <li><b>C:</b> Retaining water without solute describes ADH more than aldosterone.</li>
+        <li><b>D:</b> ADH acts mainly at the collecting duct to increase water permeability, not sodium reabsorption in the proximal tubule.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (C) -->
+<div class="question" id="q8">
+  <b>8. A patient’s blood glucose is elevated. Which endocrine response most directly promotes storage of glucose in liver and muscle?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Increased glucagon from α-cells</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Increased epinephrine from adrenal medulla</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Increased insulin from β-cells</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Increased cortisol from adrenal cortex</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Insulin promotes glucose uptake (especially in muscle and adipose) and increases glycogen synthesis in liver and muscle, lowering blood glucose.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Glucagon raises blood glucose via glycogenolysis and gluconeogenesis.</li>
+        <li><b>B:</b> Epinephrine is counterregulatory and increases glucose availability.</li>
+        <li><b>D:</b> Cortisol is counterregulatory and raises blood glucose over longer time scales.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (D) -->
+<div class="question" id="q9">
+  <b>9. A patient takes an ACE inhibitor. Which immediate endocrine consequence best explains part of its blood-pressure-lowering effect?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Increased conversion of angiotensin I to angiotensin II</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Increased renin secretion due to restored high blood pressure</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Increased aldosterone secretion due to increased angiotensin II</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">D. Decreased angiotensin II leading to less aldosterone and less vasoconstriction</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> ACE inhibitors reduce angiotensin II formation. Angiotensin II is a potent vasoconstrictor and stimulates aldosterone release; reducing it lowers vascular resistance and reduces sodium/water retention.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> ACE inhibitors block this conversion, not increase it.</li>
+        <li><b>B:</b> Restored high blood pressure would decrease (not increase) renin; and ACE inhibitors do not directly restore pressure.</li>
+        <li><b>C:</b> Aldosterone generally falls when angiotensin II is reduced.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (C) -->
+<div class="question" id="q10">
+  <b>10. A student summarizes “counterregulatory hormones” as those that raise plasma glucose. Which set contains only counterregulatory hormones?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Insulin, calcitonin, oxytocin</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Somatostatin, ANP, prolactin</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Glucagon, epinephrine, cortisol, growth hormone</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. T3/T4, calcitonin, aldosterone</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Glucagon, catecholamines (epinephrine), glucocorticoids (cortisol), and growth hormone all increase blood glucose availability via glycogenolysis, gluconeogenesis, reduced uptake, and/or mobilization of fuels.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Insulin lowers glucose; calcitonin and oxytocin are not glucose regulators.</li>
+        <li><b>B:</b> Somatostatin inhibits insulin and glucagon; ANP affects salt/water; prolactin affects lactation.</li>
+        <li><b>D:</b> T3/T4 set metabolic rate; calcitonin regulates calcium; aldosterone regulates sodium/water.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (A) -->
+<div class="question" id="q11">
+  <b>11. A newborn latches onto the breast. Which immediate endocrine event most directly causes milk ejection (letdown)?</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Oxytocin release leading to contraction of breast smooth muscle</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Prolactin release leading to contraction of breast smooth muscle</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Dopamine release leading to increased prolactin secretion</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. ADH release leading to increased water reabsorption and milk ejection</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Nipple stimulation triggers hypothalamic signaling that causes posterior pituitary release of oxytocin, which contracts myoepithelial cells and ejects milk.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Prolactin primarily stimulates milk production, not immediate ejection.</li>
+        <li><b>C:</b> Dopamine inhibits prolactin; decreasing dopamine allows prolactin release.</li>
+        <li><b>D:</b> ADH regulates water reabsorption in kidneys, unrelated to milk letdown.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (B) -->
+<div class="question" id="q12">
+  <b>12. Which statement best explains why hypothalamic releasing hormones are typically not found at high concentrations in systemic circulation?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. They are lipid-soluble and therefore remain in cell membranes</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. They travel through a portal vessel system directly to the anterior pituitary</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. They are synthesized by the anterior pituitary and released locally</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. They require binding to plasma albumin before leaving the hypothalamus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The hypophyseal portal system routes hypothalamic releasing hormones directly to the anterior pituitary, allowing effective signaling without large systemic levels.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Most releasing hormones are peptides and do not remain in membranes.</li>
+        <li><b>C:</b> The hypothalamus synthesizes releasing hormones; the anterior pituitary responds by synthesizing its own hormones.</li>
+        <li><b>D:</b> Albumin binding is typical of steroid/thyroid hormones, not hypothalamic releasing peptides.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (C) -->
+<div class="question" id="q13">
+  <b>13. A patient has chronic excess cortisol. Which upstream change is most consistent with long-term negative feedback on the HPA axis?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Increased CRF and increased ACTH</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Increased CRF with decreased ACTH</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">C. Decreased CRF and decreased ACTH</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Decreased CRF with increased ACTH</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Cortisol inhibits both hypothalamic CRF release and anterior pituitary ACTH release. Chronic high cortisol therefore predicts lower CRF and lower ACTH (unless feedback is bypassed by a tumor source).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This would drive cortisol up, not reflect feedback.</li>
+        <li><b>B:</b> CRF usually increases ACTH, so this mismatch is not the typical feedback pattern.</li>
+        <li><b>D:</b> Elevated ACTH would usually increase cortisol; it does not fit feedback inhibition.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (B) -->
+<div class="question" id="q14">
+  <b>14. A patient is given a medication that strongly increases somatostatin release. Which immediate effect is most expected in the endocrine pancreas?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Increased glucagon and increased insulin</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Decreased glucagon and decreased insulin</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Decreased glucagon with increased insulin</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Increased glucagon with decreased insulin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Somatostatin (from δ-cells) inhibits secretion of both insulin (β-cells) and glucagon (α-cells). Increasing it suppresses both arms of glucose regulation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This contradicts somatostatin’s inhibitory function.</li>
+        <li><b>C:</b> Somatostatin does not selectively increase insulin.</li>
+        <li><b>D:</b> Somatostatin inhibits glucagon as well; it would not increase it.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (A) -->
+<div class="question" id="q15">
+  <b>15. A patient’s atria are chronically stretched due to high blood volume. Which hormonal change would most directly help reduce that volume?</b>
+  <div class="choice" onclick="selectChoice('q15', this, true)">A. Increased atrial natriuretic peptide (ANP)</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Increased aldosterone</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Increased ADH</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Increased angiotensin II</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> ANP is released when atrial cells are stretched; it promotes sodium excretion (natriuresis), increasing urine volume and lowering blood volume and blood pressure.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Aldosterone retains sodium and water, increasing volume.</li>
+        <li><b>C:</b> ADH retains water, increasing volume.</li>
+        <li><b>D:</b> Angiotensin II increases vasoconstriction and aldosterone, raising blood pressure and volume.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Headaches, Visual Changes, and Unexpected Lactation</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 33-year-old patient visits a clinic for progressive headaches and difficulty seeing objects in the periphery of the visual field. Over the last two months, the patient has also noticed milky nipple discharge despite not being pregnant and not taking any medications. The patient reports decreased libido and irregular menstrual cycles. Physical examination is otherwise unremarkable.</p>
+  <p>Laboratory studies show elevated serum prolactin. A clinician explains that the anterior pituitary’s release of prolactin is unusual compared with most other anterior pituitary hormones: rather than needing a releasing factor to increase secretion, prolactin secretion is normally held in check by a hypothalamic signal. Imaging later reveals a pituitary mass near the pituitary stalk. The clinician notes that the mass could interfere with hormonal communication between hypothalamus and anterior pituitary without directly destroying pituitary cells.</p>
+  <p>On the same visit, the patient mentions drinking “tons of water” and waking at night to urinate. A basic metabolic panel shows mildly increased plasma osmolarity, but sodium is near the upper limit of normal. The clinician considers whether the pituitary mass could affect more than one pituitary-related pathway.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>List what is abnormal (galactorrhea + high prolactin; pituitary stalk mass; thirst/urination with high osmolarity).</li>
+    <li>Ask which pituitary signals depend on the <b>portal system</b> vs which are released from the <b>posterior pituitary</b>.</li>
+    <li>Use the “exception rule”: prolactin is primarily controlled by <b>inhibition</b> (dopamine/PIF), so blocking the inhibitor increases prolactin.</li>
+    <li>For water balance, connect high osmolarity + polyuria to insufficient ADH action (low ADH release or kidney response).</li>
+    <li>Choose answers that explain both the mechanism (what got blocked) and the predicted direction of hormone change.</li>
+  </ol>
+</div>
+
+<!-- Q16 (D) -->
+<div class="question" id="q16">
+  <b>16. Which mechanism most directly explains the patient’s elevated prolactin given the location of the pituitary mass?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Increased GnRH delivery to the anterior pituitary</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Increased TRH delivery to the anterior pituitary</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Increased oxytocin release from the posterior pituitary</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Reduced hypothalamic dopamine reaching the anterior pituitary through the portal system</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Prolactin is tonically inhibited by hypothalamic dopamine (prolactin-inhibiting factor). A stalk/portal disruption reduces dopamine delivery, removing inhibition and allowing prolactin to rise.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> GnRH primarily regulates FSH/LH, not prolactin.</li>
+        <li><b>B:</b> TRH mainly stimulates TSH; it is not the central “check” on prolactin in this model.</li>
+        <li><b>C:</b> Oxytocin is released from the posterior pituitary and does not explain elevated prolactin due to portal disruption.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (A) -->
+<div class="question" id="q17">
+  <b>17. The patient’s thirst, polyuria, and increased plasma osmolarity are most consistent with reduced action of which hormone?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. ADH (vasopressin)</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Aldosterone</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. ANP</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Insulin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> ADH normally increases water reabsorption in the collecting duct. Low ADH effect leads to inability to concentrate urine, causing large urine volumes, dehydration, and elevated plasma osmolarity with compensatory thirst.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Aldosterone primarily changes sodium handling; its reduction would not most directly explain high osmolarity from free-water loss.</li>
+        <li><b>C:</b> ANP promotes salt and water excretion; increased ANP could cause diuresis, but the passage points to pituitary-linked control of water permeability.</li>
+        <li><b>D:</b> Insulin abnormalities cause osmotic diuresis via glucose; the passage does not describe hyperglycemia or glycosuria.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (C) -->
+<div class="question" id="q18">
+  <b>18. If the pituitary mass primarily disrupts the hypophyseal portal system but leaves posterior pituitary release intact, which pattern is most likely?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Decreased oxytocin and decreased ADH</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Increased TSH with increased ACTH</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Decreased release of multiple anterior pituitary tropic hormones with preserved oxytocin release</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Increased prolactin with increased FSH/LH because inhibition is removed from all anterior pituitary cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The portal system carries hypothalamic releasing hormones to the anterior pituitary. Disruption reduces delivery of releasing signals, lowering many anterior pituitary outputs (e.g., TSH, ACTH, FSH/LH, GH). Posterior pituitary hormones (oxytocin, ADH) are delivered by axons, not portal blood, so they can remain intact.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Posterior release is predicted to be preserved, not decreased.</li>
+        <li><b>B:</b> With less hypothalamic input, anterior pituitary tropic hormones typically decrease, not increase.</li>
+        <li><b>D:</b> The anterior pituitary is not generally “tonically inhibited” by the hypothalamus; prolactin is the notable exception.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Dehydration, Blood Pressure, and Competing Homeostatic Signals</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>During a summer endurance race, a 27-year-old runner finishes with dizziness on standing and a rapid heart rate. The medical tent records low blood pressure. The runner’s urine output during the final hour of the race was minimal, and the urine that is collected appears dark. Point-of-care testing reveals increased plasma osmolarity.</p>
+  <p>After resting in the shade and receiving a small amount of water, the runner still feels thirsty. A clinician explains that two different sensing systems can drive water retention: one responds to solute concentration in the blood, and another responds to blood volume/pressure. The clinician also notes that restoring blood pressure can involve increasing sodium reabsorption in the distal nephron, which pulls water along without strongly changing osmolarity. By contrast, one pathway increases water reabsorption more selectively, tending to dilute plasma.</p>
+  <p>Later, the runner drinks a large volume of hypotonic fluid very quickly. Within an hour, blood volume increases and atrial stretch rises. The clinician predicts that a cardiac hormone will oppose sodium retention once volume becomes excessive, even if the runner’s kidneys are still recovering from the earlier low-perfusion state.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate the initial state: low BP + high osmolarity + low urine output suggests strong water-conserving signals.</li>
+    <li>Match sensors to hormones: osmoreceptors → ADH; baroreceptors/renal perfusion → renin → angiotensin II → aldosterone.</li>
+    <li>Distinguish “water only” (ADH) from “salt + water together” (aldosterone) to predict osmolarity shifts.</li>
+    <li>When volume becomes high (atrial stretch), activate the opposing hormone (ANP) that promotes natriuresis.</li>
+    <li>For questions, use the passage to predict the direction of multiple hormones simultaneously, not just name a single one.</li>
+  </ol>
+</div>
+
+<!-- Q19 (B) -->
+<div class="question" id="q19">
+  <b>19. In the runner’s initial state (low blood pressure, high plasma osmolarity, low urine output), which combined hormone pattern is most expected?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Low ADH and low renin</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">B. High ADH and high renin</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. High ANP and low aldosterone</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. High insulin and high calcitonin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> High osmolarity stimulates ADH release to retain water, while low renal perfusion/low blood pressure stimulates renin release, activating the RAAS to restore pressure and volume.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Both signals (osmolarity and pressure) would push ADH and renin up, not down.</li>
+        <li><b>C:</b> ANP is released with atrial stretch/high volume, which is opposite the runner’s initial state.</li>
+        <li><b>D:</b> Insulin/calcitonin are not central to dehydration-driven water and pressure control.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (D) -->
+<div class="question" id="q20">
+  <b>20. The clinician’s statement that one pathway “increases sodium reabsorption in the distal nephron, pulling water along without strongly changing osmolarity” most directly describes the action of:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. ADH acting on aquaporins in the collecting duct</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. ANP acting to increase natriuresis</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Cortisol acting to increase gluconeogenesis</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Aldosterone acting to increase sodium reabsorption in the distal nephron</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Aldosterone increases sodium reabsorption (and potassium/hydrogen excretion) in the distal convoluted tubule and collecting duct. Water follows sodium, increasing volume with relatively preserved osmolarity.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> ADH increases water permeability (water-only effect), which can dilute plasma.</li>
+        <li><b>B:</b> ANP does the opposite by promoting sodium and water excretion.</li>
+        <li><b>C:</b> Cortisol affects metabolism and is not the hormone described by distal sodium reabsorption.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (A) -->
+<div class="question" id="q21">
+  <b>21. After the runner rapidly drinks a large volume of hypotonic fluid and atrial stretch increases, which endocrine change would best oppose further sodium and water retention?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Increased ANP secretion</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Increased angiotensin II secretion</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Increased aldosterone secretion</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Increased ADH secretion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> ANP is released from atria when stretched by high volume. It promotes sodium excretion and increases urine output, opposing RAAS/aldosterone-driven retention.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Angiotensin II increases vasoconstriction and stimulates aldosterone, promoting retention.</li>
+        <li><b>C:</b> Aldosterone increases sodium and water retention.</li>
+        <li><b>D:</b> ADH increases water reabsorption, which would further increase volume.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Neck Surgery, Tingling, and a Metabolic Shift</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 46-year-old patient undergoes surgery for a large thyroid nodule. Two days later, the patient reports tingling around the mouth and in the fingertips, and physical examination reveals muscle twitching. The clinician notes that these symptoms can occur when blood calcium falls, which increases neuromuscular excitability. A repeat lab panel shows low serum calcium.</p>
+  <p>The clinician explains that small glands on the posterior surface of the thyroid are particularly vulnerable during thyroid surgery because they can be inadvertently removed or lose blood supply. The clinician also reviews how one hormone can increase serum calcium by acting on bone, kidney, and the gut (through vitamin D). Another thyroid-associated hormone can lower serum calcium, but it is not expected to be the main cause of acute post-surgical hypocalcemia.</p>
+  <p>On the same post-op visit, the patient notes feeling unusually cold and lethargic. The clinician suspects that if thyroid hormone production is low, basal metabolic rate will fall. The clinician plans to measure a pituitary hormone that normally rises when thyroid hormone is insufficient.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Use the symptom cluster: tingling + twitching points to hypocalcemia (think “excitability”).</li>
+    <li>Ask what surgery could affect: thyroid removal can accidentally affect parathyroids on the back of the thyroid.</li>
+    <li>For calcium, compare PTH (raises Ca) vs calcitonin (lowers Ca) and decide which change best explains a sudden drop.</li>
+    <li>For metabolism, low thyroid hormone predicts higher TSH because the pituitary tries to stimulate the thyroid.</li>
+    <li>Pick answers that connect the scenario to a hormone direction and a physiological consequence (not just name a gland).</li>
+  </ol>
+</div>
+
+<!-- Q22 (C) -->
+<div class="question" id="q22">
+  <b>22. Which post-surgical endocrine change most directly explains the patient’s low serum calcium and neuromuscular symptoms?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Increased calcitonin secretion from thyroid C cells</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Increased vitamin D activation due to increased PTH</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Decreased PTH secretion due to parathyroid injury or removal</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Increased aldosterone secretion leading to increased urinary calcium excretion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Accidental parathyroid removal or ischemia causes low PTH, reducing bone resorption, reducing renal calcium retention, and reducing vitamin D activation—leading to hypocalcemia and tetany-like symptoms.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Calcitonin lowers calcium but is usually not the primary driver of acute symptomatic hypocalcemia after surgery; the scenario points to parathyroid vulnerability.</li>
+        <li><b>B:</b> Increased PTH would raise calcium and would not explain low calcium.</li>
+        <li><b>D:</b> Aldosterone primarily affects sodium/potassium/hydrogen handling; calcium symptoms are better explained by PTH disruption.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (B) -->
+<div class="question" id="q23">
+  <b>23. If the patient’s cold intolerance and lethargy reflect low thyroid hormone, which anterior pituitary change is most consistent with intact negative feedback?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Decreased TSH because TRH is absent in systemic circulation</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. Increased TSH because low T3/T4 reduces negative feedback</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Decreased ACTH because thyroid hormones stimulate cortisol secretion</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Increased prolactin because TSH and prolactin share the same receptor</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Thyroid hormones (T3/T4) provide negative feedback to both hypothalamus and pituitary. When T3/T4 are low, TRH and TSH tend to rise to stimulate the thyroid.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> TRH travels through the portal system; its low systemic concentration does not prevent pituitary response. The direction of TSH in hypothyroidism is typically up (if the axis is intact).</li>
+        <li><b>C:</b> ACTH is controlled by CRF and cortisol feedback, not primarily by thyroid hormone.</li>
+        <li><b>D:</b> TSH and prolactin have different receptors and regulatory logic; prolactin is mainly inhibited by dopamine.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (D) -->
+<div class="question" id="q24">
+  <b>24. Which intervention would most directly counteract the physiological mechanism causing the patient’s post-surgical tingling and muscle twitching?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Administer calcitonin to promote calcium storage in bone</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Administer insulin to drive calcium into cells</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Administer aldosterone to increase sodium reabsorption</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Replace calcium and support vitamin D activity to restore serum calcium</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The symptoms come from hypocalcemia. Restoring serum calcium (often with calcium supplementation and, when needed, vitamin D support) addresses the core deficit and reduces neuromuscular excitability.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Calcitonin would further lower blood calcium and worsen symptoms.</li>
+        <li><b>B:</b> Insulin is a glucose hormone; it does not correct the primary cause of tetany from low serum calcium.</li>
+        <li><b>C:</b> Aldosterone targets sodium/potassium handling; it does not fix hypocalcemia from low PTH.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

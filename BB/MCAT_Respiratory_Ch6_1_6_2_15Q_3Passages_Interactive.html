@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Respiratory System (Ch. 6.1–6.2) (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Biology — Respiratory System (Ch. 6.1–6.2)</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (C) -->
+<div class="question" id="q1">
+  <b>1. During quiet inhalation, which pair of muscles is most directly responsible for expanding the thoracic cavity?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Internal intercostals and abdominal muscles</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Sternocleidomastoid and scalene muscles</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Diaphragm and external intercostals</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Diaphragm and internal intercostals</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Quiet inspiration is active and is driven primarily by contraction of the diaphragm (flattens downward) and the external intercostals (lift and expand the rib cage), increasing intrathoracic volume.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> These are used for <i>forced</i> expiration, not quiet inspiration.</li>
+        <li><b>B:</b> Accessory muscles help during labored breathing, not typical quiet breathing.</li>
+        <li><b>D:</b> Internal intercostals assist forced expiration (pull ribs down), opposing inspiration.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (A) -->
+<div class="question" id="q2">
+  <b>2. Surfactant is most important because it:</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. lowers surface tension to reduce alveolar collapse during exhalation</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. increases mucus viscosity to trap pathogens</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. increases intrapleural pressure to inflate the lungs</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. chemically binds oxygen to facilitate diffusion into blood</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Surfactant acts like a detergent on the alveolar lining, lowering surface tension and preventing the alveoli from collapsing as the lungs recoil during expiration.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Mucus trapping is part of airway defense, but not surfactant’s primary role.</li>
+        <li><b>C:</b> Lung inflation depends on negative intrapleural pressure created by expansion of the thorax.</li>
+        <li><b>D:</b> Oxygen transport is largely via hemoglobin in blood; diffusion depends on partial pressure gradients.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (B) -->
+<div class="question" id="q3">
+  <b>3. A spirometry tracing shows tidal volume (TV) = 0.5 L, inspiratory reserve volume (IRV) = 3.0 L, and expiratory reserve volume (ERV) = 1.2 L. What is the vital capacity (VC)?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. 3.7 L</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">B. 4.7 L</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. 5.2 L</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. 1.7 L</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Vital capacity is the maximum exhaled after a maximal inhalation, which equals <b>VC = IRV + TV + ERV</b>. So VC = 3.0 + 0.5 + 1.2 = <b>4.7 L</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Misses one component of the sum.</li>
+        <li><b>C:</b> Overestimates (likely double-counts a component).</li>
+        <li><b>D:</b> Adds only two components instead of all three.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (D) -->
+<div class="question" id="q4">
+  <b>4. In negative-pressure breathing, which sequence best describes the pressure changes during the start of inhalation?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Intrapulmonary pressure rises, then intrapleural pressure rises</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Intrapleural pressure rises, then intrapulmonary pressure falls</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Intrapulmonary pressure falls first, causing the thorax to expand</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. Intrapleural pressure falls first, then intrapulmonary pressure falls</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Contraction of the diaphragm/external intercostals increases thoracic volume, expanding the pleural space first. By Boyle’s law, pleural pressure falls. The lungs then expand into that lower-pressure space, decreasing intrapulmonary pressure and drawing air inward.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Pressures do not rise at the start of inspiration.</li>
+        <li><b>B:</b> Pleural pressure falls (becomes more negative) during inspiration.</li>
+        <li><b>C:</b> The thorax expands due to muscle contraction, not because lung pressure falls first.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (A) -->
+<div class="question" id="q5">
+  <b>5. Which structure sequence correctly traces airflow from entry to the site of gas exchange?</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Nares → nasal cavity → pharynx → larynx → trachea → bronchi → bronchioles → alveoli</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Nares → larynx → pharynx → trachea → bronchioles → bronchi → alveoli</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Nares → nasal cavity → larynx → esophagus → trachea → bronchi → alveoli</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Nares → nasal cavity → trachea → pharynx → larynx → bronchi → alveoli</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Air enters through the nares, passes the nasal cavity (filter/warm/humidify), then pharynx, larynx, trachea, bronchi, bronchioles, and finally reaches alveoli for gas exchange.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Swaps pharynx/larynx order and bronchi/bronchioles order.</li>
+        <li><b>C:</b> Esophagus is a food pathway and is not part of the airway.</li>
+        <li><b>D:</b> Places pharynx after trachea, which is anatomically incorrect.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (B) -->
+<div class="question" id="q6">
+  <b>6. A patient has a pneumothorax (air in the intrapleural space). Which immediate mechanical consequence best explains lung collapse?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. The mucociliary escalator stops moving mucus</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">B. The pressure difference that normally keeps the lung expanded against the chest wall is lost</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Alveolar partial pressure of oxygen abruptly becomes zero</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Hemoglobin can no longer bind oxygen in pulmonary capillaries</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Normally, a closed pleural space allows a negative intrapleural pressure that “couples” the lung to the chest wall. Air in the pleural space equalizes pressures and breaks that coupling, allowing elastic recoil to collapse the lung (atelectasis).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Ciliary function affects clearance, not the immediate mechanics of lung expansion.</li>
+        <li><b>C:</b> Gas in the alveoli doesn’t instantly become zero; collapse is a mechanical issue.</li>
+        <li><b>D:</b> Hemoglobin binding is intact; the problem is inadequate ventilation/expansion.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (C) -->
+<div class="question" id="q7">
+  <b>7. A person voluntarily holds their breath for an extended period. Which stimulus is most likely to override voluntary control and restart ventilation?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. A small decrease in blood glucose</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. A small increase in blood calcium</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">C. Rising arterial partial pressure of carbon dioxide detected by brainstem chemoreceptors</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. A small increase in thyroid hormone levels</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The medullary ventilation center contains chemoreceptors that are primarily sensitive to CO2 (and associated acidity). Rising CO2 is the dominant drive to breathe and can override voluntary control.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B/D:</b> These are not the primary acute signals controlling ventilation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (A) -->
+<div class="question" id="q8">
+  <b>8. During quiet exhalation, which statement best describes the main cause of airflow out of the lungs?</b>
+  <div class="choice" onclick="selectChoice('q8', this, true)">A. Elastic recoil decreases lung volume, raising intrapulmonary pressure above atmospheric</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Internal intercostals contract, expanding thoracic volume</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Diaphragm contracts to increase intrathoracic volume</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Surfactant increases surface tension to push air out</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Quiet expiration is typically passive. When inspiratory muscles relax, lung/chest wall elastic recoil reduces volume, which raises intrapulmonary pressure above atmospheric and drives air out.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Internal intercostals assist forced expiration by pulling ribs down (reducing volume), not expanding volume.</li>
+        <li><b>C:</b> Diaphragm contraction is for inspiration.</li>
+        <li><b>D:</b> Surfactant lowers surface tension; increasing surface tension would worsen collapse risk.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (B) -->
+<div class="question" id="q9">
+  <b>9. Which respiratory defense mechanism best explains why paralysis of airway cilia can cause a prolonged cough and difficulty clearing mucus?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Decreased production of IgA on mucosal surfaces</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">B. Impairment of the mucociliary escalator that normally moves mucus toward the oral cavity</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Increased surfactant breakdown in alveoli</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Failure of the epiglottis to cover the glottis during swallowing</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Mucus traps particles/pathogens, and underlying cilia propel it upward to be expelled or swallowed. If cilia are paralyzed, mucus accumulates, provoking cough and persistent symptoms.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> IgA is protective but does not directly “move” mucus.</li>
+        <li><b>C:</b> Surfactant affects alveolar stability, not mucus clearance.</li>
+        <li><b>D:</b> Epiglottis dysfunction causes aspiration risk, not a primary mechanism of mucus stasis.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (C) -->
+<div class="question" id="q10">
+  <b>10. A patient develops thick scarring of the alveolar-capillary membrane. Which immediate effect on gas exchange is most likely?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Increased diffusion of oxygen into blood due to larger concentration gradients</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Increased oxygen binding to hemoglobin because hemoglobin becomes more abundant</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Decreased diffusion rate of gases across the membrane, increasing risk of hypoxia</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Increased carbon dioxide production by alveolar epithelial cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Diffusion across the alveolar-capillary interface depends on a thin membrane. Fibrosis increases diffusion distance, reducing gas transfer efficiency and contributing to hypoxemia.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> A thicker barrier lowers diffusion even if gradients exist.</li>
+        <li><b>B:</b> Hemoglobin quantity is not an immediate consequence of membrane scarring.</li>
+        <li><b>D:</b> The key limitation is diffusion across the barrier, not altered cellular CO2 production.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (A) -->
+<div class="question" id="q11">
+  <b>11. Which statement best describes the primary direction of gas diffusion at the alveolus under normal conditions?</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Oxygen diffuses from alveoli to pulmonary capillaries, while carbon dioxide diffuses from capillaries to alveoli</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Oxygen diffuses from capillaries to alveoli, while carbon dioxide diffuses from alveoli to capillaries</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Both oxygen and carbon dioxide diffuse from capillaries to alveoli</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Both oxygen and carbon dioxide diffuse from alveoli to capillaries</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Deoxygenated blood entering pulmonary capillaries has lower O2 and higher CO2 than alveolar air. Diffusion proceeds down each partial pressure gradient: O2 into blood, CO2 into alveoli for expiration.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B/C/D:</b> These reverse or oversimplify the normal gradients.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (B) -->
+<div class="question" id="q12">
+  <b>12. A patient forcefully exhales after a normal exhalation. Which additional muscle activity most directly enables this maneuver?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. External intercostal contraction to expand the rib cage</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. Internal intercostal and abdominal muscle contraction to decrease thoracic volume</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Diaphragm contraction to increase intrathoracic volume</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Relaxation of internal intercostals to increase intrathoracic pressure</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Forced expiration is active. Internal intercostals pull the rib cage down and abdominal muscles increase intra-abdominal pressure, pushing the diaphragm upward and decreasing thoracic volume, increasing pressure to expel air.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/C:</b> These actions increase thoracic volume and support inspiration.</li>
+        <li><b>D:</b> Relaxation alone is characteristic of quiet expiration, not forced expiration.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (D) -->
+<div class="question" id="q13">
+  <b>13. Which scenario would most specifically stimulate a large increase in ventilation due to oxygen sensing rather than carbon dioxide sensing?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Mild hypercapnia after brief hypoventilation</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Mild alkalemia after a short period of hyperventilation</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. A small rise in blood bicarbonate concentration with normal oxygenation</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Severe hypoxemia with near-normal carbon dioxide levels</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Brainstem respiratory control is primarily sensitive to CO2, but oxygen sensing becomes especially important during significant hypoxemia. Severe low O2 can strongly stimulate ventilation even if CO2 is not markedly elevated.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Rising CO2 is the classic dominant ventilatory driver.</li>
+        <li><b>B:</b> Low CO2/alkalemia tends to reduce ventilatory drive.</li>
+        <li><b>C:</b> Bicarbonate changes alone are not the primary acute trigger compared with CO2/O2 signals.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (C) -->
+<div class="question" id="q14">
+  <b>14. Consider the bicarbonate buffer system in blood: CO2 + H2O ⇌ H2CO3 ⇌ H+ + HCO3−. If ventilation decreases and carbon dioxide is retained, what is the most immediate effect on blood pH?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. pH increases because carbon dioxide is a base</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. pH stays constant because both H+ and HCO3− increase equally</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">C. pH decreases because the equilibrium shifts right, increasing hydrogen ion concentration</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. pH decreases because bicarbonate is consumed to form oxygen</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Retaining CO2 increases dissolved CO2, pushing the buffer equilibrium toward carbonic acid and then toward H+ and HCO3−. Increased H+ lowers pH (respiratory acidosis physiology).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> CO2 retention acidifies blood through carbonic acid formation.</li>
+        <li><b>B:</b> Even if HCO3− rises, the rise in H+ (strong acid) shifts pH toward acidity.</li>
+        <li><b>D:</b> Oxygen is not produced by this buffer reaction.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (B) -->
+<div class="question" id="q15">
+  <b>15. A patient has emphysema with destruction of alveolar walls. Which ventilatory difficulty is most directly predicted from decreased elastic recoil?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Inhalation becomes impossible because the diaphragm cannot contract</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Exhalation becomes more difficult because passive recoil is reduced</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Surfactant production increases, causing alveolar collapse</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Carbon dioxide diffusion becomes faster because surface area increases</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Quiet expiration relies heavily on elastic recoil. With emphysema, recoil is reduced, so air tends to be trapped and exhalation becomes labored and inefficient.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Diaphragm contraction can still occur; the key problem is recoil and airflow limitation.</li>
+        <li><b>C:</b> The disease primarily destroys alveolar walls; surfactant changes are not the defining mechanism here.</li>
+        <li><b>D:</b> Alveolar wall destruction reduces surface area, impairing diffusion.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: A Chest Injury and Rapid Breathing</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 19-year-old patient is brought to the emergency department after being struck in the chest during a soccer match. The patient reports sharp pain on one side of the chest and feels “short of breath.” On exam, one side of the chest expands less during inspiration, and breath sounds are reduced on that side. The patient’s respiratory rate is elevated.</p>
+  <p>A clinician explains that the lungs are not rigidly attached to the chest wall. Instead, each lung is surrounded by two pleural layers with a thin fluid film between them. This arrangement normally allows the chest wall to pull the lungs outward during inspiration. The clinician also notes that certain pathologic events can expand the pleural space with air or fluid, disrupting normal mechanics and causing partial or complete collapse of the affected lung.</p>
+  <p>Arterial blood gas testing shows the patient has an elevated partial pressure of carbon dioxide compared with expected values. The clinician points out that a specific brainstem control center adjusts ventilation rhythmically and responds strongly to rising carbon dioxide. The clinician also notes that oxygen sensing becomes most important when oxygen levels fall substantially.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify the mechanical problem: asymmetric expansion + reduced breath sounds points to impaired ventilation on one side.</li>
+    <li>Link pleural anatomy to mechanics: a sealed pleural space helps keep the lung expanded; adding air/fluid breaks that coupling.</li>
+    <li>Use Boyle’s law logic: volume/pressure changes in the thorax drive airflow; if the lung can’t expand, ventilation drops.</li>
+    <li>Interpret CO2: high CO2 implies hypoventilation relative to CO2 production; medullary chemoreceptors strongly increase respiratory drive.</li>
+    <li>Pick options that explain the mechanism (pleural pressure relationship) and predict the direction of changes (ventilation/CO2).</li>
+  </ol>
+</div>
+
+<!-- Q16 (D) -->
+<div class="question" id="q16">
+  <b>16. Which change most directly explains collapse of the affected lung if air enters the pleural space?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. The diaphragm becomes paralyzed on the injured side</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Alveolar surface tension decreases dramatically</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. The trachea becomes obstructed, preventing airflow to both lungs</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Intrapleural pressure moves toward atmospheric, eliminating the normal pressure gradient that keeps the lung expanded</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> A pneumothorax introduces air into the pleural space, equalizing pleural pressure with atmospheric pressure. Losing the negative pleural pressure uncouples the lung from the chest wall; elastic recoil then collapses the lung.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Diaphragm injury could reduce ventilation, but the passage highlights pleural mechanics and lung collapse.</li>
+        <li><b>B:</b> Lower surface tension would actually help keep alveoli open; collapse here is pleural-pressure related.</li>
+        <li><b>C:</b> Tracheal obstruction would affect both lungs and does not match unilateral reduced breath sounds.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (A) -->
+<div class="question" id="q17">
+  <b>17. The elevated carbon dioxide in the patient’s blood would most directly increase ventilation through which mechanism?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Activation of medullary chemoreceptors that increase the firing rate of the ventilation center</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Direct stimulation of surfactant secretion from alveoli to raise oxygen diffusion</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Increased epiglottis closure frequency during inspiration</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Increased IgA secretion to neutralize carbon dioxide in airways</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The medulla contains a rhythmic ventilation control center with chemoreceptors primarily sensitive to CO2 (and related acidity). When CO2 rises, it increases drive to breathe and blow off CO2.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Surfactant stabilizes alveoli; it does not directly signal the respiratory center.</li>
+        <li><b>C:</b> Epiglottis closure protects the airway during swallowing; it is not a ventilation control mechanism.</li>
+        <li><b>D:</b> IgA protects mucosal surfaces against pathogens, not CO2.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (C) -->
+<div class="question" id="q18">
+  <b>18. If the patient’s oxygen level later falls markedly while carbon dioxide remains near normal, which additional trigger becomes more influential for increasing ventilation?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Thyroid hormone receptors in the diaphragm</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Mast-cell degranulation in the bronchi</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Oxygen-sensitive pathways that become significant during severe hypoxemia</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Increased activity of nasal vibrissae to filter more oxygen</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> CO2 is usually the dominant driver, but oxygen sensing becomes especially important when oxygen levels are very low. In severe hypoxemia, oxygen-sensitive pathways can strongly stimulate ventilation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Thyroid hormone affects metabolic rate over longer timescales, not acute ventilatory control.</li>
+        <li><b>B:</b> Mast cells mediate allergic inflammation, not the primary oxygen-sensing mechanism described.</li>
+        <li><b>D:</b> Filtering does not increase oxygen content of inspired air.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: “Walking Pneumonia” and Airway Defense</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 22-year-old college student develops a persistent dry cough and low-grade fever that lasts for weeks. The student is still able to attend classes, but reports fatigue and worsening cough at night. On exam, lung sounds are mildly abnormal, but the student does not appear severely ill. A clinician suspects an atypical pneumonia and explains that certain infections can interfere with the normal clearance of airway secretions.</p>
+  <p>The clinician reviews the layered defenses of the respiratory tract. The upper airway filters and conditions incoming air, while mucus in the internal airways traps particles and microbes. Normally, cilia propel mucus upward toward the oral cavity, where it can be expelled or swallowed. The clinician also notes that immune protections are present on mucosal surfaces and within alveoli, including antibody-mediated defenses and phagocytic cells that can engulf pathogens and signal to other immune cells.</p>
+  <p>During the visit, the student also reports having seasonal allergies. The clinician explains that in some people, immune cells in the airways release inflammatory chemicals in response to common environmental triggers, causing bronchial irritation and contributing to symptoms like cough and wheeze even without infection.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate “mechanical clearance” from “immune killing”: mucus/cilia move material; antibodies/macrophages neutralize or ingest it.</li>
+    <li>When cough is prolonged, ask which defense was disrupted: impaired clearance leads to mucus retention and irritation.</li>
+    <li>Use location logic: upper airway filters; internal airway uses mucus + cilia; alveoli rely more on macrophages/IgA at surfaces.</li>
+    <li>For allergy clues, identify which immune cell releases inflammatory mediators after antigen binding (think immediate hypersensitivity).</li>
+    <li>Choose answers that connect a mechanism to the symptom pattern rather than restating the passage.</li>
+  </ol>
+</div>
+
+<!-- Q19 (B) -->
+<div class="question" id="q19">
+  <b>19. The clinician’s explanation most strongly predicts that damage to airway cilia would primarily increase the risk of which immediate problem?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Failure of gas diffusion across the alveolar-capillary barrier due to thicker membranes</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">B. Retention of mucus and trapped particles in the airways, requiring cough to clear secretions</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Collapse of alveoli at end-expiration due to higher surface tension</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Immediate loss of oxygen binding capacity in hemoglobin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The mucociliary escalator depends on cilia to move mucus toward the mouth. If cilia are damaged or paralyzed, mucus and debris remain, provoking cough and prolonging symptoms.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This describes diffusion limitation from fibrosis, not ciliary dysfunction.</li>
+        <li><b>C:</b> Alveolar collapse relates to surfactant, not airway cilia.</li>
+        <li><b>D:</b> Hemoglobin function is not directly impaired by ciliary injury.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (A) -->
+<div class="question" id="q20">
+  <b>20. Which immune component is most directly responsible for engulfing pathogens in alveoli and signaling that an invader is present?</b>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. Macrophages</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Surfactant molecules</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Nasal vibrissae</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Epiglottis cartilage</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Alveoli contain immune cells including macrophages that can phagocytose microbes and release signals that recruit and activate other immune responses.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Surfactant stabilizes alveoli by reducing surface tension; it is not the primary phagocyte.</li>
+        <li><b>C:</b> Vibrissae mechanically filter inhaled air in the nasal cavity.</li>
+        <li><b>D:</b> The epiglottis protects the airway during swallowing.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (D) -->
+<div class="question" id="q21">
+  <b>21. The student’s seasonal allergy symptoms are most consistent with activation of which airway cell type that releases inflammatory mediators after antigen binding?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Alveolar type I epithelial cells</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Erythrocytes in pulmonary capillaries</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Ciliated epithelial cells of the trachea</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. Mast cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Mast cells in the lungs can release inflammatory chemicals when antigen binds to antibodies on their surface. This contributes to allergic inflammation, bronchial irritation, cough, and wheeze.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Type I cells are thin diffusion cells, not the main allergy effector cells.</li>
+        <li><b>B:</b> RBCs transport gases; they do not release inflammatory mediators.</li>
+        <li><b>C:</b> Ciliated cells move mucus but are not the primary mediator-releasing allergy cells.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Panic, Hyperventilation, and Acid–Base Shifts</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 28-year-old patient arrives at an urgent care clinic feeling dizzy and tingling in the hands after a stressful event. The patient is breathing very rapidly and reports a sensation of “not getting enough air,” even though a pulse oximeter reading is normal. The clinician suspects the patient is hyperventilating.</p>
+  <p>The clinician explains that the brainstem ventilation center is highly sensitive to carbon dioxide. When carbon dioxide is exhaled faster than it is produced, its blood level falls, and this can shift acid–base balance through the bicarbonate buffer system. The clinician writes the buffer relationship on a whiteboard and emphasizes that changes in carbon dioxide can rapidly change hydrogen ion concentration and pH.</p>
+  <p>To help the patient understand why the tingling occurs, the clinician explains that symptoms can result from a physiologic response to altered blood chemistry rather than from a drop in oxygen delivery. The clinician also notes that if the patient were to slow breathing enough to retain carbon dioxide, the buffer system would shift in the opposite direction.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Use the vital clue: normal oxygen reading + rapid breathing suggests the primary issue is CO2, not O2 delivery.</li>
+    <li>Translate “hyperventilation” into chemistry: CO2 falls → buffer shifts left → H+ falls → pH rises.</li>
+    <li>Predict the feedback: low CO2 reduces respiratory drive, but anxiety can temporarily override this.</li>
+    <li>For interventions, pick what reverses the chemistry (retain CO2 or reduce CO2 loss), not what adds oxygen.</li>
+    <li>Eliminate choices that confuse metabolic vs respiratory causes; here the driver is ventilation affecting CO2.</li>
+  </ol>
+</div>
+
+<!-- Q22 (C) -->
+<div class="question" id="q22">
+  <b>22. Based on the buffer relationship CO2 + H2O ⇌ H2CO3 ⇌ H+ + HCO3−, the patient’s hyperventilation would most immediately cause which change in blood pH?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Decreased pH because oxygen rises and forms acid</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. No change in pH because H+ and HCO3− change together</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Increased pH because carbon dioxide decreases, shifting the equilibrium left and lowering hydrogen ion concentration</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Increased pH because bicarbonate is converted to glucose</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Hyperventilation “blows off” CO2, lowering CO2 in blood. By Le Châtelier’s principle, the buffer shifts left, reducing H+ and raising pH (respiratory alkalosis physiology).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Oxygen level changes do not directly create acid in this buffer system.</li>
+        <li><b>B:</b> H+ is a strong acid; lowering H+ increases pH even if bicarbonate changes too.</li>
+        <li><b>D:</b> Bicarbonate is not converted to glucose in this context.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (B) -->
+<div class="question" id="q23">
+  <b>23. If the patient intentionally slows breathing enough to retain carbon dioxide, which immediate direction of change is most expected for hydrogen ion concentration?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Hydrogen ion concentration decreases because carbon dioxide is removed</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. Hydrogen ion concentration increases because the equilibrium shifts right</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Hydrogen ion concentration becomes irrelevant because oxygen is normal</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Hydrogen ion concentration decreases because bicarbonate rises</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Retaining CO2 raises CO2 in blood, pushing the buffer equilibrium right and increasing H+ (more acidity), lowering pH toward normal if it was elevated.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Retaining CO2 means it is not removed; H+ does not fall.</li>
+        <li><b>C:</b> Normal oxygen does not eliminate acid–base effects of CO2.</li>
+        <li><b>D:</b> Even if bicarbonate rises, H+ rises too; the key is the direction of equilibrium with CO2 retention.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (D) -->
+<div class="question" id="q24">
+  <b>24. Which observation would most strongly support that the patient’s dizziness and tingling are driven by changes in carbon dioxide rather than impaired oxygen diffusion?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Reduced breath sounds on one side of the chest</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Thickened alveolar-capillary membranes on imaging</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Very low oxygen saturation at rest</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Normal oxygen saturation with low arterial carbon dioxide</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Normal oxygen saturation suggests oxygen diffusion and hemoglobin loading are adequate. Low arterial CO2 directly supports hyperventilation as the driver of symptoms and the acid–base shift.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Suggests a ventilation problem (possibly unilateral) rather than isolated CO2-driven hyperventilation.</li>
+        <li><b>B:</b> Would indicate diffusion limitation and hypoxia risk.</li>
+        <li><b>C:</b> Strongly points toward oxygenation failure rather than CO2 changes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

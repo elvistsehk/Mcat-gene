@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Absorption &amp; GI Segments (Ch. 9.4) (15Q + 3 Passages)</title>
+<style>
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+</style>
+<script>
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Absorption &amp; GI Segments (Ch. 9.4)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<div class="question" id="q1">
+  <b>1. Which anatomical feature most directly explains why the jejunum and ileum are highly efficient at nutrient absorption?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. They are lined by thick stratified squamous epithelium to resist abrasion.</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. They contain G-cells that release gastrin to stimulate digestion.</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. They secrete large amounts of hydrochloric acid to denature nutrients.</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">D. They contain villi and microvilli that greatly increase epithelial surface area.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D.</b> The small intestine is specialized for absorption; finger-like villi and microscopic microvilli amplify surface area, increasing transporter and diffusion capacity.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Stratified squamous epithelium is typical of the esophagus; the small intestine uses simple columnar epithelium optimized for absorption.</li>
+        <li><b>B.</b> G-cells and gastrin are features of the stomach’s pyloric glands and regulate gastric acid/motility.</li>
+        <li><b>C.</b> HCl secretion is a stomach (parietal cell) function, not a jejunal/ileal absorption specialization.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q2">
+  <b>2. A researcher samples fluid leaving a single intestinal villus. Which molecule is most likely to be found first in the lacteal rather than the villus capillary bed after a fatty meal?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Amino acids absorbed into portal circulation.</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">B. Chylomicrons containing re-esterified triglycerides and cholesterol.</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Glucose absorbed by secondary active transport.</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Vitamin C absorbed with water into plasma.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B.</b> Long-chain lipids are rebuilt into triglycerides inside enterocytes and packaged as chylomicrons that enter lymphatic lacteals before reaching venous blood.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Amino acids enter the capillary bed and are carried to the liver through portal blood.</li>
+        <li><b>C.</b> Glucose is water-soluble and enters the villus capillaries, then travels via the hepatic portal vein to the liver.</li>
+        <li><b>D.</b> Vitamin C is water-soluble and is absorbed into blood, not lymph.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q3">
+  <b>3. Which set lists only fat-soluble vitamins?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. K, B7, B9, and D.</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. A, C, D, and E.</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. B1, B6, B12, and C.</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. A, D, E, and K.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D.</b> Only four vitamins are fat-soluble: A, D, E, and K; they are absorbed with dietary fat and enter lymph in chylomicrons.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Biotin (B7) and folate (B9) are water-soluble.</li>
+        <li><b>B.</b> Vitamin C is water-soluble, so this set is not purely fat-soluble.</li>
+        <li><b>C.</b> B vitamins and vitamin C are water-soluble.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q4">
+  <b>4. Food leaving the stomach enters the small intestine. What is the correct order of the segments it passes through?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Jejunum → Duodenum → Ileum.</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Duodenum → Ileum → Jejunum.</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Duodenum → Jejunum → Ileum.</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Ileum → Jejunum → Duodenum.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C.</b> The small intestine begins with the duodenum (major digestion), then the jejunum and ileum (major absorption).</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> The duodenum is always first; it receives chyme from the stomach.</li>
+        <li><b>B.</b> The jejunum precedes the ileum, not the reverse.</li>
+        <li><b>D.</b> This order is reversed; the duodenum is proximal, not distal.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q5">
+  <b>5. Which sequence correctly orders the major sections of the large intestine from proximal to distal?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Rectum → Colon → Cecum.</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Cecum → Rectum → Colon.</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Colon → Cecum → Rectum.</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">D. Cecum → Colon → Rectum.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D.</b> Material exits the ileum through the ileocecal valve into the cecum, then passes through the colon, and is stored in the rectum before elimination.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> This reverses the normal direction of flow.</li>
+        <li><b>B.</b> The rectum is distal to the colon, not between cecum and colon.</li>
+        <li><b>C.</b> The cecum is the first receiving pouch after the ileocecal valve, not the colon.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q6">
+  <b>6. After absorption, most monosaccharides and amino acids travel first to which organ before entering systemic circulation?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. The left subclavian vein via the thoracic duct.</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. The right atrium via the inferior vena cava directly.</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. The liver via the hepatic portal circulation.</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. The spleen for initial immune processing.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C.</b> Water-soluble nutrients absorbed into villus capillaries drain to the hepatic portal vein, allowing the liver to process nutrients before they enter general circulation.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> The thoracic duct route is characteristic of chylomicrons (lymphatic fat transport), not most sugars and amino acids.</li>
+        <li><b>B.</b> Villus capillaries drain to portal blood first; they do not bypass the liver to the IVC.</li>
+        <li><b>D.</b> The spleen filters blood for immune surveillance, but it is not the first-pass destination for absorbed sugars/amino acids.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q7">
+  <b>7. A patient has chronic obstruction of bile flow into the duodenum. Which deficiency is most directly expected over time?</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Reduced absorption of fat-soluble vitamins due to impaired micelle formation.</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Reduced absorption of vitamin C due to impaired facilitated diffusion.</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Inability to absorb glucose because sodium gradients cannot form.</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Failure to absorb amino acids because peptidases are absent from the brush border.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A.</b> Bile salts emulsify lipids into micelles, enabling pancreatic lipase access and facilitating absorption of lipids and fat-soluble vitamins (A, D, E, K).</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>B.</b> Vitamin C is water-soluble and does not require bile-mediated micelles.</li>
+        <li><b>C.</b> Glucose absorption depends on transporters and Na+ gradients, not bile delivery.</li>
+        <li><b>D.</b> Brush-border peptidases are produced by intestinal epithelium; bile obstruction primarily affects fat handling.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q8">
+  <b>8. Which lipid species is most likely to enter intestinal capillaries directly rather than being packaged into chylomicrons?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Fat-soluble vitamins absorbed with dietary fat.</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Short-chain fatty acids.</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Esterified cholesterol packaged with triglycerides.</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Long-chain triglycerides re-formed in enterocytes.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B.</b> Short-chain fatty acids can diffuse into capillaries (more water-soluble behavior), whereas long-chain lipids are re-esterified and exported as chylomicrons into lacteals.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Fat-soluble vitamins dissolve into chylomicrons and enter lymph.</li>
+        <li><b>C.</b> Cholesterol (after esterification/packaging) travels with chylomicrons via lymph.</li>
+        <li><b>D.</b> Long-chain triglycerides are transported as chylomicrons into lacteals.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q9">
+  <b>9. A patient develops watery stools after a colitis flare that reduces the colon’s absorptive capacity. Which normal function has been most directly impaired?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Emulsification of dietary fat by bile salts in the duodenum.</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">B. Reabsorption of water and salts from undigested material in the large intestine.</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Initiation of carbohydrate digestion by salivary amylase.</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Enzymatic cleavage of peptide bonds by gastric pepsin.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B.</b> The large intestine’s primary role is reclaiming water and electrolytes; impaired absorption leaves more water in the lumen, producing watery stools.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Bile acts in the small intestine and affects fat digestion/absorption, not primary colonic water absorption.</li>
+        <li><b>C.</b> Salivary amylase acts in the mouth and has little to do with colonic water absorption.</li>
+        <li><b>D.</b> Pepsin acts in the stomach and affects protein digestion, not colonic water handling.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q10">
+  <b>10. After a prolonged course of broad-spectrum antibiotics, a patient develops easy bruising and prolonged bleeding time. Which mechanism best explains this finding?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Increased gastric mucus blocks absorption of fat-soluble vitamins.</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Loss of gut flora reduces vitamin K availability needed for clotting factor production.</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Reduced bile pigment secretion prevents hemoglobin breakdown.</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Decreased lacteal transport prevents amino acid absorption.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B.</b> Colonic bacteria synthesize vitamin K; reducing bacterial populations can lower vitamin K levels and impair hepatic production of clotting factors.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Gastric mucus is protective in the stomach; it is not the primary determinant of vitamin K absorption/availability.</li>
+        <li><b>C.</b> Bile pigment (bilirubin) handling relates to jaundice, not directly to bruising from vitamin K deficiency.</li>
+        <li><b>D.</b> Amino acids are absorbed into capillaries, not lacteals; and this would not selectively cause bleeding.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q11">
+  <b>11. A patient with chronic fat malabsorption reports difficulty seeing in dim light. Which deficiency best matches this symptom?</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Vitamin A deficiency.</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Vitamin K deficiency.</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Vitamin C deficiency.</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Vitamin B12 deficiency.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A.</b> Vitamin A is required for retinal function (rhodopsin); fat malabsorption predisposes to deficiency of fat-soluble vitamins and can cause night blindness.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>B.</b> Vitamin K deficiency causes bleeding tendencies due to impaired clotting factor activation.</li>
+        <li><b>C.</b> Vitamin C deficiency causes impaired collagen synthesis (e.g., scurvy), not night blindness.</li>
+        <li><b>D.</b> B12 deficiency causes megaloblastic anemia and neurologic symptoms; it is water-soluble and not the classic fat-malabsorption issue in this context.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q12">
+  <b>12. Why does absorption of solutes in the small intestine promote absorption of water into the bloodstream?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Water absorption occurs only in the colon, not the small intestine.</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. Solute uptake increases osmotic gradients that draw water by osmosis into capillaries.</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Water requires bile salts to cross enterocyte membranes.</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Water is pumped into capillaries by active transport through lacteals.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B.</b> As carbohydrates, amino acids, and electrolytes move into blood, luminal osmolarity decreases and water follows down its osmotic gradient (transcellularly and paracellularly).</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> The small intestine absorbs the majority of water; the colon mainly concentrates remaining material.</li>
+        <li><b>C.</b> Bile salts facilitate fat emulsification; they are not required for water transport.</li>
+        <li><b>D.</b> Lacteals are lymphatic and primarily transport chylomicrons; water movement is passive (osmosis), not active pumping.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q13">
+  <b>13. During defecation, which sphincter is under voluntary (somatic) control?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. The external anal sphincter.</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. The internal anal sphincter.</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. The pyloric sphincter.</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. The ileocecal valve.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A.</b> The external anal sphincter is skeletal muscle controlled by somatic motor neurons, whereas the internal anal sphincter is smooth muscle under autonomic control.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>B.</b> The internal anal sphincter is smooth muscle and is controlled involuntarily.</li>
+        <li><b>C.</b> The pyloric sphincter controls gastric emptying; it is not under voluntary control.</li>
+        <li><b>D.</b> The ileocecal valve regulates flow from ileum to cecum; it is not a voluntary sphincter.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q14">
+  <b>14. Which statement best aligns with the proposed non-vestigial role of the appendix described in the passage?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. It produces pancreatic zymogens that digest proteins.</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. It is the primary site of water absorption in the GI tract.</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. It secretes bile salts required for micelle formation.</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">D. It may help repopulate the colon with normal flora after episodes of diarrhea.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D.</b> Recent evidence suggests the appendix may serve as a reservoir for beneficial bacteria, aiding recolonization after diarrheal illness.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Pancreatic zymogens are produced by pancreatic acinar cells, not the appendix.</li>
+        <li><b>B.</b> Most water absorption occurs in the small intestine; the colon absorbs additional water but the appendix is not a major absorptive site.</li>
+        <li><b>C.</b> Bile salts are produced in the liver and stored/concentrated in the gallbladder.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q15">
+  <b>15. After lipid absorption, chylomicrons ultimately enter venous blood most directly at which location?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. The renal vein draining the kidneys.</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. The superior vena cava via direct diffusion from the duodenum.</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. The left subclavian vein after lymph drains through the thoracic duct.</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. The hepatic portal vein draining the intestinal capillaries.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C.</b> Chylomicrons travel via lacteals and lymphatic vessels to the thoracic duct, which empties into the left subclavian vein near the base of the neck.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> The renal vein drains blood from kidneys; it is not the entry point for absorbed chylomicrons.</li>
+        <li><b>B.</b> Chylomicrons do not diffuse directly into the SVC; they require lymphatic transport to the thoracic duct.</li>
+        <li><b>D.</b> The hepatic portal vein carries water-soluble nutrients (e.g., glucose, amino acids) from intestinal capillaries to the liver, not chylomicrons.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passage-Based Questions (3 Passages × 3 Questions)</div>
+
+<div class="passage-header">
+  <div>Passage 1</div>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 46-year-old patient presents with epigastric pain radiating to the back shortly after several high-fat meals. Imaging suggests intermittent obstruction at the ampulla where ducts empty into the duodenum. During symptomatic periods, stool becomes bulky, pale, and difficult to flush. Laboratory work shows elevated serum lipase and mild weight loss over several weeks, but bilirubin remains within the reference range.</p>
+  <p>An endoscopist suspects that normal bile delivery is largely preserved, but that the duodenum is not receiving an adequate functional load of pancreatic secretions during episodes of obstruction. The clinician notes that deficiencies of certain vitamins are more likely to develop when fat digestion and fat transport are chronically impaired.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p>• Identify the key clue (bulky, pale, hard-to-flush stool) → think <b>fat malabsorption</b> (steatorrhea).</p>
+  <p>• Ask what steps are required for fat uptake: <b>chemical digestion by pancreatic lipase</b> + <b>packaging into chylomicrons</b> + <b>lymphatic transport</b>.</p>
+  <p>• Use the passage evidence (bile seems preserved, but pancreatic output is impaired) to focus on the missing step.</p>
+  <p>• When a question mentions vitamin-related bleeding or bruising, consider <b>fat-soluble vitamins</b> (A, D, E, K), especially <b>vitamin K</b> for clotting.</p>
+</div>
+<div class="question" id="q16">
+  <b>16. (Passage 1) The patient’s stools become bulky, pale, and difficult to flush after an episode that reduces delivery of pancreatic enzymes to the duodenum. Which nutrient class would be most directly affected in absorption?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Amino acids, because brush-border peptidases are produced only by the pancreas.</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Monosaccharides, because salivary amylase is absent in the duodenum.</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">C. Lipids, because pancreatic lipase is required to hydrolyze triglycerides for absorption.</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Water, because only the colon can reabsorb fluid.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C.</b> Pancreatic lipase performs the key chemical digestion step for fats; without it, fewer fatty acids/monoglycerides are available to form chylomicrons and enter lacteals, producing steatorrhea.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Brush-border peptidases are produced by intestinal epithelium; pancreatic proteases contribute, but the statement is incorrect and doesn’t match the steatorrhea clue.</li>
+        <li><b>B.</b> Carbohydrate digestion in the small intestine relies mainly on pancreatic amylase and brush-border disaccharidases; salivary amylase is not the main limiting factor in the duodenum.</li>
+        <li><b>D.</b> The small intestine absorbs a large amount of water; watery stools can occur for many reasons, but pancreatic enzyme loss most strongly affects fat digestion.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q17">
+  <b>17. (Passage 1) Imaging suggests normal bile delivery but impaired activation of multiple pancreatic proteases. Which duodenal factor is the most likely missing ‘master switch’ that normally initiates the activation cascade?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Gastrin, which directly activates pancreatic zymogens.</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Intrinsic factor, which activates chymotrypsinogen.</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Secretin, which cleaves trypsinogen to trypsin.</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Enteropeptidase, which converts trypsinogen to trypsin in the duodenum.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D.</b> Enteropeptidase (enterokinase) on the duodenal brush border activates trypsinogen to trypsin; trypsin then activates other pancreatic zymogens.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Gastrin primarily increases gastric acid secretion and motility; it does not activate pancreatic zymogens.</li>
+        <li><b>B.</b> Intrinsic factor binds vitamin B12 for absorption; it does not activate pancreatic enzymes.</li>
+        <li><b>C.</b> Secretin stimulates pancreatic bicarbonate/enzyme secretion and reduces gastric acid; it does not perform proteolytic activation of trypsinogen.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q18">
+  <b>18. (Passage 1) The same patient later develops easy bruising and a prolonged prothrombin time (PT). Which deficiency is most consistent with a chronic inability to absorb dietary fat?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Vitamin B6 deficiency.</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Vitamin B12 deficiency.</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Vitamin K deficiency.</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Vitamin C deficiency.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C.</b> Vitamin K is fat-soluble and is required for normal activation of several clotting factors; fat malabsorption can reduce vitamin K absorption and prolong PT.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Vitamin B6 is water-soluble; deficiency causes neurologic and hematologic issues but is not the classic fat-malabsorption PT story.</li>
+        <li><b>B.</b> Vitamin B12 deficiency is water-soluble and causes megaloblastic anemia/neuropathy, not specifically prolonged PT.</li>
+        <li><b>D.</b> Vitamin C deficiency causes impaired collagen synthesis and scurvy-type findings, not a primary PT prolongation from fat malabsorption.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+<div class="passage-header">
+  <div>Passage 2</div>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 19-year-old has chronic bloating and diarrhea that worsens after meals. Endoscopy with biopsy shows blunted villi and a marked reduction in microvilli in the jejunum. The clinician explains that less absorptive surface area means fewer transporters and less membrane area for nutrients and water to cross into the body.</p>
+  <p>Despite adequate calorie intake, the patient’s body mass decreases over time. Stool studies suggest an osmotic component to the diarrhea. Blood tests reveal that water-soluble vitamin levels are only mildly reduced, but several fat-soluble vitamin levels are disproportionately low.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p>• Translate structure to function: losing <b>villi/microvilli</b> → reduced <b>surface area</b> → reduced nutrient uptake.</p>
+  <p>• For watery stools, decide whether water is retained because solutes stay in the lumen (think <b>osmotic gradient</b>).</p>
+  <p>• Separate pathways: sugars/amino acids → <b>capillaries</b> → <b>hepatic portal blood</b>; lipids/vitamins A-D-E-K → <b>chylomicrons</b> → <b>lacteals</b>.</p>
+  <p>• If fat-soluble vitamins drop more than water-soluble ones, infer that <b>fat handling/transport</b> is the bottleneck.</p>
+</div>
+<div class="question" id="q19">
+  <b>19. (Passage 2) Biopsy shows blunted villi and loss of microvilli in the jejunum. Immediately after a carbohydrate-rich meal, which change would most directly follow from this structural damage?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Increased gastric acid secretion due to loss of bicarbonate in the ileum.</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Increased delivery of chylomicrons into the thoracic duct.</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Reduced rate of monosaccharide delivery into villus capillaries and then to the liver.</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Direct shunting of absorbed glucose into lacteals because capillaries are absent.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C.</b> Villi/microvilli loss lowers absorptive surface area and transporter density, decreasing carbohydrate uptake into enterocytes and diffusion into villus capillaries that drain to portal blood.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Jejunal surface injury does not directly increase gastric acid secretion via ileal bicarbonate loss; this mismatches the described pathology.</li>
+        <li><b>B.</b> Chylomicrons carry lipids via lacteals; villous atrophy would tend to reduce, not increase, lipid absorption.</li>
+        <li><b>D.</b> Glucose is water-soluble and normally enters capillaries; lacteals are for chylomicrons, not glucose shunting.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q20">
+  <b>20. (Passage 2) The patient’s diarrhea worsens when they ingest large amounts of unabsorbed solute. Which mechanism best explains why the stool becomes more watery?</b>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. Unabsorbed solutes increase luminal osmolarity, pulling water into the intestinal lumen by osmosis.</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Unabsorbed solutes stimulate bile salts to hydrolyze triglycerides.</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Unabsorbed solutes decrease luminal osmolarity, forcing water into blood.</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Unabsorbed solutes directly open lacteals, causing water secretion into lymph.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A.</b> When nutrients remain in the lumen, they retain water osmotically (and can be fermented by bacteria), leading to osmotic diarrhea with watery stools.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>B.</b> Bile salts emulsify fats but do not enzymatically hydrolyze triglycerides.</li>
+        <li><b>C.</b> The direction is reversed: higher luminal osmolarity draws water into the lumen, not into blood.</li>
+        <li><b>D.</b> Lacteals transport lipids; they do not ‘open’ to secrete water into lymph as a primary diarrhea mechanism.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q21">
+  <b>21. (Passage 2) Despite low body mass, the patient’s fat-soluble vitamin levels are disproportionately low compared with water-soluble vitamins. Which pathway difference most directly accounts for this pattern?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Fat-soluble vitamins are absorbed only in the colon, whereas water-soluble vitamins are absorbed in the small intestine.</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">B. Fat-soluble vitamins are absorbed with lipids into chylomicrons that enter lacteals, whereas water-soluble vitamins enter capillary blood.</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Fat-soluble vitamins require intrinsic factor, whereas water-soluble vitamins do not.</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Fat-soluble vitamins are actively pumped into portal blood, whereas water-soluble vitamins diffuse into lacteals.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B.</b> Fat-soluble vitamins (A, D, E, K) partition into dietary fat and enter lymph in chylomicrons; any fat malabsorption disproportionately reduces them compared with water-soluble vitamins.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Vitamin absorption occurs mainly in the small intestine; the colon is not the primary site of vitamin uptake from diet.</li>
+        <li><b>C.</b> Intrinsic factor is specifically for vitamin B12, which is water-soluble.</li>
+        <li><b>D.</b> This reverses the pathways: fat-soluble vitamins go with chylomicrons to lacteals; water-soluble vitamins go into blood.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+<div class="passage-header">
+  <div>Passage 3</div>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 58-year-old with a mediastinal mass develops a chylous pleural effusion. Imaging shows compression of the thoracic duct near its entry into the venous system. The patient notes that symptoms are worse after fatty meals and reports progressive easy bruising over several months.</p>
+  <p>Dietary counseling increases carbohydrate intake while keeping fat intake modest. After this change, the patient’s energy level improves more than expected, even though signs suggesting impaired lipid delivery persist.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p>• Locate the anatomical bottleneck: thoracic duct obstruction blocks <b>lymphatic return</b> to venous blood.</p>
+  <p>• Ask which absorbed products rely on lymph: <b>chylomicrons</b> (triglycerides, cholesterol, fat-soluble vitamins).</p>
+  <p>• Ask which absorbed products do NOT rely on lymph: water-soluble nutrients like <b>glucose</b> and <b>amino acids</b> that enter villus capillaries.</p>
+  <p>• Use symptom timing (worse after fatty meals) + bruising to connect impaired fat transport to <b>fat-soluble vitamin deficiency</b> (especially <b>vitamin K</b>).</p>
+</div>
+<div class="question" id="q22">
+  <b>22. (Passage 3) A tumor compresses the thoracic duct near its entry into the venous system. After a high-fat meal, which laboratory pattern is most consistent with this obstruction?</b>
+  <div class="choice" onclick="selectChoice('q22', this, true)">A. Lower-than-expected rise in plasma triglycerides because chylomicrons cannot efficiently reach venous blood.</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. No change in fat-soluble vitamin status because chylomicrons enter the hepatic portal vein instead.</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Increased gastric pepsin activity due to backup of lymph.</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Marked increase in portal vein glucose because chylomicrons are redirected to capillaries.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A.</b> Chylomicrons travel via lacteals → lymphatics → thoracic duct → left subclavian vein. Obstructing this route limits delivery of dietary triglycerides to blood after meals.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>B.</b> Chylomicrons do not enter the hepatic portal vein; blockade can contribute to fat-soluble vitamin deficiencies over time.</li>
+        <li><b>C.</b> Pepsin activity depends on gastric pH and secretion, not lymphatic drainage.</li>
+        <li><b>D.</b> Glucose travels via villus capillaries and portal blood; it is not a chylomicron rerouting consequence.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q23">
+  <b>23. (Passage 3) Which absorbed nutrient would be least directly affected by a thoracic duct obstruction?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Vitamin A absorbed with dietary fat into chylomicrons.</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Chylomicron-packaged triglycerides absorbed into lacteals.</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Esterified cholesterol transported within chylomicrons.</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">D. Glucose absorbed into villus capillaries and carried to the liver via the hepatic portal vein.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D.</b> Thoracic duct obstruction primarily disrupts lymphatic transport; water-soluble nutrients like glucose enter blood capillaries and portal circulation without relying on lymph.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>A.</b> Vitamin A is fat-soluble and travels with chylomicrons via lymph.</li>
+        <li><b>B.</b> Triglycerides in chylomicrons require lacteals and the thoracic duct to reach venous blood.</li>
+        <li><b>C.</b> Dietary cholesterol in chylomicrons similarly depends on lymphatic transport.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q24">
+  <b>24. (Passage 3) Over several months, which clinical sign would most specifically suggest impaired absorption/transport of fat-soluble vitamins in this patient?</b>
+  <div class="choice" onclick="selectChoice('q24', this, true)">A. Easy bruising due to reduced vitamin K-dependent clotting factor activity.</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Peripheral neuropathy due to low thiamine (B1).</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Megaloblastic anemia due to low folate (B9).</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Sore gums and poor wound healing due to low vitamin C.</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A.</b> Vitamin K is fat-soluble and required for normal clotting; impaired lipid transport can reduce fat-soluble vitamin delivery and lead to bleeding tendencies.</p>
+      <p><b>Why the other choices are not correct:</b></p>
+      <ul>
+        <li><b>B.</b> Thiamine is water-soluble; neuropathy can occur but would not specifically indicate fat-soluble vitamin malabsorption.</li>
+        <li><b>C.</b> Folate is water-soluble; deficiency causes megaloblastic anemia but is not specific to fat malabsorption.</li>
+        <li><b>D.</b> Vitamin C is water-soluble; deficiency reflects inadequate intake/absorption unrelated to lipid transport specifically.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

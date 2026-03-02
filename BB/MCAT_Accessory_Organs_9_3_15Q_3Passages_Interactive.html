@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Accessory Organs of Digestion (Ch. 9.3) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Accessory Organs of Digestion (Ch. 9.3)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (Correct: C) -->
+<div class="question" id="q1">
+  <b>1. Which statement best distinguishes exocrine from endocrine function in the pancreas?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Exocrine pancreas releases insulin into blood; endocrine pancreas releases enzymes into ducts</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Exocrine pancreas secretes bile; endocrine pancreas stores bile</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Exocrine pancreas releases bicarbonate-rich digestive secretions into ducts; endocrine pancreas releases peptide hormones into blood</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Exocrine pancreas performs gluconeogenesis; endocrine pancreas emulsifies fats</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Exocrine acinar cells secrete digestive enzymes (plus bicarbonate) into a duct system, while endocrine islets secrete hormones (insulin, glucagon, somatostatin) into the bloodstream.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This reverses the definitions: insulin is endocrine; enzymes into ducts are exocrine.</li>
+        <li><b>B:</b> Bile is produced by the liver and stored in the gallbladder, not the pancreas.</li>
+        <li><b>D:</b> Gluconeogenesis is primarily a liver function; emulsification is a bile salt role.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (Correct: A) -->
+<div class="question" id="q2">
+  <b>2. A student labels enteropeptidase as a “master switch” in intestinal protein digestion. What is the most direct reason for this label?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. It activates trypsinogen to trypsin, which then activates multiple pancreatic zymogens</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. It conjugates bilirubin for excretion</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. It hydrolyzes disaccharides into monosaccharides</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. It emulsifies dietary fats into micelles</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Enteropeptidase activates trypsinogen. Trypsin then activates other protease zymogens (e.g., chymotrypsinogen) and supports the protease cascade.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Bilirubin conjugation occurs in the liver.</li>
+        <li><b>C:</b> Disaccharidases (maltase, lactase, sucrase) do carbohydrate cleavage at the brush border.</li>
+        <li><b>D:</b> Emulsification is performed by bile salts, not enteropeptidase.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (Correct: D) -->
+<div class="question" id="q3">
+  <b>3. Which pancreatic secretion is most directly responsible for hydrolyzing dietary lipids into absorbable components?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Bile salts</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Trypsin</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Pancreatic amylase</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Pancreatic lipase</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Pancreatic lipase hydrolyzes ester bonds in triglycerides to produce free fatty acids and glycerol (or monoglycerides/free fatty acids).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Bile salts are not enzymes; they emulsify fats to increase surface area for lipase.</li>
+        <li><b>B:</b> Trypsin is a protease that cleaves peptide bonds.</li>
+        <li><b>C:</b> Amylase digests polysaccharides into smaller sugars.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (Correct: B) -->
+<div class="question" id="q4">
+  <b>4. Pancreatic proteases are secreted as zymogens. What is the most important advantage of zymogen secretion?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. It increases the solubility of cholesterol in bile</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. It prevents autodigestion of the pancreas by keeping enzymes inactive until they reach the intestine</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. It permits direct absorption of intact proteins through the stomach wall</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. It allows enzymes to function at extremely low pH in the stomach</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Zymogens are inactive precursors that reduce tissue damage risk; premature activation can cause pancreatitis via autodigestion.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cholesterol solubility in bile depends on bile composition, not zymogen status.</li>
+        <li><b>C:</b> Intact proteins are generally not absorbed directly; proteins require digestion into smaller units.</li>
+        <li><b>D:</b> Pancreatic enzymes work best in the alkaline duodenum, not the acidic stomach.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (Correct: A) -->
+<div class="question" id="q5">
+  <b>5. A gallstone lodges at a point where the bile duct and pancreatic duct merge before entering the duodenum. Which complication is most directly increased by this obstruction?</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Pancreatitis due to impaired pancreatic juice outflow and enzyme activation</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Increased insulin secretion from islets of Langerhans</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Enhanced carbohydrate digestion in the mouth</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Increased conversion of ammonia to urea in the kidneys</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Blocking the shared outflow can obstruct pancreatic secretions, promoting premature enzyme activation and pancreatic autodigestion (pancreatitis).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Insulin secretion is endocrine and not directly blocked by ducts.</li>
+        <li><b>C:</b> Salivary digestion is unrelated to bile/pancreatic duct obstruction.</li>
+        <li><b>D:</b> Ammonia is converted to urea in the liver, not the kidneys.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (Correct: C) -->
+<div class="question" id="q6">
+  <b>6. Which pair correctly matches a liver function with its physiologic consequence?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Detoxification of exogenous compounds — prevents first-pass metabolism of oral drugs</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Bile pigment secretion — increases hemoglobin synthesis</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Urea production from ammonia — reduces toxicity of nitrogen waste</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Albumin synthesis — decreases plasma oncotic pressure</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The liver converts ammonia (toxic) into urea, which can be safely excreted by the kidneys.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Detoxification/enzymatic processing is exactly what enables first-pass metabolism.</li>
+        <li><b>B:</b> Bile pigments (e.g., bilirubin) are breakdown products of hemoglobin, not factors that increase hemoglobin synthesis.</li>
+        <li><b>D:</b> Albumin helps maintain (not decrease) plasma oncotic pressure.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (Correct: B) -->
+<div class="question" id="q7">
+  <b>7. Bile is important for lipid handling in the small intestine primarily because bile salts:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Activate trypsinogen directly in the duodenum</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Are amphipathic and emulsify fats into smaller droplets/micelles</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Hydrolyze ester bonds in triglycerides</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Serve as peptide hormones that stimulate gastric acid secretion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Bile salts have hydrophilic and hydrophobic regions; they emulsify fats into micelles, increasing surface area and keeping lipids accessible for lipase.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Enteropeptidase activates trypsinogen; bile does not.</li>
+        <li><b>C:</b> Lipase hydrolyzes ester bonds; bile is not an enzyme.</li>
+        <li><b>D:</b> Bile salts are not peptide hormones; gastrin is a peptide hormone.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (Correct: D) -->
+<div class="question" id="q8">
+  <b>8. Which component of bile is most directly derived from hemoglobin breakdown and can contribute to jaundice if it accumulates?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Trypsinogen</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Cholesterol</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Bile salts</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Bilirubin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Bilirubin is a pigment produced from heme breakdown. Impaired processing or excretion can raise bilirubin and cause jaundice.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Trypsinogen is a pancreatic zymogen, not a bile component.</li>
+        <li><b>B:</b> Cholesterol is a bile component but not the heme breakdown pigment.</li>
+        <li><b>C:</b> Bile salts are derived from cholesterol and emulsify fats.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (Correct: D) -->
+<div class="question" id="q9">
+  <b>9. What is the most accurate description of the hepatic portal vein’s role?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. It transports lymph from lacteals to the thoracic duct</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. It carries bile from the liver to the gallbladder</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. It returns oxygenated blood from the lungs to the liver</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">D. It drains nutrient-rich blood from the digestive tract to the liver for processing before reaching systemic circulation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The hepatic portal vein delivers blood from the GI tract to the liver, allowing nutrient processing and detoxification prior to systemic distribution.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Lymphatic transport occurs in lymphatic vessels, not veins.</li>
+        <li><b>B:</b> Bile travels in bile ducts, not the portal vein.</li>
+        <li><b>C:</b> Pulmonary veins return oxygenated blood to the left atrium, not to the liver.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (Correct: B) -->
+<div class="question" id="q10">
+  <b>10. Which set best lists major liver functions relevant to digestion and homeostasis?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Erythropoiesis in adults, synaptic transmission, and myelin formation</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Bile production, detoxification/drug metabolism, albumin and clotting factor synthesis, nutrient processing and storage</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Formation of micelles, secretion of intrinsic factor, and acid secretion</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Trypsin activation, pepsinogen secretion, brush-border enzyme production, and peristalsis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The liver produces bile, processes/stores nutrients (glycogenesis, glycogenolysis, gluconeogenesis, lipid handling), detoxifies compounds, and synthesizes plasma proteins such as albumin and clotting factors.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> These functions belong to bone marrow/nervous system.</li>
+        <li><b>C:</b> Micelles involve bile salts (liver makes bile), but intrinsic factor and acid are stomach parietal cell functions.</li>
+        <li><b>D:</b> These are primarily pancreas/stomach/intestine functions, not liver.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (Correct: A) -->
+<div class="question" id="q11">
+  <b>11. A patient with advanced cirrhosis has edema. Which liver-related change most directly contributes to decreased plasma oncotic pressure?</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Decreased albumin synthesis</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Increased pancreatic bicarbonate secretion</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Increased bile salt secretion</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Increased conjugation of bilirubin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Albumin is a major contributor to plasma oncotic pressure; reduced albumin in cirrhosis promotes fluid leakage into tissues (edema/ascites).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Pancreatic bicarbonate is not a liver product and does not set oncotic pressure.</li>
+        <li><b>C:</b> Bile salts primarily aid fat digestion; they do not maintain oncotic pressure.</li>
+        <li><b>D:</b> More bilirubin conjugation would reduce jaundice, not oncotic pressure.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (Correct: C) -->
+<div class="question" id="q12">
+  <b>12. Which statement correctly links gallbladder physiology to cholecystokinin (CCK)?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. CCK relaxes the gallbladder to store bile</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. CCK conjugates bilirubin in hepatocytes</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. CCK triggers gallbladder contraction and promotes bile delivery to the duodenum</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. CCK activates pepsinogen in the stomach</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> CCK is released in response to fats/amino acids entering the duodenum and stimulates gallbladder contraction and bile release, as well as pancreatic enzyme secretion.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> CCK promotes release, not storage.</li>
+        <li><b>B:</b> Bilirubin conjugation is a liver function.</li>
+        <li><b>D:</b> Pepsinogen activation depends on gastric acid, not CCK.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (Correct: B) -->
+<div class="question" id="q13">
+  <b>13. Accessory organs of digestion (pancreas, liver, gallbladder) are described as outgrowths of which germ layer during development?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Ectoderm</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. Endoderm</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Neural crest</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Mesoderm</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> These accessory organs develop as endodermal outgrowths from the gut tube.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Ectoderm gives rise to skin and nervous system structures.</li>
+        <li><b>C:</b> Neural crest contributes to peripheral nervous system and craniofacial structures.</li>
+        <li><b>D:</b> Mesoderm forms muscle, bone, blood, and connective tissues.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (Correct: D) -->
+<div class="question" id="q14">
+  <b>14. A patient develops jaundice from a bile duct obstruction. Which mechanism most directly explains the yellowing of the skin?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Reduced pancreatic amylase leads to glucose accumulation in skin</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Albumin overproduction binds pigments and deposits them in skin</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Trypsin digests dermal collagen, exposing yellow fat</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">D. Bilirubin cannot be excreted into bile and builds up in blood and tissues</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Obstructed bile flow prevents normal bilirubin excretion; bilirubin accumulates and deposits in tissues, causing jaundice.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Pancreatic amylase affects carbohydrate digestion, not skin color.</li>
+        <li><b>B:</b> Cirrhosis often decreases albumin; albumin does not cause jaundice via overproduction.</li>
+        <li><b>C:</b> Trypsin acts in the intestine; collagen digestion is not the jaundice mechanism.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (Correct: C) -->
+<div class="question" id="q15">
+  <b>15. A drug is ineffective when taken orally because hepatic enzymes rapidly inactivate it before it reaches systemic circulation. This phenomenon is best described as:</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Osmotic diarrhea</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Enterohepatic shunting</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. First-pass metabolism</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Positive feedback from CCK</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> First-pass metabolism refers to processing in the liver (via portal circulation) that reduces a drug’s bioavailability after oral administration.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Osmotic diarrhea is due to poorly absorbed solutes drawing water into the lumen.</li>
+        <li><b>B:</b> Enterohepatic circulation refers to recycling between intestine and liver (often of bile acids/drugs), not initial inactivation per se.</li>
+        <li><b>D:</b> CCK is a digestive hormone and does not define hepatic drug inactivation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<div class="passage-header">
+  <span>Passage 1: Duct Obstruction and Pancreatic Injury</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 39-year-old patient arrives at the emergency department with severe epigastric pain radiating to the back. The pain began abruptly after a large, fatty dinner. The patient is nauseated and cannot tolerate oral intake. On exam, the abdomen is tender, and the patient prefers to sit leaning forward.</p>
+  <p>Laboratory testing reveals elevated serum lipase and amylase. Ultrasound shows echogenic material within the gallbladder and a small stone near the region where ducts empty into the duodenum. The clinician explains that pancreatic acinar cells normally secrete a bicarbonate-rich, enzyme-containing fluid into a duct system that drains into the duodenum, and that many pancreatic proteases are released as inactive precursors.</p>
+  <p>The clinician adds that if drainage is blocked, pancreatic enzymes may become activated before reaching the intestinal lumen. This can damage pancreatic tissue and trigger inflammation. The patient asks why a stone originating in the gallbladder could be related to pancreatic injury and why fatty meals seem to precipitate symptoms.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Start with anatomy: the bile duct system and pancreatic duct can converge near the duodenum; a stone there can block **outflow** from the pancreas.</li>
+    <li>Apply enzyme safety logic: pancreatic proteases are secreted as **zymogens** to prevent autodigestion; obstruction can promote premature activation.</li>
+    <li>Use meal physiology: fatty meals increase **CCK**, which stimulates gallbladder contraction and pancreatic enzyme secretion—raising flow demands at the shared outlet.</li>
+    <li>Predict downstream effects: impaired bile delivery → fewer **micelles** and poorer fat digestion; impaired pancreatic enzyme delivery → poorer protein/fat digestion.</li>
+    <li>Match labs to mechanism: high **lipase/amylase** supports pancreatic injury rather than isolated carbohydrate malabsorption.</li>
+  </ol>
+</div>
+
+<!-- Q16 (Correct: A) -->
+<div class="question" id="q16">
+  <b>16. Which finding in the case most strongly supports premature activation of pancreatic enzymes as the cause of the patient’s pain?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Elevated amylase and lipase with pancreatic inflammation</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Watery diarrhea after lactose ingestion</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Increased albumin with peripheral edema</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Reduced bilirubin with dark stools</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Pancreatitis is characterized by pancreatic inflammation and often elevated pancreatic enzymes (amylase/lipase) due to tissue injury and enzyme activation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> This points to disaccharidase deficiency (e.g., lactase), not pancreatitis.</li>
+        <li><b>C:</b> Edema is associated with low albumin, not high albumin.</li>
+        <li><b>D:</b> Obstructive jaundice typically raises bilirubin and can produce pale stools and dark urine.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (Correct: A) -->
+<div class="question" id="q17">
+  <b>17. In this scenario, a gallstone near the duodenal papilla would most directly increase pancreatitis risk by:</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Blocking pancreatic juice outflow, promoting enzyme activation within the pancreas</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Allowing bile salts to hydrolyze pancreatic tissue</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Increasing enteropeptidase secretion in the stomach</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Stimulating insulin secretion to cause hypoglycemia</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Obstruction at the duct opening increases ductal pressure and stasis, which can promote premature enzyme activation and pancreatic autodigestion.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Bile salts emulsify fats; they do not hydrolyze pancreatic tissue as enzymes.</li>
+        <li><b>C:</b> Enteropeptidase is produced in the duodenum, not the stomach, and is not increased by a gallstone.</li>
+        <li><b>D:</b> Insulin secretion is endocrine and not the direct mechanism of pancreatitis.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (Correct: D) -->
+<div class="question" id="q18">
+  <b>18. Which intervention would most directly reduce the digestive consequence most expected from impaired bile delivery in this case?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Thymosin administration to increase T-cell maturation</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Lactase replacement to improve dairy tolerance</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Proton pump inhibitors to raise stomach pH so pepsin works better</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">D. Supplemental bile acids or emulsifiers to improve micelle formation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> If bile delivery is reduced, fat emulsification and micelle formation are impaired; providing bile acids/emulsifying support targets that mechanism most directly.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Thymosin is unrelated to digestion; it’s involved in immune cell maturation.</li>
+        <li><b>B:</b> Lactase addresses lactose intolerance, not bile-related fat digestion.</li>
+        <li><b>C:</b> Raising stomach pH reduces pepsin activity; it does not fix fat emulsification.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Liver Failure, Portal Hypertension, and Systemic Effects</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 57-year-old patient with a long history of heavy alcohol use presents with increasing abdominal distension, ankle swelling, and confusion. Physical exam shows jaundiced skin and sclera, a distended abdomen with shifting dullness, and multiple dilated superficial abdominal veins.</p>
+  <p>Blood tests reveal low albumin and prolonged clotting times. Imaging suggests a nodular liver architecture consistent with cirrhosis. The clinician explains that scarring can increase resistance to blood flow through the liver, raising pressure in vessels that drain the gastrointestinal tract.</p>
+  <p>The patient later has an episode of vomiting blood. The clinician explains that elevated pressure can divert blood through fragile collateral veins, particularly in the esophagus. The clinician also notes that impaired liver processing can allow toxic nitrogen waste to accumulate and that impaired bile flow can worsen absorption of fat-soluble vitamins involved in coagulation.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Recognize the core path: cirrhosis → increased resistance → **portal hypertension**.</li>
+    <li>Connect portal HTN to bleeding: portal HTN causes **esophageal varices**, which can rupture → hematemesis.</li>
+    <li>Explain edema/ascites: low **albumin** → lower oncotic pressure → fluid leaks into tissues/peritoneum.</li>
+    <li>Explain confusion: impaired ammonia-to-**urea** conversion → ammonia accumulates → altered mentation.</li>
+    <li>Link coagulation: liver makes **clotting factors** and bile helps absorb vitamin K; both can worsen bleeding tendency.</li>
+  </ol>
+</div>
+
+<!-- Q19 (Correct: B) -->
+<div class="question" id="q19">
+  <b>19. Which combination best explains a cirrhosis patient’s tendency toward easy bruising and prolonged bleeding?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Increased enteropeptidase and increased trypsin</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">B. Reduced clotting factor synthesis and impaired vitamin K handling/availability</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Increased insulin and increased glucagon</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Reduced bile salts and reduced pancreatic lipase</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The liver synthesizes many clotting factors. Liver failure reduces their production and can also disrupt bile-mediated fat absorption, lowering absorption of fat-soluble vitamins like vitamin K needed for coagulation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> These are digestive enzyme activators and do not cause coagulopathy.</li>
+        <li><b>C:</b> These are pancreatic endocrine hormones and do not directly drive bruising.</li>
+        <li><b>D:</b> Fat digestion impairment does not directly explain clotting protein deficiency; the main issue is reduced clotting factor synthesis.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (Correct: C) -->
+<div class="question" id="q20">
+  <b>20. Which observation would most strongly indicate portal hypertension rather than isolated bile duct obstruction?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Low pancreatic amylase in saliva</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Pale stools from reduced bile pigments reaching the gut</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. Esophageal varices with risk of hematemesis</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Reduced CCK release after fatty meals</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Portal hypertension (often from cirrhosis) causes venous congestion and varices, especially in the esophagus, which can rupture and bleed.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Saliva contains salivary amylase, not pancreatic amylase.</li>
+        <li><b>B:</b> Pale stools can occur with bile obstruction but does not specifically point to portal hypertension.</li>
+        <li><b>D:</b> CCK release is triggered by fats in the duodenum; obstruction may alter digestion but not uniquely define portal HTN.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (Correct: C) -->
+<div class="question" id="q21">
+  <b>21. If ammonia accumulates in a patient with advanced liver disease, the most direct biochemical problem is impaired:</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Hydrolysis of starch to maltose</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Activation of pepsinogen</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">C. Conversion of ammonia to urea for excretion</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Emulsification of fats into micelles</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The liver normally detoxifies ammonia by converting it into urea. Liver failure can raise blood ammonia and impair mentation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Amylase catalyzes starch hydrolysis; not the ammonia issue.</li>
+        <li><b>B:</b> Pepsinogen activation is mediated by gastric acid in the stomach.</li>
+        <li><b>D:</b> This is a bile salt function and relates to fat digestion, not ammonia detox.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Bile Pigments, Drug Handling, and Digestion Integration</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A pharmacology team evaluates two experimental medications. Drug X is inactive when administered but becomes active after processing by liver enzymes. Drug Y is active as administered but loses potency when taken orally; it is much more effective when injected.</p>
+  <p>In a separate clinic, an infant develops yellowing of the skin during the first week of life. The pediatrician explains that the pigment responsible is generated from red blood cell turnover and must be handled by the liver before being eliminated in bile. The yellowing improves over time without other signs of infection.</p>
+  <p>During a teaching session, the team reviews that blood from the digestive tract first passes through the liver via the hepatic portal vein. The team also reviews that bile contains amphipathic salts, cholesterol, and pigments, and that bile can be stored and concentrated in the gallbladder before release into the duodenum when dietary fat arrives.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate the drug patterns: Drug X needs hepatic **activation** → portal delivery to liver supports activation; Drug Y is harmed by **first-pass metabolism**.</li>
+    <li>Use circulation logic: absorbed oral compounds go to the liver via the **hepatic portal vein** before systemic circulation.</li>
+    <li>Identify the jaundice pigment: hemoglobin breakdown → **bilirubin** → liver processing → bile excretion.</li>
+    <li>Keep bile composition straight: **bile salts** (emulsify), **cholesterol**, and **pigments** (bilirubin derivatives).</li>
+    <li>Predict digestion impact: reduced bile delivery → fewer **micelles** → impaired fat digestion/absorption.</li>
+  </ol>
+</div>
+
+<!-- Q22 (Correct: B) -->
+<div class="question" id="q22">
+  <b>22. A newborn has jaundice that improves as liver processing matures. The pigment that accumulates prior to efficient hepatic handling is best described as:</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. A bile salt derived from cholesterol</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. A hemoglobin breakdown product that is processed and excreted in bile</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. An endocrine peptide that raises blood glucose</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. A pancreatic zymogen that activates other proteases</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Bilirubin is produced from heme breakdown and must be processed by the liver for excretion in bile; immature handling can cause neonatal jaundice.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Bile salts emulsify fats; they are not the main jaundice pigment.</li>
+        <li><b>C:</b> Glucagon raises blood glucose but is unrelated to bile pigments.</li>
+        <li><b>D:</b> Trypsinogen is a pancreatic zymogen unrelated to jaundice.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (Correct: D) -->
+<div class="question" id="q23">
+  <b>23. A patient has a drug that requires hepatic activation to become effective. Which delivery route would best preserve the need for liver processing while avoiding major loss from immediate inactivation in the gut lumen?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Oral, because it always bypasses portal circulation</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Inhaled, because it enters the hepatic portal vein directly</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Intravenous, because it completely prevents the drug from ever reaching the liver</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">D. Oral, because absorbed drug enters portal blood and can be activated by the liver before systemic distribution</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Oral absorption sends compounds via the hepatic portal vein to the liver, where some drugs are activated by hepatic enzymes before entering systemic circulation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Oral dosing does not bypass portal flow; it emphasizes it.</li>
+        <li><b>B:</b> Inhaled drugs enter systemic circulation via pulmonary vessels, not the portal vein.</li>
+        <li><b>C:</b> IV dosing bypasses first-pass processing initially, reducing the opportunity for required hepatic activation before systemic distribution.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (Correct: A) -->
+<div class="question" id="q24">
+  <b>24. Which change would most directly worsen fat digestion in the small intestine if bile delivery is reduced?</b>
+  <div class="choice" onclick="selectChoice('q24', this, true)">A. Decreased micelle formation leading to less lipid surface area for pancreatic lipase</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Decreased salivary amylase leading to less maltose in the mouth</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Increased intrinsic factor leading to better B12 absorption</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Increased enteropeptidase activity leading to more trypsin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Bile salts enable emulsification/micelles; fewer micelles reduces effective lipid surface area and accessibility for lipase, impairing fat digestion and absorption.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Salivary amylase relates to carbohydrate digestion in the mouth.</li>
+        <li><b>C:</b> Intrinsic factor relates to vitamin B12, not lipid emulsification.</li>
+        <li><b>D:</b> This affects protein digestion, not fat digestion.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

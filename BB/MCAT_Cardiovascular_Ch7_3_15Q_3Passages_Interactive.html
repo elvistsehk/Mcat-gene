@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Cardiovascular System (Ch. 7.3) (15Q + 3 Passages)</title>
+<style>
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+  .kw{ color:#0f4fa0; font-weight:bold; }
+
+</style>
+<script>
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>Cardiovascular System (Ch. 7.3)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+
+<div class="question" id="q1">
+  <b>1. Blood pressure measured with a sphygmomanometer in the systemic circulation is best described as:</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Absolute pressure including atmospheric pressure</div><div class="choice" onclick="selectChoice('q1', this, false)">B. Pressure exclusively within the pulmonary arteries</div><div class="choice" onclick="selectChoice('q1', this, false)">C. Pressure generated only during ventricular relaxation</div><div class="choice" onclick="selectChoice('q1', this, true)">D. Gauge pressure above atmospheric pressure</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>A sphygmomanometer reports gauge pressure: the pressure above atmospheric pressure, expressed as systolic/diastolic values.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Absolute pressure:</b> would include atmospheric pressure (~760 mmHg) and is not what is reported clinically.</li><li><b>Pulmonary arteries:</b> systemic blood pressure refers to the systemic circuit, not pulmonary pressures.</li><li><b>Only during relaxation:</b> blood pressure has both systolic and diastolic components.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q2">
+  <b>2. Where does the largest drop in blood pressure normally occur in the systemic circulation?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Across the aorta</div><div class="choice" onclick="selectChoice('q2', this, false)">B. Across the capillaries</div><div class="choice" onclick="selectChoice('q2', this, true)">C. Across the arterioles</div><div class="choice" onclick="selectChoice('q2', this, false)">D. Across the large veins</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Arterioles are the primary resistance vessels, producing the greatest pressure drop and protecting fragile capillaries from arterial pressures.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Aorta:</b> pressure remains high in large elastic arteries.</li><li><b>Capillaries:</b> pressure is lower already; the biggest drop happens earlier.</li><li><b>Large veins:</b> venous pressures are low and change less dramatically.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q3">
+  <b>3. Using the analogy to Ohm’s law, the best cardiovascular analog of V = IR is:</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. CO = ΔP × TPR</div><div class="choice" onclick="selectChoice('q3', this, false)">B. TPR = CO + ΔP</div><div class="choice" onclick="selectChoice('q3', this, false)">C. ΔP = TPR / CO</div><div class="choice" onclick="selectChoice('q3', this, true)">D. ΔP = CO × TPR</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Pressure gradient (ΔP) drives flow (cardiac output) against resistance (TPR), mirroring voltage, current, and resistance.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>CO = ΔP × TPR:</b> incorrectly multiplies flow by resistance again.</li><li><b>TPR = CO + ΔP:</b> adds unlike quantities.</li><li><b>ΔP = TPR / CO:</b> inverts the relationship; higher flow would not reduce ΔP if resistance is fixed.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q4">
+  <b>4. Opening additional systemic capillary beds (more parallel pathways) would be expected to:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Increase total peripheral resistance</div><div class="choice" onclick="selectChoice('q4', this, false)">B. Leave resistance unchanged because capillaries are not resistors</div><div class="choice" onclick="selectChoice('q4', this, false)">C. Stop blood flow to existing tissues by “stealing” pressure</div><div class="choice" onclick="selectChoice('q4', this, true)">D. Decrease total peripheral resistance</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Adding parallel pathways lowers total resistance, analogous to adding resistors in parallel in a circuit.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Increase resistance:</b> parallel networks reduce resistance, not increase it.</li><li><b>Capillaries not resistors:</b> microvasculature contributes to resistance, especially arterioles and small arteries.</li><li><b>Stops blood flow:</b> redistribution can occur, but the primary effect on TPR is a decrease.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q5">
+  <b>5. A key mechanism by which baroreceptors help restore low blood pressure is by triggering:</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Increased parasympathetic tone causing vasoconstriction</div><div class="choice" onclick="selectChoice('q5', this, false)">B. Immediate conversion of fibrinogen to fibrin</div><div class="choice" onclick="selectChoice('q5', this, true)">C. Increased sympathetic tone causing vasoconstriction</div><div class="choice" onclick="selectChoice('q5', this, false)">D. Decreased heart contractility and heart rate</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Low BP reduces baroreceptor firing, increasing sympathetic output to constrict vessels (raising TPR) and support pressure.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Parasympathetic vasoconstriction:</b> parasympathetic activity generally slows the heart and does not drive widespread vasoconstriction.</li><li><b>Fibrinogen to fibrin:</b> is coagulation, not acute BP regulation.</li><li><b>Decreased contractility/HR:</b> would worsen hypotension.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q6">
+  <b>6. In response to high blood pressure and atrial stretch, atrial natriuretic peptide (ANP) most directly tends to:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Increase aldosterone release to retain sodium</div><div class="choice" onclick="selectChoice('q6', this, false)">B. Increase ADH release to retain water without changing osmolarity</div><div class="choice" onclick="selectChoice('q6', this, false)">C. Increase total peripheral resistance by constricting arterioles</div><div class="choice" onclick="selectChoice('q6', this, true)">D. Promote salt and water excretion to lower blood volume and pressure</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>ANP is released with atrial stretch and acts as a (weak) natural diuretic/natriuretic, lowering volume and pressure.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Increase aldosterone:</b> aldosterone retains sodium and water—opposite of ANP’s role.</li><li><b>Increase ADH:</b> ADH retains water; ANP promotes excretion.</li><li><b>Increase TPR:</b> ANP’s primary effect is volume/salt loss rather than generalized vasoconstriction.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q7">
+  <b>7. The bicarbonate buffer system in red blood cells is catalyzed by which enzyme?</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Carbonic anhydrase</div><div class="choice" onclick="selectChoice('q7', this, false)">B. Carbonic reductase</div><div class="choice" onclick="selectChoice('q7', this, false)">C. Pepsin</div><div class="choice" onclick="selectChoice('q7', this, false)">D. Thromboplastin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Carbonic anhydrase catalyzes CO2 + H2O ⇌ H2CO3, facilitating rapid buffering and CO2 transport as bicarbonate.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Carbonic reductase:</b> is not the physiologic enzyme for this reaction.</li><li><b>Pepsin:</b> is a gastric protease unrelated to buffering.</li><li><b>Thromboplastin:</b> participates in coagulation, not acid–base chemistry.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q8">
+  <b>8. In blood, the majority of carbon dioxide is transported primarily as:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Dissolved CO2 gas in plasma</div><div class="choice" onclick="selectChoice('q8', this, false)">B. Carbonic acid (H2CO3) that remains undissociated</div><div class="choice" onclick="selectChoice('q8', this, false)">C. CO2 bound to hemoglobin as the dominant form</div><div class="choice" onclick="selectChoice('q8', this, true)">D. Bicarbonate ion (HCO3−)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Most CO2 is converted to bicarbonate (and H+) in RBCs, which is highly soluble and an efficient transport form.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Dissolved CO2:</b> only a small fraction is carried dissolved due to low solubility.</li><li><b>Undissociated H2CO3:</b> carbonic acid largely dissociates; bicarbonate predominates.</li><li><b>CO2 bound to hemoglobin:</b> some binds, but it is not the dominant transport form compared with bicarbonate.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q9">
+  <b>9. A right shift of the oxyhemoglobin dissociation curve generally indicates:</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Increased affinity and decreased unloading at tissues</div><div class="choice" onclick="selectChoice('q9', this, false)">B. Increased oxygen saturation in the lungs at all PaO2 values</div><div class="choice" onclick="selectChoice('q9', this, true)">C. Decreased hemoglobin affinity for oxygen and increased unloading at tissues</div><div class="choice" onclick="selectChoice('q9', this, false)">D. Reduced CO2 transport as bicarbonate</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>A right shift means hemoglobin holds O2 less tightly, promoting release to tissues—useful during high metabolic demand.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Increased affinity:</b> is a left shift, not a right shift.</li><li><b>Higher saturation at all PaO2:</b> saturation at a given PaO2 is typically lower with a right shift.</li><li><b>Reduced bicarbonate transport:</b> CO2 transport depends on buffering/enzymes, not directly on curve shifting.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q10">
+  <b>10. Which set of changes is most consistent with a right shift during vigorous exercise?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Decreased PaCO2, decreased temperature, decreased 2,3-BPG</div><div class="choice" onclick="selectChoice('q10', this, true)">B. Increased PaCO2, increased temperature, increased [H+]</div><div class="choice" onclick="selectChoice('q10', this, false)">C. Decreased [H+], increased pH, decreased temperature</div><div class="choice" onclick="selectChoice('q10', this, false)">D. Increased fetal hemoglobin concentration in adult erythrocytes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Exercise increases CO2 production, acidity (H+), and temperature; these lower hemoglobin’s O2 affinity (Bohr effect and related factors).</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Decreased PaCO2/temperature/2,3-BPG:</b> favors a left shift.</li><li><b>Decreased H+/higher pH:</b> favors a left shift.</li><li><b>Fetal hemoglobin:</b> left-shifts due to higher O2 affinity; adults do not acutely increase HbF.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q11">
+  <b>11. Which factor causes a left shift of the oxyhemoglobin dissociation curve?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Increased PaCO2</div><div class="choice" onclick="selectChoice('q11', this, false)">B. Increased [H+] (lower pH)</div><div class="choice" onclick="selectChoice('q11', this, true)">C. Decreased 2,3-BPG</div><div class="choice" onclick="selectChoice('q11', this, false)">D. Increased temperature</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Lower 2,3-BPG increases hemoglobin’s O2 affinity, shifting the curve left (similar direction as higher pH or lower CO2).</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Increased PaCO2:</b> drives a right shift (Bohr effect).</li><li><b>Higher H+ / lower pH:</b> drives a right shift.</li><li><b>Increased temperature:</b> drives a right shift.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q12">
+  <b>12. Fetal hemoglobin (HbF) is left-shifted relative to adult hemoglobin primarily because HbF:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Has lower affinity for oxygen to promote rapid fetal tissue unloading</div><div class="choice" onclick="selectChoice('q12', this, true)">B. Has higher affinity for oxygen, allowing fetal blood to extract O2 from maternal blood</div><div class="choice" onclick="selectChoice('q12', this, false)">C. Binds carbon dioxide more strongly than adult hemoglobin</div><div class="choice" onclick="selectChoice('q12', this, false)">D. Cannot bind oxygen cooperatively</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>HbF’s higher affinity facilitates transfer of oxygen from maternal to fetal circulation across the placenta.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Lower affinity:</b> would hinder oxygen extraction from maternal blood.</li><li><b>CO2 binding:</b> is not the key reason for HbF’s left shift.</li><li><b>No cooperative binding:</b> hemoglobin remains cooperative; the shift is about affinity differences.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q13">
+  <b>13. Hyperventilation most directly tends to cause which acid–base change via the bicarbonate buffer system?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Respiratory alkalosis (increased pH) due to decreased CO2</div><div class="choice" onclick="selectChoice('q13', this, false)">B. Respiratory acidosis (decreased pH) due to increased CO2</div><div class="choice" onclick="selectChoice('q13', this, false)">C. Metabolic alkalosis due to increased bicarbonate production by lungs</div><div class="choice" onclick="selectChoice('q13', this, false)">D. Metabolic acidosis due to increased lactic acid from hemoglobin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Blowing off CO2 shifts the buffer left, lowering H+ and raising pH (respiratory alkalosis).</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Respiratory acidosis:</b> occurs with CO2 retention (hypoventilation).</li><li><b>Metabolic alkalosis by lungs:</b> lungs change CO2, not primary metabolic bicarbonate generation.</li><li><b>Metabolic acidosis from hemoglobin:</b> hemoglobin does not generate lactic acid; tissues do.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q14">
+  <b>14. In Starling forces at capillary beds, which statement is most accurate?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Oncotic pressure pushes fluid out while hydrostatic pulls it in</div><div class="choice" onclick="selectChoice('q14', this, true)">B. Hydrostatic pressure favors fluid leaving the capillary; oncotic pressure favors fluid entering the capillary</div><div class="choice" onclick="selectChoice('q14', this, false)">C. Both pressures always favor net filtration at both ends of the capillary</div><div class="choice" onclick="selectChoice('q14', this, false)">D. Oncotic pressure is primarily generated by dissolved oxygen in plasma</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Hydrostatic pressure drives filtration outward; oncotic (osmotic) pressure from plasma proteins draws water back into the vasculature.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Reversed roles:</b> swaps the directionality of the two forces.</li><li><b>Always net filtration:</b> filtration dominates at arteriolar end; reabsorption dominates at venular end.</li><li><b>Dissolved oxygen:</b> oncotic pressure is largely from proteins (e.g., albumin), not gases.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q15">
+  <b>15. The key endpoint of the coagulation cascade emphasized for the MCAT is that thrombin:</b>
+  <div class="choice" onclick="selectChoice('q15', this, true)">A. Converts fibrinogen into fibrin</div><div class="choice" onclick="selectChoice('q15', this, false)">B. Converts plasminogen into plasmin</div><div class="choice" onclick="selectChoice('q15', this, false)">C. Converts collagen into tissue factor</div><div class="choice" onclick="selectChoice('q15', this, false)">D. Directly activates platelets to adhere to exposed endothelium</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Thrombin generation leads to fibrin formation from fibrinogen, creating a mesh that stabilizes the platelet plug into a clot.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Plasminogen to plasmin:</b> is part of clot breakdown (fibrinolysis).</li><li><b>Collagen to tissue factor:</b> is not a thrombin reaction.</li><li><b>Platelet adhesion:</b> occurs with exposed collagen and platelet activation; thrombin is not the primary adhesion trigger.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+
+<div class="passage-header">
+  <span>Passage 1: Vasodilation During Heat Exposure</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>During a summer marathon, a runner is monitored at a medical tent. The runner’s skin is flushed and warm, and clinicians note that many superficial capillary beds in the skin appear dilated. Despite drinking water, the runner’s blood pressure reading is lower than earlier in the race.</p>
+<p>A clinician explains that systemic capillary beds are generally arranged in parallel. When more beds are open, blood can be distributed to additional pathways, which changes overall vascular resistance. The clinician also notes that arterioles act like adjustable resistors because their smooth muscle can constrict or relax to alter bloodflow into local capillary networks.</p>
+<p>To stabilize blood pressure, the runner’s body engages rapid neural feedback. Sensors in vessel walls detect stretch and adjust autonomic output. The clinician emphasizes that the largest pressure drop in the circulation normally occurs at a specific vascular segment, which protects delicate downstream structures.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify the physiologic change: widespread skin <span class="kw">vasodilation</span> <span class="kw">means</span> more <span class="kw">parallel</span> pathways are open, which tends to lower total <span class="kw">resistance</span>.</li>
+<li>Translate to the circuit analogy: lower <span class="kw">resistance</span> at constant driving pressure would increase flow; if pressure drops, compensation must raise either <span class="kw">cardiac output</span> or <span class="kw">resistance</span>.</li>
+<li>Use the key location clue: the largest pressure drop is across <span class="kw">arterioles</span>, <span class="kw">so</span> they are the main control knobs for <span class="kw">TPR</span>.</li>
+<li>Apply baroreceptor logic: low pressure reduces stretch signaling, increasing <span class="kw">sympathetic</span> tone to raise heart rate/contractility and cause <span class="kw">vasoconstriction</span>.</li>
+<li>Pick answers that integrate multiple cues (<span class="kw">parallel</span> beds + <span class="kw">arterioles</span> + <span class="kw">baroreceptors</span>), not ones that simply restate that BP is low.</li>
+  </ol>
+</div>
+
+<div class="question" id="q16">
+  <b>16. In Passage 1, widespread opening of skin capillary beds during heat exposure would most directly tend to change total peripheral resistance (TPR) in which direction?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Increase TPR because blood must travel farther</div><div class="choice" onclick="selectChoice('q16', this, true)">B. Decrease TPR because more vascular pathways are open in parallel</div><div class="choice" onclick="selectChoice('q16', this, false)">C. Leave TPR unchanged because only arteries determine resistance</div><div class="choice" onclick="selectChoice('q16', this, false)">D. Increase TPR because capillaries are always arranged in series</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>More parallel pathways lowers total resistance, analogous to adding resistors in parallel.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Travel farther:</b> vessel length can affect resistance, but opening parallel beds lowers overall resistance.</li><li><b>Only arteries determine resistance:</b> arterioles and microvasculature are key resistance sites.</li><li><b>Capillaries in series:</b> systemic capillary beds are primarily arranged in parallel (except portal systems).</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q17">
+  <b>17. Passage 1 highlights the segment where pressure drops most steeply, protecting downstream thin-walled vessels. Which segment is this?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Arterioles</div><div class="choice" onclick="selectChoice('q17', this, false)">B. Pulmonary veins</div><div class="choice" onclick="selectChoice('q17', this, false)">C. Large elastic arteries</div><div class="choice" onclick="selectChoice('q17', this, false)">D. Venules</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Arterioles are the major resistance vessels; the largest pressure drop occurs there, preventing capillaries from seeing arterial pressures.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Pulmonary veins:</b> are part of pulmonary circulation and are not the primary systemic pressure-drop site.</li><li><b>Large elastic arteries:</b> maintain high pressure; the big drop comes later.</li><li><b>Venules:</b> are low-pressure vessels after capillaries.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q18">
+  <b>18. If the runner in Passage 1 has low BP, which autonomic adjustment is most consistent with baroreceptor-mediated compensation?</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. Increased sympathetic output to raise heart rate/contractility and promote vasoconstriction</div><div class="choice" onclick="selectChoice('q18', this, false)">B. Increased parasympathetic output to raise heart rate and constrict arterioles</div><div class="choice" onclick="selectChoice('q18', this, false)">C. Decreased sympathetic output to dilate arterioles and lower BP further</div><div class="choice" onclick="selectChoice('q18', this, false)">D. Immediate increase in ANP release to promote natriuresis and diuresis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Low BP reduces baroreceptor firing, increasing sympathetic tone to elevate CO and TPR, helping restore pressure.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Parasympathetic raise HR/constrict:</b> parasympathetic generally lowers HR.</li><li><b>Decrease sympathetic/dilate:</b> would worsen hypotension.</li><li><b>Increase ANP:</b> ANP lowers BP/volume and is more relevant to high pressure states.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Altitude, Hyperventilation, and Oxygen Delivery</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A hiker rapidly ascends to a high-altitude environment and begins to breathe faster. A pulse oximeter shows a modest decrease in oxygen saturation compared with sea level. The hiker also feels lightheaded and tingling in the fingers after several minutes of sustained rapid breathing.</p>
+<p>A physiologist explains that changing carbon dioxide levels can shift the bicarbonate buffer system and alter blood pH. These pH changes can allosterically affect hemoglobin’s affinity for oxygen, which is captured by shifts in the oxyhemoglobin dissociation curve. Temperature and a glycolysis-derived metabolite in red blood cells can also shift the curve.</p>
+<p>The physiologist asks the hiker to predict how prolonged exertion at altitude might alter oxygen unloading to tissues compared with resting at sea level, and which shift would best support delivery to working muscle.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Start with ventilation: hyperventilation lowers <span class="kw">CO2</span>, shifting the buffer left and lowering H+, which raises <span class="kw">pH</span> (alkalosis).</li>
+<li>Connect <span class="kw">pH</span> to hemoglobin: higher <span class="kw">pH</span> (lower H+) tends to left-shift the curve, increasing affinity and reducing unloading at tissues.</li>
+<li>Add the exercise context: working muscle increases <span class="kw">CO2</span>, H+, and <span class="kw">temperature</span> and can raise <span class="kw">2,3-BPG</span>, producing a <span class="kw">right shift</span> that improves unloading.</li>
+<li>Use the curve regions: lungs sit near high PaO2 (<span class="kw">plateau</span>), while tissues (especially exercising) sit on the <span class="kw">steep</span> part where shifts meaningfully change unloading.</li>
+<li>Choose the option that reconciles competing influences (altitude hyperventilation vs exercise metabolites) using the direction of curve shifts.</li>
+  </ol>
+</div>
+
+<div class="question" id="q19">
+  <b>19. In Passage 2, sustained hyperventilation at altitude would be expected to shift blood pH in which direction initially?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Decrease pH (respiratory acidosis) due to retained CO2</div><div class="choice" onclick="selectChoice('q19', this, false)">B. Decrease pH (metabolic acidosis) due to bicarbonate loss in urine within minutes</div><div class="choice" onclick="selectChoice('q19', this, false)">C. No meaningful pH change because hemoglobin buffers all protons instantly</div><div class="choice" onclick="selectChoice('q19', this, true)">D. Increase pH (respiratory alkalosis) due to decreased CO2</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Hyperventilation blows off CO2, shifting the bicarbonate system left, lowering H+ and raising pH.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Respiratory acidosis:</b> occurs with hypoventilation/CO2 retention.</li><li><b>Metabolic acidosis in minutes:</b> renal compensation is slower and not immediate.</li><li><b>No meaningful change:</b> buffering exists but ventilation changes CO2 rapidly and does change pH.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q20">
+  <b>20. Which shift in the oxyhemoglobin dissociation curve would best support oxygen unloading to exercising muscle during prolonged exertion, as discussed in Passage 2?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. A left shift</div><div class="choice" onclick="selectChoice('q20', this, false)">B. No shift because lungs always fully saturate hemoglobin</div><div class="choice" onclick="selectChoice('q20', this, true)">C. A right shift</div><div class="choice" onclick="selectChoice('q20', this, false)">D. A vertical shift upward caused by increased hemoglobin concentration</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>A right shift decreases hemoglobin affinity for oxygen, increasing unloading at tissue PaO2 levels typical of active muscle.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Left shift:</b> increases affinity and reduces unloading.</li><li><b>No shift:</b> shifts matter most at tissue PaO2 even if saturation in lungs remains near-maximal.</li><li><b>Vertical shift upward:</b> hemoglobin concentration affects oxygen content, not the affinity shift depicted by the curve.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q21">
+  <b>21. Passage 2 notes that curve shifts matter differently in lungs versus tissues. Why does a right shift particularly enhance unloading at tissues?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Tissues lie on the steep region where small PaO2 changes cause large saturation changes</div><div class="choice" onclick="selectChoice('q21', this, false)">B. Lungs lie on the steep region so unloading there increases</div><div class="choice" onclick="selectChoice('q21', this, false)">C. Tissues have higher PaO2 than lungs so saturation is always maximal</div><div class="choice" onclick="selectChoice('q21', this, false)">D. The right shift increases PaO2 in tissues directly</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>At tissue PaO2, the curve is steep; shifting right reduces saturation at the same PaO2, releasing more O2.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Lungs steep region:</b> lungs are near the plateau (high PaO2), where saturation stays high.</li><li><b>Tissues higher PaO2:</b> tissues have lower PaO2 than lungs.</li><li><b>Increases tissue PaO2 directly:</b> the curve reflects binding affinity, not direct PaO2 generation.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: A Deep Cut and Abnormal Bleeding</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>After a minor kitchen injury, a patient continues bleeding longer than expected from a deep fingertip cut. The wound is cleaned, and clinicians observe that platelets adhere at the damaged site and begin to clump together. They explain that endothelial injury exposes underlying connective tissue, including collagen, which signals platelets that the vessel wall has been breached.</p>
+<p>At the same time, plasma proteins made largely by the liver respond to tissue factor exposure and initiate a sequence of activation steps. The team emphasizes that the cascade converges on a key enzyme that transforms an inactive precursor into an active protease, which then produces a fibrous mesh that stabilizes the platelet plug.</p>
+<p>Later, the clinicians note that any formed clot must eventually be removed and that an enzyme derived from an inactive precursor carries out most fibrin breakdown. The patient’s family history includes relatives with a hereditary disorder that impairs normal clot formation.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate phases: primary hemostasis = platelet adhesion/aggregation; secondary hemostasis = coagulation factors generating a <span class="kw">fibrin</span> mesh.</li>
+<li>Track the cascade endpoint: <span class="kw">tissue factor</span> triggers reactions that lead to <span class="kw">thrombin</span>, which converts <span class="kw">fibrinogen</span> to <span class="kw">fibrin</span> to stabilize the clot.</li>
+<li>Look for clues about breakdown: <span class="kw">plasmin</span> is made from <span class="kw">plasminogen</span> and dissolves <span class="kw">fibrin</span> during fibrinolysis—this is after the clot forms.</li>
+<li>Use inference: prolonged bleeding despite platelets suggests a factor deficiency (e.g., <span class="kw">hemophilia</span>) affecting the <span class="kw">fibrin</span>-stabilizing step.</li>
+<li>Eliminate answers that confuse <span class="kw">plasmin</span> (breakdown) with <span class="kw">thrombin</span> (formation) or that treat collagen/<span class="kw">tissue factor</span> as products of <span class="kw">thrombin</span>.</li>
+  </ol>
+</div>
+
+<div class="question" id="q22">
+  <b>22. In Passage 3, which event most directly converts a loose platelet plug into a more stable clot?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Conversion of plasminogen to plasmin</div><div class="choice" onclick="selectChoice('q22', this, true)">B. Formation of a fibrin mesh from fibrinogen via thrombin</div><div class="choice" onclick="selectChoice('q22', this, false)">C. Release of carbon dioxide from bicarbonate in red blood cells</div><div class="choice" onclick="selectChoice('q22', this, false)">D. Activation of baroreceptors to increase sympathetic tone</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Secondary hemostasis generates fibrin, which stabilizes and cross-links the platelet plug into a durable clot.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Plasmin:</b> dissolves fibrin during clot breakdown.</li><li><b>CO2 release:</b> is acid–base/respiratory physiology, unrelated to clot stabilization.</li><li><b>Baroreceptors:</b> regulate blood pressure, not clot structure.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q23">
+  <b>23. Based on Passage 3, a patient with prolonged bleeding and a family history of impaired clot formation most likely has a defect in:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Red blood cell glycolysis leading to low ATP</div><div class="choice" onclick="selectChoice('q23', this, true)">B. Coagulation factor activity leading to inadequate fibrin formation (secondary hemostasis)</div><div class="choice" onclick="selectChoice('q23', this, false)">C. Carbonic anhydrase leading to impaired CO2 transport</div><div class="choice" onclick="selectChoice('q23', this, false)">D. ANP secretion leading to excessive diuresis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Hereditary disorders like hemophilia impair steps of the coagulation cascade, reducing thrombin/fibrin formation and prolonging bleeding.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>RBC glycolysis:</b> affects RBC energy but not primary clot formation.</li><li><b>Carbonic anhydrase:</b> affects buffering/CO2 transport, not hemostasis.</li><li><b>ANP:</b> affects volume/pressure regulation, not coagulation factors.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q24">
+  <b>24. Passage 3 mentions eventual clot removal. Which enzyme is primarily responsible for breaking down fibrin?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Thrombin</div><div class="choice" onclick="selectChoice('q24', this, false)">B. Thromboplastin</div><div class="choice" onclick="selectChoice('q24', this, true)">C. Plasmin</div><div class="choice" onclick="selectChoice('q24', this, false)">D. Erythropoietin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Plasmin, generated from plasminogen, degrades fibrin during fibrinolysis to remove the clot once repair is underway.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Thrombin:</b> forms the clot by generating fibrin.</li><li><b>Thromboplastin:</b> participates upstream in clotting activation, not breakdown.</li><li><b>Erythropoietin:</b> regulates RBC production.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+</body>
+</html>

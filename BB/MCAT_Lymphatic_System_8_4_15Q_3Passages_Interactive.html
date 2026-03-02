@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Lymphatic System (Ch. 8.4) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Lymphatic System (Ch. 8.4)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (Correct: C) -->
+<div class="question" id="q1">
+  <b>1. A patient has a long-standing low plasma albumin concentration. Which change best explains why the lymphatic system becomes especially important for preventing swelling in this patient?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Increased hydrostatic pressure at the venule end of capillaries drives more fluid into blood</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Higher oncotic pressure at the venule end pulls more fluid into tissues</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Reduced oncotic pressure decreases reabsorption at the venule end, leaving more fluid in tissues that must be drained by lymphatics</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Lymphatic vessels convert interstitial fluid into plasma proteins to restore oncotic pressure</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Albumin is a major contributor to plasma oncotic pressure. When oncotic pressure falls, less water is pulled back into capillaries at the venule end, so more fluid remains in tissues. Lymphatics must drain this excess to limit edema.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Reabsorption happens at the venule end when hydrostatic pressure has dropped; “driving fluid into blood” is not a direct effect of higher hydrostatic pressure.</li>
+        <li><b>B:</b> Oncotic pressure pulls fluid into vessels, not tissues.</li>
+        <li><b>D:</b> Lymphatics return fluid to blood but do not synthesize plasma proteins.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (Correct: A) -->
+<div class="question" id="q2">
+  <b>2. Most lymph from the body ultimately enters the bloodstream at which location?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Left subclavian vein via a large duct in the posterior chest</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Right atrium through direct openings in lymph nodes</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Hepatic portal vein after filtration by the spleen</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Pulmonary veins after oxygenation in the lungs</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Lymphatic vessels merge into larger trunks and commonly form a major duct in the posterior chest that empties into the left subclavian vein near the heart.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Lymph returns through venous circulation, not direct atrial openings from lymph nodes.</li>
+        <li><b>C:</b> The portal vein carries blood from the GI tract to the liver; lymph is separate from portal blood flow.</li>
+        <li><b>D:</b> Pulmonary veins carry oxygenated blood from lungs, not lymphatic fluid.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (Correct: D) -->
+<div class="question" id="q3">
+  <b>3. Compared with arteries and veins, lymphatic vessels are best characterized by which property?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. They are high-pressure tubes driven by a central muscular pump</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. They are bidirectional conduits that rapidly equalize pressure between tissues</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. They are closed-loop circuits that return fluid to the arterial end of capillaries</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. They are one-way vessels that enlarge toward the body’s center and rely on valves and external forces for flow</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Lymphatics form a one-way drainage network that becomes larger toward the center of the body. Because pressure is low, flow depends on valves plus tissue/skeletal muscle movement.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> There is no central pump like the heart for lymph.</li>
+        <li><b>B:</b> Lymph flow is not bidirectional.</li>
+        <li><b>C:</b> Lymph returns to venous circulation near the heart, not to arterial capillary ends.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (Correct: B) -->
+<div class="question" id="q4">
+  <b>4. A lymph node is removed during surgery. Which feature is most directly lost at that site?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. The ability of blood to exchange gases with tissues</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. A regional meeting point where antigen-presenting cells and lymphocytes interact to mount immune responses</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. The primary location of red blood cell synthesis in adults</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. The main organ that secretes antibodies into the bloodstream</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Lymph nodes filter lymph and provide a space for immune communication, including antigen presentation and B-cell activation/proliferation (germinal centers).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Gas exchange occurs at capillary beds in tissues and lungs, not in lymph nodes.</li>
+        <li><b>C:</b> Red blood cells are produced in bone marrow, not lymph nodes.</li>
+        <li><b>D:</b> Antibodies are produced by plasma cells (activated B-cells), which can be generated in lymph nodes, but lymph nodes are not “the main organ that secretes antibodies.”</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (Correct: A) -->
+<div class="question" id="q5">
+  <b>5. A patient develops swelling of an arm after removal of several axillary lymph nodes. Which immediate physiologic change most directly causes the swelling?</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Reduced drainage of interstitial fluid from tissues into lymphatic vessels</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Increased plasma oncotic pressure that pulls water out of capillaries</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Increased venous return that raises capillary hydrostatic pressure at the venule end</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Enhanced filtration of lymph into tissues at the lymph node</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Removing lymph nodes and associated vessels can obstruct lymph flow, so excess interstitial fluid cannot be returned efficiently to the bloodstream. The result is lymphedema.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Higher oncotic pressure would favor reabsorption into blood, opposing edema.</li>
+        <li><b>C:</b> This does not describe the typical post-lymph node removal mechanism; the core issue is impaired lymph drainage.</li>
+        <li><b>D:</b> Lymph nodes do not “filter lymph into tissues” as a primary function; lymph flows through them.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (Correct: D) -->
+<div class="question" id="q6">
+  <b>6. A newborn has milky, lipid-rich fluid in intestinal lymphatic channels after a meal. Which structure is directly responsible for initial entry of dietary fats into the lymphatic system?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Splenic cords of the red pulp</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Pancreatic ducts draining digestive enzymes</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Hepatic sinusoids that filter blood from the GI tract</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. Lacteals located in the centers of intestinal villi</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Lacteals are specialized lymphatic capillaries within intestinal villi that take up chylomicrons (fat packages) to form lipid-rich lymph.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The spleen filters blood; it does not collect dietary chylomicrons from the intestine.</li>
+        <li><b>B:</b> Pancreatic ducts deliver enzymes to the duodenum; they are not lymphatic entry points.</li>
+        <li><b>C:</b> Hepatic sinusoids handle blood from the portal vein; most large fat packages enter lymph first.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (Correct: B) -->
+<div class="question" id="q7">
+  <b>7. A clinician describes that lymph nodes contain a lymphatic channel plus their own artery and vein. Which implication follows most directly from this anatomy?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Lymph nodes pump lymph forward using smooth muscle contractions like the heart</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Immune cells can enter and exit lymph nodes via both lymphatic flow and blood circulation</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Lymph nodes produce albumin to restore plasma oncotic pressure</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Lymph nodes oxygenate lymph to match arterial oxygen content</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> With both lymphatic channels and blood vessels, lymph nodes serve as hubs where leukocytes can traffic between the circulation and lymph to coordinate immune surveillance.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Lymph nodes do not act as a central pump.</li>
+        <li><b>C:</b> Albumin is synthesized mainly by the liver, not lymph nodes.</li>
+        <li><b>D:</b> Oxygenation is the function of lungs and blood; lymph nodes are for filtration and immune interaction.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (Correct: C) -->
+<div class="question" id="q8">
+  <b>8. A patient has obstruction of lymph flow from a lower-limb lymph node. Which downstream effect is most likely?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Decreased arterial pressure due to loss of red blood cells into lymph</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Immediate inability of neutrophils to perform chemotaxis in infected tissue</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Accumulation of interstitial fluid and proteins upstream with swelling of tissues drained by that node</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Increased formation of chylomicrons in intestinal mucosal cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Lymphatic obstruction prevents return of fluid that normally remains in tissues after capillary exchange. Fluid and macromolecules accumulate upstream, causing lymphedema.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Lymph obstruction primarily affects interstitial fluid balance, not direct red blood cell loss.</li>
+        <li><b>B:</b> Chemotaxis is guided by local gradients; lymph blockage does not instantly abolish neutrophil movement.</li>
+        <li><b>D:</b> Chylomicron formation depends on intestinal absorption and packaging, not a limb lymph node’s patency.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (Correct: D) -->
+<div class="question" id="q9">
+  <b>9. Which scenario most directly explains why certain breast cancers frequently involve lymph node evaluation during surgery?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Breast tumors decrease plasma oncotic pressure by consuming albumin</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Lymph nodes are the primary site of red blood cell production in adults</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Lymph nodes secrete hormones that accelerate tumor growth in nearby tissues</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">D. Tumor cells can disseminate through lymphatic channels, so regional nodes may contain early metastatic spread</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Lymphatic vessels can carry cells as well as fluid; many cancers spread through lymphatic drainage pathways, making regional nodes important for staging and management.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cancer-related edema can occur, but node evaluation is mainly for metastatic spread.</li>
+        <li><b>B:</b> Adult erythropoiesis occurs in bone marrow.</li>
+        <li><b>C:</b> Lymph nodes are not endocrine glands in this context.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (Correct: B) -->
+<div class="question" id="q10">
+  <b>10. A medical student explains that lymph provides a secondary circulation for fluid that leaves the blood at capillaries. Which comparison best captures how lymphatic return differs from venous return?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Lymphatic return uses high intraluminal pressure generated by a muscular ventricle</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Lymphatic return depends more on one-way valves and external compression because pressure is low</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Lymphatic return is fastest in arteries because arterial walls are thick and elastic</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Lymphatic return primarily delivers oxygen to tissues that are poorly perfused by blood</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Lymphatics are low-pressure, one-way vessels. Valves prevent backflow, and movement relies on muscle contraction, respiration, and tissue compression rather than a central pump.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The heart pumps blood, not lymph.</li>
+        <li><b>C:</b> Arteries carry blood away from the heart; lymph is a separate drainage system.</li>
+        <li><b>D:</b> Oxygen delivery is primarily via blood and hemoglobin.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (Correct: C) -->
+<div class="question" id="q11">
+  <b>11. A pathologist examines a lymph node section and identifies a region where B-cells proliferate and refine their responses after antigen exposure. What is this region called?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Red pulp</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Medullary pyramid</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Germinal center</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Glomerulus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Germinal centers within lymph nodes are sites of B-cell proliferation and maturation after antigen exposure.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Red pulp is a spleen structure involved in blood filtration.</li>
+        <li><b>B:</b> Medullary pyramids are kidney structures.</li>
+        <li><b>D:</b> Glomeruli are kidney filtration units, not lymph node regions.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (Correct: A) -->
+<div class="question" id="q12">
+  <b>12. A patient has a blockage of intestinal lymphatic drainage. Which finding is most consistent with impaired transport of dietary fats through the lymphatic system?</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Reduced delivery of chylomicrons to the bloodstream after a fatty meal</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Increased ability of stomach acid to kill pathogens</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Increased production of interferons by infected cells</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Increased presentation of endogenous antigens on MHC-I</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Dietary fats are packaged into chylomicrons and enter lacteals. If intestinal lymph drainage is blocked, chylomicrons cannot be transported efficiently into venous circulation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Acid production is a GI defense and does not rely on lymphatic fat transport.</li>
+        <li><b>C:</b> Interferons relate to viral infection responses.</li>
+        <li><b>D:</b> MHC-I presentation is a cellular immune surveillance pathway and is not a direct marker of fat transport failure.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (Correct: B) -->
+<div class="question" id="q13">
+  <b>13. A clinician describes “swollen glands” in a patient with sore throat as enlarged structures in the neck that do not secrete into blood or ducts. What are these structures?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Exocrine glands of the oral cavity</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. Lymph nodes enlarged due to activation of immune responses</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Pancreatic islets increasing hormone release</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Alveoli expanding to improve gas exchange</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> “Swollen glands” in the throat commonly refers to lymphadenopathy—swollen lymph nodes—during immune activation. Lymph nodes are not glands because they do not secrete into ducts or blood.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Exocrine glands secrete through ducts (e.g., salivary glands), which is not the typical “fullness” in lymphadenopathy.</li>
+        <li><b>C:</b> Islets are endocrine and not the structures in the neck that enlarge with infection.</li>
+        <li><b>D:</b> Alveoli are lung structures unrelated to neck “glands.”</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (Correct: D) -->
+<div class="question" id="q14">
+  <b>14. A researcher traces the path of lymph leaving the lower body and entering central circulation. Which sequence is most consistent with the described organization of lymphatic flow?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Capillaries → lymph nodes → right ventricle → aorta</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Arterioles → thoracic duct → hepatic portal vein → vena cava</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Venules → spleen → thoracic duct → pulmonary artery</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">D. Lymphatic capillaries/vessels → progressively larger lymphatic vessels → major duct in posterior chest → left subclavian vein</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Lymph flows through one-way lymphatic vessels that join into larger channels, commonly converging into a major duct that empties into the left subclavian vein.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/C:</b> These inappropriately route lymph through heart chambers or pulmonary arteries.</li>
+        <li><b>B:</b> The hepatic portal vein carries blood from GI organs to the liver, not lymph from tissues.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (Correct: C) -->
+<div class="question" id="q15">
+  <b>15. A patient has recurrent skin infections in an area with chronic lymphedema. Which explanation best links lymphatic dysfunction to impaired local immune defense?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Lymphatics normally produce antimicrobial enzymes that replace neutrophils</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Lymphatics normally generate MHC molecules required for all antigen presentation</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Reduced lymph flow limits trafficking and interaction of antigen-presenting cells and lymphocytes in regional nodes, weakening coordinated responses</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Obstructed lymph flow increases complement synthesis, which consumes antibodies and prevents immunity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Lymph nodes are major sites of immune coordination. Lymphatic dysfunction can reduce delivery of antigens and immune cells to nodes, impairing adaptive activation and local immune surveillance.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Antimicrobial compounds exist (e.g., defensins), but lymphatics are primarily transport/filtration, not substitutes for leukocytes.</li>
+        <li><b>B:</b> MHC is produced by cells; lymphatic vessels do not “generate” MHC for the body.</li>
+        <li><b>D:</b> Complement proteins are produced largely by the liver and immune cells; obstruction does not inherently “consume antibodies” to prevent immunity.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Post-Surgical Swelling and Fluid Balance</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 55-year-old patient undergoes surgery for breast cancer that includes removal of several regional lymph nodes. Two months later, she reports progressive heaviness and swelling of the ipsilateral arm. On exam, the skin is taut and pitting is minimal. She notes that small scratches on that arm often become red and take longer than usual to resolve.</p>
+  <p>Laboratory tests show normal kidney function and normal cardiac function. Plasma albumin is within the reference range. Ultrasound shows no evidence of deep vein thrombosis. The clinician explains that, during normal capillary exchange, fluid leaves the arterial end of capillaries due to hydrostatic forces and much of it returns at the venule end due to oncotic forces, but a small remainder stays in tissues.</p>
+  <p>The clinician further explains that one-way lymphatic vessels normally drain this residual interstitial fluid and return it toward central venous circulation. She adds that lymph nodes serve as regional sites where immune cells and antigen-presenting cells can communicate, and that altering lymph flow can affect local immune surveillance.</p>
+  <p>The patient asks whether the swelling is related to her surgery, why it persists even when she elevates the arm, and why she seems to get more frequent mild skin infections in that region.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Rule out common causes: normal heart/kidney function and no DVT makes “back-up” less likely; think impaired <b>lymph drainage</b>.</li>
+    <li>Normal albumin means oncotic forces are intact; persistent swelling suggests a <b>mechanical obstruction</b> to fluid return.</li>
+    <li>Post-node removal can interrupt pathways, leading to <b>lymphedema</b> upstream of the disruption.</li>
+    <li>Minimal pitting supports protein-rich fluid accumulation typical of chronic lymph issues.</li>
+    <li>More local infections can follow reduced antigen delivery and reduced immune cell interaction in regional <b>lymph nodes</b>.</li>
+  </ol>
+</div>
+
+<!-- Q16 (Correct: A) -->
+<div class="question" id="q16">
+  <b>16. Which mechanism best explains why this patient’s arm swelling persists despite normal albumin levels and the absence of venous thrombosis?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Lymphatic outflow disruption prevents return of residual interstitial fluid to central venous circulation</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Excessive oncotic pressure drives fluid out of capillaries into tissues at the venule end</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Increased arterial oxygen delivery causes expansion of interstitial volume</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Autoimmune destruction of red blood cells reduces plasma volume and concentrates tissue fluid</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> With lymphatic pathways disrupted by node removal, the small amount of fluid that normally remains in tissues cannot be drained effectively. This causes chronic fluid and protein accumulation (lymphedema) even when albumin and venous flow are normal.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Oncotic pressure pulls fluid into vessels, not out into tissues.</li>
+        <li><b>C:</b> Oxygen delivery is unrelated to persistent interstitial fluid accumulation in this context.</li>
+        <li><b>D:</b> The scenario points to mechanical disruption of lymph flow, not hemolysis-driven volume changes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (Correct: D) -->
+<div class="question" id="q17">
+  <b>17. The patient’s reduced tendency for pitting and the chronic nature of swelling are most consistent with accumulation of which component in the interstitial space?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Pure water without solutes, rapidly equilibrating across capillaries</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Carbon dioxide stored in tissues due to reduced perfusion</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Oxygen bound to hemoglobin that leaks through capillary walls</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Protein-rich interstitial fluid that is normally cleared through lymphatic drainage</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Lymphatics clear excess interstitial fluid and macromolecules. When lymph drainage is blocked, proteins accumulate in tissues and can increase interstitial oncotic effects and fibrosis, contributing to chronic, less-pitting swelling.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Pure water shifts easily and typically produces more pitting edema than chronic, protein-rich lymphedema.</li>
+        <li><b>B/C:</b> These are not central drivers of lymph-obstruction swelling patterns.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (Correct: B) -->
+<div class="question" id="q18">
+  <b>18. Which explanation best accounts for the patient’s increased frequency of mild skin infections on the affected arm?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Lymphatic obstruction increases complement activity, which damages local tissues</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Impaired lymph flow reduces efficient antigen and immune cell trafficking through regional nodes, weakening coordinated immune responses</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Removal of lymph nodes eliminates all macrophages from the body</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Lymphatic vessels normally secrete antibodies directly into tissues, and this secretion stops after surgery</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Lymph nodes are communication hubs for adaptive responses. When lymph flow is impaired, antigens and immune cells may reach nodes less effectively, diminishing local immune surveillance and coordination.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Complement does not explain the key trafficking and coordination problem emphasized in the passage.</li>
+        <li><b>C:</b> Macrophages reside throughout tissues and are not eliminated by removing a few nodes.</li>
+        <li><b>D:</b> Antibodies are produced by plasma cells; lymphatics transport fluid and cells but are not “antibody-secreting organs.”</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Fat Absorption, Chyle, and Lymphatic Flow</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A research team studies two patients with chronic diarrhea and unintended weight loss. Patient A reports symptoms that worsen after fatty meals. A stool sample shows increased fat content. Endoscopy reveals normal intestinal mucosa, but imaging suggests dilation of small lymphatic vessels within the intestinal wall.</p>
+  <p>Patient B has similar stool findings but also reports recurrent pancreatitis and poor digestion of multiple macronutrients. Imaging shows pancreatic duct abnormalities. Both patients show low levels of lipid-rich particles in blood shortly after standardized fatty meals.</p>
+  <p>The researchers note that, under normal conditions, intestinal mucosal cells package absorbed fats into large particles that enter specialized lymphatic vessels in villi. The lymphatic fluid carrying abundant fat particles appears milky and eventually reaches central venous circulation. The team also notes that nonfat nutrients can enter the portal blood more directly.</p>
+  <p>Based on these observations, trainees are asked to infer which patient most likely has a primary lymphatic transport problem, which immediate laboratory change would best distinguish a lymphatic blockage from poor enzymatic digestion, and which step in the normal pathway explains the milky appearance of intestinal lymph after a fatty meal.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Fat-specific worsening plus dilated intestinal lymphatic vessels suggests impaired <b>lacteal</b>/<b>lymphatic transport</b>.</li>
+    <li>Pancreatic disease suggests impaired <b>digestion</b> (enzyme delivery), which affects many nutrients.</li>
+    <li>Milky lymph after a fatty meal is <b>chyle</b>, caused by lots of <b>chylomicrons</b> in lymph.</li>
+    <li>If fats are absorbed but not delivered to blood, expect low post-meal blood <b>chylomicrons</b> despite normal mucosa.</li>
+    <li>Differentiate “can’t break down fats” vs “can’t transport fats” by checking other digestion markers and pancreatic history.</li>
+  </ol>
+</div>
+
+<!-- Q19 (Correct: C) -->
+<div class="question" id="q19">
+  <b>19. Which patient is more likely to have a primary defect in lymphatic transport of dietary fats?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Patient B, because pancreatic duct abnormalities directly block lymphatic vessels</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Patient B, because pancreatitis increases intestinal lacteal density</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Patient A, because intestinal mucosa appears normal while intestinal lymphatic vessels are dilated and symptoms worsen after fatty meals</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Neither patient, because fats normally enter the portal vein rather than lymph</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Patient A’s normal mucosa plus dilated intestinal lymphatic vessels and fat-triggered symptoms points to a transport bottleneck after absorption, consistent with impaired lacteal/lymph flow.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B:</b> Pancreatic duct disease more directly impairs enzyme delivery and digestion, not lymphatic transport.</li>
+        <li><b>D:</b> Large fat packages (chylomicrons) enter lymph via lacteals before reaching venous blood.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (Correct: A) -->
+<div class="question" id="q20">
+  <b>20. Which observation would most strongly support lymphatic blockage as the primary issue rather than impaired enzymatic digestion?</b>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. Normal pancreatic enzymes with persistently low post-meal blood chylomicron levels and evidence of dilated intestinal lymphatic vessels</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Low pancreatic enzyme output with duct abnormalities on imaging</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Reduced stomach acid secretion and frequent respiratory infections</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. High neutrophil count and increased interferon levels after viral exposure</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> If pancreatic digestion is intact but post-meal chylomicron delivery to blood remains low and intestinal lymphatics appear distended, transport through lacteals/lymph is the most direct bottleneck.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> This supports impaired digestion, not lymphatic transport.</li>
+        <li><b>C:</b> These findings do not directly distinguish fat transport from fat digestion.</li>
+        <li><b>D:</b> These relate to immune responses, not intestinal lipid handling.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (Correct: D) -->
+<div class="question" id="q21">
+  <b>21. The milky appearance of intestinal lymph after a fatty meal is best explained by which immediate composition change in lymph?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Increased albumin concentration produced by lymph nodes</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Increased red blood cell content due to capillary rupture into lacteals</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Increased dissolved glucose that crystallizes in lymphatic fluid</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. Increased chylomicron content carried within lymph (chyle)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Intestinal fats are packaged as chylomicrons and enter lacteals. Lymph rich in chylomicrons looks milky and is called chyle.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Albumin is made by the liver and does not create the classic milky lymph appearance.</li>
+        <li><b>B:</b> Chyle is lipid-rich, not RBC-rich.</li>
+        <li><b>C:</b> Glucose is transported in blood and does not cause milky lymph.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Trauma, a Milky Effusion, and Central Lymph Return</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A patient experiences blunt chest trauma in a motor vehicle collision. Over the next day, the patient develops shortness of breath and a pleural effusion. Thoracentesis yields a cloudy, milky fluid with high lipid content. The treating team suspects that a major lymphatic structure was damaged.</p>
+  <p>The team reviews that lymphatic vessels are one-way channels that become larger toward the center of the body and that many of these channels converge into a large duct in the posterior chest. This duct normally delivers lymph to the venous circulation near the heart. They also review that fat absorbed in the intestine travels first through lymphatic channels, giving intestinal lymph a milky appearance after a fatty meal.</p>
+  <p>The team considers how damage to this duct could lead to accumulation of lipid-rich lymph in the chest, and they discuss what changes might appear in venous return and peripheral tissue fluid balance if lymph return is disrupted.</p>
+  <p>Finally, they ask trainees to predict the most likely site where this lymph would normally enter the bloodstream, which physiologic function of the lymphatic system is most directly affected by the injury, and which clinical sign would be expected downstream if lymph return remains compromised.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Milky pleural fluid with high lipids suggests leakage of <b>chyle</b> from a central lymph pathway.</li>
+    <li>Central convergence in the posterior chest points to a major <b>duct</b> that empties into the venous system.</li>
+    <li>Identify where lymph normally re-enters blood: near the heart at the <b>left subclavian vein</b>.</li>
+    <li>Loss of lymph return reduces the body’s ability to <b>return interstitial fluid</b> to the bloodstream, predisposing to edema.</li>
+    <li>Connect fat transport: if chyle can’t reach blood, expect reduced delivery of dietary fat packages to circulation after meals.</li>
+  </ol>
+</div>
+
+<!-- Q22 (Correct: B) -->
+<div class="question" id="q22">
+  <b>22. Based on the passage, where would the leaked lymph most normally enter the bloodstream?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Right subclavian artery</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Left subclavian vein</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Hepatic portal vein</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Renal vein</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The major lymphatic duct in the posterior chest normally empties into the left subclavian vein, returning lymph to central venous circulation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Lymph returns to veins, not arteries.</li>
+        <li><b>C:</b> The portal vein carries blood from the GI tract to liver, not lymph from the thoracic duct.</li>
+        <li><b>D:</b> Renal veins drain kidneys and are not the primary lymph entry point described.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (Correct: A) -->
+<div class="question" id="q23">
+  <b>23. Which lymphatic function is most directly responsible for preventing a progressive increase in tissue fluid volume throughout the body?</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Draining residual interstitial fluid from tissues and returning it to venous circulation</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Producing antibodies that circulate and neutralize pathogens</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Generating red blood cells to maintain blood volume</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Increasing capillary hydrostatic pressure to improve filtration of nutrients</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Capillary exchange leaves a small net amount of fluid in tissues. Lymphatic drainage is the “backup return route” that prevents this residual fluid from accumulating into edema.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Antibodies are produced by plasma cells (B-cells), not by the lymphatic system as a transport network.</li>
+        <li><b>C:</b> Red blood cells are produced in bone marrow.</li>
+        <li><b>D:</b> Raising capillary hydrostatic pressure would worsen filtration and promote edema.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (Correct: C) -->
+<div class="question" id="q24">
+  <b>24. If the patient’s central lymph return remains compromised, which downstream clinical finding is most likely over time?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Increased venule oncotic pressure due to lymphatic synthesis of albumin</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Complete loss of all leukocytes from the bloodstream</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. Greater tendency toward peripheral edema because interstitial fluid cannot be efficiently returned to venous circulation</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Increased arterial oxygen saturation because lymph mixes with oxygenated blood</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> When lymph cannot return to the venous system, residual interstitial fluid accumulates in tissues. Over time, this increases the risk of edema and chronic swelling.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Lymphatics do not synthesize albumin.</li>
+        <li><b>B:</b> Leukocytes are produced in bone marrow and circulate in blood; lymphatic disruption does not remove all leukocytes from blood.</li>
+        <li><b>D:</b> Lymph does not meaningfully raise arterial oxygen saturation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

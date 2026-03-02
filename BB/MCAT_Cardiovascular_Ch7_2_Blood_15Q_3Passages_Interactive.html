@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Cardiovascular System (Ch. 7.2) (15Q + 3 Passages)</title>
+<style>
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+  .kw{ color:#0f4fa0; font-weight:bold; }
+
+</style>
+<script>
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>Cardiovascular System (Ch. 7.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+
+<div class="question" id="q1">
+  <b>1. Blood plasma is best described as which of the following?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. The cellular fraction of blood containing erythrocytes, leukocytes, and platelets</div><div class="choice" onclick="selectChoice('q1', this, false)">B. Plasma with added clotting factors and fibrinogen removed</div><div class="choice" onclick="selectChoice('q1', this, false)">C. A lipid-rich fraction that increases during fasting</div><div class="choice" onclick="selectChoice('q1', this, true)">D. An aqueous solution containing nutrients, salts, respiratory gases, hormones, and proteins</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Plasma is the liquid portion of blood and contains dissolved solutes and proteins (including clotting factors).</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Cellular fraction:</b> describes the formed elements, not plasma.</li><li><b>Clotting factors removed:</b> describes serum, not plasma.</li><li><b>Lipid-rich fraction:</b> does not define plasma; lipids can be present but are not the defining feature.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q2">
+  <b>2. Serum differs from plasma primarily because serum:</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Lacks clotting factors (and fibrinogen) that are present in plasma</div><div class="choice" onclick="selectChoice('q2', this, false)">B. Contains more erythrocytes after centrifugation</div><div class="choice" onclick="selectChoice('q2', this, false)">C. Is the buffy coat layer between plasma and red cells</div><div class="choice" onclick="selectChoice('q2', this, false)">D. Contains platelets that promote coagulation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Serum is essentially plasma with clotting factors removed after coagulation; it is often preferred for certain laboratory tests.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>More erythrocytes:</b> erythrocytes sediment into the packed cell layer, not serum.</li><li><b>Buffy coat:</b> contains leukocytes and platelets, not serum.</li><li><b>Contains platelets:</b> platelets are part of the formed elements; serum is cell-free.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q3">
+  <b>3. Which red blood cell feature most directly increases gas exchange efficiency?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Presence of numerous mitochondria for aerobic ATP production</div><div class="choice" onclick="selectChoice('q3', this, true)">B. Biconcave shape that increases surface area-to-volume ratio</div><div class="choice" onclick="selectChoice('q3', this, false)">C. A nucleus that allows rapid cell division in circulation</div><div class="choice" onclick="selectChoice('q3', this, false)">D. Thick cell wall rich in peptidoglycan</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Biconcave morphology increases surface area and helps erythrocytes traverse capillaries efficiently, improving diffusion of O2/CO2.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Mitochondria:</b> mature RBCs lack mitochondria; they rely on glycolysis.</li><li><b>Nucleus/division:</b> mature RBCs are anucleate and cannot divide.</li><li><b>Peptidoglycan:</b> is bacterial cell wall material, not present in RBCs.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q4">
+  <b>4. Why do mature erythrocytes rely primarily on glycolysis rather than oxidative phosphorylation?</b>
+  <div class="choice" onclick="selectChoice('q4', this, true)">A. They lack mitochondria, preventing aerobic ATP production</div><div class="choice" onclick="selectChoice('q4', this, false)">B. They are in a hypoxic environment inside arteries</div><div class="choice" onclick="selectChoice('q4', this, false)">C. Oxidative phosphorylation would produce too much CO2 for transport</div><div class="choice" onclick="selectChoice('q4', this, false)">D. Glycolysis allows hemoglobin to bind more oxygen by generating ATP</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Mature RBCs lose mitochondria, so they cannot perform oxidative phosphorylation and must generate ATP via anaerobic pathways (glycolysis).</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Hypoxic inside arteries:</b> arterial blood is oxygen-rich; oxygen availability is not the limiting factor.</li><li><b>Too much CO2:</b> CO2 production is not the core reason; the absence of mitochondria is.</li><li><b>ATP improves binding:</b> ATP generation does not directly increase hemoglobin’s oxygen binding in this way.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q5">
+  <b>5. Hematocrit is most accurately defined as:</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. The mass of hemoglobin per deciliter of plasma</div><div class="choice" onclick="selectChoice('q5', this, false)">B. The number of leukocytes per microliter of blood</div><div class="choice" onclick="selectChoice('q5', this, true)">C. The percentage of whole blood volume that is composed of red blood cells</div><div class="choice" onclick="selectChoice('q5', this, false)">D. The concentration of platelets per milliliter of blood</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Hematocrit quantifies the fraction of blood volume occupied by erythrocytes and is expressed as a percentage.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Hemoglobin per dL:</b> describes hemoglobin concentration (g/dL), not hematocrit.</li><li><b>Leukocyte count:</b> is a white blood cell measurement.</li><li><b>Platelet count:</b> is a thrombocyte measurement.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q6">
+  <b>6. A CBC reports hemoglobin concentration in which unit most commonly?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Millimeters of mercury (mmHg)</div><div class="choice" onclick="selectChoice('q6', this, false)">B. Milligrams per milliliter (mg/mL)</div><div class="choice" onclick="selectChoice('q6', this, true)">C. Grams per deciliter (g/dL)</div><div class="choice" onclick="selectChoice('q6', this, false)">D. Percent (%)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Hemoglobin is typically reported as mass per volume, classically in g/dL in clinical practice.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>mmHg:</b> is a pressure unit used for blood pressure.</li><li><b>mg/mL:</b> is a valid mass/volume unit, but the standard for hemoglobin is g/dL.</li><li><b>%:</b> is used for hematocrit, not hemoglobin.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q7">
+  <b>7. Which blood cell type is typically anucleate in circulation?</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Erythrocytes</div><div class="choice" onclick="selectChoice('q7', this, false)">B. Neutrophils</div><div class="choice" onclick="selectChoice('q7', this, false)">C. Lymphocytes</div><div class="choice" onclick="selectChoice('q7', this, false)">D. Monocytes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Mature red blood cells lose their nucleus (and organelles) to maximize space for hemoglobin.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Neutrophils:</b> have a multilobed nucleus.</li><li><b>Lymphocytes:</b> are nucleated immune cells.</li><li><b>Monocytes:</b> are nucleated and can differentiate into macrophages.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q8">
+  <b>8. Platelets are best described as:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Nucleated cells that mature in the thymus and kill infected cells</div><div class="choice" onclick="selectChoice('q8', this, true)">B. Cell fragments released from megakaryocytes in the bone marrow</div><div class="choice" onclick="selectChoice('q8', this, false)">C. Granulocytes that release histamine during allergic responses</div><div class="choice" onclick="selectChoice('q8', this, false)">D. Plasma proteins that directly catalyze fibrin formation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Platelets (thrombocytes) are cytoplasmic fragments derived from megakaryocytes and function in hemostasis and clot formation.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Thymus-maturing killers:</b> describes T-cells (lymphocytes).</li><li><b>Histamine-releasing granulocytes:</b> describes basophils/mast cells, not platelets.</li><li><b>Plasma proteins catalyzing fibrin:</b> refers to clotting factors; platelets are cellular fragments.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q9">
+  <b>9. Which hormone most directly stimulates red blood cell production in response to low oxygen levels?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Thrombopoietin secreted by the thymus</div><div class="choice" onclick="selectChoice('q9', this, true)">B. Erythropoietin secreted by the kidney</div><div class="choice" onclick="selectChoice('q9', this, false)">C. Insulin secreted by pancreatic β-cells</div><div class="choice" onclick="selectChoice('q9', this, false)">D. Aldosterone secreted by the adrenal medulla</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Erythropoietin (EPO) is produced by the kidney and promotes erythrocyte development in the bone marrow, especially under hypoxic conditions.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Thrombopoietin:</b> stimulates platelet production and is mainly from liver/kidney, not thymus.</li><li><b>Insulin:</b> regulates glucose, not erythropoiesis.</li><li><b>Aldosterone:</b> is from adrenal cortex and regulates salt/water balance, not RBC production.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q10">
+  <b>10. Which leukocyte category contains cytoplasmic granules visible by microscopy and is strongly associated with acute inflammation?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Agranulocytes (e.g., lymphocytes, monocytes)</div><div class="choice" onclick="selectChoice('q10', this, false)">B. Erythrocytes</div><div class="choice" onclick="selectChoice('q10', this, true)">C. Granulocytes (e.g., neutrophils, eosinophils, basophils)</div><div class="choice" onclick="selectChoice('q10', this, false)">D. Platelets</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Granulocytes have visible granules containing antimicrobial/inflammatory mediators and commonly participate in acute inflammatory responses.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Agranulocytes:</b> do not have the same type of visible exocytosed granules.</li><li><b>Erythrocytes:</b> are oxygen carriers, not immune cells.</li><li><b>Platelets:</b> are clotting fragments, not leukocytes.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q11">
+  <b>11. A patient has 8,000 leukocytes per microliter of blood. This value is best interpreted as:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Severely low because leukocytes normally make up 45% of blood volume</div><div class="choice" onclick="selectChoice('q11', this, false)">B. Abnormally high because leukocytes should be absent from blood</div><div class="choice" onclick="selectChoice('q11', this, false)">C. Equivalent to hematocrit and therefore indicates anemia</div><div class="choice" onclick="selectChoice('q11', this, true)">D. Within the typical reference range for leukocyte count</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Normal leukocyte counts are commonly cited around 4,500–11,000 per microliter; 8,000/µL falls in that range.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>45% of blood volume:</b> refers to formed elements overall (mostly RBCs), not leukocytes.</li><li><b>Leukocytes absent:</b> leukocytes normally circulate in blood.</li><li><b>Equivalent to hematocrit:</b> hematocrit is a percentage of RBC volume, not WBC count.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q12">
+  <b>12. Which ABO genotype(s) could produce blood type A?</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. IAIA or IAi</div><div class="choice" onclick="selectChoice('q12', this, false)">B. IBIB or IBi</div><div class="choice" onclick="selectChoice('q12', this, false)">C. IAIB only</div><div class="choice" onclick="selectChoice('q12', this, false)">D. ii only</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>A antigen expression occurs with at least one IA allele; O (i) is recessive, so IAi still produces type A.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>IBIB/IBi:</b> produce type B.</li><li><b>IAIB:</b> produces type AB (codominance).</li><li><b>ii:</b> produces type O (no A/B antigens).</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q13">
+  <b>13. Why can type O red blood cells often be used as ABO “universal donor” packed RBCs?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. They contain both anti-A and anti-B antibodies that neutralize recipient antibodies</div><div class="choice" onclick="selectChoice('q13', this, false)">B. They express both A and B antigens, so they are recognized as self by all recipients</div><div class="choice" onclick="selectChoice('q13', this, true)">C. They lack A and B antigens, reducing the chance of recipient anti-A or anti-B antibodies binding donor RBCs</div><div class="choice" onclick="selectChoice('q13', this, false)">D. They are Rh-negative by definition</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>For packed RBC transfusions, donor RBC surface antigens are key. Type O RBCs have neither A nor B antigens, minimizing ABO antigen-triggered hemolysis.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Contains antibodies:</b> antibodies are in plasma; packed RBCs minimize donor plasma.</li><li><b>Express both antigens:</b> that is AB, not O.</li><li><b>Rh-negative by definition:</b> O can be Rh+ or Rh−; ABO and Rh are separate.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q14">
+  <b>14. Which statement about Rh factor is most accurate?</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Rh positivity (D antigen presence) is inherited in an autosomal dominant manner</div><div class="choice" onclick="selectChoice('q14', this, false)">B. Rh-negative individuals naturally have anti-Rh antibodies without prior exposure</div><div class="choice" onclick="selectChoice('q14', this, false)">C. Anti-Rh antibodies are typically IgM and readily cross the placenta</div><div class="choice" onclick="selectChoice('q14', this, false)">D. Rh factor refers to the A and B antigens on RBCs</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Presence of the D antigen (Rh+) behaves dominantly. Anti-Rh antibodies usually form only after exposure (sensitization) and are often IgG (placenta-crossing).</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Naturally present antibodies:</b> anti-Rh antibodies generally require exposure to Rh+ blood.</li><li><b>IgM crossing placenta:</b> IgM does not readily cross the placenta; IgG does.</li><li><b>A/B antigens:</b> are ABO system, not Rh.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q15">
+  <b>15. In erythroblastosis fetalis due to Rh incompatibility, fetal red blood cells are most directly destroyed by:</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Fetal anti-A IgM antibodies crossing into maternal blood</div><div class="choice" onclick="selectChoice('q15', this, true)">B. Maternal anti-Rh IgG antibodies crossing the placenta and binding fetal Rh+ erythrocytes</div><div class="choice" onclick="selectChoice('q15', this, false)">C. Maternal anti-Rh IgM antibodies rapidly crossing the placenta</div><div class="choice" onclick="selectChoice('q15', this, false)">D. Maternal complement proteins in fetal plasma recognizing ABO antigens</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>In Rh− mother with Rh+ fetus, sensitization can lead to anti-Rh IgG production. IgG crosses placenta and can hemolyze fetal RBCs in later pregnancies.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Fetal IgM:</b> IgM does not cross placenta well, and fetal antibodies are not the usual driver.</li><li><b>Maternal IgM:</b> IgM is large and poorly crosses placenta; IgG is the key.</li><li><b>Complement in fetal plasma:</b> mechanism centers on maternal IgG binding fetal RBCs.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+
+<div class="passage-header">
+  <span>Passage 1: A Centrifuge Tube and a Marathon Training Plan</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A 21-year-old endurance athlete presents for a routine sports physical before starting an altitude-training program. The clinician orders a blood sample and spins it in a centrifuge. After separation, the top layer is a clear straw-colored fluid, a very thin middle layer is barely visible, and a large, dense red layer occupies the bottom of the tube.</p>
+<p>Laboratory results show a reduced hematocrit compared with the athlete’s prior test. The athlete reports switching to a very low-calorie diet to “cut weight,” and also reports increased fatigue during long runs. The clinician explains that oxygen delivery depends on the number of circulating red blood cells and the amount of hemoglobin they contain, not simply on how fast the athlete breathes.</p>
+<p>To help the athlete understand the physiology, the clinician describes why mature red blood cells have unusual cellular features and why their energy metabolism differs from most other cells.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Start by mapping the centrifuge layers: top = <span class="kw">plasma</span>, thin middle = <span class="kw">buffy coat</span>, bottom = packed red cells; then connect a reduced red layer to a lower <span class="kw">hematocrit</span>.</li>
+<li>Translate the lab into function: lower <span class="kw">hematocrit</span> <span class="kw">means</span> fewer RBCs per blood volume, <span class="kw">so</span> oxygen-carrying capacity can drop even if ventilation is normal.</li>
+<li>Recall RBC specializations: loss of <span class="kw">nucleus</span>/organelles maximizes <span class="kw">hemoglobin</span>; loss of <span class="kw">mitochondria</span> forces reliance on <span class="kw">glycolysis</span> and prevents the cell from consuming its own oxygen cargo.</li>
+<li>Look for an inference question that links structure to function (shape, organelles, metabolism) rather than a direct definition.</li>
+<li>Eliminate choices that confuse <span class="kw">plasma</span> versus <span class="kw">serum</span>, or that mix up what <span class="kw">hematocrit</span> measures.</li>
+  </ol>
+</div>
+
+<div class="question" id="q16">
+  <b>16. In Passage 1, which centrifuge layer corresponds to the “very thin middle layer” that can increase during infection?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Packed red blood cells</div><div class="choice" onclick="selectChoice('q16', this, false)">B. Plasma</div><div class="choice" onclick="selectChoice('q16', this, false)">C. Serum</div><div class="choice" onclick="selectChoice('q16', this, true)">D. The buffy coat (leukocytes and platelets)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>In a centrifuged tube, the middle buffy coat contains leukocytes and platelets and is normally thin; it can appear larger if leukocytes rise.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Packed RBCs:</b> form the dense bottom layer.</li><li><b>Plasma:</b> is the top liquid layer when anticoagulated blood is centrifuged.</li><li><b>Serum:</b> is plasma without clotting factors; it is not a distinct centrifuge layer in whole blood separation.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q17">
+  <b>17. Based on Passage 1, which red blood cell feature most directly helps prevent the cell from using the oxygen it transports?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Loss of the nucleus, preventing transcription of hemoglobin</div><div class="choice" onclick="selectChoice('q17', this, true)">B. Loss of mitochondria, preventing oxidative phosphorylation</div><div class="choice" onclick="selectChoice('q17', this, false)">C. Biconcave shape, which increases oxygen consumption</div><div class="choice" onclick="selectChoice('q17', this, false)">D. Presence of granules that store antimicrobial enzymes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Without mitochondria, RBCs cannot perform aerobic metabolism, so they do not consume the O2 bound to hemoglobin before delivery to tissues.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Nucleus loss:</b> limits cell division and gene expression, but oxygen consumption is prevented by absent mitochondria.</li><li><b>Biconcave shape:</b> increases diffusion surface area; it does not increase oxygen consumption.</li><li><b>Granules:</b> characterize granulocytes, not RBCs.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q18">
+  <b>18. In Passage 1, the clinician links fatigue to reduced hematocrit. Which inference best explains why a lower hematocrit can impair endurance performance?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. It increases plasma viscosity, reducing diffusion across alveoli</div><div class="choice" onclick="selectChoice('q18', this, false)">B. It increases the number of leukocytes that compete for oxygen binding sites</div><div class="choice" onclick="selectChoice('q18', this, false)">C. It directly prevents ventilation from increasing during exercise</div><div class="choice" onclick="selectChoice('q18', this, true)">D. It lowers blood oxygen-carrying capacity because fewer RBCs are available per unit blood volume</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Hematocrit reflects RBC fraction. With fewer RBCs, total hemoglobin available to carry oxygen decreases, reducing delivery to working muscle.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Plasma viscosity:</b> is not the central consequence of lower hematocrit.</li><li><b>Leukocytes competing for binding:</b> leukocytes do not bind oxygen via hemoglobin.</li><li><b>Prevents ventilation increase:</b> ventilation is controlled by respiratory centers, not hematocrit directly.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Fever, Pus, and a Spike in White Blood Cells</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A 58-year-old patient comes to an urgent care clinic with fever, localized redness, and a painful skin lesion that is draining thick fluid. A complete blood count shows a marked increase in total leukocytes compared with the patient’s baseline. The clinician explains that some white blood cells contain granules packed with antimicrobial molecules and inflammatory mediators.</p>
+<p>The clinician also notes that other white blood cells are better known for targeted immune responses and for maintaining long-term memory of prior pathogens. The patient asks why vaccines can protect years later, even when the initial exposure was brief.</p>
+<p>Finally, the clinician cautions that the thin middle layer seen in centrifuged blood is normally small, but can become more prominent during infection when leukocyte counts rise.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify the evidence: pus and acute inflammation with high WBC suggests a granulocyte-heavy response; connect visible granules to <span class="kw">granulocytes</span>.</li>
+<li>Separate innate versus adaptive clues: rapid antimicrobial response versus long-term memory points to different leukocyte types (<span class="kw">neutrophils</span> vs <span class="kw">lymphocytes</span>).</li>
+<li>Use the centrifuge clue: a larger <span class="kw">buffy coat</span> <span class="kw">implies</span> more <span class="kw">leukocytes</span>/<span class="kw">platelets</span> relative to red cells.</li>
+<li>Choose options that require you to <span class="kw">infer</span> which cell type fits the described role, not ones that simply restate ‘infection increases WBC.’</li>
+<li>Rule out distractors that describe <span class="kw">platelets</span> or <span class="kw">red blood cells</span> when the prompt is about immune defense and memory.</li>
+  </ol>
+</div>
+
+<div class="question" id="q19">
+  <b>19. In Passage 2, which leukocyte type best matches cells that contain cytoplasmic granules with antimicrobial molecules and commonly dominate acute bacterial inflammation?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Lymphocytes</div><div class="choice" onclick="selectChoice('q19', this, true)">B. Neutrophils</div><div class="choice" onclick="selectChoice('q19', this, false)">C. Monocytes</div><div class="choice" onclick="selectChoice('q19', this, false)">D. Erythrocytes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Neutrophils are granulocytes with prominent granules and are classic first responders in acute bacterial infection, contributing to pus formation.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Lymphocytes:</b> are key for specific immunity and memory, not primary pus-forming granulocytes.</li><li><b>Monocytes:</b> become macrophages in tissues and are phagocytic but are agranulocytes in this classification.</li><li><b>Erythrocytes:</b> carry oxygen and are not immune cells.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q20">
+  <b>20. Passage 2 notes that some white blood cells maintain long-term memory and help vaccines work. Which cell type is most directly responsible for producing antigen-specific antibodies after activation?</b>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. B lymphocytes (B-cells)</div><div class="choice" onclick="selectChoice('q20', this, false)">B. Basophils</div><div class="choice" onclick="selectChoice('q20', this, false)">C. Platelets</div><div class="choice" onclick="selectChoice('q20', this, false)">D. Neutrophils</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>B-cells differentiate into plasma cells that secrete antibodies and can also form memory B-cells, supporting long-term protective immunity.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Basophils:</b> are granulocytes involved in allergy/inflammation, not primary antibody producers.</li><li><b>Platelets:</b> are clotting fragments.</li><li><b>Neutrophils:</b> are innate phagocytic responders, not antibody factories.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q21">
+  <b>21. In Passage 2, a larger-than-usual buffy coat would be most consistent with which change in a CBC?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Decreased platelet production by megakaryocytes</div><div class="choice" onclick="selectChoice('q21', this, false)">B. Decreased plasma protein concentration due to liver failure</div><div class="choice" onclick="selectChoice('q21', this, false)">C. Increased red cell mass due to erythropoietin suppression</div><div class="choice" onclick="selectChoice('q21', this, true)">D. Increased leukocyte count relative to baseline</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>The buffy coat contains leukocytes and platelets; during infection, leukocyte numbers often increase, making the buffy coat more prominent.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Decreased platelets:</b> would tend to shrink, not enlarge, the buffy coat.</li><li><b>Plasma proteins:</b> affect plasma composition, not the buffy coat thickness directly.</li><li><b>Increased red cell mass with EPO suppression:</b> is internally inconsistent; EPO suppression would not increase red cell mass.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Transfusion Planning and a Second Pregnancy</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A patient with chronic anemia is scheduled for surgery and may require packed red blood cells. The patient’s chart lists blood type B-negative. The blood bank prepares compatible units and explains that transfusions focus on matching the donor’s red blood cell antigens to avoid rapid hemolysis.</p>
+<p>Separately, the patient mentions being pregnant and recalls that a prior pregnancy involved a baby with Rh-positive blood. The obstetric team explains that exposure to fetal blood can sensitize an Rh-negative parent, leading to antibody production that may affect later pregnancies if another fetus is Rh-positive.</p>
+<p>The team discusses why this issue is different from typical ABO mismatch during pregnancy, and they outline a medication strategy that prevents the parent’s immune system from becoming strongly sensitized.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>First, handle transfusion compatibility: for packed RBCs, think donor RBC antigens and recipient antibodies; type B recipients have anti-A antibodies, <span class="kw">so</span> avoid donor RBCs with A <span class="kw">antigen</span>.</li>
+<li>Add <span class="kw">Rh</span>: <span class="kw"><span class="kw">Rh</span>-negative</span> recipients should avoid <span class="kw"><span class="kw">Rh</span>-positive</span> donor RBCs to prevent <span class="kw">sensitization</span>; match both <span class="kw">ABO</span> and <span class="kw">Rh</span> for safety.</li>
+<li>For pregnancy, recognize the timing: <span class="kw">sensitization</span> during the first <span class="kw">Rh</span>-mismatched pregnancy usually affects subsequent <span class="kw">Rh</span>+ pregnancies <span class="kw">because</span> <span class="kw">IgG</span> antibodies can cross the placenta.</li>
+<li>Explain the <span class="kw">ABO</span> vs <span class="kw">Rh</span> difference using immunology: anti-AB antibodies are typically <span class="kw">IgM</span> (poor placental transfer), while anti-<span class="kw">Rh</span> can be <span class="kw">IgG</span> (placenta-crossing).</li>
+<li>Choose the answer that follows the chain: exposure → <span class="kw">sensitization</span> → <span class="kw">antibody</span> class → placental transfer → fetal <span class="kw">hemolysis</span>, and note how prophylaxis (passive antibodies) prevents <span class="kw">sensitization</span>.</li>
+  </ol>
+</div>
+
+<div class="question" id="q22">
+  <b>22. In Passage 3, which packed red blood cell unit is the safest ABO match for a B-negative recipient if the goal is to avoid ABO hemolysis?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. A-negative packed red blood cells</div><div class="choice" onclick="selectChoice('q22', this, false)">B. AB-negative packed red blood cells</div><div class="choice" onclick="selectChoice('q22', this, true)">C. B-negative or O-negative packed red blood cells</div><div class="choice" onclick="selectChoice('q22', this, false)">D. B-positive packed red blood cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Type B recipients have anti-A antibodies, so donor RBCs must not carry A antigen; B or O RBCs are compatible. Rh-negative recipients should ideally receive Rh-negative blood.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>A-negative:</b> donor RBCs carry A antigen and can be targeted by recipient anti-A.</li><li><b>AB-negative:</b> donor RBCs carry A antigen and can trigger hemolysis in a B recipient.</li><li><b>B-positive:</b> ABO is compatible, but Rh-positive can sensitize an Rh-negative recipient.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q23">
+  <b>23. Passage 3 contrasts ABO mismatching in pregnancy with Rh incompatibility. Which immunologic property best explains why Rh disease can threaten later pregnancies?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Maternal anti-A antibodies are IgG and always cross the placenta in large amounts</div><div class="choice" onclick="selectChoice('q23', this, false)">B. Fetal IgM antibodies cross into maternal circulation and destroy maternal RBCs</div><div class="choice" onclick="selectChoice('q23', this, true)">C. Maternal anti-Rh antibodies can be IgG and cross the placenta to hemolyze fetal Rh+ RBCs</div><div class="choice" onclick="selectChoice('q23', this, false)">D. Rh-negative parents naturally produce anti-Rh antibodies without prior exposure</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Rh sensitization can lead to anti-D IgG. IgG crosses placenta and can attack fetal red cells in subsequent Rh+ pregnancies, causing erythroblastosis fetalis.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Maternal anti-A always IgG:</b> anti-AB antibodies are commonly IgM (poor placental transfer) in this context.</li><li><b>Fetal IgM:</b> IgM is large and poorly crosses placenta; fetal antibodies are not the usual driver.</li><li><b>Naturally produced anti-Rh:</b> anti-Rh typically requires exposure to Rh+ blood.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q24">
+  <b>24. In Passage 3, the medication strategy described to prevent sensitization in an Rh-negative parent most closely reflects which mechanism?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Active immunization that stimulates memory B-cells against Rh antigens</div><div class="choice" onclick="selectChoice('q24', this, false)">B. An antibiotic that kills Rh+ red blood cells in the placenta</div><div class="choice" onclick="selectChoice('q24', this, false)">C. A diuretic that lowers maternal blood volume to reduce antigen exposure</div><div class="choice" onclick="selectChoice('q24', this, true)">D. Passive immunization that binds fetal Rh+ cells and prevents the parent from mounting an active anti-Rh response</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Rh-immunoglobulin (RhoGAM) provides preformed antibodies that neutralize Rh+ fetal cells in maternal circulation, reducing immune activation and preventing long-term sensitization.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Active immunization:</b> would increase, not prevent, memory formation.</li><li><b>Antibiotic:</b> does not target human RBC antigens.</li><li><b>Diuretic:</b> does not specifically prevent antigen recognition or antibody production.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+</body>
+</html>

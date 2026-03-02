@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Adaptive Immunity (Ch. 8.3) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Adaptive Immunity (Ch. 8.3)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (Correct: A) -->
+<div class="question" id="q1">
+  <b>1. A B-cell is activated and differentiates into a plasma cell that secretes antibodies. Which antibody effect most directly prevents a virus from entering host cells?</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. Neutralization that blocks attachment or entry into tissues</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Agglutination that forms large insoluble complexes for easier phagocytosis</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Opsonization that tags pathogens for immediate phagocytosis</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Induction of apoptosis by injecting cytotoxic granules into infected cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Neutralizing antibodies bind a pathogen (or its toxins) in a way that blocks invasion—often by preventing binding to host receptors or entry into tissues/cells.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Agglutination mainly improves clearance by clumping pathogens, not specifically blocking entry.</li>
+        <li><b>C:</b> Opsonization marks pathogens for phagocytes, but does not necessarily stop entry directly.</li>
+        <li><b>D:</b> Cytotoxic granule injection is a CD8+ T-cell/NK-cell killing mechanism, not an antibody effect.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (Correct: C) -->
+<div class="question" id="q2">
+  <b>2. In an antibody molecule, which region determines binding specificity for a particular antigenic sequence?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Constant region of the heavy chains</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Fc portion that interacts with leukocyte receptors</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">C. Variable region at the tips of the Y-shaped molecule</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Disulfide linkages that stabilize the overall structure</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Antigen specificity comes from the variable (V) domains at the ends of the Y, where unique polypeptide sequences form the antigen-binding site.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B:</b> The constant/Fc region mediates effector functions (binding Fc receptors, complement), not antigen specificity.</li>
+        <li><b>D:</b> Disulfide bonds support structure but do not encode antigen recognition.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (Correct: D) -->
+<div class="question" id="q3">
+  <b>3. A thymocyte survives only if it can recognize antigen presented on MHC, but then is eliminated if it strongly reacts to self-proteins. Which pairing correctly matches these checkpoints?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Negative selection then positive selection</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Isotype switching then clonal selection</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Affinity maturation then somatic hypermutation</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Positive selection then negative selection</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Positive selection keeps T-cells that can respond to MHC (otherwise they are useless in the periphery). Negative selection deletes self-reactive T-cells to promote self-tolerance.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This reverses the order described for thymic education.</li>
+        <li><b>B:</b> These are B-cell processes and do not describe thymic selection checkpoints.</li>
+        <li><b>C:</b> These relate to refining antibody affinity, not MHC recognition and self-reactivity elimination.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (Correct: B) -->
+<div class="question" id="q4">
+  <b>4. A patient has recurrent oral thrush and Pneumocystis pneumonia. Laboratory testing reveals a profoundly reduced population of cells that coordinate immune responses by secreting lymphokines. Which lymphocyte subset is most directly reduced?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. CD8+ cytotoxic T-cells</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. CD4+ helper T-cells</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Plasma cells</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Eosinophils</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> CD4+ helper T-cells coordinate adaptive responses via lymphokines/cytokines. Their loss (classically in HIV) leads to opportunistic infections.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> CD8+ cells kill infected cells directly; reduced coordination is more CD4+ related.</li>
+        <li><b>C:</b> Plasma cells secrete antibodies but do not serve as the primary “coordinators” via lymphokines.</li>
+        <li><b>D:</b> Eosinophils are granulocytes linked to parasites/allergy, not the classic opportunistic infection pattern.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (Correct: B) -->
+<div class="question" id="q5">
+  <b>5. A patient is infected with a bacterium that remains primarily outside host cells. Which adaptive lymphocyte response is most directly optimized for clearing this extracellular pathogen?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. CD8+ cytotoxic T-cell recognition of endogenous peptides on MHC-I</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. CD4+ helper T-cell activation by exogenous peptides on MHC-II</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. NK-cell killing triggered by decreased MHC expression</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Interferon-driven shutdown of host translation in neighboring cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Extracellular bacteria are processed and presented as exogenous antigens on MHC-II, which activates CD4+ helper T-cells. These cells coordinate macrophages and B-cells to clear extracellular infections.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> CD8+ cells are best for intracellular (endogenous) antigens such as viral proteins.</li>
+        <li><b>C:</b> NK cells respond to missing/low MHC, often in viral infection or cancer evasion.</li>
+        <li><b>D:</b> Interferons are a hallmark of antiviral innate signaling, not primary anti-extracellular bacterial coordination.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (Correct: D) -->
+<div class="question" id="q6">
+  <b>6. A B-cell undergoes rapid mutations in its antigen-binding region, and only clones that bind the antigen with the highest affinity expand. Which term best describes the survival-and-expansion step that creates specificity?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Negative selection</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Complement fixation</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Isotype switching</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. Clonal selection</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Clonal selection means only lymphocytes with receptors that best match the antigen proliferate, generating a specific high-affinity response.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Negative selection eliminates self-reactive clones (classically in thymus for T-cells).</li>
+        <li><b>B:</b> Complement fixation is an effector function triggered by the antibody constant region.</li>
+        <li><b>C:</b> Isotype switching changes antibody class (IgM→IgG/IgA/IgE, etc.) without changing antigen specificity.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (Correct: A) -->
+<div class="question" id="q7">
+  <b>7. A patient’s first exposure to an antigen produces antibodies after about a week, while later exposure produces a faster and larger antibody response. Which cell type most directly explains the improved later response?</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Memory B-cells that rapidly differentiate into plasma cells upon re-exposure</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Neutrophils that increase chemotaxis after repeated infections</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Basophils that store antibodies in cytoplasmic granules</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Epithelial cells that undergo positive selection to recognize MHC</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The secondary antibody response is faster and more robust because memory B-cells persist after the primary response and quickly generate plasma cells on re-exposure.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Neutrophils are innate cells and do not explain antigen-specific memory.</li>
+        <li><b>C:</b> Basophils store histamine and mediate allergic inflammation; they are not the main memory mechanism.</li>
+        <li><b>D:</b> Positive selection is a thymic T-cell maturation process, not an epithelial feature.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (Correct: C) -->
+<div class="question" id="q8">
+  <b>8. An antibody binds multiple bacteria at once, forming large insoluble clumps that are easier for phagocytes to ingest. Which antibody effect is illustrated?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Neutralization</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Apoptosis induction</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Agglutination</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Positive selection</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Agglutination is antibody-mediated clumping of pathogens into larger complexes that can be cleared more efficiently by phagocytes.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Neutralization blocks invasion or toxin function rather than forming clumps.</li>
+        <li><b>B:</b> Apoptosis induction is mainly a cytotoxic T-cell/NK mechanism.</li>
+        <li><b>D:</b> Positive selection describes thymic T-cell education, not an antibody effector effect.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (Correct: B) -->
+<div class="question" id="q9">
+  <b>9. Antibodies bind a bacterial surface protein, and phagocytes rapidly ingest the bacteria by recognizing the antibody’s constant region. Which antibody effect best describes this outcome?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Agglutination</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">B. Opsonization</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Isotype switching</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Negative selection</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Opsonization means “tagging” pathogens with antibodies so phagocytes with Fc receptors can bind and ingest them efficiently.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Agglutination is clumping, not specifically Fc receptor–mediated phagocytosis.</li>
+        <li><b>C:</b> Isotype switching changes antibody class without directly describing phagocyte recognition in the moment.</li>
+        <li><b>D:</b> Negative selection deletes self-reactive clones during maturation, not during pathogen tagging.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (Correct: D) -->
+<div class="question" id="q10">
+  <b>10. A patient receives an injection containing an inactivated viral protein, and weeks later develops long-lived memory cells that respond rapidly to future exposure. Which type of immunity best describes this protection?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Passive natural immunity via placental antibody transfer</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Passive artificial immunity via intravenous immunoglobulin</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Innate immunity that improves through clonal selection</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">D. Active artificial immunity via vaccination</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Vaccines provide antigen exposure without true infection, stimulating the host to generate plasma cells and memory cells—active, artificial immunity.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B:</b> Passive immunity transfers antibodies only; it is transient and does not create memory cells.</li>
+        <li><b>C:</b> Innate immunity does not become antigen-specific through clonal selection.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (Correct: A) -->
+<div class="question" id="q11">
+  <b>11. Which statement best differentiates passive from active immunity?</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Passive immunity transfers antibodies without transferring the antibody-producing plasma cells, so protection is temporary</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Passive immunity always generates memory cells faster than active immunity</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Active immunity is mediated exclusively by innate granulocytes</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Active immunity cannot be induced artificially</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Passive immunity gives the recipient ready-made antibodies (placenta, breast milk, immunoglobulin infusion). Because the recipient does not receive plasma cells or generate new memory cells from scratch, protection is transient.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Passive immunity does not produce memory; active immunity does.</li>
+        <li><b>C:</b> Active immunity is mainly adaptive (B- and T-cells), not exclusively innate granulocytes.</li>
+        <li><b>D:</b> Vaccination is the classic artificial induction of active immunity.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (Correct: C) -->
+<div class="question" id="q12">
+  <b>12. A virally infected cell displays viral peptides on its surface and is then killed by an adaptive lymphocyte. Which lymphocyte and MHC pairing best matches this event?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. CD4+ helper T-cell recognizing exogenous peptide on MHC-II</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Treg cell recognizing endogenous peptide on MHC-II</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. CD8+ cytotoxic T-cell recognizing endogenous peptide on MHC-I</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Plasma cell recognizing endogenous peptide on MHC-I</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Viral proteins are produced inside infected cells and presented on MHC-I. CD8+ cytotoxic T-cells (CTLs) recognize MHC-I–peptide complexes and kill infected cells.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> CD4+ cells respond to MHC-II (exogenous) and coordinate responses rather than directly killing infected nucleated cells in this classic pathway.</li>
+        <li><b>B:</b> Tregs suppress immune responses and are characterized by CD4 and Foxp3; MHC-II is not the primary endogenous presentation route.</li>
+        <li><b>D:</b> Plasma cells secrete antibodies; they do not kill infected cells via MHC recognition.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (Correct: D) -->
+<div class="question" id="q13">
+  <b>13. A newly formed T-cell leaves the thymus after selection. Which statement best describes its status immediately upon entering circulation?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. It is fully activated and already producing lymphokines</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. It is a plasma cell producing high levels of antibodies</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. It is self-reactive by design so that it can rapidly attack host tissues</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. It is mature but naïve and will undergo clonal selection after antigen exposure</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> After thymic maturation/selection, T-cells are mature but naïve. They become activated and clonally expand only after encountering their antigen in the periphery.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Lymphokine secretion is a feature of activated helper T-cells, not naïve T-cells leaving the thymus.</li>
+        <li><b>B:</b> Plasma cells derive from activated B-cells, not T-cells.</li>
+        <li><b>C:</b> Strongly self-reactive clones are eliminated (negative selection) to promote self-tolerance.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (Correct: A) -->
+<div class="question" id="q14">
+  <b>14. A regulatory T-cell is identified by a key transcription factor and functions to tone down immune responses after infection is contained. Which marker best distinguishes this cell from a typical helper T-cell?</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Foxp3 expression in addition to CD4</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. High levels of surface immunoglobulin</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Presence of prominent cytoplasmic granules containing histamine</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Exclusive recognition of MHC-I rather than MHC-II</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Regulatory T-cells (Treg) typically express CD4 and the transcription factor Foxp3, helping suppress responses and enforce self-tolerance.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Surface immunoglobulin is a B-cell feature.</li>
+        <li><b>C:</b> Histamine granules describe basophils/mast cells, not Tregs.</li>
+        <li><b>D:</b> MHC recognition patterns distinguish CD4 vs CD8 more than Treg vs Th; Tregs are usually CD4+.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (Correct: B) -->
+<div class="question" id="q15">
+  <b>15. A B-cell changes the class of antibody it produces in response to cytokine signals while maintaining the same antigen specificity. Which process best describes this change?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Positive selection</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Isotype switching</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Agglutination</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Opsonization</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Isotype (class) switching changes the constant region (IgM, IgG, IgA, IgE, IgD) while preserving the variable-region specificity for the antigen.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Positive selection is a thymic checkpoint for T-cells.</li>
+        <li><b>C:</b> Agglutination is an antibody effector outcome (clumping), not a change in antibody class.</li>
+        <li><b>D:</b> Opsonization is pathogen tagging for phagocytosis, not antibody class switching.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Primary vs Secondary Responses in a Vaccine Clinic</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A community clinic administers a vaccine containing purified protein from a respiratory bacterium. A subset of first-time recipients reports mild fever and soreness for a day, but no signs of true infection. The clinic collects blood samples at days 0, 3, 7, 10, and 21 to measure antibody levels specific to the vaccine antigen.</p>
+  <p>In first-time recipients, antigen-specific antibodies remain low at day 3, rise noticeably by about day 7, and peak near day 10. By day 21, antibody levels decline, but a stable population of antigen-specific lymphocytes can still be detected in lymph nodes using flow cytometry.</p>
+  <p>Six months later, the same individuals receive a booster dose containing the same protein antigen. This time, antigen-specific antibodies rise substantially by day 3 and reach higher peak levels than after the first injection. Many recipients report no symptoms at all.</p>
+  <p>In a separate scenario, a traveler exposed to tetanus is given an intramuscular injection of antibodies against tetanus toxin the same day as the injury. The traveler’s antibody levels become protective immediately but return toward baseline over the next several weeks if no additional intervention is performed.</p>
+  <p>Clinic staff discuss which immune features explain the delayed rise after first exposure, the rapid rise after boosting, and why antibody transfer can be protective right away but does not provide long-term immunologic memory.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Look for timing: 7–10 days suggests a <b>primary response</b> requiring activation and expansion of specific clones.</li>
+    <li>A faster, bigger rise after re-exposure points to <b>memory cells</b> driving a <b>secondary response</b>.</li>
+    <li>Immediate protection after antibody injection is <b>passive immunity</b> (antibodies only, no new memory created).</li>
+    <li>Vaccines usually create <b>active immunity</b> because the host generates plasma and memory cells.</li>
+    <li>When protection fades quickly, infer the absence of long-lived <b>plasma cells</b> or <b>memory cells</b> in the recipient.</li>
+  </ol>
+</div>
+
+<!-- Q16 (Correct: C) -->
+<div class="question" id="q16">
+  <b>16. In the first-time vaccine recipients, the delay before antibody levels rise substantially is best explained by which requirement of adaptive immunity?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Immediate degranulation of mast cells in response to the antigen</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Alternative complement activation that must assemble membrane attack complexes</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">C. Antigen-driven activation and clonal expansion of rare antigen-specific B-cells into plasma cells</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. NK-cell killing of vaccine antigen–presenting cells due to reduced MHC expression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The primary antibody response takes time because antigen-specific B-cells must be activated, proliferate, and differentiate into plasma cells that secrete high quantities of antibody.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Mast cell degranulation is more about allergic inflammation and can occur quickly but does not explain delayed antibody production.</li>
+        <li><b>B:</b> Complement is innate and can act quickly; it does not account for a week-long delay typical of primary adaptive responses.</li>
+        <li><b>D:</b> NK killing relates to “missing self” and is not the central explanation for antibody kinetics after vaccination.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (Correct: A) -->
+<div class="question" id="q17">
+  <b>17. The rapid, higher-magnitude antibody rise after the booster dose is most directly attributable to which cell population detected in lymph nodes after the first dose?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Memory B-cells that rapidly generate plasma cells upon re-exposure</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Naïve T-cells that have not yet encountered antigen</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Neutrophils that persist in lymph nodes for months</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Basophils that store antigen-specific antibodies in granules</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Memory B-cells persist after the primary response and respond quickly to the same antigen, producing a faster and more robust secondary antibody response.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Naïve cells do not explain improved speed/strength; memory does.</li>
+        <li><b>C:</b> Neutrophils are short-lived innate phagocytes and do not persist as antigen-specific memory.</li>
+        <li><b>D:</b> Basophils are histamine-releasing granulocytes; they do not store antigen-specific antibodies as granule contents.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (Correct: D) -->
+<div class="question" id="q18">
+  <b>18. The traveler’s immediate protection after receiving anti-tetanus antibodies is best classified as which type of immunity?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Active natural immunity</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Active artificial immunity</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Innate immunity mediated by defensins</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">D. Passive artificial immunity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Receiving preformed antibodies by injection is passive (antibodies are transferred, not generated). Because this is a medical intervention, it is artificial.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Active natural immunity occurs after infection and includes memory formation.</li>
+        <li><b>B:</b> Vaccination is active artificial immunity because the recipient makes antibodies and memory cells.</li>
+        <li><b>C:</b> Defensins are innate noncellular defenses and do not describe antibody transfer.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Thymic Education, CD Markers, and Opportunistic Infection</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 32-year-old patient presents with persistent fever and weight loss, followed by an unusual fungal pneumonia. Flow cytometry of peripheral blood reveals markedly reduced CD4+ T-cell counts but relatively preserved CD8+ T-cell counts. The clinician explains that some T-cells normally coordinate immune responses by secreting signaling molecules that recruit and activate other leukocytes.</p>
+  <p>To teach trainees, the clinician reviews that T-cells mature in the thymus under the influence of thymic factors. During maturation, developing T-cells face two checkpoints: one that ensures they can respond to antigen presented on MHC, and another that deletes T-cells that react strongly to self-antigens. The clinician notes that failure of these processes can lead to either immunodeficiency or autoimmunity.</p>
+  <p>In a case conference, trainees debate why the patient struggles with infections that are normally controlled by coordinated immune responses. They also discuss why the immune system must avoid attacking self-tissues and how specialized T-cells can dampen immune activity after an infection is controlled.</p>
+  <p>As an exercise, the clinician asks which subset would be most impaired in responding to antigens presented on MHC-II, which thymic selection step prevents self-reactive T-cells from entering circulation, and which marker distinguishes regulatory T-cells that promote self-tolerance.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Link CD markers: <b>CD4</b> pairs with <b>MHC-II</b> (exogenous) and coordinates responses; <b>CD8</b> pairs with <b>MHC-I</b> (endogenous) and kills infected cells.</li>
+    <li>Opportunistic infections suggest loss of <b>helper coordination</b> rather than only loss of direct killing.</li>
+    <li>Thymic checkpoints: ability to recognize MHC is <b>positive selection</b>; deletion of self-reactive cells is <b>negative selection</b>.</li>
+    <li>Self-tolerance and “turning down” responses points toward <b>Treg</b> cells.</li>
+    <li>Distinguish Treg from Th by the presence of <b>Foxp3</b>.</li>
+  </ol>
+</div>
+
+<!-- Q19 (Correct: B) -->
+<div class="question" id="q19">
+  <b>19. Based on the passage, which adaptive response is most directly impaired in this patient?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. CD8+ recognition of endogenous peptides on MHC-I</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">B. CD4+ activation by exogenous peptides on MHC-II to coordinate immune responses</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. NK-cell recognition of missing MHC-I</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Complement-mediated lysis of extracellular bacteria</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Low CD4+ counts imply impaired helper T-cell function, which depends on recognizing exogenous antigens on MHC-II and coordinating broader immune activity—key for controlling many infections.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> CD8+ counts are relatively preserved in the passage, so this is less directly impaired.</li>
+        <li><b>C:</b> NK responses are innate and not the primary issue highlighted by CD4 depletion.</li>
+        <li><b>D:</b> Complement is innate and does not depend on CD4 counts.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (Correct: C) -->
+<div class="question" id="q20">
+  <b>20. Which thymic selection step most directly prevents strongly self-reactive T-cells from entering the periphery?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Positive selection</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Isotype switching</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. Negative selection</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Opsonization</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Negative selection deletes thymocytes that bind self-antigens too strongly, promoting self-tolerance and reducing risk of autoimmunity.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Positive selection keeps cells that can recognize MHC, not specifically those that avoid self-reactivity.</li>
+        <li><b>B:</b> Isotype switching is a B-cell process unrelated to thymic selection.</li>
+        <li><b>D:</b> Opsonization is an antibody effector function, not a maturation checkpoint.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (Correct: A) -->
+<div class="question" id="q21">
+  <b>21. A subset of CD4+ cells is discussed as reducing immune activity and promoting self-tolerance. Which additional marker most strongly supports that this subset is regulatory rather than helper?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Foxp3</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. High surface IgM</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Granules containing lysozyme</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Exclusive expression of MHC-I</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Regulatory T-cells are typically CD4+ and express Foxp3, helping suppress immune responses and enforce self-tolerance.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> IgM is a B-cell antibody isotype, not a T-cell regulatory marker.</li>
+        <li><b>C:</b> Lysozyme relates to innate antimicrobial secretions, not T-cell identity.</li>
+        <li><b>D:</b> MHC molecules are antigen-presenting proteins; “exclusive expression of MHC-I” is not a hallmark for Tregs.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Antibody Regions, Effector Functions, and Specificity</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A research group isolates B-cells from volunteers after exposure to a novel bacterial surface protein. Early after exposure, most antigen-binding antibodies in serum are low-affinity. Over the next week, the group detects a shift toward higher-affinity antibodies that bind the same antigen more tightly. Sequencing reveals changes clustered in the antigen-binding portions of the antibody genes.</p>
+  <p>The researchers also test how different antibody preparations influence clearance. In one assay, antibodies cause bacteria to form large clumps that settle out of solution. In another assay, bacteria remain dispersed, but macrophages ingest them more quickly when antibodies are present. In a third assay, bacteria fail to attach to epithelial cells when antibodies are added, even though macrophages are absent from the experiment.</p>
+  <p>Finally, the team engineers an antibody that still binds the antigen normally but cannot efficiently recruit complement proteins or interact with Fc receptors on leukocytes. Surprisingly, the engineered antibody still blocks epithelial attachment but is less effective at accelerating macrophage ingestion.</p>
+  <p>The team asks trainees to infer which antibody region determines specificity, which region mediates recruitment of complement and leukocyte receptors, and which antibody effect best matches each assay’s outcome.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Changes that improve affinity while keeping the same target suggest refinement of the <b>variable region</b> (antigen-binding site).</li>
+    <li>Recruiting leukocytes and complement depends on the antibody <b>constant (Fc) region</b>.</li>
+    <li>Clumping bacteria is <b>agglutination</b>; faster macrophage ingestion is <b>opsonization</b>; blocking attachment is <b>neutralization</b>.</li>
+    <li>If binding remains normal but effector recruitment fails, suspect the <b>constant region</b> is altered while the <b>variable region</b> is intact.</li>
+    <li>Pick answers that explain the pattern across multiple assays, not just one observation.</li>
+  </ol>
+</div>
+
+<!-- Q22 (Correct: D) -->
+<div class="question" id="q22">
+  <b>22. The engineered antibody binds antigen normally but poorly recruits complement and Fc-receptor–bearing leukocytes. Which antibody region is most likely altered?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Antigen-binding site within the variable region tips</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Disulfide bonds linking heavy and light chains</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Hypervariable loops that directly contact antigen</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. Constant (Fc) region responsible for effector interactions</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Complement recruitment and Fc receptor binding are mediated by the antibody constant (Fc) region. Preserved antigen binding implies the variable region remains functional.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/C:</b> Variable-region changes would typically disrupt antigen binding specificity/affinity.</li>
+        <li><b>B:</b> Disulfide bonds stabilize structure; disrupting them would likely alter overall folding and binding, not selectively remove effector recruitment.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (Correct: B) -->
+<div class="question" id="q23">
+  <b>23. In the assay where bacteria form large clumps that settle out of solution after antibody addition, which antibody effect is most directly responsible?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Opsonization</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. Agglutination</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Neutralization</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Negative selection</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Agglutination occurs when antibodies cross-link many pathogens into large complexes, causing visible clumping and improved clearance by phagocytosis.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Opsonization increases phagocyte uptake but does not necessarily cause visible clumping.</li>
+        <li><b>C:</b> Neutralization blocks attachment or invasion, not clump formation.</li>
+        <li><b>D:</b> Negative selection is a maturation checkpoint, not an antibody effector effect.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (Correct: C) -->
+<div class="question" id="q24">
+  <b>24. Sequencing shows changes clustered in antigen-binding portions of antibody genes as higher-affinity antibodies emerge over a week. Which mechanism best explains this pattern?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Positive selection in the thymus that increases MHC recognition</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Passive transfer of high-affinity antibodies across the placenta</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. Hypermutation of the variable region followed by clonal selection of higher-affinity B-cells</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Complement activation through the alternative pathway without antibodies</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> B-cells introduce mutations in antigen-binding regions (hypermutation). Clonal selection then favors B-cells whose receptors bind antigen more strongly, producing a higher-affinity antibody pool over time.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Positive selection is a T-cell thymic process, not antibody affinity refinement.</li>
+        <li><b>B:</b> Placental transfer is passive immunity and does not explain new sequence changes in the recipient’s B-cells.</li>
+        <li><b>D:</b> Alternative complement activation does not generate antibody gene mutations or affinity maturation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>
