@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Reproduction &amp; Menstrual Cycle (Ch. 2.3) (15Q + 3 Passages) — Longer Passages</title>
+<style>
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+</style>
+<script>
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Biology — Reproduction &amp; Menstrual Cycle (Ch. 2.3)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A male inherits an X-linked recessive disease allele on the unpaired portion of his X chromosome. Which statement best predicts his phenotype?</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. He will express the disease because he is hemizygous for X-linked genes</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. He will be a carrier but unaffected because recessive alleles are silent in males</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. He will express the disease only if his Y chromosome also carries the allele</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. He will express the disease only if he undergoes lyonization of the X chromosome</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Males have only one X chromosome; with no second allele to mask a recessive mutation, an X-linked recessive allele is expressed.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Carriers are typically heterozygous females; males are not usually ‘carriers’ for X-linked recessive traits.</li>
+<li><b>C:</b> The Y chromosome generally does not carry homologous alleles for most X-linked loci.</li>
+<li><b>D:</b> X-inactivation (lyonization) applies to females with two X chromosomes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. Which gene on the Y chromosome most directly initiates testis differentiation?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. CCR5</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. TP53</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. FOXP3</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. SRY (sex-determining region Y)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> SRY encodes a transcription factor that triggers differentiation of testes and male gonadal development.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> FOXP3 is associated with regulatory T-cells, not sex determination.</li>
+<li><b>C:</b> CCR5 is a receptor relevant to HIV entry, not gonad differentiation.</li>
+<li><b>D:</b> TP53 is a tumor suppressor gene, not a sex-determining gene.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. A sperm cell’s acrosome is best described as:</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. A mitochondrial structure that synthesizes steroid hormones</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. The microtubule-organizing center that forms the meiotic spindle</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">C. A Golgi-derived cap containing enzymes required to penetrate the oocyte coverings</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. A Sertoli cell projection that supports spermatogonia</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> The acrosome is derived from the Golgi apparatus and contains enzymes that help sperm penetrate the zona pellucida/corona radiata.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Mitochondria in the midpiece generate ATP for motility; they do not form the acrosome.</li>
+<li><b>C:</b> Sertoli cells nourish developing sperm within seminiferous tubules; the acrosome is part of the sperm head.</li>
+<li><b>D:</b> Spindle formation involves centrosomes/centrioles, not the acrosome.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. In the testes, which cell type is directly stimulated by LH to produce testosterone?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Spermatids</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Sertoli cells</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Epididymal epithelial cells</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. Interstitial (Leydig) cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> LH stimulates Leydig cells in the interstitium to synthesize testosterone; FSH primarily acts on Sertoli cells to support spermatogenesis.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> FSH acts on Sertoli cells to promote sperm maturation and support.</li>
+<li><b>C:</b> Spermatids are developing haploid cells; they do not secrete testosterone.</li>
+<li><b>D:</b> Epididymis supports maturation/motility acquisition, not testosterone production.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A clinician notes a patient’s sperm count is low despite normal LH. Which endocrine change would most directly impair Sertoli cell function as described in the passage?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Low estrogen</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Low FSH</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Low hCG</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. High progesterone</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> FSH stimulates Sertoli cells and supports sperm maturation; low FSH can reduce spermatogenesis even if LH-driven testosterone is normal.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> hCG is a pregnancy hormone that acts like LH; it is not the primary Sertoli stimulant in males.</li>
+<li><b>C:</b> Progesterone is primarily discussed in the female cycle; it does not directly define Sertoli stimulation in this passage.</li>
+<li><b>D:</b> Estrogen is not the key pituitary signal for Sertoli support here.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. During oogenesis, primary oocytes are arrested in which phase until menarche?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Telophase I</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Metaphase I</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Metaphase II</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. Prophase I</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Primary oocytes complete DNA replication before birth and remain arrested in prophase I until puberty.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Metaphase I is not the long-term arrest phase for primary oocytes.</li>
+<li><b>C:</b> Secondary oocytes arrest in metaphase II, not primary oocytes.</li>
+<li><b>D:</b> Telophase I occurs after homologous separation; primary oocytes have not completed meiosis I yet.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. A secondary oocyte is ovulated and remains arrested until fertilization. This arrest occurs in:</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Metaphase II</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Telophase II</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Anaphase I</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Prophase I</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> After completing meiosis I, the secondary oocyte arrests in metaphase II and completes meiosis II only upon fertilization.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Prophase I arrest characterizes primary oocytes.</li>
+<li><b>C:</b> Anaphase I is homologous separation during meiosis I, before the secondary oocyte stage is established.</li>
+<li><b>D:</b> Telophase II occurs after completion of meiosis II, which requires fertilization.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. Compared with spermatogenesis, oogenesis produces fewer functional gametes primarily because:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. FSH is absent in females</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Cytokinesis is unequal, producing polar bodies with minimal cytoplasm</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Females never complete meiosis I</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Crossing over cannot occur in females</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> In oogenesis, meiosis yields one large ovum and polar bodies due to unequal cytokinesis, unlike spermatogenesis which yields four functional sperm.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Meiosis I is completed after menarche for selected oocytes.</li>
+<li><b>C:</b> Crossing over occurs in prophase I in both sexes.</li>
+<li><b>D:</b> FSH is present and regulates ovarian function in females.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. Which structure most directly uses cilia to propel an ovulated oocyte toward the uterus?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Prostate gland</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">B. Fallopian tube (oviduct)</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Cervix</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Vagina</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The fallopian tube is lined with cilia that help move the oocyte toward the uterus.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> The cervix connects uterus to vagina; it is not the ciliated transport tube.</li>
+<li><b>C:</b> The vagina is the copulatory canal and birth canal.</li>
+<li><b>D:</b> The prostate is a male gland; it is not involved in oocyte transport.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. During the male reproductive pathway, sperm gain motility and are stored primarily in the:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Seminal vesicles</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Bulbourethral gland</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Seminiferous tubules</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">D. Epididymis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Sperm are produced in seminiferous tubules but mature (gain motility) and are stored in the epididymis until ejaculation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Seminiferous tubules are the site of production and Sertoli support, not storage/motility acquisition.</li>
+<li><b>C:</b> Seminal vesicles contribute fructose-rich fluid; they do not store sperm.</li>
+<li><b>D:</b> Bulbourethral glands secrete lubricating/clearing fluid, not sperm storage.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. In the menstrual cycle, the event most directly triggered by the midcycle LH surge is:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Primary oocyte arrest in prophase I</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Menstruation</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Ovulation</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Formation of the zona pellucida</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Late follicular estrogen reaches a threshold causing positive feedback and an LH surge that induces ovulation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Menstruation occurs when progesterone/estrogen fall after corpus luteum regression.</li>
+<li><b>C:</b> Zona pellucida is an oocyte covering, not a hormone-surge–triggered midcycle event.</li>
+<li><b>D:</b> Primary oocyte prophase I arrest occurs long before the menstrual cycle, during fetal development.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. Which hormone is secreted by the corpus luteum in response to LH and is most associated with maintaining the endometrium?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. FSH</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. GnRH</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. Progesterone</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Testosterone</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> After ovulation, the corpus luteum forms and secretes progesterone (and some estrogen) to maintain an endometrium suitable for implantation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> FSH is pituitary and drives follicle maturation earlier in the cycle.</li>
+<li><b>C:</b> GnRH is hypothalamic and stimulates pituitary release of FSH/LH.</li>
+<li><b>D:</b> Testosterone is produced by Leydig cells in testes and is not the key luteal hormone here.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A patient takes combined oral contraceptive pills (estrogen/progesterone). Which mechanism best explains how these pills prevent ovulation?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. They provide negative feedback to suppress GnRH, LH, and FSH release</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. They block sperm acrosome formation</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. They directly destroy the zona pellucida</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. They increase LH surge amplitude to trigger premature ovulation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Exogenous estrogen/progesterone suppress pituitary gonadotropins by negative feedback, preventing the LH surge and thus ovulation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> OCPs do not act by enzymatically degrading the zona pellucida.</li>
+<li><b>C:</b> They suppress, not amplify, the LH surge.</li>
+<li><b>D:</b> They do not specifically target acrosome formation in sperm.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. During early pregnancy, which hormone produced by the implanting conceptus most directly maintains the corpus luteum?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. LH</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Prolactin</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">C. hCG</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. FSH</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> hCG is an LH analog secreted by the developing embryo/placenta that stimulates LH receptors to maintain the corpus luteum and progesterone production in the first trimester.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> LH is pituitary and is suppressed during pregnancy due to high estrogen/progesterone.</li>
+<li><b>C:</b> FSH is suppressed; it is not the key corpus luteum maintenance signal in pregnancy.</li>
+<li><b>D:</b> Prolactin is involved in lactation, not corpus luteum maintenance.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. After menopause, which pattern is most consistent with the passage’s description?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. High progesterone because corpus luteum persists</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Low FSH and LH because ovaries are inactive</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. High estrogen with low FSH due to strong negative feedback</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">D. Low estrogen/progesterone with elevated FSH and LH</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Ovaries become less responsive and atrophy → estrogen/progesterone drop → negative feedback is removed → FSH and LH rise.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> High estrogen would maintain negative feedback and would not fit ovarian atrophy.</li>
+<li><b>C:</b> FSH/LH rise when negative feedback is removed; they do not necessarily fall.</li>
+<li><b>D:</b> Corpus luteum forms only after ovulation; menopause stops ovulation so corpus luteum does not persist.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1: Puberty Signaling, Two-Cell Control in the Testis, and Feedback -->
+<div class="passage-header">
+  <span>Passage 1: Puberty Signaling, Two-Cell Control in the Testis, and Feedback</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 15-year-old presents with delayed puberty, reduced facial hair growth, and decreased testicular volume for age. He reports normal childhood growth but minimal recent voice deepening. On exam, the testes are descended and anatomically normal in position.</p>
+  <p>Laboratory testing shows low serum testosterone, low inhibin B, and low-to-normal gonadotropins. A GnRH stimulation test is performed: after a single dose of GnRH, LH and FSH rise modestly but do not reach typical pubertal peaks. The clinician suspects impaired pulsatile GnRH release rather than complete pituitary failure.</p>
+  <p>Ultrasound confirms normal testicular architecture, including seminiferous tubules and surrounding interstitial tissue. A limited biopsy is obtained. Histology shows that spermatogonia are present and some primary spermatocytes appear, but later stages (spermatids/spermatozoa) are sparse. Interstitial tissue shows reduced steroidogenic activity compared with age-matched controls.</p>
+  <p>The clinician explains that two different testicular cell populations respond to different pituitary hormones: one population supports spermatogenesis within seminiferous tubules, while the other produces testosterone in the interstitium. Testosterone drives male secondary sexual characteristics and also provides negative feedback to both the hypothalamus and anterior pituitary to stabilize hormone output.</p>
+  <p>To localize the defect, the team compares two treatment strategies over eight weeks: (i) intermittent GnRH pulses delivered via a pump, and (ii) constant (nonpulsatile) GnRH infusion. Only the pulsatile regimen produces a meaningful rise in LH/FSH and downstream testicular function.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate labs into axis-level problems: low testosterone + low-to-normal LH/FSH suggests <b>upstream (GnRH)</b> under-stimulation.</li>
+    <li>Use testis cell division of labor: <b>LH → Leydig → testosterone</b>; <b>FSH → Sertoli → sperm maturation</b> (and inhibin-related support).</li>
+    <li>Leverage the GnRH experiment: physiology depends on <b>pulsatile</b> GnRH; constant signaling can blunt gonadotropin release.</li>
+    <li>Pick answers that match both the <b>location</b> (interstitium vs seminiferous tubules) and the <b>direction</b> of feedback effects.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. Which testicular cell type is most directly responsible for the low testosterone described in the passage?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Primary spermatocytes</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">B. Leydig (interstitial) cells</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Sertoli cells</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Epididymal epithelial cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> LH stimulates Leydig cells to produce testosterone; reduced effective GnRH signaling lowers LH output and thus Leydig testosterone synthesis.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Sertoli cells are primarily stimulated by FSH and support spermatogenesis rather than secreting testosterone.</li>
+<li><b>C:</b> Primary spermatocytes are developing germ cells and do not synthesize androgens.</li>
+<li><b>D:</b> Epididymal cells help sperm mature and be stored; they are not the main androgen source.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Which finding most specifically supports impaired hypothalamic GnRH pulsatility rather than primary testicular failure?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. An LH surge around day 14</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Presence of a zona pellucida around the oocyte</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">C. Pulsatile GnRH delivery increases LH/FSH and improves testicular function, while constant GnRH does not</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Normal estrogen levels throughout the cycle</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> The differential response to pulsatile vs constant GnRH indicates the upstream pattern of GnRH release is the key issue; restoring pulses restores pituitary and testicular output.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Estrogen cycling is a female physiology observation and does not localize male puberty defects.</li>
+<li><b>C:</b> Zona pellucida is an oocyte structure, unrelated to male hypothalamic signaling.</li>
+<li><b>D:</b> LH surge timing refers to ovulation in females, not male puberty endocrinology.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. If testosterone rises during treatment, what immediate feedback effect should occur according to the passage?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Completion of meiosis II in the oocyte</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Decreased GnRH secretion (and thus reduced LH/FSH release) via negative feedback</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Increased GnRH secretion to maintain high LH/FSH</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Conversion of primary oocytes into polar bodies</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Testosterone provides negative feedback to the hypothalamus and pituitary, decreasing GnRH and gonadotropin secretion when androgen levels are sufficient.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> That would represent positive feedback, which does not match typical androgen regulation here.</li>
+<li><b>C:</b> Meiosis II completion is triggered by fertilization in females, unrelated to male androgen feedback.</li>
+<li><b>D:</b> Polar body formation is part of oogenesis and does not follow from testosterone feedback in males.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2: Cycle Timing, Contraception, and Interpreting Hormone Patterns -->
+<div class="passage-header">
+  <span>Passage 2: Cycle Timing, Contraception, and Interpreting Hormone Patterns</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A student tracks daily basal body temperature (BBT) and weekly serum hormone levels across two consecutive 28-day cycles. In Cycle A, BBT is relatively lower during days 1–13 and then increases by ~0.3–0.5°C beginning around day 15, remaining elevated until the next bleed. The student’s ultrasound report notes follicle growth during the first half of the cycle and a corpus luteum-like structure after midcycle.</p>
+  <p>Hormone measurements in Cycle A show that estrogen rises during the follicular phase and reaches a high level near midcycle. Shortly thereafter, LH shows a sharp, narrow spike, while FSH also increases but less dramatically. Progesterone remains low early but rises markedly during the latter half of the cycle before falling just prior to menstruation.</p>
+  <p>In Cycle B, the student starts a combined oral contraceptive pill (OCP) containing estrogen and progesterone. During that month, follicular development on ultrasound is minimal. Serum LH and FSH remain relatively low and do not exhibit a prominent midcycle surge. However, during the placebo week, the student experiences bleeding similar in duration to a typical menses.</p>
+  <p>The instructor emphasizes two principles: (1) exogenous estrogen/progesterone provide negative feedback to suppress GnRH and pituitary gonadotropins, preventing an LH surge and ovulation; and (2) bleeding can still occur when hormone levels drop, because the endometrium requires sustained steroid support to remain intact.</p>
+  <p>To test understanding, the instructor presents a third pattern: a patient with low progesterone in the late cycle and an endometrium that never thickens adequately, despite a normal midcycle LH surge.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Use physiologic markers: an <b>LH surge</b> is the best clue that <b>ovulation</b> occurred; a sustained BBT rise supports luteal progesterone effects.</li>
+    <li>Apply feedback logic: estrogen/progesterone (OCPs) → <b>negative feedback</b> → low GnRH → low LH/FSH → no ovulation.</li>
+    <li>Separate ‘bleeding’ from ‘ovulation’: withdrawal bleeding is driven by <b>hormone withdrawal</b>, not by release of an egg.</li>
+    <li>For unusual patterns, decide whether the defect is <b>pre-ovulatory</b> (follicle/estrogen) or <b>post-ovulatory</b> (corpus luteum/progesterone).</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. In Cycle A, which event most directly causes the sharp midcycle LH spike described?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. hCG secretion by the placenta</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. A drop in estrogen and progesterone at cycle end</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. High estrogen reaching a threshold that switches to positive feedback on GnRH/LH/FSH</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. High progesterone providing positive feedback</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Late follicular estrogen can reach a threshold that produces positive feedback, leading to a GnRH/LH surge and triggering ovulation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Progesterone generally exerts negative feedback and rises after ovulation.</li>
+<li><b>C:</b> Hormone withdrawal at cycle end initiates menstruation rather than the midcycle LH surge.</li>
+<li><b>D:</b> hCG is associated with pregnancy after implantation, not a typical ovulatory cycle.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. Why are LH and FSH suppressed during Cycle B while the student takes combined OCPs?</b>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. Exogenous estrogen and progesterone impose negative feedback that suppresses hypothalamic GnRH release</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. The placenta produces progesterone early in the cycle</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. The ovaries produce hCG to maintain the corpus luteum</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Sertoli cells secrete testosterone that suppresses GnRH</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Combined OCPs provide steroid hormones that reduce GnRH pulses and pituitary gonadotropins, preventing the LH surge and ovulation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> There is no placenta in a nonpregnant cycle.</li>
+<li><b>C:</b> Sertoli cells are male testicular cells and are irrelevant to female OCP physiology.</li>
+<li><b>D:</b> hCG is produced by an implanting embryo/placenta, not by ovaries.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. The third pattern (normal LH surge but low late-cycle progesterone and poor endometrial maintenance) most directly suggests dysfunction of the:</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Corpus luteum</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Anterior pituitary</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Zona pellucida</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> After ovulation, the ruptured follicle becomes the corpus luteum, which secretes progesterone to maintain the endometrium; low progesterone despite an LH surge points to inadequate corpus luteum function.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Pituitary dysfunction would typically alter the LH surge itself.</li>
+<li><b>C:</b> Hypothalamic dysfunction would usually alter GnRH and thus gonadotropin surges.</li>
+<li><b>D:</b> Zona pellucida is an oocyte covering and does not control progesterone secretion.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3: Fertilization Mechanics, Oocyte Arrest, and Receptor-Based Sex Development -->
+<div class="passage-header">
+  <span>Passage 3: Fertilization Mechanics, Oocyte Arrest, and Receptor-Based Sex Development</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>In an assisted-reproduction clinic, clinicians retrieve a secondary oocyte from the fallopian tube shortly after ovulation. The cell appears unusually large and is surrounded by a thick glycoprotein-rich zona pellucida. An outer layer of adherent granulosa-derived cells—the corona radiata—remains attached, suggesting recent ovulation.</p>
+  <p>A semen analysis from the partner reveals many motile sperm. Microscopy highlights a prominent midpiece packed with mitochondria and a long flagellum. The embryologist explains that mitochondria supply ATP required for motility, especially as sperm travel from the cervix through the uterus toward the oviduct.</p>
+  <p>The embryologist further notes that the sperm head bears an acrosome, a Golgi-derived cap that contains hydrolytic enzymes. Upon contact with the zona pellucida, the sperm undergoes an acrosome reaction, releasing enzymes that help it penetrate the zona pellucida and ultimately fuse with the oocyte membrane.</p>
+  <p>The oocyte at retrieval is still arrested in meiosis and will not complete its final meiotic division unless fertilization occurs. Successful penetration and fusion trigger completion of meiosis II, producing a mature ovum and a polar body; only then can the haploid pronuclei from sperm and ovum merge to form a diploid zygote.</p>
+  <p>In a separate adolescent clinic case, a phenotypically female teenager presents with primary amenorrhea. Karyotyping reveals XY chromosomes. Serum testosterone is within or above the typical male range. Imaging reveals no uterus. The clinician suspects androgen insensitivity syndrome (AIS), in which androgen receptors are absent or defective, preventing testosterone from producing typical male differentiation despite normal androgen production.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Recall arrest points: primary oocytes arrest in <b>prophase I</b>; ovulated secondary oocytes arrest in <b>metaphase II</b>.</li>
+    <li>Connect structure to function: acrosome enzymes enable penetration of the zona pellucida/corona radiata; penetration is the trigger for meiosis II completion.</li>
+    <li>Use endocrine logic in AIS: <b>chromosomal sex (XY)</b> can differ from phenotype when <b>receptors</b> fail to respond to hormones.</li>
+    <li>Eliminate options that describe female-cycle timing (LH surge) when the question is about fertilization-triggered events.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. Based on the passage, completion of meiosis II in the oocyte is most directly triggered by:</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Progesterone secretion from the corpus luteum</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Ovulation into the peritoneal cavity</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. The LH surge alone</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. Sperm penetration/fusion enabled by acrosomal enzymes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> The secondary oocyte arrests in metaphase II and completes meiosis II only after fertilization-triggered events, which require penetration aided by the acrosome.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> LH surge triggers ovulation and completion of meiosis I, but does not complete meiosis II without fertilization.</li>
+<li><b>C:</b> Ovulation does not complete meiosis II; fertilization does.</li>
+<li><b>D:</b> Progesterone maintains endometrium; it is not the direct trigger for meiosis II completion.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. The retrieved oocyte is most likely arrested in which phase at the time of retrieval?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Anaphase I</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. Metaphase II</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Telophase II</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Prophase I</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> After meiosis I, the ovulated cell is a secondary oocyte arrested in metaphase II until fertilization occurs.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Prophase I arrest applies to primary oocytes prior to completion of meiosis I.</li>
+<li><b>C:</b> Anaphase I occurs during meiosis I; the retrieved cell has already passed that stage.</li>
+<li><b>D:</b> Telophase II occurs only after meiosis II is complete, which follows fertilization.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. In the AIS case (XY with female phenotype and normal/high testosterone), which inference best matches the passage’s explanation?</b>
+  <div class="choice" onclick="selectChoice('q24', this, true)">A. Testosterone is present but cannot act because androgen receptors are defective or absent</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. The patient must be XX with X-inactivation</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. SRY is absent so testes cannot form</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Low hCG causes corpus luteum regression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> AIS is receptor failure: chromosomal male (XY) can develop a female phenotype when tissues cannot respond to testosterone.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> An XY karyotype typically includes SRY; the key problem is downstream receptor response.</li>
+<li><b>C:</b> The case explicitly states XY, so XX-based explanations do not fit.</li>
+<li><b>D:</b> hCG/corpus luteum are pregnancy-related and do not explain AIS in an adolescent.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

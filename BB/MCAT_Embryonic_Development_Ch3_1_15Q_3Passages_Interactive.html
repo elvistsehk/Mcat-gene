@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Biology — Embryonic Development (Ch 3.1) | 15Q + 3 Passages</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+<body>
+  <div class="container">
+    <div class="main-header">
+      <div class="main-title">MCAT Biology — Embryonic Development (Chapter 3.1)</div>
+      <button class="reset-btn" onclick="resetAll()">Reset all</button>
+    </div>
+
+    <div class="section-label">Standalone Questions (Q1–Q15)</div>
+    <div class="question" id="q1">
+  <b>1. An embryologist separates one blastomere from a 4‑cell human embryo, and the isolated cell later forms a complete, normal fetus. Which cleavage pattern is most consistent with this observation?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Neurulation</div><div class="choice" onclick="selectChoice('q1', this, true)">B. Indeterminate cleavage</div><div class="choice" onclick="selectChoice('q1', this, false)">C. Gastrulation</div><div class="choice" onclick="selectChoice('q1', this, false)">D. Determinate cleavage</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Indeterminate cleavage produces early cells whose fates are not fixed; each blastomere retains the potential to form an entire organism (which is also why early splitting can yield identical twins).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Neurulation is neural tube formation later in development, not a description of early cleavage cell potency.</li>
+<li><b>B:</b> Indeterminate cleavage produces early cells whose fates are not fixed; each blastomere retains the potential to form an entire organism (which is also why early splitting can yield identical twins).</li>
+<li><b>C:</b> Gastrulation establishes germ layers later; it does not describe whether early blastomeres are totipotent.</li>
+<li><b>D:</b> Determinate cleavage commits early cells to specific fates; an isolated blastomere would not be expected to generate a whole organism.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q2">
+  <b>2. Implantation into the endometrium occurs when the embryo is best described as a:</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Morula</div><div class="choice" onclick="selectChoice('q2', this, false)">B. Gastrula</div><div class="choice" onclick="selectChoice('q2', this, true)">C. Blastocyst (mammalian blastula)</div><div class="choice" onclick="selectChoice('q2', this, false)">D. Neurula</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Implantation typically occurs at the blastocyst stage, when the trophoblast can invade the endometrium and begin forming chorionic villi.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The morula is a solid ball of cells before a blastocoel forms; implantation generally occurs after blastulation.</li>
+<li><b>B:</b> The gastrula forms after gastrulation; implantation precedes this.</li>
+<li><b>C:</b> Implantation typically occurs at the blastocyst stage, when the trophoblast can invade the endometrium and begin forming chorionic villi.</li>
+<li><b>D:</b> Neurulation occurs after germ layers are established; far later than implantation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q3">
+  <b>3. Which cell population directly gives rise to the chorion and later contributes to the placenta?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Notochord cells</div><div class="choice" onclick="selectChoice('q3', this, false)">B. Neural crest cells</div><div class="choice" onclick="selectChoice('q3', this, false)">C. Inner cell mass</div><div class="choice" onclick="selectChoice('q3', this, true)">D. Trophoblast cells</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Trophoblasts surround the blastocoel, invade the endometrium, and form the chorion/chorionic villi—key components of the placenta.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The notochord is mesodermal and patterns neurulation; it is not an extraembryonic placental tissue.</li>
+<li><b>B:</b> Neural crest cells arise during neurulation and form parts of the peripheral nervous system and other derivatives, not the placenta.</li>
+<li><b>C:</b> The inner cell mass primarily forms the embryo proper (the organism’s tissues).</li>
+<li><b>D:</b> Trophoblasts surround the blastocoel, invade the endometrium, and form the chorion/chorionic villi—key components of the placenta.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q4">
+  <b>4. In fetal circulation, which statement about umbilical vessels is correct?</b>
+  <div class="choice" onclick="selectChoice('q4', this, true)">A. The umbilical vein carries oxygenated, nutrient‑rich blood from the placenta to the fetus</div><div class="choice" onclick="selectChoice('q4', this, false)">B. The umbilical vein carries deoxygenated blood from fetus to placenta</div><div class="choice" onclick="selectChoice('q4', this, false)">C. Umbilical arteries carry blood from placenta to fetus</div><div class="choice" onclick="selectChoice('q4', this, false)">D. Umbilical arteries carry oxygenated blood to the fetus</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Unlike most adult veins, the single umbilical vein carries oxygenated blood toward the fetus; the two umbilical arteries return deoxygenated blood to the placenta.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Unlike most adult veins, the single umbilical vein carries oxygenated blood toward the fetus; the two umbilical arteries return deoxygenated blood to the placenta.</li>
+<li><b>B:</b> It carries oxygenated blood from placenta to fetus.</li>
+<li><b>C:</b> Direction is fetus → placenta via arteries.</li>
+<li><b>D:</b> Umbilical arteries carry deoxygenated blood away from the fetus to the placenta.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q5">
+  <b>5. Before the placenta becomes fully functional, the embryo is primarily supported by the:</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Amnion</div><div class="choice" onclick="selectChoice('q5', this, false)">B. Allantois</div><div class="choice" onclick="selectChoice('q5', this, true)">C. Yolk sac</div><div class="choice" onclick="selectChoice('q5', this, false)">D. Chorionic villi</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> The yolk sac provides early nutritional support and is a site of early hematopoiesis before placental exchange is established.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The amnion forms the amniotic sac and cushions the embryo; it does not provide primary nutritional support.</li>
+<li><b>B:</b> The allantois is involved in early fluid exchange and contributes to structures like the umbilical cord; it is not the main early support.</li>
+<li><b>C:</b> The yolk sac provides early nutritional support and is a site of early hematopoiesis before placental exchange is established.</li>
+<li><b>D:</b> Chorionic villi are placental structures; the question asks what supports the embryo until placental function is established.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q6">
+  <b>6. A blastocyst implants in the fallopian tube rather than the uterus. This condition is best described as:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Molar pregnancy</div><div class="choice" onclick="selectChoice('q6', this, false)">B. Dysmenorrhea</div><div class="choice" onclick="selectChoice('q6', this, true)">C. Ectopic pregnancy</div><div class="choice" onclick="selectChoice('q6', this, false)">D. Placenta previa</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Implantation outside the uterine cavity (most commonly in the fallopian tube) is an ectopic pregnancy and can cause tubal rupture and hemorrhage.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> A molar pregnancy involves abnormal trophoblastic proliferation and can produce extremely high hCG.</li>
+<li><b>B:</b> Dysmenorrhea refers to painful menstruation, not abnormal implantation.</li>
+<li><b>C:</b> Implantation outside the uterine cavity (most commonly in the fallopian tube) is an ectopic pregnancy and can cause tubal rupture and hemorrhage.</li>
+<li><b>D:</b> Placenta previa is placental implantation over/near the cervical os within the uterus.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q7">
+  <b>7. In humans (deuterostomes), the blastopore ultimately develops into the:</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Anus</div><div class="choice" onclick="selectChoice('q7', this, false)">B. Mouth</div><div class="choice" onclick="selectChoice('q7', this, false)">C. Blastocoel</div><div class="choice" onclick="selectChoice('q7', this, false)">D. Neural tube</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Deuterostomes form the anus from the blastopore; the mouth forms secondarily.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Deuterostomes form the anus from the blastopore; the mouth forms secondarily.</li>
+<li><b>B:</b> Protostomes form the mouth from the blastopore; humans are deuterostomes.</li>
+<li><b>C:</b> The blastocoel is the fluid-filled cavity of the blastula, not a mature opening.</li>
+<li><b>D:</b> The neural tube forms during neurulation from ectoderm, not from the blastopore.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q8">
+  <b>8. Which of the following is derived from neural crest cells?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Adrenal cortex cells</div><div class="choice" onclick="selectChoice('q8', this, false)">B. Hepatocytes</div><div class="choice" onclick="selectChoice('q8', this, true)">C. Adrenal medulla chromaffin cells</div><div class="choice" onclick="selectChoice('q8', this, false)">D. Alveolar epithelium</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Neural crest cells migrate extensively and form components of the PNS and select endocrine/skin derivatives, including the adrenal medulla.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Adrenal cortex is mesoderm-derived (dual origin: cortex mesoderm, medulla neural crest).</li>
+<li><b>B:</b> The liver parenchyma (hepatocytes) is endoderm-derived.</li>
+<li><b>C:</b> Neural crest cells migrate extensively and form components of the PNS and select endocrine/skin derivatives, including the adrenal medulla.</li>
+<li><b>D:</b> Respiratory tract epithelium (including alveoli lining) is endoderm-derived.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q9">
+  <b>9. Induction in embryologic development refers to:</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Random assortment of homologous chromosomes</div><div class="choice" onclick="selectChoice('q9', this, true)">B. One group of cells releasing signals that alter the fate of nearby cells</div><div class="choice" onclick="selectChoice('q9', this, false)">C. Direct fusion of the two pronuclei during fertilization</div><div class="choice" onclick="selectChoice('q9', this, false)">D. A programmed cell death pathway that sculpts tissues</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Induction is cell–cell communication (often diffusible inducers) that instructs neighboring tissues to differentiate along specific pathways (e.g., notochord inducing neural tube formation).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> That describes independent assortment in meiosis, not embryologic induction.</li>
+<li><b>B:</b> Induction is cell–cell communication (often diffusible inducers) that instructs neighboring tissues to differentiate along specific pathways (e.g., notochord inducing neural tube formation).</li>
+<li><b>C:</b> That describes syngamy/pronuclear fusion, not signaling-driven fate changes.</li>
+<li><b>D:</b> That describes apoptosis, not induction.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q10">
+  <b>10. The epithelial cells of the pancreas are primarily derived from the:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Ectoderm</div><div class="choice" onclick="selectChoice('q10', this, true)">B. Endoderm</div><div class="choice" onclick="selectChoice('q10', this, false)">C. Mesoderm</div><div class="choice" onclick="selectChoice('q10', this, false)">D. Neural crest</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Endoderm forms epithelial linings of the gut tube and many associated glands, including the pancreas.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Ectoderm gives rise to epidermis and nervous system structures, not pancreatic epithelium.</li>
+<li><b>B:</b> Endoderm forms epithelial linings of the gut tube and many associated glands, including the pancreas.</li>
+<li><b>C:</b> Mesoderm forms muscle, bone, connective tissues, and many circulatory/excretory structures.</li>
+<li><b>D:</b> Neural crest forms PNS structures, melanocytes, and adrenal medulla, not pancreatic epithelium.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q11">
+  <b>11. During early cleavage divisions, the embryo’s overall size remains roughly constant while the number of cells increases. Which pair of ratios increases as a result?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Cytoplasmic‑to‑nuclear ratio and volume‑to‑surface area ratio</div><div class="choice" onclick="selectChoice('q11', this, false)">B. Cytoplasmic‑to‑nuclear ratio and surface area‑to‑volume ratio</div><div class="choice" onclick="selectChoice('q11', this, false)">C. Nuclear‑to‑cytoplasmic ratio and volume‑to‑surface area ratio</div><div class="choice" onclick="selectChoice('q11', this, true)">D. Nuclear‑to‑cytoplasmic ratio and surface area‑to‑volume ratio</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Cleavage creates many smaller cells: each has relatively more nucleus per cytoplasm and a higher surface area relative to volume, improving exchange and gene regulation dynamics.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Both trends are opposite of what happens when cells get smaller.</li>
+<li><b>B:</b> Cytoplasmic-to-nuclear decreases, not increases.</li>
+<li><b>C:</b> Volume-to-surface area decreases as cells get smaller; surface area-to-volume increases.</li>
+<li><b>D:</b> Cleavage creates many smaller cells: each has relatively more nucleus per cytoplasm and a higher surface area relative to volume, improving exchange and gene regulation dynamics.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q12">
+  <b>12. The archenteron, which later develops into the gut, first forms during:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Blastulation</div><div class="choice" onclick="selectChoice('q12', this, false)">B. Neurulation</div><div class="choice" onclick="selectChoice('q12', this, false)">C. Cleavage</div><div class="choice" onclick="selectChoice('q12', this, true)">D. Gastrulation</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> The defining feature of gastrulation is large-scale cell movement that forms the archenteron and establishes the three primary germ layers.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Blastulation forms a blastula/blastocyst with a blastocoel; the archenteron forms later.</li>
+<li><b>B:</b> Neurulation is neural tube formation after germ layers are set.</li>
+<li><b>C:</b> Cleavage is rapid mitotic division without growth, preceding formation of a hollow cavity and germ layers.</li>
+<li><b>D:</b> The defining feature of gastrulation is large-scale cell movement that forms the archenteron and establishes the three primary germ layers.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q13">
+  <b>13. A public health campaign recommends folic acid supplementation for people who could become pregnant. The primary defect this aims to prevent is:</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Failure of neural tube closure (e.g., spina bifida)</div><div class="choice" onclick="selectChoice('q13', this, false)">B. Failure of blastocoel formation</div><div class="choice" onclick="selectChoice('q13', this, false)">C. Failure of chorionic villi formation leading to absent placenta</div><div class="choice" onclick="selectChoice('q13', this, false)">D. Failure of the cortical reaction leading to polyspermy</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Folate is crucial during neurulation; deficiency increases risk of neural tube defects such as spina bifida and anencephaly.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Folate is crucial during neurulation; deficiency increases risk of neural tube defects such as spina bifida and anencephaly.</li>
+<li><b>B:</b> Blastocoel formation is part of blastulation and is not the classic folate-associated defect.</li>
+<li><b>C:</b> Placental villi problems can occur, but folate supplementation is specifically linked to neural tube defect prevention.</li>
+<li><b>D:</b> The cortical reaction is a fertilization event, not a folate-dependent neurulation process.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q14">
+  <b>14. A researcher studies a drug that disrupts signaling between embryonic tissues. Exposure early in pregnancy is most likely to cause major structural malformations because it interferes with:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Late fetal growth and fat deposition</div><div class="choice" onclick="selectChoice('q14', this, false)">B. The postpartum involution of the uterus</div><div class="choice" onclick="selectChoice('q14', this, false)">C. The replacement of fetal hemoglobin after birth</div><div class="choice" onclick="selectChoice('q14', this, true)">D. Gastrulation and early organ patterning</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Major body plans and germ layers are established early; disrupting induction/gastrulation can have widespread downstream effects on organogenesis.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Late exposures often affect growth/functional maturation more than fundamental body plan.</li>
+<li><b>B:</b> Occurs after delivery and is unrelated to embryonic development.</li>
+<li><b>C:</b> A postnatal physiologic transition, not embryologic patterning.</li>
+<li><b>D:</b> Major body plans and germ layers are established early; disrupting induction/gastrulation can have widespread downstream effects on organogenesis.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q15">
+  <b>15. Immediately after a sperm penetrates the oocyte membrane, a calcium‑mediated cortical reaction occurs. Its most direct function is to:</b>
+  <div class="choice" onclick="selectChoice('q15', this, true)">A. Prevent polyspermy by making the oocyte membrane impenetrable</div><div class="choice" onclick="selectChoice('q15', this, false)">B. Trigger formation of the blastocoel</div><div class="choice" onclick="selectChoice('q15', this, false)">C. Initiate synapsis of homologous chromosomes</div><div class="choice" onclick="selectChoice('q15', this, false)">D. Convert the blastopore into the anus</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The cortical reaction depolarizes the oocyte membrane and modifies the zona pellucida, blocking additional sperm entry and helping activate the zygote’s metabolism.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The cortical reaction depolarizes the oocyte membrane and modifies the zona pellucida, blocking additional sperm entry and helping activate the zygote’s metabolism.</li>
+<li><b>B:</b> Blastocoel forms later during blastulation.</li>
+<li><b>C:</b> Synapsis occurs during prophase I of meiosis, not during fertilization.</li>
+<li><b>D:</b> Blastopore fate occurs during gastrulation, not fertilization.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+    <div class="section-label">Passages (3 passages × 3 questions)</div>
+    <!-- P1 -->
+<div class="passage-header">
+  <span>Passage 1: IVF Embryo Splitting and Early Cleavage</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A fertility clinic cultures a human zygote in vitro and tracks development over the first several days. The embryo undergoes rapid mitotic divisions (cleavage) while its overall diameter remains essentially unchanged. By day 3, the embryo reaches the 8‑cell stage and each blastomere is noticeably smaller than at the 2‑cell stage.</p>
+<p>To test developmental potential, the embryologist gently separates one blastomere from the 8‑cell embryo and places it into a separate culture droplet with identical media. Both the original embryo and the isolated blastomere continue dividing and each later forms a blastocyst with a distinct inner cell mass and surrounding trophoblast.</p>
+<p>In a separate case, an early split of a single embryo results in twins that share one chorion but have two separate amniotic sacs on ultrasound. The clinician uses this placental configuration to infer when the splitting occurred.</p>
+</div>
+
+<div class="reasoning-box" id="p1-reason" style="display:none;">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Underline what the passage shows: an isolated blastomere forms a full blastocyst; twins share a chorion but not an amnion.</li>
+<li>Translate evidence into concepts: blastomere potential → determinate vs indeterminate cleavage; constant embryo size → SA:V and N:C shifts; shared chorion vs separate amnion → timing of splitting.</li>
+<li>Pick the answer that fits all observations; eliminate choices that require a different stage or different membrane arrangement.</li>
+  </ol>
+</div>
+
+<div class="question" id="q16">
+  <b>16. In the IVF lab described, a single separated blastomere from an early embryo is able to develop into a complete organism. Which conclusion is best supported?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Human embryos lack a trophoblast layer</div><div class="choice" onclick="selectChoice('q16', this, false)">B. Cleavage commits cells immediately to fixed fates</div><div class="choice" onclick="selectChoice('q16', this, false)">C. Gastrulation must have already occurred in the embryo</div><div class="choice" onclick="selectChoice('q16', this, true)">D. Early human cleavage is largely indeterminate (totipotent blastomeres)</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Ability of an isolated early blastomere to form a full organism implies its fate was not yet fixed—an indeterminate/totipotent state.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Human blastocysts do form a trophoblast; the observation says nothing suggesting its absence.</li>
+<li><b>B:</b> That would be determinate cleavage; it contradicts the observed totipotency.</li>
+<li><b>C:</b> Gastrulation occurs later than early cleavage stages described.</li>
+<li><b>D:</b> Ability of an isolated early blastomere to form a full organism implies its fate was not yet fixed—an indeterminate/totipotent state.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q17">
+  <b>17. During the observation period, embryo diameter stays constant while cell number increases from 2 to 8. Which change most directly improves diffusion of oxygen and nutrients to individual cells?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Increased total embryo volume</div><div class="choice" onclick="selectChoice('q17', this, true)">B. Increased surface area‑to‑volume ratio of the cells</div><div class="choice" onclick="selectChoice('q17', this, false)">C. Decreased surface area‑to‑volume ratio</div><div class="choice" onclick="selectChoice('q17', this, false)">D. Decreased nuclear‑to‑cytoplasmic ratio</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Smaller daughter cells have relatively more membrane area per unit volume, facilitating exchange with the surrounding environment.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Overall embryo volume stays about constant during early cleavage.</li>
+<li><b>B:</b> Smaller daughter cells have relatively more membrane area per unit volume, facilitating exchange with the surrounding environment.</li>
+<li><b>C:</b> That would hinder exchange; cleavage increases SA:V.</li>
+<li><b>D:</b> N:C actually increases with smaller cells; diffusion improvement is tied most directly to SA:V.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q18">
+  <b>18. Two fetuses from the same original zygote are found to have one shared chorion but two separate amniotic sacs. At what developmental window did the embryo most likely split?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Before trophoblast differentiation (dichorionic/diamniotic)</div><div class="choice" onclick="selectChoice('q18', this, false)">B. After both chorion and amnion form (monochorionic/monoamniotic)</div><div class="choice" onclick="selectChoice('q18', this, false)">C. During gastrulation after germ layers form</div><div class="choice" onclick="selectChoice('q18', this, true)">D. After chorion formation begins but before amnion formation (monochorionic/diamniotic)</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Sharing a chorion implies splitting occurred after trophoblast/chorion formation; having two amnions implies splitting occurred before amnion formation was complete.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Very early splitting yields separate chorions and separate amnions.</li>
+<li><b>B:</b> Late splitting after amnion formation leads to shared chorion and shared amnion.</li>
+<li><b>C:</b> Splitting this late is unlikely to yield normal twins and does not match the described membrane arrangement.</li>
+<li><b>D:</b> Sharing a chorion implies splitting occurred after trophoblast/chorion formation; having two amnions implies splitting occurred before amnion formation was complete.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- P2 -->
+<div class="passage-header">
+  <span>Passage 2: Neurulation, Induction, and Neural Tube Defects</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A pregnant patient presents for prenatal screening. Laboratory testing shows elevated alpha‑fetoprotein (AFP), and ultrasound reveals a defect in the posterior vertebral arches with protrusion of neural tissue, consistent with spina bifida. The patient reports limited prenatal vitamin use early in pregnancy and has poorly controlled diabetes with intermittent hyperglycemia.</p>
+<p>During early development, a midline rod of mesodermal cells forms along the embryo’s long axis. This structure releases signals that cause the overlying ectoderm to thicken into a neural plate, which folds inward and fuses to create a neural tube. Cells at the crest of these folds detach and migrate broadly to form additional tissues.</p>
+<p>The care team discusses how timing, route of exposure, and embryo genetics can influence teratogen severity, and why prevention strategies target very early developmental windows.</p>
+</div>
+
+<div class="reasoning-box" id="p2-reason" style="display:none;">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify the failed process (neural tube closure) and map it to the tissue that forms the neural tube.</li>
+<li>Find the inducer in the passage (a mesodermal midline rod) and connect it to induction of overlying ectoderm.</li>
+<li>For neural crest questions, list key derivatives (PNS ganglia, Schwann cells, adrenal medulla, melanocytes) and match to outcomes.</li>
+  </ol>
+</div>
+
+<div class="question" id="q19">
+  <b>19. A fetus is diagnosed with spina bifida due to failure of the neural tube to close. The tissue that directly forms the neural tube is derived from:</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Endoderm</div><div class="choice" onclick="selectChoice('q19', this, true)">B. Ectoderm</div><div class="choice" onclick="selectChoice('q19', this, false)">C. Mesoderm</div><div class="choice" onclick="selectChoice('q19', this, false)">D. Trophoblast</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The neural tube (CNS precursor) forms from neuroectoderm, an ectodermal specialization induced during neurulation.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Endoderm forms gut/respiratory linings and associated organs, not neural tissue.</li>
+<li><b>B:</b> The neural tube (CNS precursor) forms from neuroectoderm, an ectodermal specialization induced during neurulation.</li>
+<li><b>C:</b> Mesoderm forms notochord and many supportive tissues but not the neural tube itself.</li>
+<li><b>D:</b> Trophoblast contributes to extraembryonic membranes/placenta, not embryo proper tissues like CNS.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q20">
+  <b>20. In this scenario, the structure most responsible for inducing overlying ectoderm to form neural folds is the:</b>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. Notochord</div><div class="choice" onclick="selectChoice('q20', this, false)">B. Somites</div><div class="choice" onclick="selectChoice('q20', this, false)">C. Allantois</div><div class="choice" onclick="selectChoice('q20', this, false)">D. Chorionic villi</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The notochord is a mesodermal rod that releases inductive signals causing ectoderm above it to become neural plate and fold into the neural tube.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The notochord is a mesodermal rod that releases inductive signals causing ectoderm above it to become neural plate and fold into the neural tube.</li>
+<li><b>B:</b> Somites are segmented mesoderm that later form vertebrae and skeletal muscle; they are not the primary inducer of neural plate.</li>
+<li><b>C:</b> Allantois participates in early fluid exchange and umbilical cord formation, not neurulation induction.</li>
+<li><b>D:</b> Chorionic villi are placental exchange structures, not embryonic patterning centers.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q21">
+  <b>21. If a teratogen selectively disrupts neural crest cell migration, which outcome is most consistent?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Failure of gut tube epithelium to form</div><div class="choice" onclick="selectChoice('q21', this, true)">B. Defects in peripheral nervous system structures such as sensory ganglia or Schwann cells</div><div class="choice" onclick="selectChoice('q21', this, false)">C. Absence of the adrenal cortex</div><div class="choice" onclick="selectChoice('q21', this, false)">D. Failure of the placenta to implant</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Neural crest cells form many PNS components (sensory/autonomic ganglia, Schwann cells) and select other derivatives; migration failure primarily affects these tissues.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Gut tube epithelium is mainly endoderm-derived, not neural crest-derived.</li>
+<li><b>B:</b> Neural crest cells form many PNS components (sensory/autonomic ganglia, Schwann cells) and select other derivatives; migration failure primarily affects these tissues.</li>
+<li><b>C:</b> Adrenal cortex is mesoderm-derived; neural crest contributes to the adrenal medulla.</li>
+<li><b>D:</b> Implantation involves trophoblast invasion, not neural crest migration.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- P3 -->
+<div class="passage-header">
+  <span>Passage 3: Implantation Site and Placental Exchange</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A 28‑year‑old with a positive pregnancy test presents with sharp unilateral pelvic pain and light vaginal spotting. Transvaginal ultrasound shows no intrauterine gestational sac but identifies a small complex mass near the ampulla of the right fallopian tube. Serum hCG is positive but rises more slowly than expected over 48 hours.</p>
+<p>The clinician explains that normal implantation requires trophoblast invasion of the endometrium and formation of chorionic villi to establish maternal–fetal exchange. Until robust placental exchange is established, early support comes from extraembryonic structures, and later the umbilical cord carries blood between embryo and placenta via two arteries and one vein.</p>
+<p>Because the fallopian tube cannot expand like the uterus, continued growth at the implantation site can cause rupture and life‑threatening hemorrhage.</p>
+</div>
+
+<div class="reasoning-box" id="p3-reason" style="display:none;">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Use location clues: no uterine sac + tubal mass + pain/spotting → implantation outside uterus.</li>
+<li>Recall what makes villi and placenta (trophoblast/chorion) and which umbilical vessel carries oxygenated blood (vein).</li>
+<li>Choose the most direct match to the clinical pattern and basic anatomy; avoid overinterpreting lab trends not needed.</li>
+  </ol>
+</div>
+
+<div class="question" id="q22">
+  <b>22. A pregnant patient has unilateral pelvic pain and ultrasound shows no intrauterine gestational sac but a tubal mass. Which diagnosis best fits?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Normal early intrauterine pregnancy</div><div class="choice" onclick="selectChoice('q22', this, false)">B. Placenta accreta</div><div class="choice" onclick="selectChoice('q22', this, true)">C. Ectopic pregnancy in the fallopian tube</div><div class="choice" onclick="selectChoice('q22', this, false)">D. Complete hydatidiform mole</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Absence of an intrauterine sac with a tubal mass and pain strongly suggests tubal implantation (ectopic pregnancy).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> A normal IUP should eventually show an intrauterine sac; a tubal mass with pain is concerning for ectopic.</li>
+<li><b>B:</b> Accreta is abnormal placental adherence within the uterus, usually diagnosed later in pregnancy.</li>
+<li><b>C:</b> Absence of an intrauterine sac with a tubal mass and pain strongly suggests tubal implantation (ectopic pregnancy).</li>
+<li><b>D:</b> Molar pregnancy typically shows very high hCG and characteristic ultrasound findings; not a tubal mass with no uterine sac.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q23">
+  <b>23. In the same patient, which fetal vessel would normally deliver freshly oxygenated blood from the placenta to the embryo?</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Umbilical vein</div><div class="choice" onclick="selectChoice('q23', this, false)">B. Ductus arteriosus</div><div class="choice" onclick="selectChoice('q23', this, false)">C. Inferior vena cava</div><div class="choice" onclick="selectChoice('q23', this, false)">D. Umbilical arteries</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The umbilical vein uniquely carries oxygenated blood from placenta to fetus; arteries return deoxygenated blood to placenta.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The umbilical vein uniquely carries oxygenated blood from placenta to fetus; arteries return deoxygenated blood to placenta.</li>
+<li><b>B:</b> This shunts blood between pulmonary artery and aorta within the fetus; not the placental return vessel.</li>
+<li><b>C:</b> IVC returns blood from the fetus’ lower body to the heart; it is not the placental conduit.</li>
+<li><b>D:</b> They carry deoxygenated blood from fetus to placenta.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q24">
+  <b>24. Histology of the implantation site shows finger‑like projections invading maternal tissue to facilitate gas exchange. These projections are primarily formed by:</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Endoderm forming the yolk sac lining</div><div class="choice" onclick="selectChoice('q24', this, false)">B. Mesoderm forming the notochord</div><div class="choice" onclick="selectChoice('q24', this, true)">C. Trophoblast‑derived chorionic villi</div><div class="choice" onclick="selectChoice('q24', this, false)">D. Inner cell mass cells forming the epiblast</div>
+  <div class="feedback correct" style="display:none;">Correct ✅</div>
+  <div class="feedback wrong" style="display:none;">Incorrect ❌</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Chorionic villi arise from trophoblast/chorion and become the interface for maternal–fetal exchange in the developing placenta.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Yolk sac is early support; it does not create chorionic villi.</li>
+<li><b>B:</b> Notochord patterns neurulation; it does not form placental villi.</li>
+<li><b>C:</b> Chorionic villi arise from trophoblast/chorion and become the interface for maternal–fetal exchange in the developing placenta.</li>
+<li><b>D:</b> Epiblast contributes to embryo proper; it does not directly form chorionic villi.</li>
+</ul>
+    </div>
+  </details>
+</div>
+  </div>
+</body>
+</html>

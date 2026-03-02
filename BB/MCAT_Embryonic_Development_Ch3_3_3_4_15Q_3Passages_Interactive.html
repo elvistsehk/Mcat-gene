@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Biology — Placenta, Fetal Circulation, and Birth (Ch. 3.3–3.4)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Biology — Placenta, Fetal Circulation, and Birth (Ch. 3.3–3.4)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+<div class="question" id="q1">
+  <b>1. In fetal circulation, which statement correctly describes oxygenation in the umbilical vessels?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Umbilical arteries carry oxygenated blood from fetus to placenta; umbilical vein carries deoxygenated blood to fetus</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Umbilical arteries carry deoxygenated blood from fetus to placenta; umbilical vein carries oxygenated blood to fetus</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Both umbilical arteries and umbilical vein carry deoxygenated blood because fetal lungs are inactive</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Umbilical arteries carry oxygenated blood to fetal heart; umbilical vein carries deoxygenated blood to placenta</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Oxygenation occurs at the placenta, not fetal lungs. Umbilical arteries carry blood away from the fetal heart toward the placenta and are therefore relatively deoxygenated; the umbilical vein returns oxygenated, nutrient-rich blood from the placenta to the fetus.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This reverses the oxygenation status.</li><li><b>C:</b> One vessel (umbilical vein) is oxygenated because it returns blood from the placenta.</li><li><b>D:</b> This reverses both direction and oxygenation status.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q2">
+  <b>2. Which feature most directly increases oxygen transfer from maternal blood to fetal blood across the placenta?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Fetal lungs producing surfactant in the second trimester</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Mixing of maternal and fetal blood to equalize oxygen content</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. A higher oxygen affinity of adult hemoglobin compared with fetal hemoglobin</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. A higher oxygen affinity of fetal hemoglobin compared with adult hemoglobin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Fetal hemoglobin has greater affinity for oxygen than adult hemoglobin, helping fetal blood load oxygen efficiently across the placental gradient.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Fetal lungs do not perform gas exchange prior to birth; surfactant is not the key placental transfer mechanism here.</li><li><b>B:</b> Maternal and fetal blood do not normally mix; exchange relies on proximity and diffusion.</li><li><b>C:</b> Adult hemoglobin does not have higher affinity than fetal hemoglobin.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q3">
+  <b>3. Which best explains why maternal and fetal blood normally do not mix in the placenta?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. They may be different blood types, and direct mixing could trigger immune reactions</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Diffusion cannot occur unless the bloodstreams mix directly</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Fetal blood pressure is always lower than maternal pressure, preventing flow</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Maternal antibodies cannot cross the placenta, so mixing is unnecessary</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Keeping maternal and fetal blood separate helps prevent reactions that could occur if the two have different blood types while still allowing diffusion across a close interface.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Diffusion occurs across a barrier when bloodstreams are in close proximity; mixing is not required.</li><li><b>C:</b> Pressure differences are not the main reason; placental structure maintains separation.</li><li><b>D:</b> Maternal antibodies can cross (selectively), so this statement is incorrect.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q4">
+  <b>4. Which pathogen group is classically emphasized as able to cross the placental barrier and cause congenital disease?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Enterobacteriaceae</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Dermatophytes</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. TORCHES infections</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Bacteriophages</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> TORCHES infections are a classic set of pathogens that can cross the placenta and cause significant congenital defects.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Some bacteria can cause disease, but this is not the classic placental-crossing group highlighted.</li><li><b>B:</b> Fungal skin infections are not the classic category here.</li><li><b>D:</b> Bacteriophages infect bacteria, not human fetuses.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q5">
+  <b>5. The placenta is considered an endocrine organ because it produces which hormones that help maintain pregnancy?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. insulin and glucagon</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. progesterone, estrogen, and hCG</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. thyroxine and calcitonin</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. epinephrine and cortisol</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The placenta produces progesterone, estrogen, and hCG, which are essential for maintaining pregnancy.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> These are pancreatic hormones.</li><li><b>C:</b> These are thyroid hormones.</li><li><b>D:</b> These are adrenal hormones (cortex/medulla), not placental products.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q6">
+  <b>6. Which fetal shunt directly bypasses the liver by connecting blood from the umbilical vein to the inferior vena cava?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. foramen ovale</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. ductus arteriosus</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. ligamentum arteriosum</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. ductus venosus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> The ductus venosus shunts oxygenated blood returning from the placenta via the umbilical vein into the inferior vena cava, bypassing most hepatic circulation.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Foramen ovale shunts blood from right atrium to left atrium, bypassing the lungs.</li><li><b>B:</b> Ductus arteriosus shunts pulmonary artery blood to the aorta, bypassing the lungs.</li><li><b>C:</b> Ligamentum arteriosum is the postnatal remnant of the ductus arteriosus.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q7">
+  <b>7. Which pair of fetal shunts primarily functions to bypass the lungs?</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. foramen ovale and ductus arteriosus</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. ductus venosus and foramen ovale</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. ductus venosus and ductus arteriosus</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. foramen ovale and umbilical arteries</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The foramen ovale diverts blood from the right atrium to the left atrium; the ductus arteriosus diverts blood from the pulmonary artery to the aorta—both reduce pulmonary blood flow.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Ductus venosus bypasses the liver, not lungs.</li><li><b>C:</b> Ductus venosus is liver bypass; ductus arteriosus is lung bypass, so the pair is not both lung bypass.</li><li><b>D:</b> Umbilical arteries carry blood to placenta; they are not shunts bypassing lungs.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q8">
+  <b>8. In the fetus, why can the right side of the heart push blood through the foramen ovale into the left atrium?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Left atrial pressure exceeds right atrial pressure in utero</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. The ductus venosus directly connects right atrium to left atrium</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Right-sided pressures are higher than left-sided pressures before birth</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Pulmonary veins return large volumes of oxygenated blood to the left atrium</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Before birth, the fetal pulmonary circulation is high resistance, contributing to higher right-sided pressures that drive flow through fetal shunts like the foramen ovale.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> After birth, left-sided pressure becomes higher and helps close the foramen ovale.</li><li><b>B:</b> Ductus venosus connects umbilical vein to inferior vena cava, not atria.</li><li><b>D:</b> Fetal lungs are not functioning; pulmonary return is limited.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q9">
+  <b>9. A newborn has a persistent communication between the pulmonary artery and the aorta that should normally close after birth. Which fetal structure failed to close?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. foramen ovale</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">B. ductus arteriosus</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. ductus venosus</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. umbilical vein</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The ductus arteriosus connects the pulmonary artery to the aorta in fetal life; persistence after birth leads to continued shunting between these vessels.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Foramen ovale connects right and left atria.</li><li><b>C:</b> Ductus venosus bypasses the liver via the inferior vena cava.</li><li><b>D:</b> Umbilical vein is a vessel to/from placenta, not a pulmonary artery–aorta connection.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q10">
+  <b>10. Which statement best explains why fetal lungs do not need to oxygenate blood before birth?</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. Gas exchange occurs across the placenta, so oxygenated blood returns via the umbilical vein</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Fetal hemoglobin releases oxygen more readily than adult hemoglobin in the lungs</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Maternal blood mixes with fetal blood in the placenta and directly oxygenates it</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Umbilical arteries deliver oxygenated blood directly from fetus to placenta</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The placenta is the site of gas exchange; oxygenated blood is delivered to the fetus via the umbilical vein.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Fetal hemoglobin has higher oxygen affinity; also lungs are not the gas exchange site pre-birth.</li><li><b>C:</b> Maternal and fetal blood do not mix under normal conditions.</li><li><b>D:</b> Umbilical arteries carry deoxygenated blood from fetus to placenta.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q11">
+  <b>11. During which trimester are maternal antibodies transferred to the fetus at the highest level in preparation for life outside the womb?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. first trimester</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. second trimester</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. third trimester</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. antibodies are not transferred until after birth</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Antibody transfer begins earlier but is highest late in pregnancy, particularly in the ninth month of the third trimester.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This is too early for peak transfer.</li><li><b>B:</b> Transfer occurs, but peak is later.</li><li><b>D:</b> Maternal antibodies can cross the placenta before birth.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q12">
+  <b>12. Which sequence best matches the three stages of vaginal birth described?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Placenta expelled → cervix thins/rupture of membranes → fetus delivered</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Fetus delivered → cervix thins/rupture of membranes → placenta expelled</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Cervix thins/rupture of membranes → placenta expelled → fetus delivered</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Cervix thins/rupture of membranes → fetus delivered → placenta expelled</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Birth proceeds as: (1) cervix effaces and membranes rupture, (2) fetus is delivered via strong uterine contractions, (3) placenta/umbilical cord are expelled (afterbirth).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Placenta expulsion occurs last, not first.</li><li><b>B:</b> Cervical effacement and membrane rupture occur before delivery, not after.</li><li><b>C:</b> Placenta does not precede fetal delivery.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q13">
+  <b>13. Rhythmic uterine smooth muscle contractions during parturition are primarily coordinated by:</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. prostaglandins and oxytocin</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. hCG and insulin</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. TGF-beta and EGF</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. fetal hemoglobin and adult hemoglobin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Parturition is coordinated by prostaglandins and the peptide hormone oxytocin, which promote rhythmic uterine contractions.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> hCG helps maintain pregnancy early; insulin regulates glucose.</li><li><b>C:</b> These are developmental morphogens/growth factors, not primary labor coordinators.</li><li><b>D:</b> Hemoglobins relate to oxygen transport, not contraction signaling.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q14">
+  <b>14. A fetus has underdeveloped lungs and liver and is particularly sensitive to high pressures those organs will face after birth. Which adaptation best addresses this before birth?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Mixing of maternal and fetal blood to reduce fetal cardiac workload</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Three fetal shunts that direct blood away from lungs and liver while they develop</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Complete closure of the ductus arteriosus early in gestation</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Preferential routing of blood into the pulmonary arteries for oxygenation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Fetal circulation uses three shunts to bypass the lungs and largely bypass the liver, protecting these developing organs from high-flow, high-pressure demands until birth.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Blood does not normally mix; separation is maintained.</li><li><b>C:</b> The ductus arteriosus remains open until after birth to bypass lungs.</li><li><b>D:</b> Pulmonary routing is minimized because lungs are not the gas-exchange organ in utero.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q15">
+  <b>15. A fetus is born at 24 weeks and survives with intensive care. Which organ system is most likely to show the most severe complications due to incomplete development, based on the text?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. integumentary system</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. skeletal system</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. respiratory system</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. appendicular musculature</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Premature infants born very early often have major complications, most apparent in respiratory (and also gastrointestinal and nervous) systems because development is incomplete at 24 weeks.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Skin can be fragile, but the passage emphasizes respiratory/GI/nervous complications as most apparent.</li><li><b>B:</b> Skeletal development continues, but is not singled out as the most severe complication domain here.</li><li><b>D:</b> Muscle development is not emphasized as the primary complication compared with respiratory/GI/nervous.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+<div class="passage-header">
+  <span>Passage 1: Placental Exchange and Maternal–Fetal Interface</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box"><p>A 30-year-old pregnant patient has a routine prenatal visit at 28 weeks. Laboratory testing shows that the patient’s arterial blood has a higher partial pressure of oxygen than the fetus’s circulating blood, and ultrasound demonstrates normal placental structure with numerous villous projections increasing surface area. The clinician explains that nutrient transfer of water, glucose, amino acids, and inorganic salts relies mainly on movement down concentration gradients across a thin barrier.</p>
+
+<p>Later, the patient develops a febrile illness after returning from travel. Serologic screening is ordered because a subset of pathogens can cross the placental barrier and cause congenital disease. The patient asks whether the fetus will “share the same blood” with the mother. The clinician clarifies that under normal conditions the two bloodstreams remain separate, yet exchange still occurs efficiently at the interface.</p>
+
+<p>In a teaching session, a resident adds that the placenta also produces hormones needed to maintain pregnancy and that late in gestation the fetus receives increasing immune protection through transfer of maternal antibodies. The resident notes that fetal red blood cells use a hemoglobin variant that binds oxygen more tightly than adult hemoglobin, which helps fetal blood load oxygen even when the oxygen gradient is modest.</p></div>
+<div class="reasoning-box" id="p1-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Identify the exchange mechanism: diffusion needs gradients and a large surface area; villi increase surface area.</li>
+  <li>Use the key constraint: maternal and fetal blood do not mix, so exchange must occur across a barrier.</li>
+  <li>Link oxygen transfer enhancements: higher oxygen affinity hemoglobin in the fetus helps loading.</li>
+  <li>Recognize placenta’s additional roles: endocrine hormone production and selective antibody transfer.</li>
+  <li>For pathogen questions, connect “can cross placenta” to the classic congenital infection group.</li>
+</ol></div>
+<div class="question" id="q16">
+  <b>16. Which change would most directly reduce diffusion-based transfer of glucose from mother to fetus in the scenario?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Increased fetal hemoglobin affinity for oxygen</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Increased maternal antibody transfer late in gestation</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">C. Decreased placental villous surface area or increased barrier thickness</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Closure of the ductus venosus after birth</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Diffusion efficiency increases with larger surface area and thinner barriers. Reducing villous surface area or increasing thickness would impair diffusion of small solutes like glucose.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Oxygen affinity affects oxygen loading, not the diffusion surface area for glucose.</li><li><b>B:</b> Antibody transfer uses selective transport mechanisms and does not directly set glucose diffusion capacity.</li><li><b>D:</b> The ductus venosus is a fetal shunt; its postnatal closure is unrelated to placental glucose diffusion at 28 weeks.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q17">
+  <b>17. The resident’s point about fetal hemoglobin is most useful for predicting which outcome if maternal oxygen delivery decreases slightly?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Fetal blood can still load oxygen relatively effectively at the placenta compared with if it used adult hemoglobin</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Maternal and fetal blood will mix to equalize oxygen levels</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Fetal lungs will compensate by increasing ventilation in utero</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Umbilical arteries will become oxygen-rich because they are arteries</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Because fetal hemoglobin binds oxygen more tightly, fetal blood can load oxygen at the placental interface more effectively than if it used adult hemoglobin, helping buffer modest decreases in maternal oxygen delivery.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Blood mixing does not normally occur; exchange happens across the barrier.</li><li><b>C:</b> Fetal lungs do not perform gas exchange prior to birth.</li><li><b>D:</b> Artery/vein names reflect direction relative to the heart, not oxygen content; umbilical arteries remain relatively deoxygenated.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q18">
+  <b>18. Which counseling statement most accurately addresses the patient’s question about “sharing blood” while also explaining why blood type incompatibility matters?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. The placenta forces maternal and fetal blood to mix so the fetus can receive oxygen</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Maternal blood enters fetal veins directly, but fetal hemoglobin prevents immune reactions</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. The placental barrier blocks all immune molecules, so blood types are irrelevant</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">D. Maternal and fetal blood normally remain separate, reducing direct blood-type reactions, while exchange occurs across a close interface</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> The placenta maintains separation between bloodstreams, which helps avoid direct incompatibility reactions, while allowing diffusion and selective transport across the interface.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Mixing is not required and does not normally occur.</li><li><b>B:</b> Maternal blood does not flow directly into fetal veins; fetal hemoglobin does not prevent blood-type incompatibility.</li><li><b>C:</b> Some immune molecules (notably antibodies) can cross; blood type issues can still matter clinically.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Fetal Shunts and Postnatal Circulatory Transition</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box"><p>A neonate is evaluated shortly after delivery for a continuous cardiac murmur. Echocardiography demonstrates persistent flow between the pulmonary artery and the aorta. The clinician notes that before birth, the fetus relies on placental gas exchange rather than pulmonary gas exchange, and blood flow is routed to minimize exposure of the developing lungs and liver to high pressures.</p>
+
+<p>Reviewing the fetal circulation diagram, the clinician explains that one shunt routes blood from the right atrium to the left atrium, allowing incoming venous blood to reach systemic circulation without passing through the right ventricle and pulmonary circuit. A second shunt provides an alternate pathway for blood leaving the right ventricle to reach the aorta without traversing the pulmonary capillaries. A third shunt directs blood returning from the placenta toward the inferior vena cava, bypassing most hepatic circulation, although the liver still receives some flow via smaller systemic vessels.</p>
+
+<p>The clinician adds that after birth, pressure relationships between the left and right sides of the heart change, contributing to closure of fetal shunts. If closure is incomplete, abnormal mixing patterns can persist and may require intervention.</p></div>
+<div class="reasoning-box" id="p2-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Translate “pulmonary artery to aorta connection” into the named fetal shunt responsible.</li>
+  <li>Map each shunt to what it bypasses: right atrium to left atrium bypasses lungs; pulmonary artery to aorta bypasses lungs; umbilical vein to IVC bypasses liver.</li>
+  <li>Use birth transition logic: pressure reversal helps close shunts after lungs expand and resistance drops.</li>
+  <li>Pick answers that use the scenario evidence (murmur + echo findings) to identify the structure and consequence.</li>
+</ol></div>
+<div class="question" id="q19">
+  <b>19. The echocardiographic finding described most directly indicates failure of closure of which fetal structure?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. foramen ovale</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">B. ductus arteriosus</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. ductus venosus</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. umbilical vein</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> A persistent connection between the pulmonary artery and aorta corresponds to the ductus arteriosus, which normally closes after birth.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Foramen ovale connects the atria, not pulmonary artery to aorta.</li><li><b>C:</b> Ductus venosus bypasses the liver via the inferior vena cava.</li><li><b>D:</b> Umbilical vein connects placenta to fetus and is not the pulmonary artery–aorta shunt.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q20">
+  <b>20. Which pair of shunts described is most directly responsible for bypassing the lungs before birth?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. ductus venosus and umbilical arteries</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. ductus venosus and foramen ovale</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. foramen ovale and ductus arteriosus</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. ductus arteriosus and umbilical vein</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Foramen ovale diverts blood from right atrium to left atrium; ductus arteriosus diverts blood from pulmonary artery to aorta—both reduce flow through the fetal lungs.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Ductus venosus bypasses liver; umbilical arteries are vessels to placenta, not lung-bypass shunts.</li><li><b>B:</b> Only foramen ovale is lung bypass; ductus venosus is liver bypass.</li><li><b>D:</b> Umbilical vein returns oxygenated blood from placenta; it is not a lung-bypass shunt.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q21">
+  <b>21. Which change after birth best explains why closure of the atrial shunt becomes favored?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. The left side of the heart becomes higher pressure than the right side, promoting functional closure</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. The placenta continues to oxygenate blood, increasing right-sided pressure</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Umbilical arteries become oxygenated, raising pulmonary resistance</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Fetal hemoglobin is replaced immediately at birth, eliminating the need for shunts</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> After birth, pulmonary resistance drops and pulmonary venous return increases, raising left-sided pressures relative to right-sided pressures and promoting closure of the atrial shunt (foramen ovale).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Placental circulation ceases after birth, and right-sided pressures fall relative to left.</li><li><b>C:</b> Umbilical circulation is discontinued; pulmonary resistance falls rather than rises in normal transition.</li><li><b>D:</b> Hemoglobin switching is gradual and does not directly control immediate shunt closure.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Trimester Milestones, Prematurity, and Parturition</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box"><p>A prenatal education program follows three patients through pregnancy. Patient X is seen early in pregnancy when organ formation is underway; ultrasound later confirms that the embryo transitions to the fetal stage by the end of the eighth week. Patient Y reports feeling fetal movement during mid-pregnancy and notes a rapid increase in fetal size over the next several weeks. Patient Z is in late pregnancy; laboratory testing shows rising levels of maternal antibody transfer to the fetus, and the fetus is less active due to limited space.</p>
+
+<p>In an emergency scenario, Patient Y delivers at 24 weeks. The neonate survives with intensive care but develops complications involving breathing, feeding, and neurologic function. Clinicians explain that these problems reflect incomplete maturation rather than a single anatomic defect.</p>
+
+<p>During another delivery, nurses document a sequence in which the cervix thins and membranes rupture, followed by strong uterine contractions that deliver the fetus, and later expulsion of placental tissue. The obstetrics team discusses the roles of local lipid-derived mediators and a peptide hormone in coordinating the contraction pattern.</p></div>
+<div class="reasoning-box" id="p3-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Use timing clues to map trimester: early organogenesis (first), rapid growth/movement (second), antibody transfer peak + limited space (third).</li>
+  <li>For prematurity at 24 weeks, predict which systems are most affected based on “development not complete.”</li>
+  <li>For birth stages, match the described order to the standard three-phase sequence.</li>
+  <li>For contraction mediators, connect lipid-derived mediators and a peptide hormone to the named labor signals.</li>
+</ol></div>
+<div class="question" id="q22">
+  <b>22. Based on the program descriptions, Patient Z is most consistent with being in which trimester?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. first trimester</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. second trimester</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. perinatal period only</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. third trimester</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Late pregnancy is characterized by continued brain development, reduced fetal activity due to space limitations, and the highest levels of maternal antibody transfer near the ninth month.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> First trimester is dominated by early organ formation and transition to fetal stage by ~8 weeks.</li><li><b>B:</b> Second trimester is characterized by major growth and fetal movement with developing human features.</li><li><b>C:</b> The passage describes late gestation changes before birth, not only the perinatal window.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q23">
+  <b>23. The complications in the 24-week neonate most strongly support which inference?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Placental gas exchange fails by the second trimester in all pregnancies</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. Multiple organ systems may be immature at 24 weeks, with prominent respiratory, gastrointestinal, and nervous complications</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Fetal shunts are absent in premature infants, causing immediate liver failure</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Maternal antibodies cannot cross the placenta before birth</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The passage notes that survival at 24 weeks can occur but with severe complications, most apparent in respiratory, gastrointestinal, and nervous systems due to incomplete development.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Placental gas exchange remains crucial throughout pregnancy; it does not universally fail in the second trimester.</li><li><b>C:</b> Shunts exist in fetal life; prematurity does not imply their absence nor immediate liver failure as the dominant issue.</li><li><b>D:</b> Maternal antibodies can cross; transfer is highest late in pregnancy.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q24">
+  <b>24. Which option best matches the mediators and sequence described for vaginal birth in the passage?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Stage 1: fetus delivered; Stage 2: membranes rupture; Stage 3: placenta expelled; mediators: hCG and estrogen</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Stage 1: placenta expelled; Stage 2: fetus delivered; Stage 3: membranes rupture; mediators: TGF-beta and Shh</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Stage 1: cervix thins/rupture; Stage 2: placenta expelled; Stage 3: fetus delivered; mediators: insulin and glucagon</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Stage 1: cervix thins/rupture; Stage 2: fetus delivered; Stage 3: placenta expelled; mediators: prostaglandins and oxytocin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Parturition proceeds with cervical effacement and membrane rupture, then fetal delivery via strong contractions, then expulsion of placenta/cord (afterbirth). Contractions are coordinated by prostaglandins and oxytocin.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Order is incorrect and mediators are wrong for contraction coordination.</li><li><b>B:</b> Order is incorrect; TGF-beta and Shh are developmental morphogens, not labor mediators.</li><li><b>C:</b> Order is incorrect and insulin/glucagon are metabolic hormones, not primary labor signals.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

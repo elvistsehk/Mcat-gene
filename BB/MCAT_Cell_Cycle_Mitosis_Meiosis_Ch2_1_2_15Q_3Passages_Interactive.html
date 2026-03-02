@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Cell Cycle, Mitosis &amp; Meiosis (Ch. 2.1–2.2) (15Q + 3 Passages)</title>
+<style>
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+</style>
+<script>
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Biology — Cell Cycle, Mitosis &amp; Meiosis (Ch. 2.1–2.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A human somatic cell in G0 is best described as:</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Undergoing separation of sister chromatids</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Replicating DNA for an upcoming division</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Reducing chromosome number by half</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">D. Not actively preparing to divide and carrying out normal cellular functions</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> G0 is an offshoot of G1 in which cells are metabolically active but not progressing through the cell cycle toward division.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> DNA replication occurs in S phase, not G0.</li>
+<li><b>C:</b> Sister chromatids separate during anaphase of mitosis or anaphase II of meiosis.</li>
+<li><b>D:</b> Reduction of chromosome number occurs in meiosis I, not in G0.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A cell spends ~90% of its time in interphase. Which stages make up interphase?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. G1, M, and cytokinesis</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">B. G1, S, and G2</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. G0, S, and M</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. S, G2, and M</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Interphase comprises G1 (growth), S (DNA synthesis), and G2 (pre-mitotic checks).</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> G0 is a non-dividing state and M is mitosis; interphase excludes M.</li>
+<li><b>C:</b> M is not part of interphase.</li>
+<li><b>D:</b> M and cytokinesis occur during M stage, not interphase.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. A diploid human cell has completed S phase. Which statement is most accurate?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. It is now haploid because DNA was replicated</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">B. It still has 46 chromosomes, but each chromosome now consists of two sister chromatids (92 chromatids total)</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. It has 23 chromosomes because homologous pairs have separated</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. It now has 92 chromosomes because the DNA amount doubled</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Replication doubles DNA content and chromatids, but chromosome count (by centromeres) and ploidy remain 2n until homologs separate in meiosis I.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Chromosome count is defined by centromeres; sister chromatids remain joined, so chromosomes are still 46.</li>
+<li><b>C:</b> Ploidy does not change in S phase.</li>
+<li><b>D:</b> Homologous separation occurs in anaphase I of meiosis, not S phase.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. Which checkpoint is most directly described by the cell ‘deciding whether the condition of the DNA is good enough for synthesis’?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Metaphase checkpoint (spindle assembly)</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. S/G2 checkpoint</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. G1/S checkpoint (restriction point)</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. G2/M checkpoint</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> The G1/S checkpoint, also called the restriction point, controls entry into S phase and responds to DNA damage (notably via p53).</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> There is no canonical S/G2 checkpoint emphasized here; key checkpoints are G1/S and G2/M.</li>
+<li><b>C:</b> G2/M focuses on readiness for mitosis after DNA replication.</li>
+<li><b>D:</b> Spindle assembly is later and checks chromosome attachment during metaphase.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A tumor sample shows loss-of-function mutation in TP53. Which outcome is most consistent with this change?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Cyclin levels will never fluctuate during the cell cycle</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Homologous chromosomes will fail to undergo synapsis</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. The cell will be unable to replicate DNA in S phase</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">D. Cells with damaged DNA are more likely to proceed through the cell cycle without arrest and repair</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> p53 helps arrest the cell cycle at checkpoints (especially G1/S and also G2/M) when DNA is damaged; loss can allow mutation accumulation and cancer.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Cyclin oscillations can still occur; p53 is a checkpoint regulator, not the direct generator of cyclin cycling.</li>
+<li><b>C:</b> DNA replication machinery is not eliminated by TP53 mutation; the issue is quality control/repair.</li>
+<li><b>D:</b> Synapsis occurs in meiosis I and is not the direct role of p53.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. Cyclin-dependent kinases (CDKs) are activated most directly by:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Crossing over at chiasmata</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Increasing the number of centrioles</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Binding the correct cyclin to form a CDK–cyclin complex</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Dephosphorylating DNA polymerase</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> CDKs require stage-specific cyclins; the complex phosphorylates targets (including transcription factors) to drive progression.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> DNA polymerase regulation is not the defining activation mechanism for CDKs here.</li>
+<li><b>C:</b> Centriole duplication is a cell-cycle event but not the mechanism of CDK activation.</li>
+<li><b>D:</b> Crossing over is a meiotic recombination event, unrelated to CDK activation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. During prophase of mitosis, which event best enables spindle microtubules to access chromosomes?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Formation of chiasmata</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Replication of DNA</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Separation of homologous chromosomes</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. Dissolution of the nuclear envelope</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> In prophase, the nuclear membrane breaks down so spindle fibers can attach to kinetochores on chromosomes.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Chiasmata form during prophase I of meiosis, not mitotic prophase.</li>
+<li><b>C:</b> Homologous chromosome separation occurs in anaphase I of meiosis.</li>
+<li><b>D:</b> DNA replication occurs in S phase, before mitosis begins.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. A drug prevents microtubule depolymerization. Which mitotic phase is most directly impaired?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Telophase</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. G1</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. S phase</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Anaphase</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Anaphase requires shortening of kinetochore microtubules to pull sister chromatids to opposite poles; blocking depolymerization disrupts separation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> G1 is primarily growth and organelle synthesis, not microtubule-driven chromatid movement.</li>
+<li><b>C:</b> S phase is DNA replication, not spindle fiber shortening.</li>
+<li><b>D:</b> Telophase involves nuclear reformation and chromosome decondensation after separation has occurred.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. Which structure is the attachment site for spindle fibers on chromosomes?</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Kinetochore (protein complex at the centromere region)</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Ribosome</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Synaptonemal complex</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Nucleolus</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Kinetochore fibers attach to kinetochores at centromeres to move chromosomes during division.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Synaptonemal complex holds homologs together in prophase I of meiosis, not spindle attachment in mitosis.</li>
+<li><b>C:</b> The nucleolus makes rRNA; it is not a spindle attachment site.</li>
+<li><b>D:</b> Ribosomes translate mRNA; they do not attach spindle fibers to DNA.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. Which statement best distinguishes metaphase I of meiosis from metaphase of mitosis?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. In meiosis I, chromosomes are invisible; in mitosis, chromosomes are visible</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. In meiosis I, sister chromatids separate; in mitosis, homologous chromosomes separate</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. In meiosis I, homologous chromosomes (tetrads) align as pairs across from each other; in mitosis, individual chromosomes align with sister chromatids attached to opposite poles</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. In meiosis I, DNA is replicated; in mitosis, DNA is not replicated</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Meiosis I aligns homologous pairs (tetrads) so homologs segregate in anaphase I; mitosis aligns each chromosome so sister chromatids can separate in anaphase.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Sister chromatids separate in mitotic anaphase and meiosis II; homologs separate in meiosis I.</li>
+<li><b>C:</b> DNA replication occurs before both processes (S phase).</li>
+<li><b>D:</b> Chromosomes are condensed and visible during metaphase in both processes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. Crossing over most directly increases genetic diversity by:</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Recombining alleles between homologous chromosomes, potentially unlinking linked genes</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Producing identical sister chromatids for accurate mitosis</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Preventing independent assortment</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Doubling chromosome number in gametes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Crossing over occurs at chiasmata between homologous chromatids in prophase I, creating new allele combinations and reducing linkage.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Identical sister chromatids are produced in S phase; crossing over changes (some) chromatids rather than making them identical.</li>
+<li><b>C:</b> Meiosis reduces chromosome number; it does not double it in gametes.</li>
+<li><b>D:</b> Crossing over complements genetic variation; it does not prevent independent assortment.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. A human gamete produced after meiosis II is typically:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Haploid with 46 chromosomes due to DNA replication</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. Haploid with 23 chromosomes (n), each chromosome as a single chromatid</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Diploid with 46 chromosomes, each as two chromatids</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Diploid with 23 chromosomes due to reductional division</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> After meiosis II, sister chromatids have separated, yielding haploid cells with one chromatid per chromosome.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Diploid 46 with two chromatids describes a cell after S phase, not a gamete.</li>
+<li><b>C:</b> Haploid humans have 23 chromosomes, not 46.</li>
+<li><b>D:</b> Diploid with 23 chromosomes is internally inconsistent.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. Nondisjunction during anaphase I most directly causes which immediate problem in meiosis?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Centromeres split too early in prophase I</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Sister chromatids fail to replicate</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Cytokinesis fails only in meiosis II</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Homologous chromosomes fail to separate, producing daughter cells with abnormal chromosome numbers</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Anaphase I is when homologous chromosomes disjoin; failure produces n+1 and n−1 cells that can yield aneuploid gametes.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Replication occurs in S phase before meiosis begins.</li>
+<li><b>C:</b> Centromere splitting characterizes anaphase II/mitosis, not prophase I.</li>
+<li><b>D:</b> Cytokinesis failure is not the defining feature of nondisjunction.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. A student claims &#x27;a chromosome&#x27; always means two chromatids. Which correction is most accurate?</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Before S phase, a chromosome can be a single chromatid; after S phase, a chromosome consists of two sister chromatids joined at the centromere</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Chromosomes are always identical to homologous pairs</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Chromatids only appear after meiosis II</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Chromosomes only exist during metaphase</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The term chromosome can refer to one chromatid (pre-S) or the two-chromatid unit (post-S) as long as sister chromatids remain joined at one centromere.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Chromosomes exist throughout the cell cycle; visibility changes with condensation.</li>
+<li><b>C:</b> Homologous chromosomes are similar but not identical; sister chromatids are identical copies.</li>
+<li><b>D:</b> Chromatids exist after DNA replication (S phase), well before meiosis II.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. Which statement best explains why meiosis I is called &#x27;reductional division&#x27;?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. It halves DNA content by separating sister chromatids</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. It halves the chromosome number by separating homologous chromosome pairs, converting 2n to n</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. It reduces mutation rate by activating p53</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. It reduces cell size by eliminating organelles</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Meiosis I separates homologous chromosomes, reducing ploidy from diploid to haploid.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Separating sister chromatids occurs in meiosis II (equational), not meiosis I.</li>
+<li><b>C:</b> p53 checkpoint control is not what defines reductional division.</li>
+<li><b>D:</b> Organelle distribution happens via cytokinesis and does not define reductional division.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1: Flow Cytometry and Checkpoint Failure -->
+<div class="passage-header">
+  <span>Passage 1: Flow Cytometry and Checkpoint Failure</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A researcher uses flow cytometry to measure DNA content in a population of human epithelial cells. Under normal conditions, most cells cluster at a DNA-content peak labeled 2C, with a smaller group spanning between 2C and 4C and an additional cluster at 4C.</p>
+  <p>After exposure to a DNA-damaging chemical, the researcher expects cell-cycle arrest. Instead, the treated population shows a large increase in cells that remain between 2C and 4C, and a second experiment reveals a loss-of-function mutation in TP53.</p>
+  <p>Microscopy of the treated culture also shows many mitotic figures with condensed chromosomes, but several cells display missegregation events and later form a rapidly growing mass when implanted into mice.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate DNA-content peaks: <b>2C ≈ G1/G0</b>, <b>between 2C–4C ≈ S</b>, <b>4C ≈ G2/M</b>.</li>
+    <li>Connect DNA damage to checkpoints: damage should trigger <b>G1/S arrest</b> (restriction point) and sometimes <b>G2/M</b>, largely via <b>p53</b>.</li>
+    <li>If cells accumulate mutations and still enter division, infer <b>checkpoint failure</b> and higher cancer risk.</li>
+    <li>Use the experimental observations (flow cytometry + TP53 mutation + tumor growth) to choose the most causal explanation.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. In the untreated population, the cells spanning DNA content between 2C and 4C are most likely in which stage?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. S phase</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. G2</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. G1</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. M phase</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> DNA content increases from 2C to 4C during S phase as replication proceeds.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> G1 cells have 2C DNA content before replication.</li>
+<li><b>C:</b> G2 cells have completed replication and are at ~4C.</li>
+<li><b>D:</b> M phase cells generally remain ~4C until cytokinesis; the defining feature here is intermediate DNA content during replication.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Why would a TP53 loss-of-function mutation best explain the observed failure to halt the cycle after DNA damage?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. p53 is required for DNA polymerase activity in S phase, so loss forces more replication</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">B. p53 normally arrests the cycle at checkpoints to allow repair; without it, damaged cells can enter S phase and divide</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. p53 is the enzyme that cross-links peptidoglycan, so loss weakens the cell wall</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. p53 is the structural protein of kinetochores, so loss prevents spindle attachment</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> p53 is a key checkpoint regulator (notably at G1/S and also G2/M); loss reduces arrest/repair and permits mutation accumulation, promoting cancer.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> DNA polymerase can function without p53; p53’s role is quality control, not the polymerase itself.</li>
+<li><b>C:</b> Kinetochores are protein complexes at centromeres; p53 is not their structural component.</li>
+<li><b>D:</b> Peptidoglycan cell walls are bacterial, not human epithelial cell structures.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. The rapid tumor formation after implantation is most directly supported by which chain of reasoning?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Cells entered G0 permanently, which increased division rate</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Crossing over during mitosis created new allele combinations that drove cancer</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Checkpoint failure allowed damaged cells to continue dividing, accumulating mutations that enabled uncontrolled growth</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. S-phase arrest prevented replication errors, so cells became more stable and proliferative</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Without proper checkpoint arrest, DNA damage can persist and compound, increasing the probability of oncogenic mutations and uncontrolled proliferation.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Arrest would reduce propagation of errors rather than promote tumorigenesis.</li>
+<li><b>C:</b> Crossing over is a meiosis I event, not a normal feature of mitosis in somatic cells.</li>
+<li><b>D:</b> G0 is a non-dividing state; permanent entry would decrease, not increase, division.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2: A Genetic Counselor’s Case—Where Did the Extra Chromosome Come From? -->
+<div class="passage-header">
+  <span>Passage 2: A Genetic Counselor’s Case—Where Did the Extra Chromosome Come From?</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A couple seeks counseling after a pregnancy is diagnosed with trisomy 21. The counselor explains that aneuploidy can arise when chromosomes fail to separate properly during meiosis. To help the couple understand, the counselor uses a simplified model: a germ cell begins meiosis as a diploid cell with homologous pairs, replicates its DNA once, and then undergoes two divisions.</p>
+  <p>Genetic testing of the fetus shows that both copies of chromosome 21 inherited from the mother are not identical; at several loci, the fetus carries two different maternal alleles on chromosome 21. The father contributes a normal single copy.</p>
+  <p>The counselor also notes that crossing over can occur during prophase I, potentially exchanging segments between maternal and paternal homologs before homologs separate in anaphase I.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Start with what 'trisomy' implies: the zygote received <b>two copies from one parent</b> and one from the other.</li>
+    <li>Use allele patterns to locate the error: two <b>different</b> maternal alleles suggests both <b>homologs</b> traveled together (often <b>anaphase I nondisjunction</b>).</li>
+    <li>If the two maternal copies were identical, that would more strongly suggest <b>meiosis II</b> nondisjunction (failure of sister chromatids to separate).</li>
+    <li>Remember timing: DNA replicates once (S phase), then meiosis I separates homologs, meiosis II separates sister chromatids.</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. The observation of two different maternal alleles on chromosome 21 most strongly suggests nondisjunction occurred during:</b>
+  <div class="choice" onclick="selectChoice('q19', this, true)">A. Anaphase I of meiosis (failure of homologous chromosomes to separate)</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Mitosis in a somatic cell after fertilization</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Prophase I (failure of synapsis)</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Anaphase II of meiosis (failure of sister chromatids to separate)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> If homologs fail to separate in anaphase I, the gamete can receive both maternal homologs, which are similar but not identical and thus can carry different alleles.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Synapsis failure affects crossing over/alignment but does not directly explain two different maternal homologs in one gamete.</li>
+<li><b>C:</b> Anaphase II nondisjunction tends to produce two identical copies (sister chromatids) from one homolog, more often yielding identical alleles at many loci.</li>
+<li><b>D:</b> Post-zygotic mitotic nondisjunction can cause mosaicism; the prompt emphasizes two maternal copies inherited at conception.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. If nondisjunction had instead occurred in anaphase II, the counselor would more likely expect the two maternal chromosome 21 copies to be:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Completely unrelated because they come from different species</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">B. More genetically similar (often identical at many loci) because they would be sister chromatids from the same homolog</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Absent because meiosis II eliminates chromosomes</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Always opposite in allele identity because crossing over is impossible</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Meiosis II separates sister chromatids; failure can send both sister chromatids of one homolog into the same gamete, making the two copies highly similar.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> They are still maternal chromosomes, not from another species.</li>
+<li><b>C:</b> Crossing over can occur earlier in prophase I; sister chromatids can still be very similar even if not perfectly identical.</li>
+<li><b>D:</b> Meiosis II does not eliminate chromosomes; it separates chromatids to produce haploid gametes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. Which event must occur before either meiosis I or meiosis II can distribute chromosomes to daughter cells?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Formation of a cleavage furrow by actin microfilaments</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Separation of sister chromatids in anaphase</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">C. DNA replication during S phase to create sister chromatids</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Integration of viral DNA into the host genome</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Both meiosis and mitosis require a prior replication step so chromosomes consist of sister chromatids before segregation events.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Separation is a later step and depends on prior replication/attachment.</li>
+<li><b>C:</b> Cleavage furrow is cytokinesis; it does not create chromatids/chromosomes to segregate.</li>
+<li><b>D:</b> Viral integration is unrelated to meiosis mechanics.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3: Mapping Genes and Interpreting Recombination -->
+<div class="passage-header">
+  <span>Passage 3: Mapping Genes and Interpreting Recombination</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>In a model organism, a student studies two genes, A and B, located on the same chromosome. The student performs a testcross and counts offspring phenotypes to estimate how often recombination separates alleles that were originally inherited together (linked).</p>
+  <p>In one experiment, the student observes 8% recombinant offspring. In a second experiment using genes C and D, the recombinant frequency is 35%. The student learns that recombination frequency can be used to infer the relative distance between genes and is reported in centimorgans.</p>
+  <p>The instructor emphasizes that crossing over occurs during prophase I of meiosis between homologous chromosomes within tetrads, and that the farther apart two loci are, the more likely a crossover will occur between them.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Recognize what recombination frequency measures: how often a crossover event <b>separates linked alleles</b>.</li>
+    <li>Convert to distance logic: <b>higher recombination %</b> generally implies <b>greater physical distance</b> between loci (up to a practical limit).</li>
+    <li>Keep timing straight: crossing over occurs in <b>prophase I</b> between <b>homologous</b> chromosomes, not between sister chromatids.</li>
+    <li>Use these principles to infer which gene pair is closer and to predict effects of changing locus distance.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. Based on the data, which gene pair is most likely farther apart on the chromosome?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Genes A and B</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Neither pair is on the same chromosome</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Both pairs are equally distant because recombination is random</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. Genes C and D</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> A higher recombinant frequency (35% vs 8%) indicates a greater likelihood of crossing over between the loci, implying they are farther apart.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Lower recombination suggests closer linkage (genes A and B are likely closer).</li>
+<li><b>C:</b> While crossover events are probabilistic, recombination frequency systematically increases with distance.</li>
+<li><b>D:</b> The passage states the genes are on the same chromosome for each pair.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. Which statement best explains why crossing over does not occur between sister chromatids of the same chromosome in the way that increases diversity?</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Sister chromatids are (nearly) identical copies, so exchanging segments usually does not create new allele combinations</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Sister chromatids are in different cells during prophase I</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Sister chromatids cannot attach to microtubules</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Sister chromatids are made of RNA, not DNA</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Crossing over that increases diversity occurs between homologs carrying different alleles; sister chromatids are copies of the same DNA sequence.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Sister chromatids are in the same cell in prophase I; homologs synapse in tetrads.</li>
+<li><b>C:</b> Chromatids are DNA, not RNA.</li>
+<li><b>D:</b> Microtubule attachment relates to segregation, not recombination logic.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. If a third gene E is found to have a recombination frequency of 2% with gene A, the best inference is that E is:</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Necessarily located between C and D</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. On a different chromosome from A</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. Very close to A on the chromosome</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. A mitochondrial gene</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> A very low recombination frequency suggests strong linkage and close physical proximity on the chromosome.</p>
+<p><b>Why the other choices are not the best fit:</b></p>
+<ul>
+<li><b>B:</b> Different chromosomes tend toward ~50% recombination (independent assortment), not 2%.</li>
+<li><b>C:</b> No information links E to the C–D interval.</li>
+<li><b>D:</b> Mitochondrial inheritance is unrelated to the described meiotic recombination mapping.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

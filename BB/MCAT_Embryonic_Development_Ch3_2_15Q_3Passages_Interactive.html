@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Biology — Embryonic Development (Ch. 3.2)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Biology — Embryonic Development (Ch. 3.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+<div class="question" id="q1">
+  <b>1. A cell in culture has begun expressing early muscle-lineage markers, but if placed in a different microenvironment it can still become a neuron. This best describes a cell that is in:</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. specification</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. determination</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. terminal differentiation</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. necrosis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> <b>Specification</b> is a <b>reversible</b> early designation toward a fate; a specified cell can still change lineage if moved to a new context.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> <b>Determination</b> is <b>irreversible commitment</b>; a determined cell would not switch to neuron simply due to relocation.</li><li><b>C:</b> Terminal differentiation means the cell already adopted final structure/biochemistry of the lineage.</li><li><b>D:</b> Necrosis is injury-related cell death, not fate designation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q2">
+  <b>2. A developmental defect prevents a committed progenitor from producing the proteins and morphology needed for its eventual role. The progenitor was committed, but did not complete the process of:</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. specification</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. cleavage</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">C. differentiation</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. autocrine signaling</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> <b>Determination</b> commits a cell to a lineage, but <b>differentiation</b> is when it actually acquires the <b>structure, function, and biochemistry</b> of that cell type.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Specification is reversible and earlier than commitment.</li><li><b>B:</b> Cleavage is early embryonic mitosis and not the step that produces mature cell features.</li><li><b>D:</b> Autocrine is one signaling mode; it doesn’t define acquiring lineage-specific machinery.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q3">
+  <b>3. During cleavage, asymmetric distribution of maternal mRNA and proteins between daughter cells can cause those cells to follow different developmental pathways. This is an example of determination driven primarily by:</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. endocrine hormones traveling through blood</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">B. intrinsic cytoplasmic determinants</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. juxtacrine receptor–ligand contact</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. telomerase activation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> If fate depends on which <b>preexisting mRNA/protein</b> a daughter cell inherits, determination is driven by <b>intrinsic cytoplasmic determinants</b> rather than signals from other tissues.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Endocrine signaling is long-range and not the typical mechanism for early cleavage asymmetry.</li><li><b>C:</b> Juxtacrine signaling involves adjacent-cell contact, not inherited maternal factors.</li><li><b>D:</b> Telomerase relates to senescence and proliferative capacity, not lineage commitment here.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q4">
+  <b>4. A stem cell can generate neurons, astrocytes, and oligodendrocytes, but cannot generate trophoblast or hepatocytes. This stem cell is best described as:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. totipotent</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. pluripotent</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. unipotent</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. multipotent</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> <b>Multipotent</b> stem cells can form <b>multiple related cell types within a specific lineage</b> (e.g., neural or hematopoietic), but not all tissues of the body.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Totipotent cells can form <b>all</b> cell types, including extraembryonic/placental structures.</li><li><b>B:</b> Pluripotent cells can form <b>any body cell</b> (all three germ layers) but not placental structures; neurons and hepatocytes would both be possible if truly pluripotent.</li><li><b>C:</b> Unipotent cells generate only one cell type.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q5">
+  <b>5. Which statement most accurately captures how potency changes during development?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Potency increases as cells differentiate because specialized cells have more functions.</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Totipotent cells appear only after formation of the three germ layers.</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">C. Potency generally decreases as development progresses from totipotent → pluripotent → multipotent.</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Pluripotent cells can form placental tissues, but multipotent cells cannot.</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> As cells become more specialized, their developmental options narrow; potency decreases from <b>totipotent</b> (includes placental + fetal) to <b>pluripotent</b> (any fetal cell) to <b>multipotent</b> (multiple within a lineage).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Specialization is associated with <b>loss</b> of developmental potential, not gain.</li><li><b>B:</b> Totipotency is earliest; later stages show reduced potency.</li><li><b>D:</b> Totipotent (not pluripotent) includes placental structures.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q6">
+  <b>6. A lab culture contains embryonic cells that can become any fetal tissue and can also contribute to chorion/placenta-like structures in a chimera assay. These cells are most consistent with being:</b>
+  <div class="choice" onclick="selectChoice('q6', this, true)">A. totipotent</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. pluripotent</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. multipotent</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. fully differentiated</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> <b>Totipotent</b> cells can form <b>all cell types</b>, including <b>extraembryonic (placental)</b> tissues as well as the embryo proper.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Pluripotent cells cannot form placental structures.</li><li><b>C:</b> Multipotent cells are restricted to a narrower lineage set.</li><li><b>D:</b> Fully differentiated cells lack broad developmental potential.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q7">
+  <b>7. A growth factor released by a developing tissue diffuses only a short distance and patterns neighboring cells in the same region. This is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. endocrine signaling</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. paracrine signaling</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. autocrine signaling</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. necrosis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> <b>Paracrine</b> signals act on <b>nearby local cells</b> after short-range diffusion.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Endocrine signaling travels through the bloodstream to distant targets.</li><li><b>C:</b> Autocrine signaling acts back on the same cell that released the signal.</li><li><b>D:</b> Necrosis is injury-related cell death, not a communication mode.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q8">
+  <b>8. A transmembrane ligand on one embryonic cell binds a receptor on an adjacent cell, triggering fate changes without a diffusible intermediate. This is most consistent with:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. autocrine signaling</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. endocrine signaling</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. juxtacrine signaling</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. paracrine signaling</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> <b>Juxtacrine</b> signaling typically requires <b>direct cell–cell contact</b> (membrane-bound ligands/receptors) and usually does not rely on diffusion.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Autocrine involves a secreted signal acting on the same cell.</li><li><b>B:</b> Endocrine involves long-distance travel through blood.</li><li><b>D:</b> Paracrine involves diffusion through local extracellular space.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q9">
+  <b>9. A hormone produced by a developing endocrine organ travels through the bloodstream and influences differentiation in a distant target tissue. This is an example of:</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. paracrine signaling</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. juxtacrine signaling</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. autocrine signaling</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">D. endocrine signaling</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> <b>Endocrine</b> signals are <b>secreted hormones</b> that travel through the <b>bloodstream</b> to distant targets.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Paracrine acts locally.</li><li><b>B:</b> Juxtacrine requires direct contact.</li><li><b>C:</b> Autocrine acts on the secreting cell itself.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q10">
+  <b>10. A responder cell fails to change fate despite exposure to a morphogen known to induce that fate in other contexts. The most direct explanation is that the responder cell lacks:</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. competence to respond to the inducer</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. telomeres</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. a fertilization membrane</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. the ability to undergo necrosis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> To be induced, a responder must be <b>competent</b>—it must have the required receptors/signaling machinery to respond to that inducer.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Telomeres relate to replicative lifespan, not immediate signaling responsiveness.</li><li><b>C:</b> Fertilization membrane is an early block to polyspermy, unrelated to later induction competence.</li><li><b>D:</b> Necrosis is injury-related death and not required for fate change.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q11">
+  <b>11. A patterning molecule is secreted from a point source and forms a concentration gradient. Cells closer to the source adopt fate X, while distant cells adopt fate Y. The signaling molecule is best described as a:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. telomerase</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. morphogen</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. apoptotic bleb</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. gap junction</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> <b>Morphogens</b> are diffusible molecules that can drive determination/differentiation in a <b>concentration-dependent</b> manner, often via gradients.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Telomerase is a reverse transcriptase that extends telomeres.</li><li><b>C:</b> Apoptotic blebs are membrane-bound protrusions during apoptosis.</li><li><b>D:</b> Gap junctions allow direct cytoplasmic exchange between adjacent cells; they are not defined by gradient patterning.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q12">
+  <b>12. A developmental biologist describes a process in which the lens placode differentiates and then triggers the optic vesicle to further develop into an optic cup, which then further influences lens/cornea formation. This best exemplifies:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. endocrine feedback inhibition</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. determinate cleavage</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. reciprocal development</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. necrosis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> <b>Reciprocal development</b> occurs when two tissues <b>mutually induce</b> each other’s differentiation in a back-and-forth sequence (classic example: eye development).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Endocrine feedback involves hormones and systemic regulation, not local tissue–tissue induction loops.</li><li><b>B:</b> Determinate cleavage is early fate commitment of blastomeres, not tissue interactions.</li><li><b>D:</b> Necrosis is injury-related death, not coordinated development.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q13">
+  <b>13. During apoptosis, a key reason inflammation is limited compared with necrosis is that apoptosis typically involves:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. loss of membrane integrity and leakage of intracellular contents</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. membrane-bound blebs and apoptotic bodies that are phagocytosed</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. rapid swelling and lysis of the cell</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. release of damage-associated molecular patterns as the primary feature</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> In <b>apoptosis</b>, the cell packages contents into <b>membrane-bound blebs/bodies</b> for cleanup, limiting leakage and thus reducing inflammation compared with necrosis.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Leakage of contents is typical of <b>necrosis</b> and drives inflammation.</li><li><b>C:</b> Swelling/lysis is necrosis-like, not apoptosis.</li><li><b>D:</b> DAMP release is more characteristic of necrosis and injury.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q14">
+  <b>14. An embryonic structure is initially webbed, but later the tissue between digits disappears while the digits remain intact. The most likely mechanism is:</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. programmed cell death via apoptosis</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. necrosis due to ischemic injury</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. telomerase-mediated immortalization</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. endocrine signaling to distant tissues</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Digit separation is a classic example of <b>apoptosis</b> sculpting anatomy: interdigital cells undergo programmed death while digits persist.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Necrosis is uncontrolled injury-related death and would be more likely to damage surrounding tissues/inflame.</li><li><b>C:</b> Telomerase affects replicative lifespan, not selective removal of webbing.</li><li><b>D:</b> Endocrine signaling is long-range and not the key mechanism for locally removing interdigital tissue.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q15">
+  <b>15. A normal somatic cell line stops dividing after ~50 divisions in vitro. Which molecular change best explains this replicative limit?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. progressive DNA hypermethylation of morphogen genes</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. increased acrosomal enzyme activity</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. telomere shortening leading to cellular senescence</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. failure of blastulation to form a blastocoel</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Replicative senescence is linked to <b>telomere shortening</b> over successive DNA replications; once critically short, the cell cycle halts.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Epigenetic changes can occur with aging, but the classic division limit is tied to telomeres.</li><li><b>B:</b> Acrosomal enzymes are sperm-specific and unrelated to somatic division limits.</li><li><b>D:</b> Blastulation is an embryonic stage and not relevant to cultured somatic cell senescence.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+<div class="passage-header">
+  <span>Passage 1: Stem Cells, Potency, and Transplant Outcomes</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+
+<div class="passage-box"><p>A 29-year-old patient suffers a thoracic spinal cord injury. A clinical trial compares two strategies for cell-based repair. In Arm 1, researchers derive cells from a donated <b>inner cell mass</b> and expand them in culture before transplantation. In Arm 2, clinicians harvest the patient’s own adipose-derived stem cells and expose them to a defined cocktail of transcription factors to increase developmental potential prior to directing them toward a neural lineage.</p>
+
+<p>Six months after transplantation, Arm 1 shows occasional masses near the injection site composed of mixed tissue types (including cartilage-like and gland-like structures). Arm 2 shows fewer immune complications and no masses, but the functional improvement is modest and varies widely between individuals. The investigators note that directing cells to the “correct” tissue is challenging because normal neural tissue depends on coordinated interactions among multiple specialized cell types.</p>
+
+<p>Follow-up immunologic testing reveals that some Arm 1 participants developed robust T-cell responses to the transplanted cells. In contrast, Arm 2 participants show minimal evidence of graft rejection.</p></div>
+
+<div class="reasoning-box" id="p1-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Identify what each arm is starting with: inner cell mass → typically higher potency; patient adipose stem cells → lower potency unless reprogrammed.</li>
+  <li>Use outcomes as clues: mixed tissue masses suggest <b>pluripotent</b>-like behavior (teratoma risk) and incomplete control of differentiation.</li>
+  <li>Connect immune findings: genetically mismatched donor cells → higher rejection risk; autologous (self-derived) cells → lower risk.</li>
+  <li>Answer by linking <b>potency</b>, <b>control of differentiation</b>, and <b>immunology</b> to the scenario evidence.</li>
+</ol></div>
+
+<div class="question" id="q16">
+  <b>16. The mixed tissue masses observed in Arm 1 are most consistent with transplantation of cells that retained which potency level at the time of implantation?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. multipotent</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. unipotent</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. fully differentiated</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. pluripotent</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Masses containing multiple tissue types suggest uncontrolled differentiation typical of highly potent stem cells; <b>pluripotent</b> cells can generate diverse derivatives from all three germ layers and can form teratoma-like masses if not properly directed.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Multipotent cells are more restricted and are less likely to generate many unrelated tissue types.</li><li><b>B:</b> Unipotent cells produce one lineage and would not generate mixed tissues.</li><li><b>C:</b> Fully differentiated cells should not spontaneously generate multiple tissue types.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q17">
+  <b>17. Which observation from the passage best explains why Arm 2 had fewer immune complications than Arm 1?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Arm 2 used stem cells harvested from the same patient who received the transplant</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Arm 2 cells were exposed to transcription factors</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Arm 2 cells targeted neural tissue rather than cartilage</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Arm 2 cells were implanted after six months in culture</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Arm 2 is <b>autologous</b> (self-derived), so the cells share the patient’s genetic makeup and are less likely to trigger rejection.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Reprogramming can change potency, but does not inherently remove alloimmune mismatch if the cells are from a donor.</li><li><b>C:</b> Tissue target does not determine compatibility; genetic mismatch does.</li><li><b>D:</b> Culture duration alone does not explain reduced immune response.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q18">
+  <b>18. Arm 2’s modest and variable functional improvement is most consistent with which challenge highlighted by the investigators?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Multipotent stem cells can form placental tissues and therefore distract from neural repair</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Complex organs require coordinated differentiation of multiple specialized cell types with distinct signals</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Autocrine signaling cannot occur in adult tissues</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Telomerase is absent in all adult stem cells, preventing any repair</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The passage notes that many organs (including neural tissue) require <b>multiple cell types</b> and <b>different signals</b>. Achieving correct organization and differentiation is difficult, producing variable outcomes.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Placental tissue formation is a totipotency feature, not a typical multipotent adult stem-cell issue.</li><li><b>C:</b> Autocrine signaling can occur in many adult tissues; it is not “impossible.”</li><li><b>D:</b> Some adult stem cells can proliferate and repair tissue; telomerase biology is not presented as the limiting factor here.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Eye Development, Competence, and Induction Timing</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+
+<div class="passage-box"><p>Researchers study early vertebrate eye development using microsurgery. In normal embryos, lateral outpocketings from the brain form <b>optic vesicles</b> that contact the overlying head ectoderm. Shortly after contact, the ectoderm thickens into a <b>lens placode</b>. The team then performs two transplantation experiments using fluorescently labeled ectoderm.</p>
+
+<p><b>Experiment 1:</b> After optic vesicles have already grown out and touched head ectoderm, the labeled ectoderm is transplanted to the trunk. Days later, a lens-like structure develops in the trunk at the graft site.</p>
+
+<p><b>Experiment 2:</b> Before optic vesicle outgrowth, the same region of head ectoderm is transplanted to the trunk. In this case, no lens-like structure develops in the trunk.</p>
+
+<p>The researchers suspect that the optic vesicle provides a local signal required for lens formation and that the ectoderm’s ability to respond changes over developmental time. They also observe that once a lens placode forms, the optic vesicle reorganizes into an optic cup more reliably, suggesting mutual tissue–tissue influence.</p></div>
+
+<div class="reasoning-box" id="p2-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Compare the two experiments: same ectoderm, different <b>timing</b> → different outcome.</li>
+  <li>Interpret timing as changes in <b>competence</b> (ability to respond) and/or prior exposure to an <b>inducer</b>.</li>
+  <li>Lens formation at the trunk only after prior contact implies the ectoderm was already <b>specified</b> toward lens fate.</li>
+  <li>Mutual influence between lens placode and optic vesicle points to <b>reciprocal development</b>.</li>
+</ol></div>
+
+<div class="question" id="q19">
+  <b>19. Which interpretation best explains why a lens-like structure forms in the trunk only in Experiment 1?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Trunk ectoderm is totipotent only after optic vesicle contact</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. The optic vesicle secretes endocrine hormones that circulate to the trunk</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. After optic vesicle contact, the ectoderm becomes specified/biased toward lens fate and retains that bias after transplantation</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Juxtacrine signaling requires blood flow to the trunk</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Experiment 1 suggests the ectoderm had already received an <b>inductive cue</b> (or became <b>specified</b>) after optic vesicle contact, so it can proceed toward lens development even after relocation.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Totipotency is not the relevant concept for ectodermal lens formation.</li><li><b>B:</b> The described interaction is local; endocrine signaling is not required to explain the effect.</li><li><b>D:</b> Juxtacrine implies direct contact, but the key difference here is prior exposure/competence, not blood flow.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q20">
+  <b>20. The failure to form a lens in Experiment 2 most strongly supports which conclusion?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. The transplanted ectoderm underwent necrosis in the trunk</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. The optic vesicle signal acts by autocrine signaling on itself</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Lens formation requires telomerase to extend telomeres in ectoderm</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. The ectoderm was not yet competent or had not yet been exposed to the inducing signal at the time of transplantation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Before optic vesicle outgrowth, the ectoderm likely lacks the necessary <b>inductive exposure</b> and/or <b>competence</b> to respond, so transplantation yields no lens.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> There is no evidence of cell death; the key variable is timing and signaling.</li><li><b>B:</b> Autocrine signaling on the optic vesicle does not explain lens development from ectoderm.</li><li><b>C:</b> Telomerase is unrelated to the specific lens induction logic presented.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q21">
+  <b>21. The observation that lens placode formation makes optic cup formation more reliable is best explained by:</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. reciprocal development between lens-forming ectoderm and the optic vesicle</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. determinate cleavage in the optic vesicle cells</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. endocrine signaling from the placenta</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. necrotic signaling that triggers inflammation-driven remodeling</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The passage describes <b>mutual influence</b>: optic vesicle induces lens placode, and the developing lens tissue in turn influences optic vesicle differentiation into optic cup—classic <b>reciprocal development</b>.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Determinate cleavage concerns early embryonic blastomeres, not local tissue induction.</li><li><b>C:</b> Placental endocrine signaling is not relevant to early eye patterning in this scenario.</li><li><b>D:</b> Necrosis/inflammation is not the mechanism of organized organ development described.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Injury Responses, Regeneration, and Cellular Aging</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+
+<div class="passage-box"><p>A 54-year-old patient experiences a myocardial infarction (heart attack) followed by reduced contractility in the affected region. Imaging months later shows a noncontractile scar. In a separate patient, a large portion of liver tissue is surgically removed; within weeks, liver mass and function largely recover. A third patient suffers renal tubular injury after exposure to a nephrotoxic drug; kidney function partially improves, but repeated exposure leads to progressive failure.</p>
+
+<p>In a parallel animal study, investigators compare wound healing in salamanders versus humans. Salamanders regrow amputated limbs with restored bone, muscle, and nerves, while humans typically replace severe injuries with fibrotic scar tissue. Tissue samples from salamanders show clusters of undifferentiated cells that proliferate and migrate to the injury site.</p>
+
+<p>At the cellular level, cultured fibroblasts from older donors stop dividing earlier than fibroblasts from younger donors. In contrast, a tumor cell line divides indefinitely and shows high activity of an enzyme that extends chromosome ends. When investigators induce traumatic membrane rupture in cells, the surrounding tissue shows marked inflammation; when they trigger a controlled internal “self-destruct” program, inflammation is minimal.</p></div>
+
+<div class="reasoning-box" id="p3-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Match tissue outcomes to regeneration capacity: heart (low) → scar; liver (high) → regrowth; kidney (moderate but overwhelmable).</li>
+  <li>Use inflammation clues: membrane rupture/leakage → <b>necrosis</b>; controlled packaging into bodies → <b>apoptosis</b>.</li>
+  <li>Connect indefinite division to <b>telomerase</b> maintaining <b>telomeres</b>, preventing senescence.</li>
+  <li>For salamanders, infer <b>complete regeneration</b> supported by retained stem-cell clusters.</li>
+</ol></div>
+
+<div class="question" id="q22">
+  <b>22. Which pairing is most consistent with the passage’s description of inflammation differences between two types of cell death?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Apoptosis → membrane rupture and leakage; Necrosis → packaging into apoptotic bodies</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Apoptosis → membrane-bound blebs/apoptotic bodies; Necrosis → leakage of intracellular contents that provokes inflammation</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Apoptosis → always triggers strong immune rejection; Necrosis → always silent</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Apoptosis → caused only by physical trauma; Necrosis → preprogrammed during development</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> <b>Apoptosis</b> is programmed and packages contents into <b>membrane-bound blebs/bodies</b> for clearance, limiting inflammation. <b>Necrosis</b> involves injury, loss of membrane integrity, and <b>leakage</b> that can trigger inflammation/immune response.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This reverses the core features.</li><li><b>C:</b> Apoptosis is generally immunologically quiet; necrosis often provokes inflammation.</li><li><b>D:</b> Apoptosis can be preprogrammed; necrosis is injury-related, not the other way around.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q23">
+  <b>23. The tumor cell line’s ability to divide indefinitely is best explained by high activity of which enzyme mentioned in the passage?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. DNA ligase</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. acrosomal protease</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. RNA polymerase II</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">D. telomerase (a reverse transcriptase)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> <b>Telomerase</b> is a <b>reverse transcriptase</b> that extends chromosome ends (telomeres), preventing critical shortening and enabling prolonged division—common in germ, fetal, and tumor cells.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> DNA ligase seals nicks but does not solve telomere shortening.</li><li><b>B:</b> Acrosomal enzymes are sperm-specific.</li><li><b>C:</b> RNA polymerase II transcribes mRNA but does not maintain telomeres.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q24">
+  <b>24. Which inference from the passage best supports that salamanders undergo complete regeneration rather than incomplete regeneration?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. They form scars after injury, which stabilizes tissue quickly</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. They rely primarily on necrosis to remove damaged cells</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. Lost tissues are replaced with identical tissues supported by retained clusters of stem cells that migrate to the injury site</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. They have low regenerative capacity in liver but high capacity in heart</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> The passage describes salamanders regrowing limbs with restored bone/muscle/nerves and retaining stem-cell clusters that proliferate and migrate—features of <b>complete regeneration</b> (replacement with identical tissue).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Scar formation is characteristic of <b>incomplete</b> regeneration common in humans.</li><li><b>B:</b> Necrosis is not the hallmark mechanism of organized limb regrowth.</li><li><b>D:</b> This contradicts the described pattern and is not supported.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>
