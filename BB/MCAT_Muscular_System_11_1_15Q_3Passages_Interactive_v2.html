@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chapter 11.1 — Muscular System</title>
+<style>
+
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+
+</style>
+</head>
+<body>
+  <div class="main-header">
+    <div class="header-title">Chapter 11.1 — Muscular System</div>
+    <button class="reset-btn" onclick="resetAll()">Reset all</button>
+  </div>
+
+  <div class="container">
+
+  <div class="section-label">Standalone Questions (15)</div>
+
+
+<div class="question" id="q1">
+  <b>1. A muscle sample shows striations under the microscope, is multinucleated, and is under voluntary control. Which innervation pattern best matches this tissue?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Autonomic (sympathetic) innervation</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Autonomic (parasympathetic) innervation</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Somatic motor innervation</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. No innervation required because contraction is purely myogenic</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>Voluntary, striated, multinucleated muscle is skeletal muscle, which is controlled by somatic motor neurons.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Autonomic sympathetic control primarily regulates involuntary tissues like smooth muscle and cardiac muscle.</li>
+<li>B. Parasympathetic output modulates involuntary functions; it does not directly control voluntary skeletal contraction.</li>
+<li>D. Skeletal muscle requires motor neuron input at the neuromuscular junction to contract.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q2">
+  <b>2. A sprinter wants to improve short, powerful bursts of activity. Compared with slow-twitch fibers, the fibers most useful for this goal typically have:</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Higher myoglobin content and a greater reliance on aerobic metabolism</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Greater capillary density and higher oxidative phosphorylation capacity</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">C. Lower myoglobin content and faster fatigue onset</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. More mitochondria and slower fatigue onset</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>Fast-twitch (white) fibers have less myoglobin, rely more on anaerobic pathways, generate force quickly, and fatigue sooner.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. That describes slow-twitch (red) fibers better.</li>
+<li>B. Greater capillary density and oxidative capacity are endurance (slow-twitch) features.</li>
+<li>D. Slow-twitch fibers have more mitochondria and resist fatigue.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q3">
+  <b>3. Which property best distinguishes smooth muscle from skeletal muscle in terms of contraction control?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Smooth muscle cells are multinucleated because of cell fusion during development</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">B. Smooth muscle can contract in response to stretch without requiring nervous system input</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Smooth muscle is striated because it contains sarcomeres</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Smooth muscle requires Ca2+ for contraction whereas skeletal muscle does not</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>Smooth muscle can show myogenic activity, contracting directly in response to stretch or other local stimuli.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Multinucleation from fusion is characteristic of skeletal muscle, not smooth muscle.</li>
+<li>C. Smooth muscle is not organized into visible sarcomeres, so it is nonstriated.</li>
+<li>D. Both skeletal and smooth muscle require Ca2+ for contraction.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q4">
+  <b>4. A cardiac tissue preparation continues rhythmic contractions even after its autonomic nerves are cut, and its cells depolarize nearly simultaneously. Which structure most directly supports this coordinated behavior?</b>
+  <div class="choice" onclick="selectChoice('q4', this, true)">A. Gap junctions within intercalated discs</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Neuromuscular junctions with acetylcholinesterase</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Tight junctions preventing ion flow between adjacent cells</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Desmosomes binding keratin intermediate filaments in the epidermis</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>Gap junctions in intercalated discs allow ions to pass directly between cardiac myocytes, enabling rapid, coordinated depolarization.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>B. Neuromuscular junctions describe skeletal muscle innervation, not cardiac cell-to-cell coupling.</li>
+<li>C. Tight junctions would reduce ion movement and hinder coordination.</li>
+<li>D. That refers to epithelial cell adhesion, not cardiac electrical coupling.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q5">
+  <b>5. During sarcomere contraction, which region must decrease in length while the A-band remains unchanged?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. A-band</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. H-zone</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. M-line</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Myosin filament length</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>The H-zone contains only thick filaments; as thin filaments slide inward, overlap increases and the H-zone shrinks, while the A-band (thick filament length) stays constant.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. The A-band represents the full length of thick filaments and does not change.</li>
+<li>C. The M-line is a landmark, not a band whose length is tracked like the H-zone or I-band.</li>
+<li>D. Myosin filament length does not change; sliding changes overlap, not filament length.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q6">
+  <b>6. In skeletal muscle regulation, troponin and tropomyosin are associated with which filament?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Titin (elastic filament)</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Myosin (thick filament)</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Intermediate filaments linking adjacent myofibrils</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. Actin (thin filament)</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>Troponin and tropomyosin sit on actin; Ca2+ binding to troponin shifts tropomyosin to expose myosin-binding sites on actin.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Titin anchors and provides elasticity but is not the Ca2+-regulated blocker of binding sites.</li>
+<li>B. Myosin provides the motor heads but does not carry troponin/tropomyosin.</li>
+<li>C. Intermediate filaments are structural, not the main contraction regulatory proteins.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q7">
+  <b>7. A toxin prevents action potentials from traveling down T-tubules. Which immediate downstream event in skeletal muscle is most directly impaired?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Actin synthesis by ribosomes</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. ATP hydrolysis by myosin heads</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Acetylcholine release into the synaptic cleft</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. Ca2+ release from the sarcoplasmic reticulum into the sarcoplasm</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>T-tubules carry depolarization into the cell interior to trigger Ca2+ release from the sarcoplasmic reticulum, which is required to uncover actin binding sites.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Actin synthesis is not an immediate step in contraction signaling.</li>
+<li>B. Myosin can hydrolyze ATP, but without Ca2+ exposure of binding sites, cross-bridge cycling cannot proceed normally.</li>
+<li>C. ACh release is presynaptic at the neuromuscular junction and occurs before T-tubule conduction in the muscle fiber.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q8">
+  <b>8. At the neuromuscular junction, acetylcholine binding to receptors on the sarcolemma most directly causes:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Immediate degradation of acetylcholine by acetylcholinesterase</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Passive diffusion of myosin heads off actin</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Depolarization of the sarcolemma leading to an action potential</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Direct exposure of actin binding sites without Ca2+ release</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>ACh binding depolarizes the muscle membrane, initiating an action potential that propagates along the sarcolemma and down T-tubules.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. AChE terminates the signal after ACh has acted.</li>
+<li>B. Myosin detachment requires ATP binding, not passive diffusion.</li>
+<li>D. Actin sites are exposed when Ca2+ binds troponin, not directly by ACh.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q9">
+  <b>9. Which step in the cross-bridge cycle requires ATP binding (rather than ATP hydrolysis) to proceed?</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Detachment of myosin from actin after the powerstroke</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. The powerstroke that pulls actin toward the M-line</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Release of Pi from the myosin head to trigger force generation</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Binding of Ca2+ to troponin</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>ATP binding to myosin decreases myosin’s affinity for actin, allowing detachment. Hydrolysis then re-cocks the head for the next cycle.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>B. The powerstroke is driven by release of Pi and ADP, not ATP binding.</li>
+<li>C. Pi release is part of force generation after myosin is bound to actin.</li>
+<li>D. Ca2+ binding regulates access to binding sites but is not an ATP-binding step.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q10">
+  <b>10. Rigor mortis occurs after death primarily because:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Acetylcholinesterase is overactive, causing constant depolarization</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. ATP production stops and myosin heads cannot detach from actin</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Troponin permanently blocks actin binding sites even in the presence of Ca2+</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Excess ATP forces continuous detachment and prevents contraction</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>Without ATP, myosin cannot release from actin, so muscles become stiff in a locked, contracted state.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. AChE breaks down ACh; overactivity would reduce stimulation, not cause sustained contraction.</li>
+<li>C. The problem is cross-bridge detachment failure; troponin does not explain postmortem stiffness by itself.</li>
+<li>D. The issue is ATP depletion, not excess ATP.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q11">
+  <b>11. A person lifts a heavier object and produces greater overall muscle force without changing the all-or-nothing response of individual muscle fibers. Which mechanism most directly explains the increased force?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Each sarcomere produces a larger powerstroke because it hydrolyzes more ATP per cycle</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Myosin filaments lengthen to generate more overlap</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Individual muscle fibers partially contract because their action potentials become graded</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">D. Additional motor units are recruited, increasing the number of contracting fibers</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>Force is graded at the whole-muscle level by recruiting more motor units (more fibers contracting), since single fibers are all-or-nothing.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Powerstroke size is not increased simply by more ATP hydrolysis per cycle.</li>
+<li>B. Filament length does not change; overlap changes with sliding.</li>
+<li>C. Muscle fiber action potentials are all-or-nothing, not graded.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q12">
+  <b>12. In a simple twitch, the latent period most directly reflects the time required for:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Blood to deliver oxygen to the muscle fiber</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. The action potential to propagate and Ca2+ to be released from the sarcoplasmic reticulum</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Myosin to synthesize new actin filaments</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. ATP to be regenerated in mitochondria after contraction</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>The latent period is the delay between stimulus and contraction while the AP travels and triggers Ca2+ release needed for cross-bridge formation.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Oxygen delivery is not the limiting step for the initial twitch timing.</li>
+<li>C. Actin filaments are not synthesized during a twitch.</li>
+<li>D. ATP regeneration is important for sustained activity but is not the main cause of the immediate latent delay.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q13">
+  <b>13. A muscle fiber receives repeated stimuli before it can fully relax; the resulting contractions add together to produce a stronger contraction. This phenomenon is called:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Negative selection</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Myogenic pacing</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">C. Frequency summation</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Rigor mortis</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>When stimuli arrive close together, the fiber has insufficient time to relax and the contractions summate, increasing force and duration.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Negative selection is a thymic process for T-cells, unrelated to muscle.</li>
+<li>B. Myogenic pacing refers to intrinsic rhythmicity (e.g., heart), not added twitches.</li>
+<li>D. Rigor mortis is postmortem stiffness due to lack of ATP.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q14">
+  <b>14. A patient develops sustained, painful muscle spasms after a puncture wound. A toxin is suspected to block release of an inhibitory neurotransmitter onto motor neurons. Which transmitter is most consistent with this mechanism?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Dopamine</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Acetylcholine</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Serotonin</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">D. GABA</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>Tetanospasmin from Clostridium tetani blocks inhibitory input (classically GABA) to motor neurons, making them overexcitable and causing sustained contraction.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Dopamine is primarily a CNS neuromodulator, not the classic inhibitory brake on spinal motor neurons in tetanus.</li>
+<li>B. ACh is the excitatory transmitter at the neuromuscular junction.</li>
+<li>C. Serotonin has CNS roles but is not the key inhibitory transmitter blocked in tetanus.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q15">
+  <b>15. Which pair of tissues both commonly exhibit myogenic activity (ability to contract without nervous system input)?</b>
+  <div class="choice" onclick="selectChoice('q15', this, true)">A. Smooth muscle and cardiac muscle</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Cardiac muscle and bone</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Skeletal muscle and epidermis</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Skeletal muscle and cardiac muscle</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>Both smooth and cardiac muscle can initiate contraction in response to local stimuli or intrinsic pacemaking, although each can be modulated by the autonomic nervous system.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>B. Bone is not contractile and does not show myogenic contraction.</li>
+<li>C. Epidermis is not contractile muscle tissue.</li>
+<li>D. Skeletal muscle generally requires somatic motor neuron input at the neuromuscular junction.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+  <div class="section-label">Passages (3)</div>
+
+
+  <div class="passage-box">
+    <div class="passage-header">
+      <div class="passage-title">Passage 1</div>
+      <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+    </div>
+    <div class="passage-text"><p>A sports physiology lab compared two training programs over 12 weeks. Group E performed long-distance runs at a steady pace four days per week. Group S performed repeated 10-second maximal sprints with long rest intervals.<br><br> Muscle biopsies from the quadriceps showed that Group E had increased myoglobin content and higher mitochondrial density in many fibers. Group S showed less change in myoglobin, but improved peak force output during short efforts. During a treadmill test, participants in Group E maintained performance for a long time with only gradual fatigue, whereas Group S participants reached high power quickly but fatigued after repeated bouts.<br><br> The investigators reminded participants that both groups rely on actin–myosin cross-bridge cycling for contraction, but differences in fiber properties shift how ATP is supplied during activity and how quickly fatigue sets in.</p></div>
+    <div class="reasoning-box" id="p1-reason" style="display:none;"><ul>
+  <li>Map the evidence to fiber properties: <b>myoglobin</b> and <b>mitochondria</b> point to oxidative endurance fibers.</li>
+  <li>Use performance patterns: <b>fatigue resistance</b> suggests slow-twitch; <b>short burst power</b> suggests fast-twitch.</li>
+  <li>When asked about metabolism, connect time scale to ATP supply: <b>seconds</b> favors rapid anaerobic output; <b>minutes</b> favors aerobic output.</li>
+</ul></div>
+
+
+<div class="question" id="q16">
+  <b>16. A biopsy from Athlete X shows fibers with high myoglobin and abundant mitochondria, and the athlete reports these fibers resist fatigue during long runs. Which fiber type is most consistent with these findings?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Smooth muscle cells with tonus</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Cardiac myocytes connected by intercalated discs</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">C. Slow-twitch oxidative fibers (red fibers)</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Fast-twitch glycolytic fibers (white fibers)</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>High myoglobin and many mitochondria indicate slow-twitch oxidative (red) fibers optimized for endurance and fatigue resistance.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Smooth muscle is not categorized into red/white fibers and is nonstriated.</li>
+<li>B. Cardiac muscle is striated and oxidative, but a limb muscle biopsy for running performance points to skeletal fiber types.</li>
+<li>D. Fast-twitch glycolytic fibers have less myoglobin and fatigue faster.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q17">
+  <b>17. Athlete Y trains for 10-second maximal sprints. Compared with Athlete X, which metabolic pattern would be expected to contribute more to Athlete Y’s peak performance?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Greater reliance on anaerobic ATP production with quicker fatigue</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Reduced force output due to fewer cross-bridge cycles</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Higher steady-state oxygen extraction with slower contraction speed</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Lower glycolytic flux and higher myoglobin content</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>Short, high-power efforts depend heavily on rapid ATP generation via anaerobic pathways and fast-twitch fiber recruitment, which also leads to quicker fatigue.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>B. Sprint training aims to increase force and rapid cycling, not reduce it.</li>
+<li>C. That pattern fits endurance activity and slow-twitch fibers.</li>
+<li>D. Low glycolysis and high myoglobin describe oxidative endurance muscle.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q18">
+  <b>18. A clinician notes that a patient’s postural muscles can maintain low-level contraction for long periods without obvious fatigue. Which description best matches the predominant fiber characteristics in these muscles?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Two capillary beds in series forming a portal system</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. No sarcomeres and contraction only under autonomic input</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Low myoglobin, fewer mitochondria, high peak power</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">D. High myoglobin, many mitochondria, aerobic ATP production</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>Postural endurance muscles are enriched in slow-twitch red fibers: high myoglobin, many mitochondria, and primarily aerobic metabolism.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Portal systems describe vascular arrangements (e.g., kidney), not muscle fiber type.</li>
+<li>B. Postural muscles are skeletal (sarcomeres present) and somatically controlled, not smooth muscle.</li>
+<li>C. That is fast-twitch (white) fiber physiology.</li>
+</ul>
+    </div>
+  </details>
+</div>
+  </div>
+
+
+  <div class="passage-box">
+    <div class="passage-header">
+      <div class="passage-title">Passage 2</div>
+      <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+    </div>
+    <div class="passage-text"><p>A 28-year-old patient reports that their eyelids droop more as the day goes on and that repeated chewing quickly becomes tiring. On exam, strength decreases with repeated muscle use but improves after rest. Nerve conduction studies show that the nerve can carry action potentials normally.<br><br> The clinician administers a medication that inhibits acetylcholinesterase. Within minutes, the patient’s strength improves. The clinician explains that this intervention increases how long acetylcholine remains available in the synaptic cleft at the neuromuscular junction.<br><br> In a separate experiment, a different compound is applied to an isolated motor neuron terminal and is found to block Ca2+ entry into the presynaptic terminal during depolarization.</p></div>
+    <div class="reasoning-box" id="p2-reason" style="display:none;"><ul>
+  <li>Localize the problem: normal nerve conduction shifts focus to the <b>neuromuscular junction</b> rather than the axon.</li>
+  <li>Interpret the drug response: acetylcholinesterase inhibition helps when <b>effective signaling is too weak</b> per impulse.</li>
+  <li>Remember the sequence: presynaptic depolarization → <b>Ca2+ influx</b> → vesicle fusion → ACh release → muscle depolarization.</li>
+  <li>For cross-bridge questions: identify which step needs <b>ATP binding</b> versus ATP hydrolysis.</li>
+</ul></div>
+
+
+<div class="question" id="q19">
+  <b>19. A patient has fluctuating weakness that worsens with repeated use. After giving a drug that inhibits acetylcholinesterase, strength improves temporarily. Which underlying defect best explains both the symptom pattern and the response to treatment?</b>
+  <div class="choice" onclick="selectChoice('q19', this, true)">A. Autoantibodies targeting postsynaptic nicotinic acetylcholine receptors</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Loss of gap junctions between skeletal muscle fibers</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Failure of the sarcoplasmic reticulum to store Ca2+</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Mutation that increases myoglobin breakdown in muscle</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>Postsynaptic receptor loss (as in myasthenia gravis) makes each ACh release less effective; inhibiting AChE increases ACh availability to improve end-plate depolarization.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>B. Skeletal muscle fibers are not electrically coupled by gap junctions for contraction like cardiac muscle.</li>
+<li>C. SR dysfunction would impair contraction broadly but would not be specifically improved by increasing synaptic ACh.</li>
+<li>D. Myoglobin changes would not specifically cause fatigable weakness that improves with AChE inhibition.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q20">
+  <b>20. A second toxin is found to prevent Ca2+ entry into the presynaptic terminal of a motor neuron. Which immediate effect on the neuromuscular junction would be expected?</b>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. Decreased acetylcholine release from the motor neuron terminal</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Direct opening of voltage-gated Na+ channels on the muscle without neurotransmitter</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Increased exposure of myosin-binding sites on actin</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Increased breakdown of acetylcholine in the synapse</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>Presynaptic Ca2+ influx is required for synaptic vesicle fusion; blocking Ca2+ entry decreases ACh release.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>B. Skeletal muscle depolarization at the NMJ depends on ACh receptor activation; it is not directly triggered without neurotransmitter in this scenario.</li>
+<li>C. Exposure of binding sites depends on Ca2+ inside the muscle fiber binding troponin, not presynaptic Ca2+ entry.</li>
+<li>D. AChE activity is not directly increased by blocking presynaptic Ca2+ channels.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q21">
+  <b>21. During the cross-bridge cycle, why does blocking ATP binding to myosin lead to impaired muscle relaxation?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. ATP binding increases the length of myosin filaments</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">B. ATP binding is required for myosin to detach from actin after the powerstroke</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. ATP binding directly increases acetylcholine release from motor neurons</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. ATP binding is required for Ca2+ to bind troponin</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>ATP binding lowers myosin’s affinity for actin; without ATP binding, cross-bridges remain attached and relaxation is impaired.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Filament lengths do not change during contraction; sliding changes overlap.</li>
+<li>C. ATP binding to myosin is a muscle-internal event and does not directly regulate presynaptic neurotransmitter release.</li>
+<li>D. Ca2+ binds troponin based on Ca2+ availability, not ATP binding to myosin.</li>
+</ul>
+    </div>
+  </details>
+</div>
+  </div>
+
+
+  <div class="passage-box">
+    <div class="passage-header">
+      <div class="passage-title">Passage 3</div>
+      <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+    </div>
+    <div class="passage-text"><p>Researchers stimulate a single skeletal muscle fiber while imaging sarcomeres under high magnification. During contraction, they measure band lengths and observe that the A-band length does not change. However, the I-band and H-zone become progressively smaller with stimulation.<br><br> In a second trial, the same fiber is stimulated again, but at a higher frequency so that each stimulus arrives before the fiber fully relaxes. The measured tension increases with each successive stimulus until the trace becomes a sustained plateau with no relaxation between stimuli.<br><br> Finally, the researchers add a Ca2+ chelator to the preparation after stimulation and note that cross-bridge formation stops even though ATP is still present.</p></div>
+    <div class="reasoning-box" id="p3-reason" style="display:none;"><ul>
+  <li>Use band behavior: constant <b>A-band</b> means thick filament length is unchanged; shrinking <b>I-band/H-zone</b> means increased overlap.</li>
+  <li>Translate band changes into geometry: increased overlap brings <b>Z-lines closer</b> (shorter sarcomere).</li>
+  <li>For repeated stimulation: if twitches add up, that is <b>summation</b>; if there is no relaxation at all, that is <b>tetanus</b>.</li>
+  <li>For Ca2+ removal: without Ca2+ bound to troponin, <b>tropomyosin blocks</b> actin binding sites.</li>
+</ul></div>
+
+
+<div class="question" id="q22">
+  <b>22. In a microscopy experiment, the A-band length stays constant while the I-band and H-zone shrink during stimulation. Which additional change would most directly accompany these observations?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Z-lines move farther apart as the sarcomere lengthens</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Actin filaments depolymerize to shorten the thin filament</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Z-lines move closer together as the sarcomere shortens</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Myosin filaments elongate to increase overlap</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>Sliding of thin filaments toward the M-line shortens the sarcomere, bringing Z-lines closer together while A-band length remains constant.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. Contraction shortens (does not lengthen) the distance between Z-lines.</li>
+<li>B. Thin filaments do not depolymerize during normal contraction; they slide.</li>
+<li>D. Filament length is constant; overlap changes instead.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q23">
+  <b>23. A muscle fiber is stimulated repeatedly such that tension increases with each stimulus because the fiber does not fully relax between stimuli. If stimulation frequency increases further until no relaxation occurs, the fiber is experiencing:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. A latent period</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. A single simple twitch</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. A decrease in motor unit recruitment</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">D. Tetanus</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>At very high stimulation frequency, individual twitches fuse into a sustained contraction with no relaxation—tetanus.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. The latent period is the brief delay after a single stimulus before contraction begins.</li>
+<li>B. A simple twitch includes relaxation; it is a single brief response.</li>
+<li>C. Recruitment concerns multiple motor units; this describes frequency effects within a fiber.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q24">
+  <b>24. A researcher chelates Ca2+ in a muscle fiber preparation after stimulation. Which regulatory outcome most directly prevents further cross-bridge formation?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Myosin heads lose the ability to hydrolyze ATP</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">B. Tropomyosin covers myosin-binding sites on actin</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Intercalated discs break down and stop ion flow</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Troponin remains bound to Ca2+ and keeps binding sites exposed</div>
+  <div class="fb fb-correct" style="display:none;">Correct ✅</div>
+  <div class="fb fb-incorrect" style="display:none;">Incorrect ❌</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>Without Ca2+ bound to troponin, tropomyosin re-covers actin’s myosin-binding sites, preventing cross-bridge binding.</p>
+<p><b>Why the other choices are not ideal:</b></p>
+<ul>
+<li>A. ATP hydrolysis capability is not the primary block; the binding sites are inaccessible.</li>
+<li>C. Intercalated discs are a cardiac feature, not the key regulator in skeletal muscle fibers.</li>
+<li>D. Chelation removes Ca2+, so troponin cannot keep sites exposed.</li>
+</ul>
+    </div>
+  </details>
+</div>
+  </div>
+
+  </div>
+
+<script>
+
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+
+</script>
+</body>
+</html>

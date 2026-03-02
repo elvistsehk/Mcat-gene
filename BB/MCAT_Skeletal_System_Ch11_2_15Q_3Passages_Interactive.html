@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Skeletal System (Ch. 11.2) (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Skeletal System (Ch. 11.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A biopsy from the shaft of a long bone shows thick, densely packed matrix with little internal space. Which macroscopic tissue type is most responsible for the bone’s characteristic strength?</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. Compact bone</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Spongy (cancellous) bone</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Articular cartilage</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Periosteum</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Compact bone is dense and arranged to resist bending and torsion; it provides most of a long bone’s strength, especially in the diaphysis.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Spongy bone is a trabecular lattice optimized for dispersing forces and housing marrow; it is not the primary source of macroscopic strength.</li>
+        <li><b>C:</b> Articular cartilage cushions joints; it is flexible and avascular, not a major contributor to bone strength.</li>
+        <li><b>D:</b> The periosteum is a fibrous covering important for protection and muscle attachment, not the tissue type generating strength.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A teenager’s long bones stop increasing in length shortly after puberty. Which structure’s change most directly explains the halt in longitudinal growth?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Expansion of the Haversian canals</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Conversion of red marrow to yellow marrow</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">C. Closure of the epiphyseal (growth) plate</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Thickening of the synovial capsule</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Longitudinal growth occurs at the epiphyseal plate (cartilage with mitotic cells). When the plate ossifies/closes during puberty, lengthening stops.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Haversian canals are vascular/nerve channels within osteons; they support bone health but do not determine growth in length.</li>
+        <li><b>B:</b> Marrow composition affects hematopoiesis and fat storage, not the mechanism of growth plate-driven elongation.</li>
+        <li><b>D:</b> The synovial capsule encloses movable joints; it is not the longitudinal growth site of long bones.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. The major inorganic crystals that harden bone matrix contain calcium, phosphate, and hydroxide. Which compound best represents this mineral component?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Calcium carbonate</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Calcium chloride</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Calcium sulfate</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Hydroxyapatite</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Bone’s inorganic matrix is primarily hydroxyapatite crystals, a calcium phosphate hydroxide mineral that confers rigidity.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Calcium carbonate is important in shells and some stones, but it is not the primary mineral of human bone.</li>
+        <li><b>B:</b> Calcium chloride is a salt; it does not form the structural crystals embedded in bone matrix.</li>
+        <li><b>C:</b> Calcium sulfate is not the major mineralized component of bone.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. A patient with hyperparathyroidism has elevated parathyroid hormone (PTH). Which change in bone activity is most directly promoted by this hormone?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Increased cartilage secretion by chondrocytes</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Increased bone resorption leading to higher blood calcium</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Increased synovial fluid production to lubricate joints</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Reduced remodeling in response to mechanical stress</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> PTH is released when blood calcium is low; it promotes bone resorption (via osteoclast activity/signaling), releasing calcium and phosphate into the bloodstream.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Chondrocytes secrete cartilage matrix; PTH’s key systemic role here is calcium homeostasis via bone turnover.</li>
+        <li><b>C:</b> Synovial fluid is produced by synovium at joints; it is not a primary endocrine target of PTH.</li>
+        <li><b>D:</b> Bone remodeling in response to stress is a normal adaptive process; PTH does not “turn off” remodeling broadly.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. Which bone region is the cylindrical shaft of a long bone and typically contains marrow within its interior?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Epiphysis</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Metaphysis</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">C. Diaphysis</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Perichondrium</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The diaphysis is the long shaft of a long bone. It is primarily compact bone externally and contains marrow internally.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The epiphyses are the enlarged ends that participate in joints and disperse forces with spongy cores.</li>
+        <li><b>B:</b> The metaphysis is the flared region between shaft and end; it is not the long cylindrical shaft.</li>
+        <li><b>D:</b> Perichondrium surrounds cartilage, not the shaft region of bone.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. A fracture patient heals slowly because the outer covering of the bone was severely damaged, reducing sites for muscle attachment and limiting local cells that can become bone-forming cells. Which structure was most likely injured?</b>
+  <div class="choice" onclick="selectChoice('q6', this, true)">A. Periosteum</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Synovium</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Articular cartilage</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Volkmann’s canal</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The periosteum is a fibrous sheath around bone that protects it, provides muscle attachment, and contains cells that can differentiate into bone-forming cells—important for growth and repair.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Synovium lines movable joints and secretes synovial fluid; it does not surround long bone shafts as an external sheath.</li>
+        <li><b>C:</b> Articular cartilage coats joint surfaces for cushioning; it is not the main repair-supporting outer covering of bone.</li>
+        <li><b>D:</b> Volkmann’s canals are transverse channels in compact bone; injury to them affects vascular supply locally but does not match the described “outer covering” and attachment role.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. Mature bone cells housed in small cavities within the lamellae are called:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Osteoblasts</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Chondrocytes</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Osteoclasts</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. Osteocytes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Osteocytes are mature bone cells that reside in lacunae within the mineralized matrix and help maintain bone tissue.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Osteoblasts build bone matrix; they are typically on bone surfaces during formation.</li>
+        <li><b>B:</b> Chondrocytes produce cartilage matrix, not bone.</li>
+        <li><b>C:</b> Osteoclasts resorb bone; they are large, multinucleated and act at bone surfaces.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. A histology slide shows concentric rings of mineralized matrix surrounding a central channel containing blood vessels and nerves. Which structural unit is being observed?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Trabecula</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Osteon (Haversian system)</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Epiphyseal plate</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Synovial capsule</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Compact bone is organized into osteons: lamellae arranged in concentric circles around a central canal that carries vessels and nerves.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Trabeculae are spicules in spongy bone forming a lattice; they do not form concentric lamellae around a central canal.</li>
+        <li><b>C:</b> The epiphyseal plate is cartilaginous and is the site of bone lengthening, not a concentric lamellar unit.</li>
+        <li><b>D:</b> The synovial capsule surrounds a joint cavity; it is not the microscopic structural unit of compact bone.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. Red bone marrow differs from yellow bone marrow primarily because red marrow:</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Contains hematopoietic stem cells that generate blood cells</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Contains only adipocytes and is metabolically inactive</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Is located only in articular cartilage at joints</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Lacks any vascular supply</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Red marrow is hematopoietic: it contains stem cells that produce RBCs, WBCs, and platelets.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Yellow marrow is primarily fat and is relatively inactive compared with red marrow.</li>
+        <li><b>C:</b> Marrow is found within bone cavities; articular cartilage is avascular and does not house marrow.</li>
+        <li><b>D:</b> Bone is vascular; marrow is supplied by vessels within the bone.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. Which pairing correctly matches a cell type with its primary function in the skeletal system?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Osteoclast — secretes cartilage matrix (chondrin)</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Chondrocyte — resorbs bone to release calcium</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Osteoblast — builds bone by depositing matrix</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Osteocyte — multinucleated macrophage that chews bone</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Osteoblasts are bone-forming cells that synthesize and deposit bone matrix during formation/remodeling.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cartilage matrix is secreted by chondrocytes, not osteoclasts.</li>
+        <li><b>B:</b> Bone resorption is performed by osteoclasts, not chondrocytes.</li>
+        <li><b>D:</b> Osteoclasts are the large multinucleated resorptive cells; osteocytes are mature maintenance cells in lacunae.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. An adult patient with high blood calcium is found to have elevated calcitonin. Which bone-level effect is most consistent with this hormonal state?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Increased activation of vitamin D to increase resorption</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. Promotion of bone formation, lowering blood calcium</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Inhibition of osteoblast activity to prevent mineral deposition</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Closure of the epiphyseal plate to stop growth</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Calcitonin (from thyroid parafollicular cells) is released when blood calcium is high and shifts balance toward bone formation, decreasing blood calcium.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Vitamin D activation (often downstream of PTH) is associated with promoting resorption, which would raise blood calcium.</li>
+        <li><b>C:</b> Calcitonin does not inhibit osteoblasts as its primary homeostatic purpose; it opposes hypercalcemia by reducing circulating calcium.</li>
+        <li><b>D:</b> Epiphyseal closure is a developmental/puberty-related event, not an acute endocrine response to calcium levels.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. A clinician suspects impaired diffusion of nutrients and wastes between bone cells and the vascular channels in compact bone. Which structure would most directly be involved in this exchange process?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Lamellae</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Volkmann’s canals</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Haversian canals</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Canaliculi</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Canaliculi are tiny channels connecting lacunae; they permit exchange of nutrients and wastes between osteocytes and the central/transverse canals.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Lamellae are concentric rings of matrix; they provide structure but are not the microchannels for exchange.</li>
+        <li><b>B:</b> Volkmann’s canals are transverse channels that connect osteons; they carry vessels but are not the fine network linking osteocytes.</li>
+        <li><b>C:</b> Haversian canals are central channels within osteons; they carry vessels and nerves but do not directly connect to every osteocyte without canaliculi.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A researcher compares skeletal systems across species. Which feature is an advantage of an endoskeleton over an exoskeleton for a growing organism?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. It can accommodate growth without being shed and regrown</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. It protects soft tissues better than an exoskeleton</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. It is always external and forms a waterproof barrier</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. It prevents the need for internal muscle attachments</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Exoskeletons often require molting (shedding/regrowth) to accommodate growth, whereas endoskeletons can enlarge internally and remodel as the organism grows.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Exoskeletons usually protect soft tissues very well; endoskeletons protect less completely from the outside.</li>
+        <li><b>C:</b> That describes exoskeletons; endoskeletons are internal.</li>
+        <li><b>D:</b> Endoskeletons still serve as major sites for muscle attachment; they do not eliminate internal muscle attachments.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. In the human body, bones of the limbs and the pectoral girdle are classified as part of the:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Axial skeleton</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Appendicular skeleton</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Visceral skeleton</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Dermal skeleton</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The appendicular skeleton includes limb bones plus their attachment structures (pectoral girdle and pelvis).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Axial skeleton includes skull, vertebral column, rib cage, and related midline structures.</li>
+        <li><b>C:</b> “Visceral skeleton” is not the standard MCAT classification for human bones.</li>
+        <li><b>D:</b> “Dermal skeleton” is not used here for the human skeletal divisions (axial vs appendicular).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. A clinician distinguishes a tendon injury from a ligament injury. Which statement is most accurate?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Tendons connect bone to bone, while ligaments connect muscle to bone</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Tendons stabilize joints, while ligaments generate force for movement</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Tendons connect muscle to bone, while ligaments connect bone to bone</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Tendons secrete synovial fluid, while ligaments form cartilage</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Tendons transmit muscle force to bone (muscle → bone), while ligaments tie bones to each other at joints (bone → bone), stabilizing the joint.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This reverses the definitions.</li>
+        <li><b>B:</b> Ligaments stabilize joints; tendons primarily transmit force.</li>
+        <li><b>D:</b> Synovial fluid is produced by synovium; cartilage matrix is secreted by chondrocytes—not tendons/ligaments.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Bone Pain, Calcium Levels, and Remodeling Signals</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A 62-year-old woman presents with progressive back pain and loss of height over the past two years. A DEXA scan shows reduced bone mineral density. A vertebral compression fracture is suspected after a minor fall. Laboratory testing reveals normal serum magnesium and potassium, but low-normal serum calcium. The clinician notes that her diet has been low in calcium for several months.</p>
+  <p>On follow-up, additional labs show elevated parathyroid hormone and increased markers of bone turnover. Imaging suggests that the internal architecture of vertebrae contains thin bony struts with enlarged spaces between them. Despite the low bone mass, the clinician emphasizes that the patient’s skeleton remains metabolically active and constantly undergoing remodeling.</p>
+</div>
+
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate the clinical clues: low bone mineral density + compression fracture suggests weakened matrix and altered remodeling.</li>
+    <li>Use labs to infer endocrine direction: <b>low calcium</b> tends to increase <b>PTH</b>, shifting balance toward <b>resorption</b>.</li>
+    <li>Link structure to function: vertebrae have a lot of <b>spongy bone</b>; thinning struts imply changes in <b>trabeculae</b>.</li>
+    <li>For cell questions, classify by role: <b>osteoblasts build</b>, <b>osteoclasts resorb</b>.</li>
+    <li>Choose answers that explain the data (labs + imaging) rather than simply naming a term.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. Based on the laboratory pattern in Passage 1, which cellular activity is most likely increased in this patient’s bone tissue?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Chondrocyte secretion of chondrin into cartilage</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Osteoblast deposition of new hydroxyapatite without resorption</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Synovial cell production of lubricating fluid in articular cavities</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Osteoclast-mediated resorption releasing calcium and phosphate</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Elevated PTH in the setting of low/low-normal calcium points toward increased bone resorption, which releases mineral into the bloodstream. That process is executed by osteoclasts.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cartilage production is not the main homeostatic lever for correcting low serum calcium.</li>
+        <li><b>B:</b> Bone formation can occur, but the endocrine signal described (high PTH) primarily promotes resorption to raise serum calcium.</li>
+        <li><b>C:</b> Joint lubrication is not the mechanism addressing low serum calcium or DEXA findings.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. The vertebral imaging in Passage 1 describes “thin bony struts with enlarged spaces between them.” Which bone feature is most directly being described?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Trabeculae within spongy bone</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Osteons within compact bone</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Periosteum surrounding the diaphysis</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Epiphyseal plates at the ends of long bones</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Spongy bone is a lattice of bony spicules called trabeculae, with spaces between them filled by marrow. Thinning of struts and enlarged spaces points to trabecular loss.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Osteons are the compact bone units with concentric lamellae around central canals, not “struts with spaces.”</li>
+        <li><b>C:</b> The periosteum is an outer fibrous covering, not the internal lattice described.</li>
+        <li><b>D:</b> Epiphyseal plates are cartilaginous growth regions in adolescents; vertebrae in an adult do not use epiphyseal plates for growth.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. Suppose the clinician administers a therapy that increases calcitonin signaling. Which change would best be expected over time?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Higher serum calcium due to accelerated resorption</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Shift toward bone formation with a tendency to lower serum calcium</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Faster longitudinal growth of long bones by reopening growth plates</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Conversion of compact bone into cartilage to increase flexibility</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Calcitonin is released in response to high blood calcium and promotes bone formation (relative to resorption), which lowers circulating calcium levels.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> That outcome matches increased PTH/vitamin D effects, not calcitonin.</li>
+        <li><b>C:</b> Epiphyseal plate closure is not reversed by calcitonin in adults; longitudinal growth does not restart.</li>
+        <li><b>D:</b> Bone remodeling changes bone mass and microarchitecture; it does not “convert” bone into cartilage.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: A Joint Problem in an Athlete</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A 19-year-old soccer player reports sharp knee pain that worsens during running and improves with rest. There is no evidence of ligament tear on initial testing, but the knee feels “gritty” with motion. The clinician suspects early damage to tissues that normally reduce friction during movement. On examination, the joint is stable, but there is mild swelling.</p>
+  <p>An MRI suggests thinning of the smooth tissue coating the ends of the femur and tibia. The clinician explains that movable joints contain a capsule enclosing a joint cavity, and that a soft lining within the capsule produces a lubricating fluid that allows low-friction movement. The athlete is advised that persistent wear could lead to bones rubbing more directly against each other, amplifying pain.</p>
+</div>
+
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify what kind of joint is described: pain with motion + lubrication cues → a <b>movable synovial joint</b>.</li>
+    <li>Differentiate tissues: <b>articular cartilage</b> coats bone ends; <b>synovium</b> secretes lubricating fluid; <b>ligaments</b> stabilize bone-to-bone connections.</li>
+    <li>Use the absence of instability to downplay ligament rupture and focus on friction-reducing structures.</li>
+    <li>Predict consequences: less lubrication or cartilage → increased friction → pain from bone-on-bone contact.</li>
+    <li>Pick the option that matches the mechanism, not the symptom description alone.</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. Based on Passage 2, which structure’s degradation most directly explains the “bones rubbing more directly against each other” over time?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Periosteum</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Epiphyseal plate</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Articular cartilage</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Volkmann’s canal</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Articular cartilage coats the articular surfaces of bones in movable joints, limiting impact and friction. Loss of this cartilage leads to bone-on-bone contact (as in osteoarthritis).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The periosteum is an outer covering of bone and is not the friction-reducing surface inside the joint.</li>
+        <li><b>B:</b> The epiphyseal plate is a growth structure in adolescents; it does not serve as the smooth joint-surface coating.</li>
+        <li><b>D:</b> Volkmann’s canals are vascular channels in compact bone; they are unrelated to joint surface friction.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. The lubricating fluid referenced in Passage 2 is produced by which tissue?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Perichondrium</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Trabecular bone</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Periosteum</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Synovium</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The synovium (a soft tissue lining of the synovial capsule) secretes synovial fluid, which lubricates joint movement.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Perichondrium surrounds cartilage and supports it, but it does not secrete synovial fluid into joint cavities.</li>
+        <li><b>B:</b> Trabecular (spongy) bone is a lattice structure within bones; it does not produce joint lubricant.</li>
+        <li><b>C:</b> The periosteum covers the outer bone surface and supports repair/attachment, not joint lubrication.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. The clinician notes the joint is stable despite pain. Which finding would most strongly argue against a ligament tear as the primary problem?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Normal joint stability on stress testing of the knee</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Pain that increases with movement and decreases with rest</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Mild swelling around the joint after activity</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. A “gritty” sensation during motion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Ligaments connect bone to bone and stabilize joints. A major tear typically produces abnormal laxity/instability on stress testing. Normal stability argues against ligament rupture as the primary cause.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Activity-related pain can occur with cartilage wear or inflammation and is not specific for or against ligament injury.</li>
+        <li><b>C:</b> Swelling is nonspecific and can occur with many joint injuries.</li>
+        <li><b>D:</b> “Gritty” motion suggests cartilage surface changes but does not directly test ligament integrity the way stability testing does.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Building Bone, Breaking Bone, and Building Again</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A graduate student joins a rowing team and increases training volume over three months. Early in the season, she develops localized forearm pain that worsens with repeated loading. A sports medicine physician explains that bone is dynamic and can adapt to repetitive stress by altering where it deposits and removes matrix. The physician expects that, if training is managed appropriately, the skeleton can remodel to better handle the new forces.</p>
+  <p>To study the adaptation, researchers obtain a small sample from the painful region. They observe a well-organized series of concentric rings around central channels that contain vessels and nerve fibers, as well as small cavities that each house a mature bone cell. The sample also shows increased activity of bone-forming cells in regions that are predicted to bear the highest stress during rowing strokes.</p>
+</div>
+
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Recognize the big idea: bone responds to <b>mechanical stress</b> via <b>remodeling</b> (resorption + formation).</li>
+    <li>Map microscopic structures: concentric rings + central channels → <b>osteons</b>; cavities with mature cells → <b>lacunae with osteocytes</b>.</li>
+    <li>Translate “bone-forming cells” → <b>osteoblasts</b>; “resorbing cells” → <b>osteoclasts</b>.</li>
+    <li>Use the passage to predict what changes would help: reinforce high-stress regions with more matrix deposition.</li>
+    <li>Select answers that connect structure → function → adaptive outcome, not memorized labels alone.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. The “bone-forming cells” described as increasing activity in high-stress regions in Passage 3 are most likely:</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Osteoclasts</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Osteoblasts</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Chondrocytes</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Osteocytes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Osteoblasts build bone by secreting and mineralizing bone matrix, particularly where increased strength is needed.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Osteoclasts resorb (break down) bone, releasing mineral into the bloodstream.</li>
+        <li><b>C:</b> Chondrocytes produce cartilage, not bone matrix.</li>
+        <li><b>D:</b> Osteocytes are mature maintenance cells embedded in the matrix; they are not the primary matrix-depositing cells.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. Which observation in Passage 3 best supports the conclusion that the sampled tissue is compact (rather than spongy) bone?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. The presence of marrow within internal spaces</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. A lattice of bony spicules separated by large cavities</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. Concentric rings of lamellae surrounding central vascular channels</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. A predominance of cartilage matrix with chondrin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Osteons (Haversian systems) with concentric lamellae around central canals are the hallmark of compact bone organization.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Marrow-filled spaces are common in spongy bone and medullary cavities; this does not specifically indicate compact bone.</li>
+        <li><b>B:</b> A lattice of spicules is trabecular (spongy) bone, not compact bone.</li>
+        <li><b>D:</b> Cartilage matrix indicates cartilage, not bone tissue type.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. Suppose the student abruptly stops training for several months. Which outcome best fits the principle described in Passage 3 about bone remodeling in response to stress?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. The epiphyseal plates reopen, increasing bone length</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Osteons convert into trabeculae to increase marrow production</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Bone becomes avascular to reduce metabolic cost</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. The remodeled high-stress reinforcement may diminish as the mechanical stimulus is removed</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Remodeling is driven by mechanical stress. Removing the repetitive load reduces the stimulus for maintaining extra reinforcement, so bone may remodel toward a less reinforced baseline over time.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Epiphyseal plate reopening does not occur in adults; growth plates close after puberty.</li>
+        <li><b>B:</b> Bone does not “convert osteons into trabeculae” as a direct response; compact vs spongy architecture reflects location/function, but the key principle here is stress-dependent remodeling.</li>
+        <li><b>C:</b> Bone is vascular and innervated; it does not become avascular as a normal adaptation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

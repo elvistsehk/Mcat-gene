@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MCAT Genetics Chapter 12.2 — Mutations, Leakage, and Genetic Drift — 5 Passages (Interactive)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+  .img-wrap{ display:flex; justify-content:center; margin:10px 0 6px 0; }
+  .passage-img{ max-width:100%; height:auto; border-radius:10px; background:#fff; padding:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.12); }
+
+</style>
+</head>
+<body>
+
+<div class="main-header">
+  <div class="title">Chapter 12.2 — Mutations, Leakage, and Genetic Drift</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="instructions">
+  Click an answer choice to get instant feedback. Open <b>Explanation</b> to review the reasoning.
+</div>
+
+
+    <div class="section-label">Passage 1</div>
+    <div class="passage-header">
+      <div class="passage-title">Mutagens and Protein Outcomes</div>
+      <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+    </div>
+    <div class="reasoning-box" id="p1-reason">
+      <div class="reasoning-title">How to reason</div>
+<div class="reasoning-content">
+<ul>
+<li><b>Translate the DNA change into a codon change</b>, then ask whether the codon still codes the same amino acid, a different amino acid, or a stop.</li>
+<li><b>Use protein length</b> as evidence: early truncation suggests a premature stop (often from a nonsense or frameshift event).</li>
+<li><b>Insertion/deletion not in multiples of three</b> shifts the reading frame, often creating an early stop downstream.</li>
+<li><b>Normal DNA but altered protein</b> points to transcription/translation errors, not a heritable DNA mutation.</li>
+</ul>
+</div>
+    </div>
+    <div class="passage-box">
+      <p>A microbiology lab is studying a bacterial enzyme needed for growth on a specific carbon source. Wild-type bacteria produce a 312–amino-acid enzyme with robust activity in vitro.</p>
+<p>Three cultures are exposed to different stressors for one hour before plating: (i) ultraviolet light, (ii) an alkylating chemical, and (iii) no exposure (control). Individual colonies are then screened for enzyme activity and the size of the translated protein by SDS–PAGE. For colonies with abnormal activity or protein size, the coding strand of the enzyme gene is sequenced around nucleotide 265–275 (codons 88–92 in the wild type).</p>
+<p>Selected results are shown below.</p>
+<ul>
+<li>Control colony C1: normal activity; full-length protein; codon 88 = TAT.</li>
+<li>UV colony U7: no detectable activity; protein length ≈ 90 aa; codon 88 = TAA.</li>
+<li>Chemical colony M4: low activity; full-length protein; codon 88 = TGT.</li>
+<li>Chemical colony M9: no detectable activity; protein length ≈ 95 aa; sequence shows an extra “GC” inserted immediately after nucleotide 269.</li>
+</ul>
+<p>In a separate follow-up, another low-activity colony shows a normal DNA sequence across the entire gene, but mass spectrometry of the protein indicates that a fraction of molecules contain a single amino acid substitution at position 88.</p>
+    </div>
+    
+    <div class="question" id="p1q1">
+      <b>1.</b> <div class="question-text">Which interpretation best explains the findings for colony U7?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p1q1', this, false)">A) An insertion of three nucleotides added one amino acid but left the reading frame intact.</div><div class="choice" onclick="selectChoice('p1q1', this, false)">B) A silent substitution changed the codon but not the amino acid, so activity should be unchanged.</div><div class="choice" onclick="selectChoice('p1q1', this, true)">C) A point mutation created a premature stop codon, truncating translation and abolishing activity.</div><div class="choice" onclick="selectChoice('p1q1', this, false)">D) A chromosomal inversion disrupted multiple genes, causing global loss of translation.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: C</b></p>
+<p>U7 has codon 88 changed from TAT to TAA. TAA is a stop codon, so translation terminates early, producing a short protein (≈90 aa) and no enzyme activity—classic evidence for a <b>nonsense point mutation</b>.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>Insertion of three nucleotides</b> would add one amino acid but would not usually truncate the protein at ~90 aa.</li>
+<li><b>Silent substitution</b> predicts an unchanged amino acid and usually a near-normal protein length and activity.</li>
+<li><b>Chromosomal inversion</b> is a large-scale event; the data point directly to a specific stop codon within this gene.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p1q2">
+      <b>2.</b> <div class="question-text">Colony M4 shows codon 88 = TGT and a full-length protein but reduced activity. Which molecular change is most consistent with these observations?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p1q2', this, false)">A) A frameshift mutation occurred after codon 88, guaranteeing the same amino acid sequence up to the end.</div><div class="choice" onclick="selectChoice('p1q2', this, false)">B) A deletion of an entire chromosome arm reduced gene dosage by half.</div><div class="choice" onclick="selectChoice('p1q2', this, true)">C) A missense point mutation substituted one amino acid in the active protein, reducing catalytic efficiency.</div><div class="choice" onclick="selectChoice('p1q2', this, false)">D) A nonsense mutation stopped translation at codon 88, producing a short protein.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: C</b></p>
+<p>TAT codes Tyr, while TGT codes Cys. That single-codon substitution changes the amino acid but does not truncate the protein, matching a <b>missense point mutation</b>. A full-length protein with reduced activity is a common outcome when a key residue is altered.</p>
+<ul>
+<li><b>Nonsense</b> would truncate the protein (not full length).</li>
+<li><b>Frameshift</b> changes the downstream amino acid sequence and often introduces an early stop; it would be unusual to keep a normal full-length band.</li>
+<li><b>Large chromosomal deletion</b> is not required to explain a single-codon change plus a specific activity effect.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p1q3">
+      <b>3.</b> <div class="question-text">Which observation most strongly supports that colony M9 experienced a frameshift mutation rather than a nonsense point mutation?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p1q3', this, false)">A) The colony lacks detectable enzyme activity.</div><div class="choice" onclick="selectChoice('p1q3', this, true)">B) The sequence contains an insertion of two nucleotides, which would shift the triplet reading frame.</div><div class="choice" onclick="selectChoice('p1q3', this, false)">C) The protein is shorter than the wild-type protein.</div><div class="choice" onclick="selectChoice('p1q3', this, false)">D) The mutation occurred after chemical exposure rather than UV exposure.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: B</b></p>
+<p>A two-nucleotide insertion is not a multiple of three, so it shifts the reading frame for every codon downstream. Frameshifts commonly generate an early stop codon later in the new frame, producing a truncated protein (≈95 aa here).</p>
+<ul>
+<li><b>No activity</b> and <b>shorter protein</b> could occur with either nonsense or frameshift mutations.</li>
+<li><b>Type of exposure</b> does not by itself distinguish the mechanism; the sequencing evidence does.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p1q4">
+      <b>4.</b> <div class="question-text">The follow-up colony has a normal DNA sequence but a subset of protein molecules show a single amino acid substitution at position 88. Which explanation best fits this result?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p1q4', this, false)">A) A stable missense mutation occurred in the DNA but was missed by sequencing.</div><div class="choice" onclick="selectChoice('p1q4', this, false)">B) A frameshift insertion occurred, but only in the mRNA so it disappears during replication.</div><div class="choice" onclick="selectChoice('p1q4', this, false)">C) A chromosomal translocation moved the gene to a new locus, changing codon usage.</div><div class="choice" onclick="selectChoice('p1q4', this, true)">D) A translation-level error, such as mischarging of a tRNA, produced occasional incorrect amino acid incorporation.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: D</b></p>
+<p>If the DNA sequence is normal yet some protein molecules carry a substitution at one position, the most direct explanation is an error during <b>translation</b> (or less commonly transcription), such as a tRNA charged with the wrong amino acid. This creates heterogeneous protein products without changing the genome.</p>
+<ul>
+<li><b>Missed DNA mutation</b> is less consistent if the region was sequenced comprehensively and repeatedly.</li>
+<li><b>Translocation</b> does not directly cause a single-position substitution when the coding sequence is unchanged.</li>
+<li><b>Frameshift in mRNA</b> would typically alter many downstream amino acids, not just one residue.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p1q5">
+      <b>5.</b> <div class="question-text">If the UV-treated culture produced additional mutants not shown, which DNA lesion would be most likely to initiate these mutations?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p1q5', this, false)">A) Spontaneous hydrolysis of peptide bonds in the enzyme after translation.</div><div class="choice" onclick="selectChoice('p1q5', this, false)">B) Loss of entire chromosomes due to spindle malfunction during mitosis.</div><div class="choice" onclick="selectChoice('p1q5', this, false)">C) Covalent crosslinking of histone tails that permanently blocks transcription in bacteria.</div><div class="choice" onclick="selectChoice('p1q5', this, true)">D) Formation of pyrimidine dimers that distort the DNA helix and increase replication errors if unrepaired.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: D</b></p>
+<p>UV radiation commonly induces <b>pyrimidine (thymine) dimers</b>, which can block or mislead DNA polymerase, increasing the chance of point mutations if repair pathways fail.</p>
+<ul>
+<li>Bacteria do not package DNA with histones like eukaryotes, and UV is not classically described as “histone tail crosslinking.”</li>
+<li>Peptide bond hydrolysis is a protein-level process and would not create heritable mutant alleles.</li>
+<li>Mitosis and spindles are eukaryotic concepts; bacterial UV mutagenesis is primarily at the nucleotide level.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+    
+    <div class="section-label">Passage 2</div>
+    <div class="passage-header">
+      <div class="passage-title">Tracking a Chromosomal Rearrangement</div>
+      <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+    </div>
+    <div class="reasoning-box" id="p2-reason">
+      <div class="reasoning-title">How to reason</div>
+<div class="reasoning-content">
+<ul>
+<li><b>Use probe locations</b> to infer where chromosomal material has moved.</li>
+<li><b>Then check copy number</b>: increased/decreased dosage suggests an unbalanced rearrangement (deletion/duplication), while unchanged dosage suggests a balanced rearrangement.</li>
+<li><b>Parents can be balanced carriers</b> yet produce unbalanced offspring due to meiotic segregation.</li>
+<li><b>Define each chromosomal mutation by what changes</b>: amount of DNA (deletion/duplication), orientation (inversion), or chromosome-to-chromosome exchange (translocation/insertion).</li>
+</ul>
+</div>
+    </div>
+    <div class="passage-box">
+      <p>A clinical genetics team evaluates an infant with developmental delay and a congenital heart defect. Standard karyotyping shows that one chromosome 7 appears elongated and one chromosome 9 appears shortened. To localize the change, the team performs fluorescence in situ hybridization (FISH) using two probes:</p>
+<ul>
+<li>Probe X binds to a locus on chromosome 7q22.</li>
+<li>Probe Y binds to a locus on chromosome 9p13.</li>
+</ul>
+<p>In the infant, Probe X produces one signal on a normal chromosome 7 and a second signal on the abnormal chromosome 9. Probe Y produces one signal on a normal chromosome 9 and no signal on the abnormal chromosome 7.</p>
+<p>Array-based copy number analysis shows that the total copy number of the 7q22 region is increased, while the total copy number of the 9p13 region is decreased. The infant’s parent is found to have the same probe locations as the infant, but with normal copy number for both loci.</p>
+    </div>
+    
+    <div class="question" id="p2q1">
+      <b>1.</b> <div class="question-text">Which chromosomal event best explains the infant’s probe pattern together with increased 7q22 copy number and decreased 9p13 copy number?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p2q1', this, false)">A) Independent point mutations in both loci that change probe fluorescence intensity.</div><div class="choice" onclick="selectChoice('p2q1', this, true)">B) An unbalanced translocation between chromosomes 7 and 9 that duplicates 7q material and deletes 9p material.</div><div class="choice" onclick="selectChoice('p2q1', this, false)">C) A pericentric inversion on chromosome 7 that flips a segment including 7q22.</div><div class="choice" onclick="selectChoice('p2q1', this, false)">D) A small single-nucleotide insertion in the 9p13 gene that prevents probe binding.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: B</b></p>
+<p>Probe X appearing on chromosome 9 indicates that some 7q22 material is present on chromosome 9, while loss of Probe Y on the abnormal chromosome 7 indicates missing 9p13 material. Copy number data (7q gain, 9p loss) confirms an <b>unbalanced exchange</b>, consistent with an unbalanced translocation producing both duplication and deletion.</p>
+<ul>
+<li><b>Inversion</b> changes orientation, not copy number, and would not move 7q material onto chromosome 9.</li>
+<li><b>Single-nucleotide insertion</b> is far too small to explain visible karyotype changes and systematic copy number shifts.</li>
+<li><b>Point mutations</b> do not relocate FISH probes to different chromosomes.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p2q2">
+      <b>2.</b> <div class="question-text">Why could the parent have the same probe locations as the infant but normal copy number at both loci?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p2q2', this, true)">A) The parent likely carries a balanced rearrangement in which chromosomal segments are exchanged without net loss or gain of DNA.</div><div class="choice" onclick="selectChoice('p2q2', this, false)">B) Copy number cannot be measured in adults because their cells no longer divide.</div><div class="choice" onclick="selectChoice('p2q2', this, false)">C) The parent must be mosaic for different chromosome numbers in each tissue.</div><div class="choice" onclick="selectChoice('p2q2', this, false)">D) The parent’s cells repaired the infant’s chromosomal defect after birth.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: A</b></p>
+<p>A <b>balanced translocation</b> can relocate loci so that probes appear on different chromosomes, yet preserve total dosage (one copy of each locus per homolog). During meiosis, a balanced carrier can generate gametes with <b>unbalanced</b> combinations, producing an infant with duplication and deletion.</p>
+<ul>
+<li>Postnatal repair of chromosomal structure across all cells is not plausible.</li>
+<li>Mosaicism is not required to explain normal copy number; balance alone is sufficient.</li>
+<li>Copy number analyses are routinely performed on adult DNA (for example, from blood).</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p2q3">
+      <b>3.</b> <div class="question-text">Which additional finding would most strongly suggest that the infant’s phenotype is due to gene dosage effects rather than disruption of a single gene at a breakpoint?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p2q3', this, false)">A) A single protein shows abnormal post-translational modification.</div><div class="choice" onclick="selectChoice('p2q3', this, true)">B) Multiple genes within the duplicated and deleted regions show proportional increases or decreases in mRNA expression.</div><div class="choice" onclick="selectChoice('p2q3', this, false)">C) The infant’s symptoms appear only after exposure to a viral infection.</div><div class="choice" onclick="selectChoice('p2q3', this, false)">D) One gene at 7q22 has a missense mutation detected by sequencing.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: B</b></p>
+<p>Duplications and deletions often cause disease by changing <b>dosage</b> of many genes. If many genes across the affected segments show coordinated expression shifts matching copy number, that supports dosage-driven pathology.</p>
+<ul>
+<li>A missense mutation points to a separate single-gene mechanism, not dosage.</li>
+<li>Infection-triggered symptoms suggests environmental modulation, not copy-number dosage as the primary cause.</li>
+<li>Post-translational changes do not specifically indicate copy number effects across a chromosomal interval.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p2q4">
+      <b>4.</b> <div class="question-text">Which chromosomal mutation would be most likely to keep copy number constant but reverse the order of genes within a segment?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p2q4', this, false)">A) A deletion of the segment followed by repair using nonhomologous end joining.</div><div class="choice" onclick="selectChoice('p2q4', this, false)">B) A translocation that swaps unequal segments between nonhomologous chromosomes.</div><div class="choice" onclick="selectChoice('p2q4', this, true)">C) An inversion confined to a single chromosome.</div><div class="choice" onclick="selectChoice('p2q4', this, false)">D) A duplication that copies the segment twice in tandem.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: C</b></p>
+<p>An <b>inversion</b> flips a chromosomal segment end-to-end. The amount of DNA is typically unchanged (copy number stays the same), but gene order and orientation are reversed within that region.</p>
+<ul>
+<li>Deletion reduces copy number.</li>
+<li>Duplication increases copy number.</li>
+<li>Unequal translocation commonly creates gain/loss (unbalanced exchange).</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p2q5">
+      <b>5.</b> <div class="question-text">Suppose the abnormal chromosome 9 in the infant carries an extra segment from chromosome 7 but chromosome 7 shows no loss of that segment (chromosome 7 remains intact). Which chromosomal mutation name best matches this scenario?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p2q5', this, false)">A) Nonsense point mutation, because segments can only move by base substitutions.</div><div class="choice" onclick="selectChoice('p2q5', this, false)">B) Deletion, because DNA is always lost when material moves.</div><div class="choice" onclick="selectChoice('p2q5', this, false)">C) Reciprocal translocation, which requires equal swapping of segments.</div><div class="choice" onclick="selectChoice('p2q5', this, true)">D) Insertion of a segment from one chromosome into another without reciprocal exchange.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: D</b></p>
+<p>If a DNA segment from chromosome 7 is present within chromosome 9 while chromosome 7 retains the original segment, the event resembles an <b>insertion</b> (or a duplication plus insertion). A reciprocal translocation would typically remove that segment from chromosome 7 as it swaps.</p>
+<ul>
+<li><b>Reciprocal translocation</b> implies exchange; the scenario states no loss from chromosome 7.</li>
+<li><b>Deletion</b> contradicts the observation that chromosome 7 remains intact.</li>
+<li><b>Point mutations</b> do not relocate large chromosomal segments.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+    
+    <div class="section-label">Passage 3</div>
+    <div class="passage-header">
+      <div class="passage-title">Gene Flow Across a Hybrid Zone</div>
+      <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+    </div>
+    <div class="reasoning-box" id="p3-reason">
+      <div class="reasoning-title">How to reason</div>
+<div class="reasoning-content">
+<ul>
+<li><b>Start with chromosome numbers and fertility</b>: odd or mismatched sets often reduce hybrid fertility, indicating postzygotic isolation.</li>
+<li><b>Track allele frequencies over time</b>: a rising neutral marker can indicate increased hybridization and backcrossing (leakage) rather than selection.</li>
+<li><b>Use the passage’s causal clues</b>: changes in habitat connectivity can increase contact rates and mating opportunities.</li>
+<li><b>Separate mechanisms</b>: prezygotic barriers prevent zygote formation; postzygotic barriers act after fertilization.</li>
+</ul>
+</div>
+    </div>
+    <div class="passage-box">
+      <p>Two closely related mammal species, Species H and Species D, occupy neighboring ranges separated historically by a wide river. Species H has 2n = 64 chromosomes, and Species D has 2n = 62 chromosomes. In the past 50 years, construction of bridges and changes in land use have created multiple new crossing points, and researchers now observe hybrid individuals in a narrow overlap region.</p>
+<p>Field biologists capture 200 juveniles in the overlap region and genotype a neutral marker allele, r, that is common in Species D but rare in Species H. In adults, hybrids are frequently observed but only a small fraction of hybrids produce offspring. When hybrids do reproduce, they most commonly mate with Species H.</p>
+<p>Over three sampling years (spaced a decade apart), the frequency of allele r among juveniles in the overlap region increases from 0.05 to 0.12 to 0.20. No evidence suggests that allele r changes survival once juveniles are born; instead, the change appears to track the number of successful hybrid matings.</p>
+    </div>
+    
+    <div class="question" id="p3q1">
+      <b>1.</b> <div class="question-text">The low fraction of hybrids that produce offspring is most directly explained by which reproductive isolation mechanism?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p3q1', this, false)">A) Behavioral isolation caused by distinct courtship displays.</div><div class="choice" onclick="selectChoice('p3q1', this, true)">B) Postzygotic hybrid sterility due to difficulties in homologous chromosome pairing during meiosis.</div><div class="choice" onclick="selectChoice('p3q1', this, false)">C) Temporal isolation caused by breeding at different seasons.</div><div class="choice" onclick="selectChoice('p3q1', this, false)">D) Gametic isolation in which fertilization cannot occur.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: B</b></p>
+<p>Species H (64) and Species D (62) differ in chromosome number, so hybrids often have an odd or mismatched complement that impairs meiotic pairing and gamete formation. That produces <b>hybrid sterility</b>, a postzygotic barrier.</p>
+<ul>
+<li>Temporal/behavioral/gametic isolation would prevent hybrid formation in the first place, yet hybrids are observed.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p3q2">
+      <b>2.</b> <div class="question-text">Which evidence from the passage most strongly supports that the rise in allele r is due to genetic leakage rather than positive natural selection on r?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p3q2', this, false)">A) The river historically separated the two species.</div><div class="choice" onclick="selectChoice('p3q2', this, false)">B) Allele r is rare in Species H and common in Species D.</div><div class="choice" onclick="selectChoice('p3q2', this, true)">C) The passage states the marker is neutral and the frequency change tracks successful hybrid matings, not differential juvenile survival.</div><div class="choice" onclick="selectChoice('p3q2', this, false)">D) Hybrids are observed only in a narrow geographic region.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: C</b></p>
+<p>The key clue is that allele r is described as a <b>neutral marker</b> and that survival after birth is not affected; instead, frequency changes correlate with hybridization and backcrossing. That pattern points to <b>gene flow between species</b> (leakage), not selection favoring r.</p>
+<ul>
+<li>Differences in baseline allele frequency can enable tracking, but do not by themselves identify the cause of change.</li>
+<li>A narrow region and historical separation describe geography, not the evolutionary mechanism driving r’s rise.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p3q3">
+      <b>3.</b> <div class="question-text">Which change over the last century best explains why genetic leakage might increase between closely related species like H and D?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p3q3', this, true)">A) Greater movement and habitat alteration increase contact rates, allowing more interbreeding opportunities between species.</div><div class="choice" onclick="selectChoice('p3q3', this, false)">B) All DNA polymerases began making more errors globally, increasing mutation rates in every species.</div><div class="choice" onclick="selectChoice('p3q3', this, false)">C) Natural selection stopped operating in modern environments.</div><div class="choice" onclick="selectChoice('p3q3', this, false)">D) Chromosome numbers of all species converged to the same value.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: A</b></p>
+<p>Leakage is driven by <b>gene flow across species boundaries</b>. Human-mediated transport, habitat fragmentation, and new corridors (like bridges) can increase overlap and mating encounters, raising hybridization rates.</p>
+<ul>
+<li>Mutation rate changes introduce new alleles within a species, not gene flow between species.</li>
+<li>Natural selection continues to operate; it does not “stop.”</li>
+<li>Chromosome numbers do not globally converge; many lineages retain distinct karyotypes.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p3q4">
+      <b>4.</b> <div class="question-text">If hybrids that successfully reproduce most often mate with Species H, what long-term genetic consequence is most likely in the overlap region?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p3q4', this, false)">A) Complete replacement of Species H by Species D within one generation.</div><div class="choice" onclick="selectChoice('p3q4', this, false)">B) Instant formation of a new species without any reproductive barriers.</div><div class="choice" onclick="selectChoice('p3q4', this, true)">C) Introgression of some Species D alleles into the Species H gene pool through repeated backcrossing.</div><div class="choice" onclick="selectChoice('p3q4', this, false)">D) Elimination of allele r because backcrossing always decreases genetic variation.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: C</b></p>
+<p>Hybrid reproduction followed by mating with one parental species leads to <b>backcrossing</b>, allowing alleles from the other species to enter and persist in that species’ gene pool (introgression). This is a mechanism of leakage.</p>
+<ul>
+<li>One generation is insufficient for complete replacement; population dynamics are more gradual.</li>
+<li>Speciation requires accumulation of isolating mechanisms and time.</li>
+<li>Backcrossing can increase variation by introducing alleles; it does not inherently eliminate it.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p3q5">
+      <b>5.</b> <div class="question-text">Researchers suspect that the main barrier preventing widespread mixing is reduced hybrid fertility. Which observation would most weaken that hypothesis?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p3q5', this, false)">A) Hybrid adults are common, but hybrid juveniles are rare.</div><div class="choice" onclick="selectChoice('p3q5', this, false)">B) Hybrids have intermediate chromosome counts and show abnormal pairing structures during meiosis.</div><div class="choice" onclick="selectChoice('p3q5', this, false)">C) Most hybrids are observed, but only a small fraction are recorded as parents.</div><div class="choice" onclick="selectChoice('p3q5', this, true)">D) Hybrids are found to produce abundant, viable gametes and have offspring counts comparable to both parental species.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: D</b></p>
+<p>If hybrids are just as fertile as the parent species, then reduced fertility cannot be the primary barrier. That would argue for other isolating mechanisms (behavioral, ecological, etc.) limiting gene flow.</p>
+<ul>
+<li>Meiotic abnormalities support reduced fertility, not weaken it.</li>
+<li>Many adults but few juveniles can be consistent with fertility problems.</li>
+<li>Few hybrids acting as parents directly supports reduced reproductive success.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+    
+    <div class="section-label">Passage 4</div>
+    <div class="passage-header">
+      <div class="passage-title">A Bottleneck and the Founder Effect</div>
+      <button class="reason-btn" id="p4-btn" onclick="toggleReasoning('p4')">How to reason</button>
+    </div>
+    <div class="reasoning-box" id="p4-reason">
+      <div class="reasoning-title">How to reason</div>
+<div class="reasoning-content">
+<ul>
+<li><b>Ask whether the allele change is adaptive or random</b>: if the trait is not tied to survival/mating, large shifts suggest chance.</li>
+<li><b>Use the population history</b>: a sudden, severe drop in population size is a bottleneck; the rebound reflects the survivors’ allele frequencies.</li>
+<li><b>Connect small populations to inbreeding</b>: fewer mates increases related mating, raising homozygosity and exposing recessive disorders.</li>
+<li><b>Separate drift from migration</b>: if no immigrants arrived, frequency change must come from sampling effects of survivors and subsequent drift.</li>
+</ul>
+</div>
+    </div>
+    <div class="passage-box">
+      <p>A population of lizards on a small island carries two alleles at a pigmentation locus: allele G and allele g. Prior to a major hurricane, researchers estimate allele frequencies by sampling 500 lizards: G = 0.90 and g = 0.10. Pigmentation is not linked to survival or mating success in the current environment.</p>
+<p>The hurricane dramatically reduces the population to 18 surviving adults. Ten years later, the island population has rebounded to 600 individuals, but a new survey finds allele frequencies have shifted to G = 0.65 and g = 0.35. The researchers also note an increased frequency of a recessive developmental disorder at a different locus that was previously rare.</p>
+<p>No migration onto the island has been documented since the hurricane, and the habitat has been stable during the recovery period.</p>
+    </div>
+    
+    <div class="question" id="p4q1">
+      <b>1.</b> <div class="question-text">Which evolutionary process best explains the shift from g = 0.10 to g = 0.35 after the hurricane?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p4q1', this, false)">A) Genetic leakage from a closely related lizard species on a nearby island.</div><div class="choice" onclick="selectChoice('p4q1', this, false)">B) Directional selection favoring allele g because it increases hurricane survival.</div><div class="choice" onclick="selectChoice('p4q1', this, true)">C) Genetic drift amplified by a population bottleneck.</div><div class="choice" onclick="selectChoice('p4q1', this, false)">D) High mutation rate converting G alleles into g alleles during recovery.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: C</b></p>
+<p>The locus is described as not affecting fitness, and the population passed through an extreme reduction to 18 adults. In that setting, allele frequencies can shift dramatically by chance, and the rebounding population reflects the genetic makeup of the survivors—classic <b>bottleneck-driven genetic drift</b>.</p>
+<ul>
+<li>Selection requires a fitness advantage; the passage says pigmentation is not linked to survival or mating.</li>
+<li>No migration/leakage is documented.</li>
+<li>Mutation rates are far too low to shift allele frequencies this much in 10 years without strong selection.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p4q2">
+      <b>2.</b> <div class="question-text">The increased frequency of a recessive developmental disorder after the hurricane is most plausibly explained by:</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p4q2', this, true)">A) Greater homozygosity from inbreeding in the small surviving population.</div><div class="choice" onclick="selectChoice('p4q2', this, false)">B) Universal recombination events that delete the normal allele in every individual.</div><div class="choice" onclick="selectChoice('p4q2', this, false)">C) Conversion of the disorder allele into a beneficial allele by natural selection.</div><div class="choice" onclick="selectChoice('p4q2', this, false)">D) A sudden switch to complete dominance at the disorder locus.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: A</b></p>
+<p>When a population is reduced to a small number of survivors, mating among relatives becomes more likely. Inbreeding increases homozygosity, making <b>recessive disorders</b> more likely to be expressed and detected.</p>
+<ul>
+<li>Dominance relationships do not “switch” abruptly in a population-wide way.</li>
+<li>Recombination does not universally delete alleles.</li>
+<li>Selection would not typically increase a harmful recessive disorder allele unless it conferred a specific advantage, which is not indicated.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p4q3">
+      <b>3.</b> <div class="question-text">Compared with the pre-hurricane population, which genetic pattern is most expected in the post-recovery population if drift and inbreeding were important?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p4q3', this, false)">A) Elimination of all recessive alleles because inbreeding selects them out immediately.</div><div class="choice" onclick="selectChoice('p4q3', this, false)">B) Higher heterozygosity because small populations always create new alleles.</div><div class="choice" onclick="selectChoice('p4q3', this, false)">C) No change in heterozygosity because equilibrium is restored automatically after a rebound.</div><div class="choice" onclick="selectChoice('p4q3', this, true)">D) Lower overall heterozygosity across many loci.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: D</b></p>
+<p>Bottlenecks and drift reduce genetic diversity by random loss of alleles, and inbreeding increases homozygosity. Together, they tend to produce <b>lower heterozygosity</b> in the recovered population.</p>
+<ul>
+<li>Small populations do not inherently create new alleles; mutation is the source of new alleles.</li>
+<li>Population size rebound does not restore lost alleles without migration or mutation.</li>
+<li>Inbreeding can expose recessive alleles; it does not guarantee their rapid elimination.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p4q4">
+      <b>4.</b> <div class="question-text">If a second hurricane again reduces the population to a handful of survivors, which outcome is most likely at the pigmentation locus over the next decade?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p4q4', this, true)">A) Allele frequencies may shift again in an unpredictable direction due to another round of drift.</div><div class="choice" onclick="selectChoice('p4q4', this, false)">B) Allele g must go to fixation because it increased once before.</div><div class="choice" onclick="selectChoice('p4q4', this, false)">C) Allele G will be eliminated because dominant alleles are always lost in bottlenecks.</div><div class="choice" onclick="selectChoice('p4q4', this, false)">D) Allele frequencies will return to G = 0.90 and g = 0.10 because those were the original values.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: A</b></p>
+<p>Genetic drift is stochastic. Another severe bottleneck can push allele frequencies up or down depending on which individuals survive. There is no deterministic “memory” that forces a return to initial values or a specific direction.</p>
+<ul>
+<li>Original frequencies do not automatically reappear after drift.</li>
+<li>A prior increase does not guarantee fixation; drift can reverse direction.</li>
+<li>Dominance does not determine whether an allele is lost in a bottleneck; sampling does.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p4q5">
+      <b>5.</b> <div class="question-text">Which intervention would most directly increase genetic diversity in this island population without waiting for new mutations?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p4q5', this, false)">A) Reducing the population size further to intensify drift.</div><div class="choice" onclick="selectChoice('p4q5', this, false)">B) Exposing lizards to a mutagen and assuming all mutations are beneficial.</div><div class="choice" onclick="selectChoice('p4q5', this, false)">C) Preventing mating so allele frequencies cannot change.</div><div class="choice" onclick="selectChoice('p4q5', this, true)">D) Introducing unrelated lizards from another population to promote outbreeding.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: D</b></p>
+<p><b>Outbreeding</b> (gene flow from unrelated individuals) increases the variety of alleles immediately and can counteract inbreeding depression. Drift and mating prevention reduce variation; mutagen exposure is risky and does not guarantee adaptive outcomes.</p>
+<ul>
+<li>Intensifying drift generally <i>reduces</i> diversity.</li>
+<li>Preventing mating halts reproduction; it does not restore diversity.</li>
+<li>Most mutations are neutral or harmful; “beneficial” cannot be assumed.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+    
+    <div class="section-label">Passage 5</div>
+    <div class="passage-header">
+      <div class="passage-title">Managing Genetic Diversity in a Small Population</div>
+      <button class="reason-btn" id="p5-btn" onclick="toggleReasoning('p5')">How to reason</button>
+    </div>
+    <div class="reasoning-box" id="p5-reason">
+      <div class="reasoning-title">How to reason</div>
+<div class="reasoning-content">
+<ul>
+<li><b>Use heterozygosity</b> as a proxy for genetic diversity; low heterozygosity often signals inbreeding and drift.</li>
+<li><b>Link recessive disease prevalence</b> to increased homozygosity in small populations.</li>
+<li><b>Infer mechanism from the intervention</b>: adding unrelated individuals changes allele frequencies via gene flow (outcrossing), not via mutation.</li>
+<li><b>Consider trade-offs</b>: increased diversity can boost fitness, but mixing populations may disrupt locally adapted gene combinations.</li>
+</ul>
+</div>
+    </div>
+    <div class="passage-box">
+      <p>A conservation team monitors an isolated population of mountain foxes living in a high-altitude valley. The population has been separated from other fox populations for at least 120 years, and census size has remained between 30 and 60 adults. Over the last decade, the team documents lower reproductive success and higher juvenile mortality compared with nearby, larger populations.</p>
+<p>Genotyping at 10 neutral microsatellite loci shows an average heterozygosity of 0.21 in the valley population, compared with 0.38 in a large reference population. The valley population also has an unusually high prevalence of a recessive neurological condition.</p>
+<p>To reduce inbreeding depression, the team translocates 6 unrelated foxes from the reference population into the valley and tracks outcomes for two generations. Two generations later, average heterozygosity rises to 0.33 and juvenile survival increases substantially. However, some field biologists worry that introducing outside genes could reduce local adaptation to the high-altitude environment.</p>
+    </div>
+    
+    <div class="question" id="p5q1">
+      <b>1.</b> <div class="question-text">Which conclusion is most consistent with the rise in heterozygosity and improved juvenile survival after translocation?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p5q1', this, false)">A) Genetic drift became stronger, which reliably increases heterozygosity.</div><div class="choice" onclick="selectChoice('p5q1', this, true)">B) Outbreeding reduced inbreeding depression by increasing genetic variation and lowering the probability of harmful recessive homozygotes.</div><div class="choice" onclick="selectChoice('p5q1', this, false)">C) The population reached Hardy–Weinberg equilibrium because immigration stops evolution.</div><div class="choice" onclick="selectChoice('p5q1', this, false)">D) Most new alleles arose from point mutations triggered by translocation stress.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: B</b></p>
+<p>Introducing unrelated individuals increases allele diversity immediately (gene flow) and reduces the chance that close relatives mate. That lowers homozygosity for deleterious recessive alleles, improving fitness—classic <b>reversal of inbreeding depression</b>.</p>
+<ul>
+<li>Drift usually decreases diversity, especially in small populations.</li>
+<li>Mutation is too slow and unpredictable to explain a large heterozygosity jump over two generations.</li>
+<li>Immigration is itself an evolutionary force (gene flow); it does not “stop evolution.”</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p5q2">
+      <b>2.</b> <div class="question-text">If the recessive neurological condition is caused by allele n, which change is most directly expected when unrelated foxes are introduced?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p5q2', this, false)">A) All heterozygotes (Nn) will express the disorder due to codominance.</div><div class="choice" onclick="selectChoice('p5q2', this, true)">B) The frequency of homozygous nn individuals should decrease as mating becomes less assortative among relatives.</div><div class="choice" onclick="selectChoice('p5q2', this, false)">C) The allele n frequency cannot change because it is recessive.</div><div class="choice" onclick="selectChoice('p5q2', this, false)">D) The allele n must disappear completely within one generation.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: B</b></p>
+<p>Outcrossing increases heterozygosity and decreases related mating, so the genotype frequency of <b>nn</b> (homozygous recessive) typically drops even if the allele remains present. The allele does not need to vanish for disease prevalence to fall.</p>
+<ul>
+<li>Complete disappearance in one generation is unlikely unless strong selection removes n rapidly.</li>
+<li>Recessive alleles can absolutely change in frequency via migration and drift.</li>
+<li>Codominance is not implied; recessive disorders typically require homozygosity for expression.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p5q3">
+      <b>3.</b> <div class="question-text">The concern about reduced local adaptation after introducing outside foxes is most closely related to which concept?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p5q3', this, true)">A) Outbreeding depression due to breaking up gene combinations that were advantageous in the high-altitude environment.</div><div class="choice" onclick="selectChoice('p5q3', this, false)">B) Chromosomal deletion, because introduced individuals always lose DNA segments.</div><div class="choice" onclick="selectChoice('p5q3', this, false)">C) The wobble hypothesis, because codons will no longer match local tRNAs.</div><div class="choice" onclick="selectChoice('p5q3', this, false)">D) Frameshift mutations, because migration changes the reading frame.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: A</b></p>
+<p>While outcrossing can boost fitness by increasing diversity, mixing populations can sometimes reduce fitness if it disrupts locally adapted allele combinations or introduces alleles poorly suited to the environment—this is often termed <b>outbreeding depression</b>.</p>
+<ul>
+<li>Wobble is about genetic code redundancy, not population fitness trade-offs.</li>
+<li>Frameshifts and deletions are mutation types; migration is gene flow, not a mutation mechanism.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p5q4">
+      <b>4.</b> <div class="question-text">Before translocation, the valley population size stayed between 30 and 60 adults for many generations. Which statement best describes the long-term genetic risk of this demographic pattern?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p5q4', this, true)">A) Random drift can fix or lose alleles, reducing diversity and increasing the chance that deleterious recessive alleles become common.</div><div class="choice" onclick="selectChoice('p5q4', this, false)">B) Large population size prevents drift, so diversity should be preserved indefinitely.</div><div class="choice" onclick="selectChoice('p5q4', this, false)">C) Natural selection cannot act in small populations.</div><div class="choice" onclick="selectChoice('p5q4', this, false)">D) Mutation will necessarily restore any alleles lost to chance.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: A</b></p>
+<p>Small effective population size increases the role of <b>genetic drift</b>, which can randomly eliminate alleles and reduce heterozygosity. Combined with inbreeding, this can elevate recessive disease risk and lower overall fitness.</p>
+<ul>
+<li>The population described is not large; drift is stronger when N is small.</li>
+<li>Selection can act in any population, but its efficiency can be reduced when drift is strong.</li>
+<li>Mutation can introduce new variants, but it is slow and does not guarantee restoration of specific lost alleles.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+
+    <div class="question" id="p5q5">
+      <b>5.</b> <div class="question-text">Suppose the translocated foxes carry an allele that improves oxygen delivery at sea level but reduces performance at high altitude. After introduction, what pattern would best indicate that natural selection (not just migration) is acting on this allele in the valley?</div>
+      <div class="choices">
+        <div class="choice" onclick="selectChoice('p5q5', this, false)">A) The allele remains exactly at the initial post-immigration frequency forever.</div><div class="choice" onclick="selectChoice('p5q5', this, false)">B) The allele frequency changes slightly from year to year with no consistent direction.</div><div class="choice" onclick="selectChoice('p5q5', this, false)">C) Only heterozygotes carry the allele because selection eliminates both homozygotes immediately in one generation.</div><div class="choice" onclick="selectChoice('p5q5', this, true)">D) The allele initially rises after immigration but then consistently declines over generations alongside reduced reproductive success of carriers.</div>
+      </div>
+      <div class="feedback correct"><span class="icon">✅</span>Correct!</div>
+      <div class="feedback incorrect"><span class="icon">❌</span>Incorrect.</div>
+      
+    <details class="explain">
+      <summary>Explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct answer: D</b></p>
+<p>Gene flow can raise an allele’s frequency immediately, but if the allele is disadvantageous in the high-altitude environment, <b>selection</b> should reduce its frequency over subsequent generations, producing a consistent directional decline tied to lower fitness of carriers.</p>
+<ul>
+<li>Random fluctuations without direction are more characteristic of drift.</li>
+<li>Exact constancy is unlikely in real populations and would not demonstrate selection.</li>
+<li>Selection rarely eliminates both homozygotes instantly; dynamics depend on dominance, starting frequency, and selection strength.</li>
+</ul>
+      </div>
+    </details>
+    
+    </div>
+    
+    
+
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,750 @@
+<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><title>MCAT Genetics — Chapter 12.1: Mendelian Concepts, DNA as Genetic Material & Epigenetics (5 Passages × 5 Questions)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+  .img-wrap{ display:flex; justify-content:center; margin:10px 0 6px 0; }
+  .passage-img{ max-width:100%; height:auto; border-radius:10px; background:#fff; padding:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.12); }
+</style>
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head><body>
+
+<div class="main-header">
+  <div>MCAT Genetics — Chapter 12.1: Mendelian Concepts, DNA as Genetic Material &amp; Epigenetics (5 Passages × 5 Questions)</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div
+<div style="margin:10px 0 18px 0; color:#3b3b3b; font-size:14px;">Click an answer choice to lock in your selection. You’ll see instant feedback and the explanation will expand automatically. Use <b>Reset all</b> to clear everything.</div>
+<div class="section-label">Passage 1</div>
+<div class="passage-header">
+  <span class="passage-title">Passage 1: Dominance patterns in a breeding program</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>Researchers are studying coat texture in a small population of laboratory rodents. The trait has two alleles: R produces rough fur and r produces smooth fur. In this line, R is completely dominant to r. Two rodents with rough fur are crossed, and 25% of the offspring have smooth fur.</p>
+<p>The same lab also keeps a flower strain in which red (CR) and white (CW) alleles show incomplete dominance: CRCR flowers are red, CWCW flowers are white, and CRCW flowers are pink. A student accidentally labels a tray of pink flowers as “heterozygous for a dominant allele” and uses them for a cross.</p>
+<p>In a separate colony, a surface antigen gene has two dominant alleles that are both expressed in heterozygotes. Individuals can display antigen A, antigen B, both antigens, or neither depending on genotype. Finally, a recessive vision trait is found on the X chromosome; males show the trait whenever their single X carries the recessive allele.</p>
+<p>To confirm the rodent locus behaves as expected, the lab performs a test cross between one rough-fur offspring and a smooth-fur rodent. Some rough-fur offspring produce both rough and smooth progeny in this test cross, suggesting their genotype cannot be inferred from phenotype alone.</p>
+<p>The student is reminded that a phenotype label like “rough” or “pink” does not automatically imply a specific genotype across all traits; the dominance pattern determines whether heterozygotes are distinguishable from homozygotes.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+<li><b>Translate phenotype to genotype</b>: decide whether dominance is complete, incomplete, or codominant before writing any cross.</li>
+<li><b>Use proportions as constraints</b>: a 25% recessive phenotype from two dominant-phenotype parents strongly implies both parents were heterozygous.</li>
+<li><b>For X-linked traits</b>: remember males are hemizygous, so genotype-to-phenotype mapping is different from autosomes.</li>
+<li><b>Check your assumptions</b>: intermediate phenotypes usually indicate incomplete dominance, not “weak dominance.”</li>
+  </ol>
+</div>
+
+<div class="question" id="p1q1">
+  <b>1. Which parental genotypes are most consistent with the rodent cross that produced 25% smooth-fur offspring?</b>
+  <div class="choice" onclick="selectChoice('p1q1', this, false)">A. RR × RR</div>
+  <div class="choice" onclick="selectChoice('p1q1', this, false)">B. RR × Rr</div>
+  <div class="choice" onclick="selectChoice('p1q1', this, true)">C. Rr × Rr</div>
+  <div class="choice" onclick="selectChoice('p1q1', this, false)">D. Rr × rr</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p1q1-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>A 3:1 dominant:recessive phenotype ratio is the signature of a heterozygote × heterozygote cross under complete dominance.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Two homozygous dominant parents cannot produce any recessive (smooth) offspring under complete dominance.</li>
+<li><b>B</b>: Heterozygote × heterozygote yields a 3:1 phenotype ratio, matching 25% recessive offspring.</li>
+<li><b>D</b>: This cross would yield ~50% smooth offspring, not 25%.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p1q2">
+  <b>2. The student crosses two pink flowers from the incomplete-dominance strain. Which offspring phenotype distribution is most likely?</b>
+  <div class="choice" onclick="selectChoice('p1q2', this, false)">A. All red</div>
+  <div class="choice" onclick="selectChoice('p1q2', this, false)">B. 3 red : 1 white</div>
+  <div class="choice" onclick="selectChoice('p1q2', this, true)">C. 1 red : 2 pink : 1 white</div>
+  <div class="choice" onclick="selectChoice('p1q2', this, false)">D. 9 red : 3 pink : 3 white : 1 mixed</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p1q2-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>In incomplete dominance, the heterozygote has its own phenotype, so CRCW × CRCW produces 1/4 CRCR (red), 1/2 CRCW (pink), and 1/4 CWCW (white).</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Pink flowers are heterozygotes, so they can produce both red and white alleles in gametes.</li>
+<li><b>B</b>: A 3:1 ratio is expected for complete dominance, not incomplete dominance with an intermediate heterozygote.</li>
+<li><b>D</b>: A 9:3:3:1 ratio is for a dihybrid cross with independent assortment, not a single-locus incomplete-dominance cross.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p1q3">
+  <b>3. Two parents each express only antigen A, yet they have a child who expresses both antigens A and B. Which is the best genetic explanation?</b>
+  <div class="choice" onclick="selectChoice('p1q3', this, false)">A. The child must be homozygous for the B allele, which can occur even if both parents show antigen A.</div>
+  <div class="choice" onclick="selectChoice('p1q3', this, true)">B. One parent is likely mis-typed or incompletely phenotyped, allowing a hidden B allele to be present despite an A-only label.</div>
+  <div class="choice" onclick="selectChoice('p1q3', this, false)">C. At least one parent must carry the B allele without showing it, which is possible under complete dominance.</div>
+  <div class="choice" onclick="selectChoice('p1q3', this, false)">D. Both parents must carry a recessive “no antigen” allele and the child inherited two copies of it.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p1q3-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>Codominant alleles are both expressed in heterozygotes, so an AB child requires a B allele from a parent. If both parents appear to be A-only, the cleanest explanation is that at least one parent actually carried B (or was mis-typed).</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: If the child were BB, both parents would need to provide a B allele, which would usually affect their own phenotype in a codominant system.</li>
+<li><b>C</b>: Complete dominance would hide an allele, but codominance means B should be expressed if present.</li>
+<li><b>D</b>: A data/phenotyping issue (or an unrecognized B allele in a parent) is the most parsimonious explanation among the choices.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p1q4">
+  <b>4. For the X-linked recessive vision trait, which statement most directly explains why affected males are common even when the allele is rare?</b>
+  <div class="choice" onclick="selectChoice('p1q4', this, false)">A. The Y chromosome usually contains a compensatory dominant allele that masks the X-linked allele.</div>
+  <div class="choice" onclick="selectChoice('p1q4', this, false)">B. Males undergo crossing over between their X chromosomes, increasing the probability of recessive expression.</div>
+  <div class="choice" onclick="selectChoice('p1q4', this, false)">C. The allele is dominant in males but recessive in females.</div>
+  <div class="choice" onclick="selectChoice('p1q4', this, true)">D. Males have only one X chromosome, so a single recessive allele can determine phenotype.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p1q4-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>Because males are hemizygous for most X-linked genes, they express whichever allele is on their single X chromosome.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Hemizygosity means there is no second allele to mask a recessive allele.</li>
+<li><b>B</b>: Males do not have two X chromosomes; crossing over is not the core reason for expression.</li>
+<li><b>C</b>: Dominance does not typically switch based on sex for classic X-linked recessive traits.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p1q5">
+  <b>5. Under complete dominance at the rodent fur locus, which pair of different genotypes is guaranteed to produce the same phenotype?</b>
+  <div class="choice" onclick="selectChoice('p1q5', this, false)">A. RR and rr</div>
+  <div class="choice" onclick="selectChoice('p1q5', this, false)">B. Rr and rr</div>
+  <div class="choice" onclick="selectChoice('p1q5', this, true)">C. RR and Rr</div>
+  <div class="choice" onclick="selectChoice('p1q5', this, false)">D. RR and RR</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p1q5-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>Complete dominance means one dominant allele is sufficient for the dominant phenotype, so RR and Rr look the same.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: RR is dominant phenotype; rr is recessive phenotype, so they differ.</li>
+<li><b>B</b>: Rr shows dominant phenotype while rr shows recessive phenotype, so they differ.</li>
+<li><b>D</b>: These are not different genotypes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="section-label">Passage 2</div>
+<div class="passage-header">
+  <span class="passage-title">Passage 2: Penetrance vs. expressivity in a tumor predisposition syndrome</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A clinician follows a large pedigree for an autosomal dominant allele, D, associated with a tumor predisposition syndrome. Genetic testing identifies 250 individuals who carry the allele. Of these, 175 eventually develop at least one tumor by age 50, while the remaining carriers have normal clinical exams through that age.</p>
+<p>Among the 175 affected carriers, symptom severity varies widely. Some individuals develop only a single benign skin lesion. Others develop bilateral vestibular tumors with progressive hearing loss, and a few develop cataracts early in life. Environmental exposures and modifier genes are suspected to influence outcomes.</p>
+<p>In a counseling session, two siblings who both carry allele D ask whether their children will inevitably show the same disease features. The clinician explains that population-level probability and individual-level presentation are different ideas, even when the underlying genotype is the same.</p>
+<p>When the same carriers are examined at age 30, only 120 of the 250 carriers have any detectable abnormality. By age 50, more carriers have developed symptoms, and the clinicians suspect penetrance increases with age in this condition.</p>
+<p>In addition, a small subset of carriers is found to have an identical mutation but no clinical findings even after extensive imaging, while their relatives with the same mutation have multiple lesions. The team discusses how to describe these patterns precisely for research papers and counseling.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+<li><b>Separate two concepts</b>: penetrance asks “who shows anything at all,” while expressivity asks “how severe or what form.”</li>
+<li><b>Use the denominator correctly</b>: penetrance is calculated among genotype carriers, not among the whole clinic population.</li>
+<li><b>Look for variability</b>: multiple clinical presentations among carriers points to variable expressivity.</li>
+<li><b>Age matters</b>: penetrance can be age-dependent; a normal exam today may not mean lifelong nonexpression.</li>
+  </ol>
+</div>
+
+<div class="question" id="p2q1">
+  <b>6. Based on the follow-up data, what is the penetrance of allele D by age 50?</b>
+  <div class="choice" onclick="selectChoice('p2q1', this, false)">A. 0.30</div>
+  <div class="choice" onclick="selectChoice('p2q1', this, true)">B. 0.70</div>
+  <div class="choice" onclick="selectChoice('p2q1', this, false)">C. 0.80</div>
+  <div class="choice" onclick="selectChoice('p2q1', this, false)">D. 0.90</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p2q1-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>Penetrance is the proportion of individuals with the genotype who show the phenotype. Here, 175 of 250 carriers are affected, giving 0.70.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: 30% would correspond to 75 of 250 carriers expressing the phenotype, not 175.</li>
+<li><b>C</b>: 80% would correspond to 200 of 250 carriers, which is higher than observed.</li>
+<li><b>D</b>: 90% would correspond to 225 of 250 carriers, which is higher than observed.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p2q2">
+  <b>7. Which observation best supports variable expressivity rather than incomplete penetrance?</b>
+  <div class="choice" onclick="selectChoice('p2q2', this, true)">A. Different carriers show different tumor types and severities.</div>
+  <div class="choice" onclick="selectChoice('p2q2', this, false)">B. Some carriers have no tumors by age 50.</div>
+  <div class="choice" onclick="selectChoice('p2q2', this, false)">C. The allele is found on an autosome rather than a sex chromosome.</div>
+  <div class="choice" onclick="selectChoice('p2q2', this, false)">D. The allele frequency changes over time in the population.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p2q2-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>Expressivity concerns differences in phenotype among individuals who do express the trait; the wide range of presentations among affected carriers indicates variable expressivity.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>B</b>: Different clinical manifestations among affected carriers is the definition of variable expressivity.</li>
+<li><b>C</b>: Chromosome location does not define expressivity.</li>
+<li><b>D</b>: Allele frequency is a population genetics concept, not an individual phenotype-variation concept.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p2q3">
+  <b>8. If additional follow-up showed that many previously unaffected carriers develop tumors after age 50, which interpretation is most consistent?</b>
+  <div class="choice" onclick="selectChoice('p2q3', this, false)">A. The allele has variable expressivity but constant penetrance.</div>
+  <div class="choice" onclick="selectChoice('p2q3', this, true)">B. The allele has reduced penetrance that is age-dependent.</div>
+  <div class="choice" onclick="selectChoice('p2q3', this, false)">C. The allele is actually recessive and was misclassified.</div>
+  <div class="choice" onclick="selectChoice('p2q3', this, false)">D. The allele must be located on mitochondrial DNA.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p2q3-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>Age-dependent penetrance means the probability of expressing the phenotype increases as carriers get older, which fits late-onset disease.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Late onset changes whether carriers count as expressing at a given age, so penetrance is not constant.</li>
+<li><b>C</b>: Recessiveness is not implied by late onset in carriers.</li>
+<li><b>D</b>: Nothing about the pattern implies mitochondrial inheritance.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p2q4">
+  <b>9. Two siblings both carry allele D. One has mild disease and the other has severe disease. What is the best conclusion about their children’s outcomes?</b>
+  <div class="choice" onclick="selectChoice('p2q4', this, false)">A. Their children will have identical disease features because genotype determines phenotype completely.</div>
+  <div class="choice" onclick="selectChoice('p2q4', this, false)">B. Their children’s risk depends only on environmental exposure, not genotype.</div>
+  <div class="choice" onclick="selectChoice('p2q4', this, true)">C. Their children can inherit the allele with similar probability, but clinical severity may vary even among carriers.</div>
+  <div class="choice" onclick="selectChoice('p2q4', this, false)">D. Only the more severely affected sibling can transmit the allele.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p2q4-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>Autosomal dominant alleles can be transmitted regardless of severity, and variable expressivity means carrier children may present differently.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Variable expressivity means identical genotypes can yield different phenotypes.</li>
+<li><b>B</b>: Genotype still influences risk; environment/modifiers affect expression, not the basic inheritance probability.</li>
+<li><b>D</b>: Transmission depends on gametes, not symptom severity.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p2q5">
+  <b>10. A student calculates penetrance by dividing the number of affected carriers by the total number of people seen in clinic, including noncarriers. What is the main problem with this approach?</b>
+  <div class="choice" onclick="selectChoice('p2q5', this, false)">A. Penetrance is the same as expressivity, so severity must be scored first.</div>
+  <div class="choice" onclick="selectChoice('p2q5', this, false)">B. Penetrance can only be measured in animal models, not humans.</div>
+  <div class="choice" onclick="selectChoice('p2q5', this, false)">C. Penetrance equals allele frequency, so clinic counts are irrelevant.</div>
+  <div class="choice" onclick="selectChoice('p2q5', this, true)">D. Penetrance should be computed using genotype carriers as the denominator.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p2q5-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>Penetrance asks: among individuals who carry the allele, what fraction express the phenotype?</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Penetrance is conditional on genotype; you must restrict the denominator to individuals with the allele.</li>
+<li><b>B</b>: Penetrance is routinely estimated in humans when genotypes and phenotypes are known.</li>
+<li><b>C</b>: Allele frequency is a population measure; penetrance is genotype-to-phenotype probability.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="section-label">Passage 3</div>
+<div class="passage-header">
+  <span class="passage-title">Passage 3: Mendel’s laws and their meiotic correlates</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>In a genetics teaching lab, students collect gametes from a heterozygous fruit fly (Aa) and notice that, over many meioses, A and a appear in roughly equal proportions among the gametes. The instructor emphasizes that this is not a coincidence; it reflects how homologous chromosomes behave during meiosis.</p>
+<p>In a second exercise, the class tracks two different genes, one on chromosome 2 and one on chromosome 3. When the fly is heterozygous at both loci, the combination of alleles in gametes appears to be independent: knowing which allele was inherited at the first locus does not help predict the allele at the second locus.</p>
+<p>Finally, the instructor introduces a twist: two loci are placed on the same chromosome close to one another. Students still observe new allele combinations in a small fraction of gametes. They are told that this arises from a specific prophase I event that physically exchanges segments between homologous chromatids.</p>
+<p>During prophase I, homologous chromosomes pair and form tetrads. When chromatids exchange segments, the original allele combinations along a chromosome can be broken up, generating gametes that would not occur from independent assortment alone.</p>
+<p>The instructor cautions that observing some recombinants does not automatically mean genes are on different chromosomes; a low recombinant fraction can reflect linkage plus occasional crossing over.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+<li><b>Map laws to meiosis</b>: segregation aligns with separation of homologs; independent assortment aligns with random orientation of homolog pairs.</li>
+<li><b>Distinguish homologs vs sister chromatids</b>: meiosis I separates homologs; meiosis II separates sister chromatids.</li>
+<li><b>Use “independence” carefully</b>: unlinked genes behave independently; linked genes can be reshuffled by crossing over but not at 50% unless far apart.</li>
+<li><b>Identify the mechanism</b>: recombination requires physical exchange during prophase I.</li>
+  </ol>
+</div>
+
+<div class="question" id="p3q1">
+  <b>11. Which meiotic event most directly explains Mendel’s law of segregation?</b>
+  <div class="choice" onclick="selectChoice('p3q1', this, false)">A. Alignment of chromosomes at the metaphase plate during mitosis</div>
+  <div class="choice" onclick="selectChoice('p3q1', this, true)">B. Separation of homologous chromosomes during anaphase I</div>
+  <div class="choice" onclick="selectChoice('p3q1', this, false)">C. Replication of DNA during S phase</div>
+  <div class="choice" onclick="selectChoice('p3q1', this, false)">D. Separation of sister chromatids during anaphase I</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p3q1-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>Segregation refers to the separation of the two alleles carried on homologous chromosomes into different gametes, which occurs when homologs separate in anaphase I.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Homologs separate in anaphase I, so each gamete receives only one allele per locus.</li>
+<li><b>C</b>: Replication duplicates alleles; it does not segregate them into different gametes.</li>
+<li><b>D</b>: Sister chromatids separate mainly in anaphase II; anaphase I separates homologs.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p3q2">
+  <b>12. Random orientation of homologous chromosome pairs that produces independent assortment is established primarily during which stage?</b>
+  <div class="choice" onclick="selectChoice('p3q2', this, false)">A. Prophase II</div>
+  <div class="choice" onclick="selectChoice('p3q2', this, false)">B. Anaphase II</div>
+  <div class="choice" onclick="selectChoice('p3q2', this, true)">C. Metaphase I</div>
+  <div class="choice" onclick="selectChoice('p3q2', this, false)">D. Telophase I</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p3q2-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>Independent assortment comes from the random way each homolog pair aligns in metaphase I, making allele inheritance at different chromosomes independent.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Prophase II occurs after homologs have already separated; it does not set pair orientation.</li>
+<li><b>B</b>: In metaphase I, homolog pairs line up randomly at the metaphase plate, determining segregation patterns.</li>
+<li><b>D</b>: By telophase I, the orientation decision has already been made.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p3q3">
+  <b>13. Two loci on the same chromosome produce 8% recombinant gametes. Which statement best accounts for the existence of these recombinants?</b>
+  <div class="choice" onclick="selectChoice('p3q3', this, true)">A. The loci are linked, but crossing over between homologous chromatids occasionally separates them.</div>
+  <div class="choice" onclick="selectChoice('p3q3', this, false)">B. The loci assort independently because they are on different chromosomes.</div>
+  <div class="choice" onclick="selectChoice('p3q3', this, false)">C. The loci are linked, and linkage guarantees 0% recombination.</div>
+  <div class="choice" onclick="selectChoice('p3q3', this, false)">D. Recombinants are created only by mutation, not meiosis</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p3q3-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>Linked genes can still be separated by crossing over during prophase I, producing a minority of recombinant gametes; the small percentage suggests the loci are close together.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>B</b>: Crossing over in prophase I can exchange segments and create recombinant chromatids, even for linked loci.</li>
+<li><b>C</b>: Linkage reduces recombination frequency but does not eliminate it in general.</li>
+<li><b>D</b>: Meiotic recombination creates new allele combinations without mutation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p3q4">
+  <b>14. If crossing over were experimentally prevented during prophase I, what would be the most immediate effect on gametes from a heterozygous individual?</b>
+  <div class="choice" onclick="selectChoice('p3q4', this, false)">A. An increase in the number of Barr bodies in female offspring</div>
+  <div class="choice" onclick="selectChoice('p3q4', this, false)">B. A complete loss of independent assortment between genes on different chromosomes</div>
+  <div class="choice" onclick="selectChoice('p3q4', this, true)">C. A decrease in the variety of allele combinations for linked loci on the same chromosome</div>
+  <div class="choice" onclick="selectChoice('p3q4', this, false)">D. A switch from diploid to haploid gamete production</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p3q4-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>Crossing over specifically increases diversity by creating recombinant chromatids, most noticeably affecting linked loci.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Without crossing over, linked alleles tend to stay together, reducing recombinant haplotypes.</li>
+<li><b>B</b>: Independent assortment depends on metaphase I orientation, not crossing over.</li>
+<li><b>D</b>: Meiosis produces haploid gametes regardless of crossing over.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p3q5">
+  <b>15. The observation that A and a appear in approximately equal proportions among gametes from an Aa individual is best explained by:</b>
+  <div class="choice" onclick="selectChoice('p3q5', this, false)">A. Selection favoring A gametes over a gametes</div>
+  <div class="choice" onclick="selectChoice('p3q5', this, false)">B. Cytoplasmic inheritance of the A allele</div>
+  <div class="choice" onclick="selectChoice('p3q5', this, false)">C. Preferential replication of the A allele during S phase</div>
+  <div class="choice" onclick="selectChoice('p3q5', this, true)">D. Random segregation of homologous chromosomes into different gametes</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p3q5-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>Over many meioses, random segregation of homologous chromosomes yields equal allele frequencies in gametes from a heterozygote.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Selection would create unequal proportions, not ~50:50.</li>
+<li><b>B</b>: Each gamete receives one of the two homologs after meiosis I, yielding ~50% A and ~50% a over many events.</li>
+<li><b>C</b>: Replication copies both alleles equally; it does not bias gamete allele frequencies.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="section-label">Passage 4</div>
+<div class="passage-header">
+  <span class="passage-title">Passage 4: Classic evidence for DNA as the heritable material</span>
+  <button class="reason-btn" id="p4-btn" onclick="toggleReasoning('p4')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A microbiology lab investigates why some strains of Streptococcus pneumoniae cause lethal pneumonia in mice. A virulent strain produces a smooth polysaccharide capsule, while a nonvirulent strain lacks this capsule and appears rough. Heat-killing the virulent strain destroys its ability to cause disease on its own.</p>
+<p>In a classic set of trials, mice injected with live rough bacteria survive. Mice injected with live smooth bacteria die. Mice injected with heat-killed smooth bacteria survive. However, mice injected with a mixture of live rough bacteria and heat-killed smooth bacteria die, and live smooth bacteria can be recovered from the dead mice.</p>
+<p>To identify the molecule responsible for this change, investigators purify material from heat-killed smooth bacteria and treat it with specific enzymes before mixing it with live rough bacteria. One enzyme degrades proteins, another degrades RNA, and another degrades DNA. In a separate experiment, bacteriophages are built with either radioactive sulfur in their proteins or radioactive phosphorus in their DNA. After the phages infect bacteria, a blender shears off the external phage coats, and centrifugation separates the heavier bacterial cells (pellet) from lighter material (supernatant). The location of each radioactive label is then measured.</p>
+<p>In the enzyme experiments, protease-treated extracts still transform rough cells into smooth cells, whereas DNase-treated extracts do not. The lab records these outcomes across multiple replicates to rule out contamination and confirms the change is heritable across many bacterial generations.</p>
+<p>In the phage experiment, the blender step is used specifically to separate what remains outside the cell from what has entered. The centrifugation step then allows investigators to ask whether the label follows the bacterial cells or stays with the detached coats.</p>
+</div>
+<div class="reasoning-box" id="p4-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+<li><b>Track what must be inherited</b>: if rough cells become smooth and the change is stable, the transferred material must carry information.</li>
+<li><b>Use enzyme logic</b>: if destroying DNA removes the effect but destroying protein does not, the genetic material is DNA.</li>
+<li><b>Interpret the fractionation</b>: pellet vs supernatant tells you what entered cells after phage infection.</li>
+<li><b>Prefer the minimal explanation</b>: choose the conclusion that matches all observations without adding new assumptions.</li>
+  </ol>
+</div>
+
+<div class="question" id="p4q1">
+  <b>16. The appearance of live smooth bacteria after mixing live rough with heat-killed smooth most strongly supports which conclusion?</b>
+  <div class="choice" onclick="selectChoice('p4q1', this, false)">A. Rough bacteria secrete a toxin that induces capsule formation in any nearby bacterium.</div>
+  <div class="choice" onclick="selectChoice('p4q1', this, false)">B. Heat-killing converts smooth bacteria into rough bacteria, which then revert back in mice.</div>
+  <div class="choice" onclick="selectChoice('p4q1', this, true)">C. A heritable factor from the smooth strain entered rough cells and altered their phenotype.</div>
+  <div class="choice" onclick="selectChoice('p4q1', this, false)">D. Mouse immune cells mutate bacterial genes during infection.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p4q1-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: C</b></p>
+<p>Recovering live smooth bacteria indicates that information for capsule production was transferred to rough cells and then replicated—consistent with genetic transformation.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: A transient toxin would not explain stable, replicating smooth colonies recovered later.</li>
+<li><b>B</b>: Stable conversion implies transfer of genetic information (the transforming principle).</li>
+<li><b>D</b>: Host-directed mutation is not supported by the experimental setup.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p4q2">
+  <b>17. In the enzyme-treatment follow-up, which result would most directly implicate DNA as the transforming material?</b>
+  <div class="choice" onclick="selectChoice('p4q2', this, true)">A. Transformation persists after protease treatment but disappears after DNase treatment.</div>
+  <div class="choice" onclick="selectChoice('p4q2', this, false)">B. Transformation disappears after protease treatment but persists after DNase treatment.</div>
+  <div class="choice" onclick="selectChoice('p4q2', this, false)">C. Transformation disappears after RNase treatment only.</div>
+  <div class="choice" onclick="selectChoice('p4q2', this, false)">D. Transformation persists after all enzyme treatments.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p4q2-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>Selective loss of transforming activity after DNase treatment indicates DNA is required for the phenotype change.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>B</b>: This pattern would suggest protein, not DNA, is responsible.</li>
+<li><b>C</b>: RNase-only loss would suggest RNA is responsible.</li>
+<li><b>D</b>: Persistence after all treatments would imply none of the macromolecules tested is required.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p4q3">
+  <b>18. In the bacteriophage labeling experiment, where is the radioactive phosphorus most likely found after infection and centrifugation?</b>
+  <div class="choice" onclick="selectChoice('p4q3', this, false)">A. Primarily in the supernatant with detached phage coats</div>
+  <div class="choice" onclick="selectChoice('p4q3', this, false)">B. Absent from both fractions because phosphorus is not retained during labeling</div>
+  <div class="choice" onclick="selectChoice('p4q3', this, false)">C. Evenly split between pellet and supernatant because DNA stays outside the cell</div>
+  <div class="choice" onclick="selectChoice('p4q3', this, true)">D. Primarily in the pellet with bacterial cells</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p4q3-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>Because the phage injects its DNA into the bacterium, the DNA label (phosphorus) ends up in the bacterial pellet.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Protein coats remain outside and end up in the supernatant; DNA enters cells.</li>
+<li><b>B</b>: P-32 DNA co-sediments with the bacterial pellet after infection.</li>
+<li><b>C</b>: The key result is that DNA enters cells; it is not expected to remain outside.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p4q4">
+  <b>19. Why is radioactive sulfur a useful label for phage protein but not for phage DNA?</b>
+  <div class="choice" onclick="selectChoice('p4q4', this, true)">A. Sulfur is found in certain amino acids but not in DNA.</div>
+  <div class="choice" onclick="selectChoice('p4q4', this, false)">B. Sulfur is found only in RNA nucleotides.</div>
+  <div class="choice" onclick="selectChoice('p4q4', this, false)">C. Sulfur labels all macromolecules equally, so it cannot distinguish protein from DNA.</div>
+  <div class="choice" onclick="selectChoice('p4q4', this, false)">D. Sulfur is unstable and cannot be detected after centrifugation.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p4q4-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>Sulfur is present in some amino acids in proteins, but DNA contains phosphorus instead; this chemical difference enables selective labeling.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>B</b>: RNA nucleotides do not contain sulfur as a standard element.</li>
+<li><b>C</b>: Sulfur is specifically informative because it is absent from DNA.</li>
+<li><b>D</b>: Detectability is not the issue; elemental composition is.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p4q5">
+  <b>20. Suppose RNase treatment eliminated transformation, but DNase treatment did not. What would be the most defensible interpretation?</b>
+  <div class="choice" onclick="selectChoice('p4q5', this, false)">A. Protein is the transforming material because RNase and DNase both target proteins indirectly.</div>
+  <div class="choice" onclick="selectChoice('p4q5', this, false)">B. The smooth strain must have been alive despite heat-killing.</div>
+  <div class="choice" onclick="selectChoice('p4q5', this, false)">C. The result is impossible because RNase cannot function in aqueous solution.</div>
+  <div class="choice" onclick="selectChoice('p4q5', this, true)">D. RNA is required for transformation under these conditions, suggesting RNA carries or enables the heritable information.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p4q5-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>Enzyme logic is comparative: the molecule whose degradation removes the effect is the molecule implicated. RNase-only loss points toward RNA involvement.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: RNase targets RNA, not protein; this pattern would not support protein as the carrier.</li>
+<li><b>B</b>: If destroying RNA abolishes transformation while destroying DNA does not, RNA is implicated as necessary.</li>
+<li><b>C</b>: RNase enzymes function in aqueous environments routinely.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="section-label">Passage 5</div>
+<div class="passage-header">
+  <span class="passage-title">Passage 5: Epigenetic regulation, X-inactivation, and imprinting</span>
+  <button class="reason-btn" id="p5-btn" onclick="toggleReasoning('p5')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A developmental genetics team studies why genetically similar individuals can show different gene expression patterns without changes to DNA sequence. They compare two cell lines with identical nucleotide sequences at a tumor suppressor locus. In cell line 1, the promoter region is heavily methylated and the gene is largely silent. In cell line 2, the promoter is unmethylated and histones near the promoter are highly acetylated, and the gene is actively transcribed.</p>
+<p>The team also examines X-chromosome regulation. In typical XX somatic cells, one X chromosome is transcriptionally silenced early in development, forming a condensed Barr body. This creates dosage compensation: most X-linked genes are expressed at similar overall levels in XX and XY individuals. Some patients with sex-chromosome aneuploidy show predictable changes in the number of Barr bodies.</p>
+<p>Finally, clinicians discuss disorders linked to parent-of-origin effects. A deletion in the same region of chromosome 15 can cause two different syndromes depending on whether the deletion was inherited from the mother or the father. The group uses this as a model for imprinting, where epigenetic marks differ based on the contributing parent and influence which allele is expressed.</p>
+<p>In a separate project, epidemiologists examine whether environmental stressors can leave epigenetic marks that persist into subsequent generations. They collect health and mortality records across multiple generations and focus on outcomes that correlate with ancestral nutrition during sensitive developmental windows.</p>
+<p>For chromosome 15 disorders, genetic testing confirms the same deletion boundaries in two patients, yet one shows hyperphagia and developmental delay while the other shows severe intellectual disability and distinct neurological features. Clinicians use these cases to explain parent-of-origin effects to students.</p>
+</div>
+<div class="reasoning-box" id="p5-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+<li><b>Keep sequence vs regulation separate</b>: epigenetics changes expression without altering nucleotide order.</li>
+<li><b>Promoter methylation usually represses</b>: think “methyl = silence” for promoter regions in many MCAT contexts.</li>
+<li><b>Histone acetylation usually activates</b>: acetylation loosens chromatin, increasing transcriptional access.</li>
+<li><b>Barr body rule</b>: number of Barr bodies equals number of X chromosomes minus one.</li>
+<li><b>Imprinting logic</b>: same deletion, different phenotype implies parent-of-origin expression differences.</li>
+  </ol>
+</div>
+
+<div class="question" id="p5q1">
+  <b>21. If methylation at a promoter increases in a somatic cell, what is the most likely immediate effect on transcription of that gene?</b>
+  <div class="choice" onclick="selectChoice('p5q1', this, false)">A. Transcription increases because methyl groups attract RNA polymerase.</div>
+  <div class="choice" onclick="selectChoice('p5q1', this, true)">B. Transcription decreases because methylation is associated with gene silencing.</div>
+  <div class="choice" onclick="selectChoice('p5q1', this, false)">C. Transcription is unchanged because methylation affects only protein sequence, not expression.</div>
+  <div class="choice" onclick="selectChoice('p5q1', this, false)">D. Transcription becomes random because methylation swaps alleles between homologous chromosomes.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p5q1-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>Promoter methylation is commonly associated with decreased gene expression by making chromatin less accessible or recruiting repressive proteins.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Promoter methylation generally correlates with reduced transcription, not increased.</li>
+<li><b>C</b>: Methylation is regulatory and can change expression without changing coding sequence.</li>
+<li><b>D</b>: Allele swapping is recombination, not methylation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p5q2">
+  <b>22. Compared with a deacetylated state, histone acetylation near a promoter most directly causes:</b>
+  <div class="choice" onclick="selectChoice('p5q2', this, false)">A. Tighter DNA-histone interaction and reduced transcription</div>
+  <div class="choice" onclick="selectChoice('p5q2', this, true)">B. Looser chromatin structure and increased transcriptional access</div>
+  <div class="choice" onclick="selectChoice('p5q2', this, false)">C. Permanent mutation of the DNA sequence</div>
+  <div class="choice" onclick="selectChoice('p5q2', this, false)">D. Removal of introns from pre-mRNA</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p5q2-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: B</b></p>
+<p>Acetylation reduces histone-DNA affinity, opening chromatin and generally increasing transcription.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Acetylation weakens DNA-histone binding rather than tightening it.</li>
+<li><b>C</b>: Acetylation is reversible and does not alter DNA sequence.</li>
+<li><b>D</b>: Splicing is an RNA-processing step, not a chromatin modification outcome.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p5q3">
+  <b>23. A patient has a karyotype of XXX. In most somatic cells, how many Barr bodies would be expected?</b>
+  <div class="choice" onclick="selectChoice('p5q3', this, true)">A. 2</div>
+  <div class="choice" onclick="selectChoice('p5q3', this, false)">B. 1</div>
+  <div class="choice" onclick="selectChoice('p5q3', this, false)">C. 0</div>
+  <div class="choice" onclick="selectChoice('p5q3', this, false)">D. 3</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p5q3-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>Dosage compensation leaves one X active; with three X chromosomes, two are inactivated into Barr bodies.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>B</b>: One Barr body is typical of XX cells.</li>
+<li><b>C</b>: Barr bodies equal X chromosomes minus one: 3 − 1 = 2.</li>
+<li><b>D</b>: At least one X remains active; not all three are silenced.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p5q4">
+  <b>24. A deletion in the same region of chromosome 15 produces different syndromes depending on whether it was inherited from the mother or the father. This pattern is best explained by:</b>
+  <div class="choice" onclick="selectChoice('p5q4', this, true)">A. Genomic imprinting</div>
+  <div class="choice" onclick="selectChoice('p5q4', this, false)">B. Mitochondrial inheritance</div>
+  <div class="choice" onclick="selectChoice('p5q4', this, false)">C. Genetic drift</div>
+  <div class="choice" onclick="selectChoice('p5q4', this, false)">D. Codominance</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p5q4-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: A</b></p>
+<p>Parent-of-origin effects implicate imprinting: one allele may be silenced by epigenetic marks depending on whether it came from the mother or father.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>B</b>: Mitochondrial inheritance is maternal and involves mitochondrial DNA, not chromosome 15.</li>
+<li><b>C</b>: Genetic drift is population-level and unrelated to parent-of-origin expression.</li>
+<li><b>D</b>: Imprinting uses differential methylation/marks to silence one parental allele.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="p5q5">
+  <b>25. A study reports that grandchildren of individuals exposed to famine show altered disease risk despite no consistent DNA sequence differences. Which mechanism best fits this observation?</b>
+  <div class="choice" onclick="selectChoice('p5q5', this, false)">A. High-frequency point mutations in the grandchildren’s germline DNA</div>
+  <div class="choice" onclick="selectChoice('p5q5', this, false)">B. Protein inheritance through the cytoplasm without any nucleic acid involvement</div>
+  <div class="choice" onclick="selectChoice('p5q5', this, false)">C. Independent assortment producing new alleles at meiosis I</div>
+  <div class="choice" onclick="selectChoice('p5q5', this, true)">D. Epigenetic modifications affecting gene expression that are transmitted across generations</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p5q5-exp">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+<p><b>Correct answer: D</b></p>
+<p>Epigenetic inheritance can transmit altered gene regulation patterns without changing the underlying DNA sequence, consistent with exposure-associated effects in descendants.</p>
+<p><b>Why the other options are less appropriate:</b></p>
+<ul>
+<li><b>A</b>: Systematic point mutations would appear as sequence changes and are unlikely to match a specific exposure pattern.</li>
+<li><b>B</b>: Environment-linked methylation or chromatin changes can sometimes persist and influence descendants.</li>
+<li><b>C</b>: Independent assortment reshuffles alleles but does not create exposure-linked expression changes without sequence change.</li>
+</ul>
+    </div>
+  </details>
+</div>
+</body></html>

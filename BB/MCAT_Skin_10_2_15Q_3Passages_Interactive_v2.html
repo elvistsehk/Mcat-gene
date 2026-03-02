@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chapter 10.2 — The Skin (Integument)</title>
+<style>
+
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+
+</style>
+</head>
+<body>
+  <div class="main-header">
+    <div class="header-title">Chapter 10.2 — The Skin (Integument)</div>
+    <button class="reset-btn" onclick="resetAll()">Reset all</button>
+  </div>
+
+  <div class="container">
+    <div class="section-label">Standalone Questions (15)</div>
+    <div class="question" id="q1">
+  <b>1. Which cell type makes up the majority of cells in the epidermis and produces keratin?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Melanocytes</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Langerhans cells</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Keratinocytes</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Fibroblasts</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q1-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: C.</b> Keratinocytes are the predominant epidermal cells; they proliferate from the stratum basale and produce keratin that strengthens the outer barrier.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Melanocytes synthesize melanin in the stratum basale, but they are far less numerous than keratinocytes.</li>
+<li><b>B.</b> Langerhans cells are specialized macrophage-like antigen-presenting cells in the epidermis, not the primary structural cell.</li>
+<li><b>D.</b> Fibroblasts live in the dermis and secrete collagen and other extracellular matrix components.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q2">
+  <b>2. A biopsy is taken from the surface of thick, hairless skin. Which sequence lists the epidermal layers from most superficial to deepest?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Stratum corneum → stratum lucidum → stratum granulosum → stratum spinosum → stratum basale</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Stratum basale → stratum spinosum → stratum granulosum → stratum corneum → stratum lucidum</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Stratum corneum → stratum granulosum → stratum spinosum → stratum basale → stratum lucidum</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Stratum lucidum → stratum corneum → stratum granulosum → stratum spinosum → stratum basale</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q2-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: A.</b> From superficial to deep, the epidermis is corneum, lucidum (only in thick skin), granulosum, spinosum, basale.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>B.</b> This lists largely deep-to-superficial and incorrectly places lucidum at the surface; lucidum sits between corneum and granulosum.</li>
+<li><b>C.</b> Lucidum is not the deepest layer; it is superficial and present only in thick skin between corneum and granulosum.</li>
+<li><b>D.</b> Lucidum is not the most superficial layer; stratum corneum is.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q3">
+  <b>3. Compared with thin skin, thick skin on the palms and soles contains an additional epidermal layer. Which layer is added?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Stratum spinosum</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Stratum granulosum</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Stratum basale</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Stratum lucidum</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q3-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: D.</b> Stratum lucidum is a nearly transparent layer present only in thick, hairless skin.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Stratum spinosum is present in both thick and thin skin; it contains keratinocyte connections and Langerhans cells.</li>
+<li><b>B.</b> Stratum granulosum is present in both thick and thin skin; it is where keratinocytes die and lose nuclei.</li>
+<li><b>C.</b> Stratum basale is the deepest proliferative layer and is present in all epidermis.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q4">
+  <b>4. A guitar player develops a callus on a fingertip after weeks of practice. The best explanation is increased:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Melanin production by melanocytes in the stratum basale</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Collagen secretion by fibroblasts in the dermis</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Sebum production by sebaceous glands in the dermis</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. Keratin deposition by keratinocytes in the outer epidermis</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q4-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: D.</b> Repeated friction stimulates thicker keratinized layers (hyperkeratosis), strengthening the barrier at that site.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Melanin is a UV-protective pigment; it does not form calluses from friction.</li>
+<li><b>B.</b> Collagen remodeling is more relevant to dermal scarring; calluses are primarily epidermal keratin thickening.</li>
+<li><b>C.</b> Sebum lubricates hair/skin but does not create the thick, hardened callus layer.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q5">
+  <b>5. A mutation disrupts migration of neural crest derivatives. Which skin cell type would be most directly reduced in number?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Keratinocytes</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Fibroblasts</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">C. Melanocytes</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Endothelial cells of dermal vessels</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q5-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: C.</b> Melanocytes derive from neural crest cells and reside in the stratum basale, producing melanin.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Keratinocytes arise from ectodermal epithelium and are generated from basal stem cells.</li>
+<li><b>B.</b> Dermal fibroblasts are mesenchymal (mesoderm-derived), not neural crest derivatives.</li>
+<li><b>D.</b> Vascular endothelium is mesoderm-derived; neural crest migration defects primarily affect melanocytes in skin pigmentation.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q6">
+  <b>6. After increased ultraviolet exposure, a person’s skin darkens over several days. Which change best explains the color change?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Increased proliferation of Langerhans cells in the stratum spinosum</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">B. Increased melanin production in melanocytes with transfer of pigment to keratinocytes</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Increased keratin production that selectively absorbs ultraviolet light</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Increased dermal blood flow that permanently raises skin erythema</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q6-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: B.</b> UV exposure upregulates melanocyte activity; melanin is packaged and transferred to keratinocytes to protect DNA from UV damage.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Langerhans cells present antigen; they do not produce pigment responsible for tanning.</li>
+<li><b>C.</b> Keratin contributes to barrier strength, but tanning is primarily due to melanin pigmentation.</li>
+<li><b>D.</b> Increased blood flow can cause transient redness, not sustained darkening over days.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q7">
+  <b>7. Which epidermal cell is best characterized as a macrophage-like antigen-presenting cell that can activate T-cells?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Merkel cell</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Melanocyte</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">C. Langerhans cell</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Keratinocyte</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q7-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: C.</b> Langerhans cells reside mainly in the stratum spinosum and function as antigen-presenting cells that help initiate immune responses.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Merkel cells are mechanoreceptors at the epidermal–dermal junction involved in deep pressure/texture sensation.</li>
+<li><b>B.</b> Melanocytes synthesize melanin pigment for UV protection, not antigen presentation.</li>
+<li><b>D.</b> Keratinocytes form the barrier and make keratin; they are not the primary professional antigen-presenting cell in epidermis.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q8">
+  <b>8. A histology slide shows a superficial dermal layer with loose connective tissue forming dermal papillae. This layer is the:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Reticular dermis</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Papillary dermis</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Hypodermis</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Stratum spinosum</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q8-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: B.</b> The papillary dermis is the superficial dermal layer composed of loose connective tissue; it interdigitates with epidermis.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> The reticular dermis is deeper and consists of denser connective tissue.</li>
+<li><b>C.</b> The hypodermis (subcutaneous tissue) lies beneath the dermis and contains fat and fibrous tissue.</li>
+<li><b>D.</b> Stratum spinosum is an epidermal layer, not part of the dermis.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q9">
+  <b>9. Eccrine sweat glands are primarily located and originate within which skin layer?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Epidermis</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Stratum corneum</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. Dermis</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Stratum lucidum</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q9-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: C.</b> Sweat glands (and hair follicles and many vessels) originate in the dermis, with ducts opening to the skin surface.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> The epidermis is avascular epithelium; glands are typically rooted deeper, in the dermis.</li>
+<li><b>B.</b> Stratum corneum is the outermost dead keratinized layer; it does not house glandular structures.</li>
+<li><b>D.</b> Lucidum is a thin epidermal layer of thick skin; glands are not located within it.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q10">
+  <b>10. Which cutaneous receptor is most associated with deep pressure and vibration sensation?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Meissner corpuscle</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Free nerve ending</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Pacinian corpuscle</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Ruffini ending</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q10-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: C.</b> Pacinian corpuscles detect deep pressure and high-frequency vibration, located deeper in dermis/hypodermis.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Meissner corpuscles detect light touch and are located superficially in the dermis.</li>
+<li><b>B.</b> Free nerve endings detect pain and temperature rather than deep vibration.</li>
+<li><b>D.</b> Ruffini endings detect skin stretch and sustained pressure, not primarily vibration.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q11">
+  <b>11. Sweat secretion that cools the body is primarily triggered by postganglionic neurons that are:</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Sympathetic and release acetylcholine onto sweat glands</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Sympathetic and release norepinephrine onto sweat glands</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Parasympathetic and release acetylcholine onto sweat glands</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Somatic motor neurons that release acetylcholine onto sweat glands</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q11-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: A.</b> Sweat glands are an exception: most postganglionic sympathetic neurons are adrenergic, but those to sweat glands are cholinergic (ACh).</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>B.</b> Most postganglionic sympathetic neurons are noradrenergic, but sweat-gland innervation is a classic cholinergic exception.</li>
+<li><b>C.</b> Parasympathetic activity is not the main driver of sweating for thermoregulation.</li>
+<li><b>D.</b> Somatic motor neurons innervate skeletal muscle; sweat glands are controlled by the autonomic nervous system.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q12">
+  <b>12. The primary cooling benefit of sweating comes from which physical principle?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Sweat crystallizes on the skin, releasing heat to the environment</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Sweat increases skin insulation, preventing heat gain from the environment</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. Evaporation absorbs heat from the skin because it is an endothermic phase change</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Sweat lowers blood osmolarity, directly reducing metabolic heat production</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q12-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: C.</b> Heat is removed when liquid water on the skin evaporates; the phase change requires energy, which is drawn from body heat.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Crystallization would release heat, but sweating cools mainly via evaporation, not crystallization.</li>
+<li><b>B.</b> Sweat does not insulate; it promotes heat loss when it evaporates.</li>
+<li><b>D.</b> Sweating changes fluid balance but cooling is primarily due to heat absorbed during evaporation.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q13">
+  <b>13. In a cold environment, which coordinated skin responses best reduce heat loss?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Cutaneous vasodilation and sweating</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Cutaneous vasodilation and piloerection</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Cutaneous vasoconstriction and increased sweat production</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Cutaneous vasoconstriction and piloerection</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q13-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: D.</b> Vasoconstriction reduces warm blood flow to the skin, and piloerection traps a thin layer of air to reduce convective heat loss.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Vasodilation and sweating promote heat loss, appropriate for overheating, not cold.</li>
+<li><b>B.</b> Piloerection may occur, but vasodilation would increase heat loss and counteract conservation.</li>
+<li><b>C.</b> Sweating promotes heat loss; in cold, sweating would worsen cooling.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q14">
+  <b>14. A patient with extensive skin burns becomes rapidly dehydrated. Which explanation best accounts for this complication?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Increased melanin production causes osmotic draw of water to the epidermis</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Loss of the skin barrier increases water loss from tissues and permits fluid leakage</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Overactivation of Langerhans cells causes widespread vasodilation</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Increased keratin deposition blocks water reabsorption by the kidneys</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q14-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: B.</b> Intact skin is relatively impermeable to water; large-area burns remove this barrier, greatly increasing evaporative water loss and fluid shifts.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Melanin pigmentation does not drive major osmotic water movement in this way.</li>
+<li><b>C.</b> Burn shock involves complex inflammation, but the immediate dehydration risk is fundamentally due to barrier loss and fluid leakage.</li>
+<li><b>D.</b> Keratin changes in skin do not directly impair renal water reabsorption.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q15">
+  <b>15. Brown adipose tissue helps infants maintain body temperature primarily because it:</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Produces melanin to absorb solar radiation more efficiently</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Generates heat via an inefficient electron transport chain that releases more energy as thermal energy</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Secretes acetylcholine that directly stimulates sweating</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Contains more keratin, reducing heat loss through the skin</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q15-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: B.</b> Brown fat is specialized for nonshivering thermogenesis; uncoupling leads to less ATP production and more heat release.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Melanin is produced by melanocytes in skin, not adipose tissue, and solar absorption is not the main mechanism.</li>
+<li><b>C.</b> Sweating would increase heat loss, not conserve heat, and brown fat does not control sweat glands.</li>
+<li><b>D.</b> Keratin is an epidermal protein; adipose tissue does not gain insulation by producing keratin.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+    <div class="section-label">Passages (3)</div>
+    <div class="passage-box">
+  <div class="passage-header">
+    <div class="passage-title">Passage 1: Heat Illness and Autonomic Control of Sweating</div>
+    <button id="p1-btn" class="reason-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+
+  <div class="passage-content">
+    <p>A 23-year-old athlete begins a high-intensity interval workout on a hot, very humid day. After 20 minutes, he feels dizzy and nauseated. His skin is warm, and he complains of an unusually dry mouth despite drinking water.</p>
+<p>Earlier that morning, he took an over-the-counter medication for motion sickness. The medication is known to reduce glandular secretions in some people. During evaluation, his heart rate is elevated, and his skin appears flushed. A clinician notes that his clothing is surprisingly dry given the heat.</p>
+<p>The patient is moved to a cooler environment. As he rests, his symptoms slowly improve, but he continues to feel overheated compared with teammates who performed the same workout.</p>
+  </div>
+
+  <div class="reasoning-box" id="p1-reason">
+    <p><b>Step 1: Identify the key clues.</b> Dry mouth + dry clothing/skin during heat stress points to reduced exocrine gland output, including sweat.</p>
+<p><b>Step 2: Map clues to autonomic wiring.</b> Thermoregulatory sweat glands are controlled by <b>postganglionic sympathetic fibers</b> that (unusually) release <b>acetylcholine</b>.</p>
+<p><b>Step 3: Predict what fails.</b> If sweating is reduced, <b>evaporative heat loss</b> drops; the body may still increase <b>skin blood flow</b> (flushing), but core temperature can rise.</p>
+<p><b>Step 4: Use the environment.</b> High humidity decreases the <b>evaporation gradient</b>, so sweating becomes less effective even if produced.</p>
+  </div>
+</div>
+
+<div class="question" id="q16">
+  <b>16. Based on the scenario, the motion sickness medication most likely interfered with signaling at sweat glands. Which neurotransmitter normally drives thermoregulatory sweating?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Acetylcholine</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Norepinephrine</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Dopamine</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Serotonin</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q16-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: A.</b> Thermoregulatory sweating is mediated by postganglionic sympathetic fibers that unusually release acetylcholine onto sweat glands.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>B.</b> Most postganglionic sympathetic targets use norepinephrine, but sweat glands are the classic cholinergic exception.</li>
+<li><b>C.</b> Dopamine is not the primary neurotransmitter for sweat gland activation in thermoregulation.</li>
+<li><b>D.</b> Serotonin is mainly a CNS and GI signaling molecule; it is not the primary autonomic transmitter to sweat glands.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q17">
+  <b>17. The patient’s flushed, warm skin is most consistent with which compensatory response to overheating?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Cutaneous vasoconstriction to reduce sweat formation</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Piloerection to trap a thick insulating air layer</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Reduced skin blood flow to preserve blood volume</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Cutaneous vasodilation to increase heat transfer to the skin surface</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q17-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: D.</b> When core temperature is high, arterioles in the skin dilate to bring warm blood to the surface, enhancing heat loss (especially when combined with evaporation).</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Vasoconstriction conserves heat and would worsen overheating; it is a cold response.</li>
+<li><b>B.</b> Piloerection is a cold response intended to conserve heat, not lose it.</li>
+<li><b>C.</b> Reducing skin blood flow would limit heat dissipation; it may occur in cold, not acute heat stress.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q18">
+  <b>18. High humidity makes the situation worse primarily because it reduces:</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. The rate of sweat evaporation from the skin</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Sweat production by the hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Keratinocyte turnover in the stratum basale</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Melanin transfer to keratinocytes</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q18-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: A.</b> Cooling from sweat depends on evaporation (an endothermic phase change). In humid air, the vapor pressure gradient is smaller, so evaporation slows and heat loss drops.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>B.</b> Humidity mainly affects evaporation, not the hypothalamic drive to produce sweat.</li>
+<li><b>C.</b> Keratinocyte turnover affects barrier maintenance, not acute heat exchange during exercise.</li>
+<li><b>D.</b> Melanin transfer is related to UV protection and pigmentation, not short-term heat dissipation in humidity.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="passage-box">
+  <div class="passage-header">
+    <div class="passage-title">Passage 2: Pigmentation Changes and Epidermal Immune Cells</div>
+    <button id="p2-btn" class="reason-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+
+  <div class="passage-content">
+    <p>A 19-year-old presents with several well-demarcated patches of depigmented skin on the hands and around the eyes. The patches developed over months and are more noticeable after sun exposure because the surrounding skin darkens while the patches remain pale.</p>
+<p>A skin biopsy from a depigmented patch shows normal stratified squamous epithelium with preserved keratinocyte layers. However, pigment granules are markedly reduced, and there are fewer pigment-producing cells at the epidermal–dermal junction compared with adjacent normal skin. Immune cells are also noted within the epidermis.</p>
+<p>The clinician explains that the condition is not caused by reduced numbers of keratinocytes. Instead, a specific cell population is being targeted, altering the skin’s ability to protect itself from ultraviolet radiation.</p>
+  </div>
+
+  <div class="reasoning-box" id="p2-reason">
+    <p><b>Step 1: Classify the pattern.</b> Patchy, acquired depigmentation suggests loss of a pigment cell population rather than a whole-body enzyme defect.</p>
+<p><b>Step 2: Locate the pigment cell.</b> <b>Melanocytes</b> sit in the <b>stratum basale</b> near the epidermal–dermal junction and transfer pigment to keratinocytes.</p>
+<p><b>Step 3: Integrate the immune clue.</b> Epidermal immune surveillance involves <b>Langerhans cells</b> (antigen presentation), supporting autoimmune targeting.</p>
+<p><b>Step 4: Predict consequences.</b> Less melanin means less <b>UV shielding</b>, so DNA damage risk rises in affected epidermis.</p>
+  </div>
+</div>
+
+<div class="question" id="q19">
+  <b>19. Which diagnosis best fits the pattern of patchy depigmented lesions with immune involvement described in the passage?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Albinism due to an inherited defect in melanin synthesis in all skin</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Psoriasis due to hyperproliferation of keratinocytes</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Contact dermatitis due to acute epidermal edema and spongiosis</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. Vitiligo due to autoimmune destruction of melanocytes</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q19-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: D.</b> Patchy, acquired depigmentation with evidence of immune activity and reduced melanocytes is most consistent with vitiligo (autoimmune melanocyte loss).</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Albinism is typically generalized and present from birth, not patchy acquired lesions.</li>
+<li><b>B.</b> Psoriasis produces scaly plaques from rapid keratinocyte turnover, not selective loss of pigmentation.</li>
+<li><b>C.</b> Contact dermatitis is usually pruritic and inflammatory after exposure and does not selectively eliminate melanocytes over months.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q20">
+  <b>20. The immune cells within the epidermis most likely include which antigen-presenting cell type?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Pacinian corpuscles</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">B. Langerhans cells</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Sebocytes</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Schwann cells</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q20-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: B.</b> Langerhans cells are macrophage-like antigen-presenting cells located in the epidermis (notably the stratum spinosum).</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Pacinian corpuscles are mechanoreceptors for deep pressure/vibration located deeper in the dermis/hypodermis.</li>
+<li><b>C.</b> Sebocytes are glandular cells that produce sebum in sebaceous glands, not epidermal APCs.</li>
+<li><b>D.</b> Schwann cells myelinate peripheral nerves; they are not the characteristic epidermal antigen-presenting cells.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q21">
+  <b>21. Compared with adjacent normal skin, the depigmented patches are expected to have which change after ultraviolet exposure?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Greater ability to form a callus because keratin is absent</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">B. Greater susceptibility to UV-induced DNA damage in epidermal cells</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Decreased need for cutaneous vasodilation because melanin retains heat</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Lower risk of infection because pigment granules directly kill pathogens</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q21-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: B.</b> Melanin helps shield nuclear DNA from UV radiation. Loss of melanocytes/pigment increases UV-related DNA damage risk in the affected epidermis.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Callus formation is driven by keratinocyte keratin deposition; vitiligo does not remove keratin.</li>
+<li><b>C.</b> Melanin’s main role is UV protection, not a dominant determinant of thermoregulation needs.</li>
+<li><b>D.</b> Pigment is not a primary antimicrobial mechanism; the barrier and immune cells drive infection resistance.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="passage-box">
+  <div class="passage-header">
+    <div class="passage-title">Passage 3: Partial-Thickness Burn and Sensory Testing</div>
+    <button id="p3-btn" class="reason-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+
+  <div class="passage-content">
+    <p>A patient sustains a partial-thickness burn on the forearm after contact with a hot surface. The area is painful and blistered, but some deeper sensation remains. On exam, the clinician notes that the patient has difficulty detecting very light touch over the burned region.</p>
+<p>However, the patient can still perceive deep pressure applied to the area and can detect vibration from a tuning fork placed nearby. The clinician also notices that the burned skin is dry and that the patient reports reduced sweating in that region during exercise.</p>
+<p>The patient is counseled about complications that can occur when the skin barrier is compromised and why careful wound care and hydration are important during healing.</p>
+  </div>
+
+  <div class="reasoning-box" id="p3-reason">
+    <p><b>Step 1: Match each modality to depth.</b> Light touch is detected superficially; deep pressure/vibration are detected deeper.</p>
+<p><b>Step 2: Choose receptors by depth.</b> <b>Meissner corpuscles</b> are superficial (papillary dermis). <b>Pacinian corpuscles</b> are deeper (deep dermis/hypodermis).</p>
+<p><b>Step 3: Use gland anatomy.</b> Sweat glands originate in the <b>dermis</b>, so dermal injury can reduce local sweating.</p>
+<p><b>Step 4: Translate “barrier loss.”</b> Damaged skin increases <b>water loss</b> and infection risk—so hydration and protection matter.</p>
+  </div>
+</div>
+
+<div class="question" id="q22">
+  <b>22. Which sensory receptor is most likely impaired given reduced light touch with preserved deep pressure and vibration?</b>
+  <div class="choice" onclick="selectChoice('q22', this, true)">A. Meissner corpuscle</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Pacinian corpuscle</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Ruffini ending</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Merkel cell</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q22-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: A.</b> Light touch is mediated by Meissner corpuscles in the superficial dermis. Deep pressure/vibration is mediated by deeper Pacinian corpuscles, consistent with preservation of those sensations.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>B.</b> Pacinian corpuscles detect deep pressure/vibration, which is preserved in the passage—making them less likely to be the main deficit.</li>
+<li><b>C.</b> Ruffini endings detect stretch and sustained pressure rather than the classic light-touch deficit described.</li>
+<li><b>D.</b> Merkel cells sense deep pressure/texture at the epidermal–dermal junction; the passage emphasizes light-touch loss with preserved deeper modalities.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q23">
+  <b>23. The reduced sweating in the burned region is most directly explained by damage to structures that originate in the:</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Dermis</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Stratum corneum</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Stratum lucidum</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Stratum basale</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q23-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: A.</b> Sweat glands originate in the dermis; injury that reaches into the dermis can impair local gland function and reduce sweating.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>B.</b> Stratum corneum is a superficial dead layer; glands are not located within it.</li>
+<li><b>C.</b> Lucidum is present in thick skin (palms/soles) and is not where sweat glands originate.</li>
+<li><b>D.</b> Basale contains proliferative keratinocytes and melanocytes, but sweat glands are rooted deeper in the dermis.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="question" id="q24">
+  <b>24. If a large body surface area were affected by similar burns, which complication would be most directly linked to loss of the skin’s low permeability to water?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Hyperpigmentation from increased melanocyte number</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Inability to shiver due to loss of skeletal muscle ATP production</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Chronic alkalosis due to reduced carbon dioxide excretion</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Dehydration from increased evaporative water loss</div>
+  <div class="feedback fb-correct">Correct</div>
+  <div class="feedback fb-incorrect">Incorrect</div>
+
+  <div class="explanation" id="q24-exp">
+    <details>
+      <summary>Show Explanation</summary>
+      <div class="exp-body">
+        <p><b>Correct answer: D.</b> The skin normally limits water movement. When large areas are damaged, water loss increases dramatically, leading to dehydration and fluid imbalance.</p>
+<p><b>Why the other choices are not the best:</b></p><ul>
+<li><b>A.</b> Burns damage tissue and can reduce pigmentation locally; dehydration is not caused by increased melanocyte number.</li>
+<li><b>B.</b> Shivering is produced by skeletal muscle; skin damage does not directly prevent ATP production in muscle.</li>
+<li><b>C.</b> CO2 excretion is handled by lungs, not skin. The burn-related issue here is water barrier loss.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+</div>
+  </div>
+
+<script>
+
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+
+</script>
+</body>
+</html>

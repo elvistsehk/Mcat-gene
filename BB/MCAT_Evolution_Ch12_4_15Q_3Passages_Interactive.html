@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Evolution (Ch. 12.4) (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Evolution (Ch. 12.4)</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Correct-answer distribution across Q1–Q24: A=6, B=6, C=6, D=6 (random order) -->
+
+<!-- Q1 Correct: A -->
+<div class="question" id="q1">
+  <b>1. Which statement best distinguishes evolution from natural selection?</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. Evolution is a change in allele frequencies in a population over time; natural selection is one mechanism that can drive that change.</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Evolution describes how individuals adapt during their lifetimes; natural selection describes how populations change.</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Natural selection is a synonym for genetic drift; evolution is a synonym for mutation.</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Evolution only occurs when new species form; natural selection only occurs within a species.</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> Evolution is the broader outcome—changes in the gene pool of a population across generations. Natural selection is a process that can shift allele frequencies via differential reproductive success.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B:</b> Individuals do not evolve genetically within a lifetime; populations do.</li>
+      <li><b>C:</b> Genetic drift is random change in allele frequencies; mutation generates new alleles. Neither is synonymous with natural selection.</li>
+      <li><b>D:</b> Evolution includes microevolution within species and macroevolution including speciation; natural selection can act at both scales.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q2 Correct: C -->
+<div class="question" id="q2">
+  <b>2. The modern synthesis model (neo-Darwinism) most directly adds which idea to Darwin’s original framework?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Species are fixed and cannot change</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Fossils show long periods of stasis with brief bursts of change</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">C. Heritable variation arises from genetic mechanisms (mutation and recombination) that alter the gene pool</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Fitness is measured only by survival, not reproduction</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> The modern synthesis integrates Mendelian genetics and population genetics: mutation/recombination create variation and allele frequencies in populations change over time via selection and other forces.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Contradicts evolutionary theory.</li>
+      <li><b>B:</b> Describes punctuated equilibrium, not the central addition of modern synthesis.</li>
+      <li><b>D:</b> Fitness is defined by reproductive success (genetic contribution), not just survival.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q3 Correct: D -->
+<div class="question" id="q3">
+  <b>3. Which scenario best illustrates inclusive fitness?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. A predator population evolves sharper teeth because individuals “need” them</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. A mutation spreads because it increases the lifespan of individuals after reproduction</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. A population remains unchanged because no new mutations occur</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. An animal risks injury to help close relatives survive and reproduce, increasing shared genetic representation in future generations</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: D.</b></p>
+    <p><b>Why:</b> Inclusive fitness considers an organism’s genetic success via its own offspring <i>and</i> by helping relatives (who share many genes) survive and reproduce.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Evolution is not goal-directed; “need” does not cause heritable change.</li>
+      <li><b>B:</b> Post-reproductive lifespan effects can matter indirectly, but this is not clearly about boosting relatives’ reproduction.</li>
+      <li><b>C:</b> Lack of mutation does not capture the idea of helping kin.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q4 Correct: B -->
+<div class="question" id="q4">
+  <b>4. A fossil lineage shows long periods with little morphological change, followed by relatively rapid appearance of new forms. Which theory best explains this pattern?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Stabilizing selection</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Punctuated equilibrium</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Convergent evolution</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Hardy–Weinberg equilibrium</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> Punctuated equilibrium proposes evolutionary stasis for long intervals interrupted by bursts of rapid change, consistent with the described fossil pattern.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Stabilizing selection can maintain a mean phenotype but does not specifically predict sudden bursts.</li>
+      <li><b>C:</b> Convergent evolution is similarity in unrelated lineages due to similar pressures, not a “stasis then bursts” tempo.</li>
+      <li><b>D:</b> Hardy–Weinberg describes a non-evolving population’s allele frequencies under ideal conditions.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q5 Correct: A -->
+<div class="question" id="q5">
+  <b>5. Which pattern of selection most directly reduces phenotypic variance by selecting against extremes?</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Stabilizing selection</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Directional selection</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Disruptive selection</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Divergent evolution</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> Stabilizing selection favors intermediate phenotypes and selects against both extremes, narrowing the distribution.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B:</b> Directional selection shifts the mean toward one extreme rather than narrowing around the mean.</li>
+      <li><b>C:</b> Disruptive selection favors both extremes, often increasing variance or creating bimodality.</li>
+      <li><b>D:</b> Divergent evolution describes divergence between species/lineages, not selection within a population distribution.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q6 Correct: C -->
+<div class="question" id="q6">
+  <b>6. After an environmental change, individuals with one extreme phenotype have higher survival and reproduction, and the population mean shifts over generations. Which mode of selection is occurring?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Stabilizing selection</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Disruptive selection</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Directional selection</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Parallel evolution</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> Directional selection favors one extreme and shifts the population phenotype distribution toward that extreme over time.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Favors intermediates, not an extreme.</li>
+      <li><b>B:</b> Favors both extremes simultaneously.</li>
+      <li><b>D:</b> Parallel evolution refers to related species evolving similarly, not a selection mode within one population.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q7 Correct: D -->
+<div class="question" id="q7">
+  <b>7. A population evolves two successful extreme phenotypes while intermediate individuals have lower fitness, producing a bimodal distribution. Which selection pattern best explains this?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Stabilizing selection</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Directional selection</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Genetic drift</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. Disruptive selection</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: D.</b></p>
+    <p><b>Why:</b> Disruptive selection favors both extremes and selects against intermediates, often creating a bimodal phenotype distribution.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Would remove extremes and keep intermediates.</li>
+      <li><b>B:</b> Would shift the whole distribution toward one side.</li>
+      <li><b>C:</b> Drift is random and does not systematically favor extremes over intermediates.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q8 Correct: B -->
+<div class="question" id="q8">
+  <b>8. Which statement best captures the biological species concept?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. A species is any group of organisms that look alike</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. A species is the largest group of organisms capable of interbreeding to produce fertile offspring</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. A species is defined by occupying the same geographic region</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. A species is any lineage with the same number of chromosomes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> The biological definition centers on reproductive compatibility and fertility of offspring.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Morphology can mislead (cryptic species; convergent evolution).</li>
+      <li><b>C:</b> Many species overlap geographically without interbreeding.</li>
+      <li><b>D:</b> Chromosome number alone is not sufficient (some different species share chromosome numbers; some same species show variation).</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q9 Correct: A -->
+<div class="question" id="q9">
+  <b>9. Two populations cannot mate because their reproductive anatomies are incompatible. This is an example of:</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. A prezygotic isolation mechanism</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Hybrid sterility</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Hybrid breakdown</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. A postzygotic isolation mechanism that occurs after zygote formation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> Mechanical (anatomical) incompatibility prevents fertilization, so the zygote never forms—prezygotic isolation.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B:</b> Hybrid sterility happens after a viable hybrid is produced.</li>
+      <li><b>C:</b> Hybrid breakdown refers to F1 hybrids being viable/fertile but later generations failing.</li>
+      <li><b>D:</b> This contradicts the scenario (zygote never forms).</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q10 Correct: C -->
+<div class="question" id="q10">
+  <b>10. A horse and a donkey can produce a viable mule, but mules are sterile. This is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Gametic isolation</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Temporal isolation</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Postzygotic isolation via hybrid sterility</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Ecological isolation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> Fertilization occurs and the hybrid survives, but it cannot reproduce—classic postzygotic hybrid sterility.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Gametic isolation prevents fertilization in the first place.</li>
+      <li><b>B:</b> Temporal isolation is breeding at different times, not sterility.</li>
+      <li><b>D:</b> Ecological isolation is living in different niches within a region, preventing encounters.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q11 Correct: D -->
+<div class="question" id="q11">
+  <b>11. Two unrelated lineages evolve similar body shapes because both adapt to a similar aquatic environment. Which pattern of evolution is illustrated?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Divergent evolution</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Parallel evolution</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Genetic drift</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">D. Convergent evolution</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: D.</b></p>
+    <p><b>Why:</b> Convergent evolution is the independent evolution of similar traits in lineages that do not share a recent common ancestor, driven by similar selection pressures.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Divergent evolution is dissimilar traits arising from a shared ancestor.</li>
+      <li><b>B:</b> Parallel evolution typically involves related species evolving similarly under analogous pressures.</li>
+      <li><b>C:</b> Drift is random and not driven by the environment in a consistent, trait-specific way.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q12 Correct: B -->
+<div class="question" id="q12">
+  <b>12. Two closely related species evolve similar traits over time while living in comparable environments. Which pattern best fits?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Convergent evolution</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. Parallel evolution</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Hybrid breakdown</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Stabilizing selection</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> Parallel evolution involves related species evolving in similar ways under analogous environmental pressures.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Convergent evolution is usually emphasized for more distantly related lineages.</li>
+      <li><b>C:</b> Hybrid breakdown refers to problems in later hybrid generations, not trait similarity evolution.</li>
+      <li><b>D:</b> Stabilizing selection is a within-population selection mode, not a between-species pattern.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q13 Correct: A -->
+<div class="question" id="q13">
+  <b>13. Two populations share a common ancestor but become increasingly dissimilar because they adapt to different environments. This is best described as:</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Divergent evolution</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Convergent evolution</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Punctuated equilibrium</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Directional selection</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> Divergent evolution is the development of dissimilar traits in lineages sharing a common ancestor, usually due to different selection pressures.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B:</b> Convergent evolution produces similarity, not dissimilarity.</li>
+      <li><b>C:</b> Punctuated equilibrium is about tempo (rate pattern), not the direction of similarity/difference between lineages.</li>
+      <li><b>D:</b> Directional selection is within a population; divergent evolution compares lineages/species.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q14 Correct: C -->
+<div class="question" id="q14">
+  <b>14. Which statement best reflects how evolutionary change is measured at the genetic level over time?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Evolution is measured by how strongly individuals “want” to survive</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Evolution is measured by the number of traits an organism acquires during its lifetime</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">C. Evolutionary rate can be inferred from changes in genotype/sequence over time, and greater genomic similarity suggests a more recent common ancestor</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Evolutionary time is measured by the percent of proteins that contain sulfur</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> Molecular comparisons (DNA sequence similarity) can be used as a molecular clock: more similarity generally implies a more recent split, while more differences imply more time since divergence.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A/B:</b> Evolution is not driven by desire and is not measured by acquired traits.</li>
+      <li><b>D:</b> Sulfur content is not a general measure of evolutionary time.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q15 Correct: D -->
+<div class="question" id="q15">
+  <b>15. Which statement is most consistent with the idea that populations evolve rather than individuals?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. An individual bacterium becomes resistant after “trying” to survive antibiotic exposure</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. A giraffe stretches its neck and passes the longer neck directly to its offspring</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Individuals with the most offspring always live the longest</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">D. Over generations, alleles that increase reproductive success become more common in the population’s gene pool</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: D.</b></p>
+    <p><b>Why:</b> The population’s allele frequencies shift across generations via differential reproduction. Individuals are selected, but the population evolves.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A/B:</b> These are Lamarckian/teleological misconceptions; resistance and traits arise from heritable variation, not “trying” or stretching.</li>
+      <li><b>C:</b> Fitness is about reproductive success, not necessarily longevity.</li>
+    </ul>
+  </div></details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Selection in a Changing Environment</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A coastal bird species feeds on snails. For decades, most snails had medium-thickness shells, and the birds’ average beak strength remained stable. A new crab species arrives and preferentially preys on snails with medium shells because they are easiest to crack. Very thin-shelled snails are crushed too quickly by the crab to be worth handling, while very thick-shelled snails take too long and the crab often abandons them.</p>
+  <p>Over the next 30 generations, field biologists document two peaks in shell thickness among the surviving snails: one peak at thin shells and one at thick shells. Birds that specialize on thin-shelled snails develop more slender beaks, while birds that specialize on thick-shelled snails develop stronger beaks. Intermediate beak morphologies become less common.</p>
+  <p>At the same time, the birds exhibit a behavior in which individuals give alarm calls that draw predator attention toward the caller, increasing the survival of nearby nestlings. The behavior is most frequent among individuals nesting near close relatives.</p>
+</div>
+
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify what happens to the <b>distribution</b> of phenotypes over time: one peak, shift, or two peaks?</li>
+    <li>Two peaks with fewer intermediates points to <b>disruptive selection</b> rather than stabilizing or directional selection.</li>
+    <li>For the alarm-call behavior, connect the cost to the individual with benefit to related offspring: that hints at <b>inclusive fitness</b>.</li>
+    <li>Choose answers that integrate multiple details in the passage (predator preference + phenotype outcomes), not just a definition.</li>
+    <li>Remember: selection acts on individuals, but the outcome is changing allele/trait frequencies in the <b>population</b>.</li>
+  </ol>
+</div>
+
+<!-- Q16 Correct: A -->
+<div class="question" id="q16">
+  <b>16. Which mode of selection best explains the emergence of two peaks in snail shell thickness after the crab’s arrival?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Disruptive selection</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Stabilizing selection</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Directional selection</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Hardy–Weinberg equilibrium</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> The crab selectively removes the intermediate shell phenotype while extremes persist, producing a bimodal distribution—classic disruptive selection.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B:</b> Stabilizing selection would favor intermediates and eliminate extremes, the opposite of what’s observed.</li>
+      <li><b>C:</b> Directional selection would shift the mean toward one extreme, not create two peaks.</li>
+      <li><b>D:</b> Hardy–Weinberg describes conditions for no evolution; here the phenotype distribution is changing.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q17 Correct: B -->
+<div class="question" id="q17">
+  <b>17. The change in bird beak morphology described in the passage is best interpreted as evidence that:</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Individual birds evolved stronger beaks as a direct response to need within a single lifetime</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">B. Different beak traits were favored in different feeding contexts, shifting phenotype frequencies across generations</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Mutation rates must have dropped to zero during the 30 generations</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Birds and snails are now the same species because they interact ecologically</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> The passage describes differential survivorship and reproduction tied to feeding success, changing phenotype frequencies over generations—a population-level evolutionary response consistent with natural selection.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Teleological/Lamarckian; individuals do not genetically evolve “because they need to.”</li>
+      <li><b>C:</b> Not implied and not required for selection to occur.</li>
+      <li><b>D:</b> Species are defined by reproductive compatibility, not ecological interaction.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q18 Correct: C -->
+<div class="question" id="q18">
+  <b>18. The alarm-call behavior occurring most often near close relatives is most directly explained by which concept?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Convergent evolution</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Punctuated equilibrium</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Inclusive fitness</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Hybrid inviability</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> Costly behavior that increases survival of nearby relatives can be favored because it increases the representation of shared genes in future generations (kin selection/inclusive fitness).</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Convergent evolution is similarity in unrelated lineages, unrelated to altruistic behavior.</li>
+      <li><b>B:</b> Punctuated equilibrium concerns tempo of evolution.</li>
+      <li><b>D:</b> Hybrid inviability is a postzygotic reproductive barrier.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Speciation and Reproductive Barriers</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>Two populations of a salamander species become separated when a river changes course, creating a wide canyon. Over thousands of generations, the populations adapt to different microclimates on either side of the canyon. When researchers later relocate individuals into a shared enclosure, the salamanders frequently court, but mating attempts fail because the male’s clasping structures do not align properly with the female’s anatomy across the two populations.</p>
+  <p>In a follow-up study, scientists artificially bypass the mating barrier by manually combining gametes in vitro. The zygotes form and develop into juvenile salamanders, but the offspring are consistently unable to produce functional gametes as adults.</p>
+  <p>The researchers conclude that more than one barrier to gene flow has accumulated between the two populations over time.</p>
+</div>
+
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>First, ask: does the barrier prevent zygote formation? If yes, it is <b>prezygotic</b>.</li>
+    <li>Anatomical mismatch during mating attempts is a form of <b>mechanical isolation</b> (prezygotic).</li>
+    <li>If a zygote forms but offspring cannot reproduce, that’s a <b>postzygotic</b> barrier (often hybrid sterility).</li>
+    <li>Speciation is supported when multiple barriers reduce or prevent gene flow between populations.</li>
+    <li>Pick the answer that matches the step in reproduction being blocked (before or after fertilization).</li>
+  </ol>
+</div>
+
+<!-- Q19 Correct: A -->
+<div class="question" id="q19">
+  <b>19. The failure of mating attempts due to misaligned clasping structures is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q19', this, true)">A. Prezygotic isolation via mechanical incompatibility</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Postzygotic isolation via hybrid inviability</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Postzygotic isolation via hybrid breakdown</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Temporal isolation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> The barrier occurs before fertilization (zygote never forms) and is due to anatomical incompatibility, a mechanical prezygotic barrier.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B/C:</b> Those require fertilization and development to occur first.</li>
+      <li><b>D:</b> Temporal isolation is breeding at different times; the passage describes failed physical alignment during mating attempts.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q20 Correct: B -->
+<div class="question" id="q20">
+  <b>20. The inability of the in vitro–generated offspring to produce functional gametes is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Ecological isolation</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">B. Postzygotic isolation via hybrid sterility</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Gametic isolation</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Behavioral isolation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> Fertilization and development occur, but the adult offspring cannot reproduce—this is postzygotic hybrid sterility.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Ecological isolation involves different niches preventing encounters, not sterile offspring.</li>
+      <li><b>C:</b> Gametic isolation prevents fertilization; here fertilization was achieved in vitro.</li>
+      <li><b>D:</b> Behavioral isolation prevents mating via courtship differences; the passage says courting occurs.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q21 Correct: C -->
+<div class="question" id="q21">
+  <b>21. Which inference best supports the claim that speciation is underway between the two salamander populations?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. The populations live in different microclimates, so they must already be different species by definition</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. The populations are separated by a canyon, which guarantees identical gene pools on both sides</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">C. Multiple barriers to gene flow exist, reducing the likelihood of producing fertile offspring even when contact occurs</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. The two populations look similar, so speciation cannot occur</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> Speciation is supported by reproductive isolation. The passage gives both a prezygotic mechanical barrier and postzygotic sterility, strongly reducing gene flow.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Different habitats can contribute to divergence but do not define species on their own.</li>
+      <li><b>B:</b> Geographic separation reduces gene flow; it does not guarantee identical gene pools.</li>
+      <li><b>D:</b> Morphological similarity does not prevent speciation (cryptic species exist).</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Similar Shapes, Different Histories</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>Biologists compare three animals that live in the ocean: a tuna, a shark, and a dolphin. All three have streamlined bodies and prominent tail structures used for propulsion. Genetic sequencing shows that dolphins share recent ancestry with other mammals, while tuna and sharks are both fish but are distantly related within vertebrates.</p>
+  <p>In a separate study, two closely related lizard species on different islands develop similar toe-pad structures that help them climb smooth leaves. The islands have comparable vegetation and predators. The two lizard species remain genetically close relative to each other despite living on different islands.</p>
+  <p>Finally, researchers compare DNA sequences between two bird species and find that they share 98% sequence identity across a set of conserved genes, while a different bird pair shares only 90% identity across the same genes. The team uses these comparisons to make inferences about relative divergence times.</p>
+</div>
+
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>If unrelated (or not recently related) organisms become similar due to similar environments, that’s <b>convergent evolution</b>.</li>
+    <li>If closely related species evolve similar adaptations under similar pressures, that suggests <b>parallel evolution</b>.</li>
+    <li>For DNA similarity, more similarity generally implies a <b>more recent split</b> (molecular clock idea).</li>
+    <li>Make sure to match each example to its relationship context (related vs not) plus the environmental pressure.</li>
+    <li>Choose answers that explain the pattern using both the <b>genetic evidence</b> and the ecological story.</li>
+  </ol>
+</div>
+
+<!-- Q22 Correct: A -->
+<div class="question" id="q22">
+  <b>22. The streamlined similarity among tuna, sharks, and dolphins is best explained as:</b>
+  <div class="choice" onclick="selectChoice('q22', this, true)">A. Convergent evolution driven by similar selection pressures in aquatic environments</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Divergent evolution from a very recent common ancestor shared by all three</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Hybrid breakdown caused by interbreeding between fish and mammals</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Stabilizing selection acting identically on the same population of organisms</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> Dolphins are mammals, while tuna and sharks are fish; similarity in body shape despite distant ancestry points to independent evolution under similar aquatic pressures.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B:</b> The passage explicitly suggests different ancestry histories, especially for dolphins.</li>
+      <li><b>C:</b> Fish and mammals cannot form hybrids; hybrid breakdown is irrelevant.</li>
+      <li><b>D:</b> Stabilizing selection is within one population; these are different lineages.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q23 Correct: B -->
+<div class="question" id="q23">
+  <b>23. The similar toe-pad structures in the two closely related lizard species on different islands are most consistent with:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Convergent evolution because the lizards are unrelated</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. Parallel evolution because related species faced analogous selection pressures</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Hybrid inviability because the islands prevent zygote formation</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Punctuated equilibrium because toe pads evolved only in sudden bursts</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> The passage says the lizards are closely related and developed similar traits under comparable environments, fitting parallel evolution.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Contradicts “closely related.”</li>
+      <li><b>C:</b> Hybrid inviability refers to postzygotic failure after zygote formation, not geographic separation.</li>
+      <li><b>D:</b> Punctuated equilibrium is about tempo in the fossil record, not required to explain similar toe pads here.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q24 Correct: D -->
+<div class="question" id="q24">
+  <b>24. Based on the DNA comparisons described, which inference is most justified?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. The bird pair with 90% identity must have identical ecological niches</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. The bird pair with 98% identity is less likely to share a recent common ancestor than the 90% pair</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. The 98% and 90% pairs must be the same species because both share conserved genes</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. The bird pair with 98% identity likely diverged more recently than the pair with 90% identity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: D.</b></p>
+    <p><b>Why:</b> Under the molecular clock idea, more genomic similarity across comparable genes generally indicates a more recent divergence, while more differences suggest more time since splitting.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Sequence identity does not guarantee identical niches.</li>
+      <li><b>B:</b> Reverses the logic of molecular similarity and divergence time.</li>
+      <li><b>C:</b> Conserved genes exist across many different species; species status requires reproductive compatibility, not merely shared genes.</li>
+    </ul>
+  </div></details>
+</div>
+
+</body>
+</html>

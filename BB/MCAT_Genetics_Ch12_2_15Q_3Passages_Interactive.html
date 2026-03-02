@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Genetics (Ch. 12.2) (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Genetics (Ch. 12.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 Correct: B -->
+<div class="question" id="q1">
+  <b>1. A single-nucleotide substitution changes a codon from GAA (Glu) to GUA (Val). Which point mutation type best describes this change?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Silent</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Missense</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Nonsense</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Frameshift</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> A missense mutation is a point mutation that changes one amino acid to another in the protein. Here, glutamate is replaced by valine.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Silent mutations do not change the amino acid sequence.</li>
+        <li><b>C:</b> Nonsense mutations create a stop codon.</li>
+        <li><b>D:</b> Frameshifts result from insertions or deletions that alter the reading frame, not single-base substitutions.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 Correct: D -->
+<div class="question" id="q2">
+  <b>2. Which set correctly lists the three major categories of point mutations discussed in this chapter?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Insertion, deletion, translocation</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Duplication, inversion, deletion</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Frameshift, inversion, nonsense</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Silent, missense, nonsense</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Point mutations are single-nucleotide substitutions that can be silent (no amino-acid change), missense (amino-acid substitution), or nonsense (stop codon).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> These are not point mutation categories; insertion/deletion can be frameshift; translocation is chromosomal.</li>
+        <li><b>B:</b> These are chromosomal-level rearrangements.</li>
+        <li><b>C:</b> Frameshift is not a point mutation; inversion is chromosomal; nonsense is a point mutation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 Correct: A -->
+<div class="question" id="q3">
+  <b>3. A single base substitution converts a sense codon into a stop codon early in the coding sequence. What is the most likely direct consequence at the protein level?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Premature truncation of the protein</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. No change due to wobble</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. A single amino-acid substitution without length change</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. A frameshift only if the mutation is in the third base of the codon</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> A nonsense mutation introduces a stop codon, which ends translation early, producing a truncated protein that is often nonfunctional.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Wobble can allow silent mutations, but a stop codon is not “silent.”</li>
+        <li><b>C:</b> That describes a missense mutation.</li>
+        <li><b>D:</b> Frameshifts require insertion/deletion not divisible by 3; codon position does not define frameshift for substitutions.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 Correct: C -->
+<div class="question" id="q4">
+  <b>4. A mutation inserts one nucleotide into the coding region of a gene. Which category best describes this mutation at the nucleotide level?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Silent point mutation</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Missense point mutation</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Frameshift mutation (insertion)</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Chromosomal inversion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Frameshifts are caused by insertion or deletion of nucleotides that shift the triplet reading frame. A single-base insertion is the classic cause.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B:</b> Point mutations are substitutions of one base for another, not insertions.</li>
+        <li><b>D:</b> Inversion is a large-scale chromosomal rearrangement, not a one-base insertion.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 Correct: D -->
+<div class="question" id="q5">
+  <b>5. Which best explains why many silent mutations occur at the third nucleotide of a codon?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. The third base is not transcribed into mRNA</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. The third base is removed during RNA splicing</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. The third base always specifies the start codon</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">D. Degeneracy (wobble) of the genetic code often tolerates changes in the third base</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Many amino acids are encoded by multiple codons that differ at the third base. A substitution there often does not change the amino acid, producing a silent mutation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> All three bases of the codon are transcribed and read during translation.</li>
+        <li><b>B:</b> Splicing removes introns, not a specific codon base.</li>
+        <li><b>C:</b> Start codon identity is not defined by “third base always”; start is AUG.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 Correct: A -->
+<div class="question" id="q6">
+  <b>6. Which is the best example of a mutagen as described in this section?</b>
+  <div class="choice" onclick="selectChoice('q6', this, true)">A. Ultraviolet radiation damaging DNA</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. DNA polymerase proofreading a mismatch</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. A ribosome selecting a tRNA during translation</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. A chaperone helping a protein fold correctly</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Mutagens are agents that increase mutation rate by damaging DNA. UV (ionizing radiation) is a classic mutagen.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Proofreading reduces mutations.</li>
+        <li><b>C:</b> Translation errors can cause faulty proteins without DNA mutation, but the ribosome itself is not a mutagen.</li>
+        <li><b>D:</b> Chaperones help prevent misfolding; they do not cause DNA mutations.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 Correct: B -->
+<div class="question" id="q7">
+  <b>7. A transposon inserts into the middle of a coding region. Which outcome is most likely?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Guaranteed silent mutation due to wobble</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Disruption of the gene’s coding sequence, potentially producing a nonfunctional protein</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Increase in independent assortment during meiosis</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Restoration of wild-type allele by homologous pairing</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Transposon insertion can interrupt an open reading frame, altering the mRNA and protein product, often severely.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Large insertions are not silent and do not rely on codon wobble.</li>
+        <li><b>C:</b> Independent assortment is driven by chromosome orientation/segregation, not transposon insertion.</li>
+        <li><b>D:</b> Homologous pairing does not automatically “repair” a disrupted gene in somatic cells.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 Correct: D -->
+<div class="question" id="q8">
+  <b>8. Which scenario is an example of a deleterious mutation described in the passage that increases cancer risk due to impaired DNA repair?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Heterozygote sickle-cell trait protecting from malaria</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. A duplication that increases gene dosage for a beneficial enzyme</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. An outcrossing event increasing genetic variation in a population</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Nucleotide excision repair deficiency causing xeroderma pigmentosum</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Xeroderma pigmentosum results from defective nucleotide excision repair, leaving UV-induced DNA damage unrepaired, increasing mutation accumulation and cancer risk.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This is an example of a mutation with heterozygote advantage (beneficial in malaria-endemic regions).</li>
+        <li><b>B:</b> Duplication can have varied consequences; the prompt asks specifically about DNA repair and cancer risk.</li>
+        <li><b>C:</b> Outcrossing is population genetics, not a DNA-repair disorder.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 Correct: C -->
+<div class="question" id="q9">
+  <b>9. A newborn screening detects phenylketonuria (PKU). Why is early intervention emphasized in the chapter’s discussion of inborn errors of metabolism?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Early treatment reverses the DNA mutation to wild type</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. PKU is caused by translocation that must be surgically removed</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. Preventing buildup of toxic metabolites can avert permanent damage if begun early</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Diet changes increase recombination to correct the defect</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Inborn errors of metabolism often cause harmful metabolite accumulation. Early dietary and supportive interventions reduce toxic buildup and prevent irreversible neurologic injury.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Treatment manages consequences; it does not rewrite the genome.</li>
+        <li><b>B:</b> PKU is an enzyme deficiency (phenylalanine metabolism), not a chromosomal translocation.</li>
+        <li><b>D:</b> Diet does not increase meiotic recombination or “repair” the allele.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 Correct: A -->
+<div class="question" id="q10">
+  <b>10. Which mutation is most accurately described as a chromosomal translocation?</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. A segment from one chromosome is exchanged with a segment from a different chromosome</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. A segment of DNA is reversed within the same chromosome</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. A single nucleotide is swapped for another in a codon</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. One nucleotide is inserted into the coding region</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Translocation involves swapping DNA segments between nonhomologous chromosomes, altering chromosomal structure and gene context.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> That is an inversion (within one chromosome).</li>
+        <li><b>C:</b> That is a point mutation (substitution).</li>
+        <li><b>D:</b> That is a frameshift insertion (nucleotide-level).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 Correct: D -->
+<div class="question" id="q11">
+  <b>11. A chromosome loses a large segment of DNA. Which chromosomal mutation type best fits this description?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Inversion</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Duplication</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Translocation</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">D. Deletion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> A chromosomal deletion removes a segment of DNA from a chromosome. (Small deletions at the nucleotide level can also cause frameshifts.)</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Inversion reverses orientation but does not remove DNA.</li>
+        <li><b>B:</b> Duplication adds extra copies of a segment rather than losing it.</li>
+        <li><b>C:</b> Translocation swaps segments between chromosomes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 Correct: B -->
+<div class="question" id="q12">
+  <b>12. A segment of DNA is copied multiple times within the genome, increasing copy number of that region. Which chromosomal mutation is this?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Insertion</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. Duplication</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Inversion</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Nonsense</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Duplication produces extra copies of a chromosomal segment, potentially altering gene dosage and expression.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Insertion moves a segment into another location/chromosome.</li>
+        <li><b>C:</b> Inversion reverses a segment within the same chromosome.</li>
+        <li><b>D:</b> Nonsense is a point mutation that creates a stop codon.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 Correct: C -->
+<div class="question" id="q13">
+  <b>13. Genetic drift is most likely to cause a noticeable change in allele frequency in which scenario?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. A very large population with extensive outcrossing and no isolation</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. A population in which every individual has identical fitness for all traits</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">C. A small isolated population experiencing random survival and reproduction events</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. A population under strong directional selection favoring one allele</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Genetic drift is random change in allele frequencies and is strongest in small populations, where chance events have larger proportional effects.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Large populations buffer random fluctuations.</li>
+        <li><b>B:</b> Equal fitness does not eliminate drift; drift depends on chance and population size, but the question asks where it is most noticeable.</li>
+        <li><b>D:</b> Directional selection is nonrandom and distinct from drift.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 Correct: A -->
+<div class="question" id="q14">
+  <b>14. A small group becomes reproductively isolated after a natural disaster, and over generations a rare recessive disease becomes unusually common. Which explanation best matches the chapter’s population-genetics concepts?</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Founder effect followed by inbreeding increases homozygosity for the recessive allele</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Genetic leakage introduces the recessive allele from a different species</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. High mutation rate in the recessive gene due to wobble</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Strong stabilizing selection eliminates heterozygotes from the population</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> A small isolated founding group can, by chance, carry a higher frequency of a rare allele. Inbreeding in a small population increases homozygosity, which raises the prevalence of recessive diseases.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Leakage is gene flow between species via hybridization; the scenario is within one species.</li>
+        <li><b>C:</b> Wobble explains silent point mutations, not population-level increases in a specific recessive disease allele.</li>
+        <li><b>D:</b> Stabilizing selection does not specifically remove heterozygotes; removing heterozygotes would be selection against carriers, not a drift-based founder story.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 Correct: D -->
+<div class="question" id="q15">
+  <b>15. Which statement best describes genetic leakage as defined in this chapter?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Random allele-frequency change in any population due to chance alone</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. DNA polymerase errors during replication that introduce new point mutations</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Exchange of DNA segments between homologous chromosomes in meiosis I</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">D. Flow of genes between species through hybridization and backcrossing</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Genetic leakage refers to gene flow between species, often through hybrid offspring that can reproduce with one parent species, transferring alleles across species boundaries.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> That is genetic drift.</li>
+        <li><b>B:</b> That is mutation via replication error.</li>
+        <li><b>C:</b> That is recombination (crossing over) within a species.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: A Mutation That Helps—Until It Hurts</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>In a malaria-endemic region, clinicians notice that a particular hemoglobin variant is unusually common. Genetic testing shows that affected individuals carry a single nucleotide change in the hemoglobin gene. Some individuals with two copies of the variant allele experience chronic anemia and painful crises, but individuals with only one copy typically have mild symptoms, if any. Epidemiologic data indicate that people with one copy of the variant allele are less likely to develop severe malaria.</p>
+  <p>A molecular biology lab sequences hemoglobin transcripts from a heterozygous individual and confirms that the altered codon changes the identity of one amino acid in the hemoglobin protein. The lab also identifies a subset of patients with a different hemoglobin allele in which an early stop codon appears near the beginning of the coding sequence, producing a very short polypeptide that is rapidly degraded.</p>
+  <p>Public health officials debate how the allele frequency might shift if malaria incidence decreases substantially over the next several decades due to improved prevention, while medical care continues to reduce childhood mortality from severe anemia.</p>
+</div>
+
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Classify each mutation by what it does to the protein: amino-acid substitution → <b>missense</b>; early stop codon → <b>nonsense</b>.</li>
+    <li>Connect genotype to fitness in the environment: heterozygotes have <b>selective advantage</b> where malaria is common.</li>
+    <li>Predict allele-frequency direction if environment changes: removing malaria reduces the <b>heterozygote advantage</b>, so selection pressure shifts.</li>
+    <li>Distinguish selection from chance: environmental advantage is <b>nonrandom selection</b>, not drift.</li>
+    <li>Choose answers that explain both the molecular mechanism and the population pattern described.</li>
+  </ol>
+</div>
+
+<!-- Q16 Correct: A -->
+<div class="question" id="q16">
+  <b>16. The amino-acid substitution identified in the heterozygous individual is best classified as which mutation type?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Missense point mutation</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Silent point mutation</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Frameshift deletion</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Chromosomal inversion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> An amino-acid substitution caused by a single-nucleotide change is a missense point mutation. The passage explicitly states a codon change leading to a different amino acid.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Silent mutations do not change amino-acid identity.</li>
+        <li><b>C:</b> Frameshift deletions require nucleotide loss that shifts the reading frame, not a single substitution.</li>
+        <li><b>D:</b> Inversion is a chromosomal rearrangement, far larger than a single codon change.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 Correct: D -->
+<div class="question" id="q17">
+  <b>17. The allele that generates a very short polypeptide due to an early stop codon most likely results from which genetic change?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. A duplication that increases gene dosage</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. A silent substitution at the third codon base</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. An inversion that reverses a large chromosomal segment</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. A nonsense point mutation that creates a premature stop codon</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Premature stop codons are the hallmark of nonsense mutations. A single-nucleotide substitution can convert a sense codon into a stop codon, truncating translation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Duplication changes copy number but does not directly create an early stop codon.</li>
+        <li><b>B:</b> Silent substitutions do not introduce a stop codon.</li>
+        <li><b>C:</b> Inversions rearrange segments; they can disrupt genes, but the passage directly points to an early stop codon mechanism.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 Correct: B -->
+<div class="question" id="q18">
+  <b>18. If malaria incidence decreases substantially while medical care reduces mortality from severe anemia, which prediction best matches the selective forces implied in the passage?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. The variant allele must increase in frequency because it is always beneficial</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. The heterozygote advantage may weaken, potentially reducing the selective maintenance of the variant allele</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Allele frequencies will change only by genetic drift, not selection</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. The variant allele will disappear immediately because it is recessive</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> In the passage, the variant is maintained partly because heterozygotes resist malaria. If malaria declines, that advantage shrinks, so selection supporting the allele can weaken. Reduced anemia mortality can also change fitness costs, but it does not guarantee the allele increases.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The allele is not “always beneficial”; homozygotes can suffer severe disease.</li>
+        <li><b>C:</b> Selection can still operate even if drift exists; environmental changes specifically alter selective pressures.</li>
+        <li><b>D:</b> Alleles do not disappear instantly; dominance/recessiveness does not determine immediate elimination.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: A New Island Population</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>After a severe storm, a small group of lizards is swept from a mainland to a nearby island. The island population remains isolated from the mainland for many generations because strong currents prevent migration. Within two decades, field biologists notice that a rare skin-color allele—uncommon on the mainland—has become much more frequent on the island. The island population also shows reduced variation at multiple genetic markers compared with the mainland population.</p>
+  <p>Genetic analysis suggests the founding individuals carried an unusually high fraction of the rare allele by chance. Later, as the population remained small, close relatives often mated. Over time, investigators document increased frequency of both homozygous genotypes at several loci and a higher incidence of a recessive developmental defect.</p>
+  <p>Conservation biologists debate whether introducing unrelated mainland lizards would improve the island population’s long-term viability, while also considering how such intervention might change allele frequencies.</p>
+</div>
+
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Ask: is the change driven by chance or by fitness? The passage emphasizes “by chance” in the founders → <b>genetic drift</b>.</li>
+    <li>Small isolated group starting a new population → <b>founder effect</b> (an extreme drift case).</li>
+    <li>Repeated mating among relatives → <b>inbreeding</b>, which increases <b>homozygosity</b> and can reveal recessive disorders.</li>
+    <li>Reduced marker variation signals <b>loss of genetic diversity</b>, which can reduce population fitness (<b>inbreeding depression</b>).</li>
+    <li>Introducing unrelated individuals is <b>outcrossing</b>, predicted to increase variation and reduce homozygosity.</li>
+  </ol>
+</div>
+
+<!-- Q19 Correct: C -->
+<div class="question" id="q19">
+  <b>19. Which concept best explains why the rare allele became common on the island even without evidence that it improves survival?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Genetic leakage</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Directional selection</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Founder effect (genetic drift in a new isolated population)</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Increased mutation rate from UV radiation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The founder effect is genetic drift when a small founding group “samples” the gene pool nonrepresentatively. The allele can become common by chance alone.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Leakage is gene flow between species; this is within one species.</li>
+        <li><b>B:</b> Selection requires differential fitness; the passage states no evidence of survival benefit.</li>
+        <li><b>D:</b> Mutation could introduce new alleles, but the key story is that founders already carried the allele and it rose in frequency by chance.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 Correct: A -->
+<div class="question" id="q20">
+  <b>20. The increase in both homozygous genotypes and recessive defects in the island population is most directly promoted by:</b>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. Inbreeding within a small population</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Codon wobble during translation</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Chromosomal translocation between species</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Increased penetrance caused by recombination</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Inbreeding increases the probability that related individuals share alleles identical by descent, raising homozygosity and revealing recessive disorders.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Wobble is a molecular translation concept, not a population-level driver of homozygosity.</li>
+        <li><b>C:</b> Between-species gene flow would be leakage, not the mechanism described, and translocation is a chromosomal mutation not implied here.</li>
+        <li><b>D:</b> Penetrance is about genotype-to-phenotype probability; recombination doesn’t “cause” penetrance increases in this manner.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 Correct: D -->
+<div class="question" id="q21">
+  <b>21. Introducing unrelated mainland lizards into the island breeding group would most likely do which of the following over time?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Increase homozygosity and worsen recessive disease prevalence</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Prevent any future mutation from occurring</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Convert chromosomal inversions into point mutations</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. Increase genetic variation and reduce inbreeding depression through outcrossing</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Outcrossing introduces unrelated alleles, increasing heterozygosity and genetic diversity, which can improve fitness and reduce inbreeding depression.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Outcrossing tends to decrease homozygosity, not increase it.</li>
+        <li><b>B:</b> Migration does not stop molecular causes of mutation.</li>
+        <li><b>C:</b> Mutation categories are not “converted” by introducing new individuals.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Chromosomes Under Stress</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A cytogenetics lab studies workers exposed to a chemical that can damage DNA. In one sample, the karyotype shows that a large portion of one chromosome is missing. In another sample, a region from chromosome 8 appears twice in a row on the same chromosome, increasing copy number for multiple genes. A third sample contains a chromosome in which a segment’s orientation appears reversed relative to the reference karyotype.</p>
+  <p>In a separate case, a child has developmental delay and the lab identifies that a segment from chromosome 11 is now located on chromosome 22, while a segment from chromosome 22 appears on chromosome 11. Clinicians suspect that the rearrangement disrupted gene regulation at the breakpoints rather than changing individual codons.</p>
+  <p>The lab director emphasizes that these large-scale changes differ from single-nucleotide substitutions, but both types can ultimately change protein function and phenotype.</p>
+</div>
+
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Match each karyotype clue to a chromosomal mutation: missing segment → <b>deletion</b>; repeated segment → <b>duplication</b>; reversed orientation → <b>inversion</b>.</li>
+    <li>If DNA moves between chromosomes, decide whether it’s <b>insertion</b> (moved segment) or <b>translocation</b> (swap between chromosomes). A swap in both directions → <b>translocation</b>.</li>
+    <li>Use “breakpoints disrupt regulation” to avoid getting trapped in codon-level thinking—this is chromosomal scale.</li>
+    <li>Eliminate point-mutation options when the evidence is karyotype-level rearrangement.</li>
+    <li>Choose answers that directly explain the observed chromosome pattern, not just a definition.</li>
+  </ol>
+</div>
+
+<!-- Q22 Correct: B -->
+<div class="question" id="q22">
+  <b>22. The sample showing a missing large portion of a chromosome is best classified as which chromosomal mutation?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Inversion</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Deletion</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Translocation</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Silent point mutation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Loss of a large chromosomal segment is a deletion mutation at the chromosomal level.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Inversion reverses a segment but does not remove it.</li>
+        <li><b>C:</b> Translocation involves exchange between chromosomes.</li>
+        <li><b>D:</b> Silent point mutations cannot be detected as missing segments on a karyotype.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 Correct: C -->
+<div class="question" id="q23">
+  <b>23. The bidirectional exchange between chromosomes 11 and 22 described in Passage 3 is most consistent with which chromosomal mutation type?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Insertion</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Duplication</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. Translocation</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Frameshift insertion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> A segment swapped between two chromosomes is a translocation. The passage explicitly describes reciprocal exchange (11 ↔ 22).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Insertion is movement of a segment to another chromosome without an exchange back.</li>
+        <li><b>B:</b> Duplication is extra copies within a chromosome.</li>
+        <li><b>D:</b> Frameshift insertion is a nucleotide-level event, not a karyotype-visible reciprocal swap.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 Correct: A -->
+<div class="question" id="q24">
+  <b>24. The chromosome with a segment reversed in orientation relative to the reference karyotype reflects which mutation?</b>
+  <div class="choice" onclick="selectChoice('q24', this, true)">A. Inversion</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Duplication</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Nonsense</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Genetic leakage</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Inversion occurs when a chromosomal segment is reversed within the same chromosome, changing orientation but not copy number.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Duplication increases copy number rather than reversing orientation.</li>
+        <li><b>C:</b> Nonsense is a point mutation (stop codon), not a karyotype-level orientation reversal.</li>
+        <li><b>D:</b> Leakage is gene flow between species, unrelated to a single chromosome’s internal orientation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Genetics (Ch. 12.3) (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Biology — Genetics (Ch. 12.3)</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 Correct: C -->
+<div class="question" id="q1">
+  <b>1. In a monohybrid cross with complete dominance, two heterozygotes are crossed (Aa × Aa). What phenotypic ratio is expected in the offspring?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. 1:2:1 (dominant:heterozygous:recessive)</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. 9:3:3:1</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. 3:1 (dominant:recessive)</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. 1:1 (dominant:recessive)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> Aa × Aa yields genotypes 1 AA : 2 Aa : 1 aa, giving phenotypes 3 dominant : 1 recessive.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> 1:2:1 is the genotypic ratio, not phenotypic.</li>
+      <li><b>B:</b> 9:3:3:1 is the dihybrid heterozygote × heterozygote ratio.</li>
+      <li><b>D:</b> 1:1 is typical for a test cross (Aa × aa).</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q2 Correct: A -->
+<div class="question" id="q2">
+  <b>2. In a dihybrid cross of two heterozygotes with complete dominance and unlinked genes (AaBb × AaBb), what is the expected phenotypic ratio?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. 9:3:3:1</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. 3:1</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. 1:2:1</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. 1:1:1:1</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> With independent assortment, each trait shows a 3:1 ratio; multiplying probabilities yields 9:3:3:1 across the four phenotype classes.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B:</b> Monohybrid phenotypic ratio.</li>
+      <li><b>C:</b> Monohybrid genotypic ratio.</li>
+      <li><b>D:</b> Can occur in certain test-cross setups, but not AaBb × AaBb.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q3 Correct: D -->
+<div class="question" id="q3">
+  <b>3. A test cross is most useful for determining which of the following?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Whether two genes are linked based on recombination frequency</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Whether a population is in Hardy–Weinberg equilibrium</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. The map distance between two loci in centimorgans</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. The genotype of a dominant-phenotype individual with an unknown genotype</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: D.</b></p>
+    <p><b>Why:</b> Crossing an unknown dominant-phenotype individual with a homozygous recessive partner reveals whether the unknown is homozygous dominant or heterozygous.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A/C:</b> Linkage and map distance are inferred from recombination frequencies in controlled crosses, not the classic single-locus “unknown genotype” test-cross goal.</li>
+      <li><b>B:</b> Hardy–Weinberg uses population-level allele/genotype frequencies and assumptions.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q4 Correct: D -->
+<div class="question" id="q4">
+  <b>4. Consider AaBB × AAbb with complete dominance at both loci and unlinked genes. What fraction of offspring are expected to show the dominant phenotype for both traits?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. 1/4</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. 1/2</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. 3/4</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. 1</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: D.</b></p>
+    <p><b>Why:</b> At locus A: Aa × AA → all offspring are A_ (dominant A phenotype). At locus B: BB × bb → all offspring are Bb (dominant B phenotype). Therefore, <b>100%</b> show both dominant traits.</p>
+    <p><b>Other choices:</b> These would require a mixture of dominant/recessive outcomes at one or both loci, which does not occur in this cross.</p>
+  </div></details>
+</div>
+
+<!-- Q5 Correct: B -->
+<div class="question" id="q5">
+  <b>5. A dominant-phenotype individual is crossed with a homozygous recessive individual. The offspring show a 1:1 ratio of dominant to recessive phenotypes. What is the most likely genotype of the dominant-phenotype parent?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. AA</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Aa</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. aa</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Aaaa (four alleles)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> Aa × aa produces 50% Aa (dominant phenotype) and 50% aa (recessive phenotype), giving a 1:1 ratio.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> AA × aa would yield 100% Aa (all dominant phenotype).</li>
+      <li><b>C:</b> aa would not show the dominant phenotype.</li>
+      <li><b>D:</b> Humans are diploid at autosomal loci; “four alleles” is not a valid genotype here.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q6 Correct: A -->
+<div class="question" id="q6">
+  <b>6. A carrier female for an X-linked recessive disorder (XᴺXᵈ) has children with an unaffected male (XᴺY). What is the probability that a <i>son</i> will be affected?</b>
+  <div class="choice" onclick="selectChoice('q6', this, true)">A. 1/2</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. 1/4</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. 3/4</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. 0</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> Sons receive Y from the father and one X from the mother. The carrier mother passes Xᵈ to half of sons, making them affected.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B:</b> 1/4 would be the probability of an affected child regardless of sex (assuming equal sex ratio).</li>
+      <li><b>C:</b> Too high; only half of maternal X’s carry the recessive allele.</li>
+      <li><b>D:</b> Incorrect; sons can be affected if they inherit Xᵈ from the mother.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q7 Correct: C -->
+<div class="question" id="q7">
+  <b>7. Two genes show a recombination frequency (θ) of 12%. What is the approximate map distance between the genes?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. 0.12 centimorgans</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. 6 centimorgans</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">C. 12 centimorgans</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. 88 centimorgans</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> By convention, 1 map unit (1 centimorgan) corresponds to ~1% recombination frequency.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Confuses percent (12%) with decimal (0.12); map units track percent points.</li>
+      <li><b>B:</b> Would correspond to 6% recombination.</li>
+      <li><b>D:</b> 88 cM would imply 88% recombination (not realistic; recombination approaches 50% maximum for two loci).</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q8 Correct: B -->
+<div class="question" id="q8">
+  <b>8. Recombination frequencies are AB = 8%, BC = 5%, and AC = 13%. What is the most likely gene order?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. B–A–C</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. A–B–C</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. A–C–B</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. C–A–B</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> If B lies between A and C, distances add: AB + BC ≈ AC → 8 + 5 = 13, matching AC.</p>
+    <p><b>Other choices:</b> Any order placing C between A and B would predict AC + CB ≈ AB (13 + 5 ≠ 8), which fails.</p>
+  </div></details>
+</div>
+
+<!-- Q9 Correct: A -->
+<div class="question" id="q9">
+  <b>9. Two genes have a recombination frequency of approximately 50%. Which interpretation is most consistent with this observation?</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. The genes assort independently (unlinked or far apart on the same chromosome)</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. The genes are tightly linked</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Crossing over cannot occur between these loci</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. The genes must be alleles of the same gene</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> Recombination frequencies approach 50% when loci behave as if they are unlinked, which occurs for genes on different chromosomes or very far apart on the same chromosome.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B:</b> Tightly linked genes have recombination frequencies near 0%.</li>
+      <li><b>C:</b> If crossing over could not occur, recombination would be ~0%.</li>
+      <li><b>D:</b> Alleles share a locus; recombination frequency between alleles is not the framing here.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q10 Correct: C -->
+<div class="question" id="q10">
+  <b>10. A population shows persistent nonrandom mating in which individuals preferentially mate with partners sharing a specific phenotype. Which Hardy–Weinberg condition is violated?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. No migration</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. No mutations affecting the gene pool</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Random mating</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Very large population size</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> Hardy–Weinberg equilibrium requires random mating; assortative mating is explicitly nonrandom.</p>
+    <p><b>Other choices:</b> The scenario does not necessarily involve migration, mutation, or small population effects.</p>
+  </div></details>
+</div>
+
+<!-- Q11 Correct: D -->
+<div class="question" id="q11">
+  <b>11. In a Hardy–Weinberg population for a recessive condition, the frequency of affected individuals is 0.09. What is the expected frequency of heterozygous carriers?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. 0.09</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. 0.21</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. 0.30</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">D. 0.42</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: D.</b></p>
+    <p><b>Why:</b> Affected frequency is q² = 0.09 → q = 0.3. Then p = 0.7. Carriers are 2pq = 2(0.7)(0.3) = 0.42.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> That is q² (affected), not carriers.</li>
+      <li><b>B:</b> Would match p·q, but carriers are 2pq.</li>
+      <li><b>C:</b> That is q, not 2pq.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q12 Correct: B -->
+<div class="question" id="q12">
+  <b>12. If p = 0.80 for a two-allele gene in Hardy–Weinberg equilibrium, what is q?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. 0.10</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. 0.20</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. 0.64</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. 0.36</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> p + q = 1 → q = 1 − 0.80 = 0.20.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>C:</b> 0.64 is p², not q.</li>
+      <li><b>D:</b> 0.36 is 0.6²; it is not implied by p = 0.80.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q13 Correct: C -->
+<div class="question" id="q13">
+  <b>13. In a Hardy–Weinberg population, 16% of individuals show a recessive phenotype. What is the expected frequency of heterozygous carriers?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. 0.16</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. 0.24</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">C. 0.48</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. 0.84</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> Recessive phenotype frequency is q² = 0.16 → q = 0.4, p = 0.6. Carriers: 2pq = 2(0.6)(0.4) = 0.48.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> q², not 2pq.</li>
+      <li><b>B:</b> Would match p·q, but carriers are 2pq.</li>
+      <li><b>D:</b> 0.84 is p² + 2pq (dominant phenotype frequency), not carriers.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q14 Correct: A -->
+<div class="question" id="q14">
+  <b>14. Which Hardy–Weinberg condition most directly implies that allele frequencies will not fluctuate substantially due to random chance from one generation to the next?</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Very large population size</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Random mating</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. No migration</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. No mutations</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> Genetic drift is strongest in small populations. A very large population minimizes random sampling effects on allele frequencies.</p>
+    <p><b>Other choices:</b> Random mating prevents sexual selection; no migration prevents gene flow; no mutations prevents new alleles—but none of these specifically address drift.</p>
+  </div></details>
+</div>
+
+<!-- Q15 Correct: B -->
+<div class="question" id="q15">
+  <b>15. Genes X, Y, and Z have recombination frequencies XY = 4%, YZ = 11%, and XZ = 15%. Which statement best fits these data?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Z lies between X and Y</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Y lies between X and Z</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. The three genes must be on different chromosomes</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. X and Z are tightly linked (≈0% recombination)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> If Y is between X and Z, then XY + YZ ≈ XZ → 4 + 11 = 15, which matches the given XZ frequency.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Would require XZ + ZY ≈ XY (15 + 11 ≠ 4).</li>
+      <li><b>C:</b> Different chromosomes would often behave near 50% recombination, not these small values.</li>
+      <li><b>D:</b> 15% is not “tightly linked.”</li>
+    </ul>
+  </div></details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Breeding Data and an Unknown Genotype</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A plant geneticist studies flower color with complete dominance: purple flowers are dominant to white flowers. A purple-flowering plant of unknown genotype is crossed with a white-flowering plant. Among 120 offspring, 61 are purple and 59 are white.</p>
+  <p>In a separate experiment, the same lab tracks two traits: flower color (purple vs. white) and plant height (tall vs. dwarf), each showing complete dominance. Two plants that appear tall and purple are crossed, producing 160 offspring. The phenotypes observed are: 92 tall-purple, 28 tall-white, 30 dwarf-purple, and 10 dwarf-white.</p>
+  <p>A student notices that the ratios are close to familiar Mendelian expectations but asks why small experiments sometimes do not match the “ideal” ratios exactly.</p>
+</div>
+
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>For the first cross, use the idea of a <b>test cross</b>: unknown dominant phenotype × homozygous recessive.</li>
+    <li>A near 1:1 split strongly suggests the unknown is <b>heterozygous</b>, because Aa × aa produces half dominant and half recessive.</li>
+    <li>For the two-trait dataset, compare observed counts to the classic <b>9:3:3:1</b> pattern expected for unlinked genes with complete dominance.</li>
+    <li>Allow for sampling noise: smaller samples deviate more due to <b>random chance</b> (binomial sampling).</li>
+    <li>Pick the option that explains both the genetic setup and the numerical pattern, not just a definition.</li>
+  </ol>
+</div>
+
+<!-- Q16 Correct: B -->
+<div class="question" id="q16">
+  <b>16. Based on the first cross (61 purple, 59 white), what is the most likely genotype of the purple-flowering parent?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. PP</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">B. Pp</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. pp</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Cannot be inferred because phenotype ratios are never informative</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> The white parent must be pp. A ~1:1 purple:white split fits Pp × pp, where half offspring are Pp (purple) and half are pp (white).</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> PP × pp would yield all Pp (100% purple), not ~50% white.</li>
+      <li><b>C:</b> pp would be white, contradicting the parent phenotype.</li>
+      <li><b>D:</b> Ratios can be informative, especially in classic test crosses.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q17 Correct: D -->
+<div class="question" id="q17">
+  <b>17. Which conclusion is most consistent with the second experiment’s phenotype counts (92, 28, 30, 10)?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. The traits must be X-linked recessive</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. The genes are tightly linked with θ ≈ 0%</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. One trait shows incomplete dominance</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. The data are consistent with independent assortment and complete dominance (≈9:3:3:1)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: D.</b></p>
+    <p><b>Why:</b> Out of 160, the expected 9:3:3:1 counts are 90, 30, 30, 10—very close to 92, 28, 30, 10. That supports unlinked genes with complete dominance.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> X-linkage would create sex-dependent patterns; no such evidence is provided.</li>
+      <li><b>B:</b> Tight linkage would distort the 9:3:3:1 ratio toward parental combinations.</li>
+      <li><b>C:</b> Incomplete dominance would change phenotype categories and expected ratios.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q18 Correct: A -->
+<div class="question" id="q18">
+  <b>18. Why might the observed counts in the experiments differ slightly from the exact Mendelian ratios even if the underlying model is correct?</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. Random sampling variation is larger when the number of offspring is limited</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. The genetic code’s wobble base changes offspring ratios</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Hardy–Weinberg equilibrium forces exact Mendelian ratios in every cross</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Recombination frequency becomes 0% in small families</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> Mendelian ratios are theoretical probabilities. With finite offspring numbers, chance deviations (sampling error) are expected; larger samples converge toward expected ratios.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B:</b> Wobble affects translation; it does not change segregation probabilities in a cross.</li>
+      <li><b>C:</b> Hardy–Weinberg is about populations, not ensuring exact ratios in a single family.</li>
+      <li><b>D:</b> Family size does not force recombination to 0%.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Building a Simple Genetic Map</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A genetics course uses a model organism to estimate recombination frequencies among three loci. Students perform crosses and score recombinant offspring, obtaining the following recombination frequencies: gene A with gene B is 6%, gene B with gene C is 9%, and gene A with gene C is 15%.</p>
+  <p>One student proposes that if map units are roughly additive, then the middle gene can be identified by finding the pairwise distances that sum to the largest distance. Another student notes that very large distances often underestimate the true number of crossovers but agrees that, for modest distances, additivity is a useful approximation.</p>
+  <p>The class then asks how many recombinant gametes would be expected in a large sample if the recombination frequency between two genes is known.</p>
+</div>
+
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate recombination frequency into distance: 1% ≈ <b>1 centimorgan</b>.</li>
+    <li>Find which gene is in the middle by checking additivity: if AB + BC ≈ AC, then <b>B is between A and C</b>.</li>
+    <li>Once you have θ, interpret it as the fraction of gametes that are <b>recombinant</b> for that interval.</li>
+    <li>Convert percent to counts by multiplying θ by the total number of scored gametes/offspring.</li>
+    <li>Avoid overthinking double crossovers here—the passage says distances are modest and additivity is being used as an approximation.</li>
+  </ol>
+</div>
+
+<!-- Q19 Correct: C -->
+<div class="question" id="q19">
+  <b>19. Based on the recombination frequencies in the passage (AB = 6%, BC = 9%, AC = 15%), what is the most likely gene order?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. A–C–B</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. B–A–C</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. A–B–C</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. C–A–B</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> AB + BC ≈ AC → 6 + 9 = 15, so B lies between A and C → A–B–C.</p>
+    <p><b>Other choices:</b> Alternative orders would not satisfy the additivity relationship given.</p>
+  </div></details>
+</div>
+
+<!-- Q20 Correct: B -->
+<div class="question" id="q20">
+  <b>20. Using the mapping convention in the passage, what is the approximate distance between genes A and C?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. 9 centimorgans</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">B. 15 centimorgans</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. 21 centimorgans</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. 50 centimorgans</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> AC recombination frequency is 15%, corresponding to ~15 map units (centimorgans).</p>
+    <p><b>Other choices:</b> 9 cM is BC; 21 cM would be an incorrect sum; 50 cM is the upper “independent assortment” limit.</p>
+  </div></details>
+</div>
+
+<!-- Q21 Correct: D -->
+<div class="question" id="q21">
+  <b>21. If 2,000 gametes are examined, how many are expected to be recombinant for the A–C interval (θ = 15%)?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. 30</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. 150</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. 270</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. 300</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: D.</b></p>
+    <p><b>Why:</b> Expected recombinants = θ × total = 0.15 × 2000 = 300.</p>
+    <p><b>Other choices:</b> These are arithmetic mismatches (e.g., 150 would correspond to 7.5%).</p>
+  </div></details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Hardy–Weinberg in a Screening Program</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A public health team screens a large population for an autosomal recessive disorder. The condition appears in approximately 1 out of every 2,500 individuals. The team assumes the population meets Hardy–Weinberg conditions well enough for estimation.</p>
+  <p>Later, sociologists report that mating patterns are not fully random: individuals with a particular cultural practice tend to marry within their community more often than expected by chance. In addition, a new wave of migration introduces individuals from a neighboring region where the recessive allele is more common.</p>
+  <p>Clinicians want to estimate the carrier frequency in the original population and then decide which Hardy–Weinberg assumptions are most directly threatened by the observed social and demographic changes.</p>
+</div>
+
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>For a recessive disease, the affected frequency equals <b>q²</b>. Convert “1 in 2500” to a decimal to get q².</li>
+    <li>Take the square root to find <b>q</b>, then compute <b>p = 1 − q</b>.</li>
+    <li>Carrier frequency is <b>2pq</b>. For rare alleles, p is close to 1, so 2pq is roughly 2q.</li>
+    <li>Map each real-world change to a Hardy–Weinberg assumption: nonrandom marriage → <b>random mating</b> violated; migration → <b>no migration</b> violated.</li>
+    <li>Answer choices should align with the equations <b>p + q = 1</b> and <b>p² + 2pq + q² = 1</b> and with the stated social factors.</li>
+  </ol>
+</div>
+
+<!-- Q22 Correct: A -->
+<div class="question" id="q22">
+  <b>22. Using Hardy–Weinberg assumptions, what is the approximate carrier frequency in the original population (before the reported changes)?</b>
+  <div class="choice" onclick="selectChoice('q22', this, true)">A. About 4%</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. About 0.04%</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. About 20%</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. About 50%</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: A.</b></p>
+    <p><b>Why:</b> Affected frequency q² = 1/2500 = 0.0004. Thus q = 0.02 and p = 0.98. Carriers: 2pq = 2(0.98)(0.02) = 0.0392 ≈ 3.9% (~4%).</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>B:</b> Too small by a factor of 100.</li>
+      <li><b>C/D:</b> Would imply a much more common recessive allele than the given disease frequency supports.</li>
+    </ul>
+  </div></details>
+</div>
+
+<!-- Q23 Correct: C -->
+<div class="question" id="q23">
+  <b>23. Which Hardy–Weinberg assumption is most directly challenged by the report that individuals preferentially marry within a subgroup?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. No mutation</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Very large population size</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. Random mating</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Equal reproductive success of all genotypes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: C.</b></p>
+    <p><b>Why:</b> Preferential within-group marriage is nonrandom mating, directly violating the random mating assumption.</p>
+    <p><b>Other choices:</b> The scenario does not necessarily change mutation rates, population size, or genotype-dependent fertility directly.</p>
+  </div></details>
+</div>
+
+<!-- Q24 Correct: B -->
+<div class="question" id="q24">
+  <b>24. The introduction of individuals from a neighboring region with different allele frequencies most directly violates which Hardy–Weinberg assumption?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. No genetic drift</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">B. No migration</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. No mutations</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Random mating</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary><div class="explain-body">
+    <p><b>Correct Answer: B.</b></p>
+    <p><b>Why:</b> Migration introduces gene flow into/out of the population, which changes allele frequencies and violates the “no migration” condition.</p>
+    <p><b>Other choices:</b></p>
+    <ul>
+      <li><b>A:</b> Drift is about random fluctuation; migration is directional gene flow.</li>
+      <li><b>C:</b> Mutation creates new alleles; migration moves existing alleles between populations.</li>
+      <li><b>D:</b> Migration can change mating patterns indirectly, but the direct violated condition is no migration.</li>
+    </ul>
+  </div></details>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCAT Genetics — Chapter 12.3: Punnett Squares, Gene Mapping &amp; Hardy–Weinberg (5 Passages × 5 Questions)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+  .img-wrap{ display:flex; justify-content:center; margin:10px 0 6px 0; }
+  .passage-img{ max-width:100%; height:auto; border-radius:10px; background:#fff; padding:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.12); }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Genetics — Chapter 12.3: Punnett Squares, Gene Mapping &amp; Hardy–Weinberg (5 Passages × 5 Questions)</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+<div style="margin:10px 0 18px 0; color:#3b3b3b; font-size:14px;">Click an answer choice to lock in your selection. You’ll see instant feedback and the explanation will expand automatically. Use <b>Reset all</b> to clear everything.</div>
+
+<div class="section-label">Passage 1</div>
+<div class="passage-header">
+  <span class="passage-title">Passage 1: Field Trial of Two Traits in Pea Plants</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A research greenhouse is tracking two traits in pea plants: flower color (purple vs. white) and stem height (tall vs. dwarf). Purple and tall are dominant phenotypes in this strain. A breeder begins with two true-breeding lines: purple-tall and white-dwarf. These are crossed to generate an F1 generation that is uniformly purple and tall.</p>
+<p>The breeder then performs two different crosses. In Cross A, two F1 plants are crossed with each other. In Cross B, an F1 plant is crossed with a plant that is white and dwarf. For each cross, 200 offspring are scored after germination and growth under the same conditions.</p>
+<p>Results: In Cross A, offspring phenotypes are 108 purple-tall, 34 purple-dwarf, 32 white-tall, and 26 white-dwarf. In Cross B, offspring phenotypes are 92 purple-tall, 8 purple-dwarf, 10 white-tall, and 90 white-dwarf.</p>
+<p>The breeder suspects that one of the traits may reduce survival under greenhouse conditions but has not yet identified the exact cause. The breeder also keeps careful records of genotypes when they can be inferred from test crosses.</p>
+</div>
+
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+<li>Translate phenotypes into what they imply about genotype combinations under <b>complete dominance</b>.</li>
+<li>For multi-trait crosses, separate the problem into <b>one gene at a time</b> unless linkage is suggested.</li>
+<li>Compare observed ratios to ideal expectations (like <b>9:3:3:1</b> or <b>1:1</b>) and ask what could distort them: <b>sampling error</b>, <b>selection</b>, or <b>linkage</b>.</li>
+<li>Use the cross design: an F1 × recessive parent is a classic setup to reveal <b>gamete frequencies</b> from the F1.</li>
+  </ol>
+</div>
+
+
+<div class="question" id="p1q1">
+  <b>1. In Cross B, which inference best explains why the two most common phenotypes are purple-tall and white-dwarf?</b>
+  <div class="choice" onclick="selectChoice('p1q1', this, false)">A. The recessive parent contributes gametes that determine both traits in the offspring.</div>
+  <div class="choice" onclick="selectChoice('p1q1', this, false)">B. Independent assortment guarantees that two phenotypes will always dominate in an F1 × recessive cross.</div>
+  <div class="choice" onclick="selectChoice('p1q1', this, true)">C. The F1 parent is producing mainly parental gametes, suggesting the two loci are linked or that recombinants have reduced viability.</div>
+  <div class="choice" onclick="selectChoice('p1q1', this, false)">D. The white allele is dominant over purple in the test cross.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p1q1-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">Cross B is an F1 crossed to a double-recessive parent, so each offspring phenotype directly reports which gamete the F1 produced. If loci assort independently with equal survival, the four phenotypes should be close to 1:1:1:1. Instead, the two parental combinations dominate (purple-tall and white-dwarf), while the recombinant combinations are rare. That pattern is classic for linkage (few crossovers) and can be amplified if recombinant phenotypes have reduced survival. Choice B is wrong because the recessive parent contributes the same recessive alleles every time; it cannot create the skew toward parental combinations. Choice C is wrong because independent assortment predicts equal frequencies, not two dominant classes. Choice A is wrong because dominance does not flip in a test cross; white cannot become dominant simply because the partner is recessive.</div>
+  </details>
+</div>
+
+<div class="question" id="p1q2">
+  <b>2. A student claims that a cross AaBB × AAbb will produce both dominant and recessive phenotypes for trait A. Which outcome is most consistent with complete dominance?</b>
+  <div class="choice" onclick="selectChoice('p1q2', this, false)">A. Half of the offspring show the recessive phenotype for trait A, and all show the dominant phenotype for trait B.</div>
+  <div class="choice" onclick="selectChoice('p1q2', this, false)">B. A 9:3:3:1 phenotypic ratio is expected because there are two genes.</div>
+  <div class="choice" onclick="selectChoice('p1q2', this, true)">C. All offspring show the dominant phenotype for both traits.</div>
+  <div class="choice" onclick="selectChoice('p1q2', this, false)">D. All offspring show the recessive phenotype for trait A, and half show the dominant phenotype for trait B.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p1q2-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">Treat each gene separately. For the A locus: Aa × AA produces AA or Aa, but never aa, so all offspring show the dominant A phenotype. For the B locus: BB × bb produces only Bb, so all offspring show the dominant B phenotype. Therefore 100% of offspring are dominant for both traits. Choice A’s 1/2 recessive A outcome would require an a allele from the second parent, but that parent is AA. Choice C incorrectly mixes loci; the B locus is fixed by BB × bb, so it cannot produce a 1:2:1 or 1:1 outcome. Choice D is the dihybrid heterozygote × heterozygote ratio, which does not apply here.</div>
+  </details>
+</div>
+
+<div class="question" id="p1q3">
+  <b>3. If Cross A were governed purely by independent assortment and no selection, which observed feature would most strongly argue that the data are not just random sampling noise?</b>
+  <div class="choice" onclick="selectChoice('p1q3', this, false)">A. The fact that purple-tall is the most common phenotype.</div>
+  <div class="choice" onclick="selectChoice('p1q3', this, false)">B. The presence of any white-tall offspring at all.</div>
+  <div class="choice" onclick="selectChoice('p1q3', this, true)">C. A systematic deficit of one genotype class across repeated trials, consistent with selection against a specific allele combination.</div>
+  <div class="choice" onclick="selectChoice('p1q3', this, false)">D. Any deviation from exactly 9:3:3:1 in a sample of 200 offspring.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p1q3-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">In a sample of 200, small deviations from 9:3:3:1 are expected. What argues against mere sampling noise is a consistent pattern—especially if one class is repeatedly depleted across repeats or conditions—because that suggests selection (differential survival) or a systematic inheritance effect. Choice B is wrong because white-tall can occur under independent assortment. Choice C is wrong because the most common phenotype being purple-tall is expected even under 9:3:3:1. Choice A is wrong because expecting an exact 9:3:3:1 in finite samples is unrealistic.</div>
+  </details>
+</div>
+
+<div class="question" id="p1q4">
+  <b>4. In Cross B (F1 × white-dwarf), which additional measurement would best distinguish between linkage and reduced survival of recombinant phenotypes?</b>
+  <div class="choice" onclick="selectChoice('p1q4', this, true)">A. Score genotypes among early embryos or seeds before differential survival can act, then compare to the later phenotype counts.</div>
+  <div class="choice" onclick="selectChoice('p1q4', this, false)">B. Increase the number of offspring to exactly 10,000 so the ratio must become 1:1:1:1.</div>
+  <div class="choice" onclick="selectChoice('p1q4', this, false)">C. Repeat Cross A instead of Cross B because dihybrid crosses are required to detect linkage.</div>
+  <div class="choice" onclick="selectChoice('p1q4', this, false)">D. Measure the height of the parental plants rather than the offspring.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p1q4-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">If you measure genotype frequencies before survival differences accumulate (for example, at the seed or early embryo stage), you can see whether recombinants were produced at the expected frequency but then died off. If early-stage genotypes are already skewed, linkage is implicated; if early-stage genotypes are closer to 1:1:1:1 but later phenotypes skew, viability selection is implicated. Choice B is wrong because larger samples reduce sampling error but do not force a particular ratio if biology (linkage/selection) drives a skew. Choice C is wrong because Cross B is exactly the cross that reveals gamete frequencies from the heterozygote. Choice D is irrelevant to distinguishing the mechanisms.</div>
+  </details>
+</div>
+
+<div class="question" id="p1q5">
+  <b>5. Suppose the breeder performs a classic test cross on an unknown purple-tall plant and obtains 100% purple offspring (ignoring height). What is the most likely genotype at the flower-color locus?</b>
+  <div class="choice" onclick="selectChoice('p1q5', this, false)">A. Hemizygous.</div>
+  <div class="choice" onclick="selectChoice('p1q5', this, false)">B. Homozygous recessive.</div>
+  <div class="choice" onclick="selectChoice('p1q5', this, false)">C. Heterozygous dominant.</div>
+  <div class="choice" onclick="selectChoice('p1q5', this, true)">D. Homozygous dominant.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p1q5-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">A test cross pairs the unknown with a homozygous recessive. If 100% of offspring show the dominant phenotype for flower color, the unknown parent must contribute only the dominant allele at that locus, meaning it is homozygous dominant. Choice B would produce a 1:1 mix of dominant and recessive phenotypes in the offspring. Choice C would produce 100% recessive phenotype offspring. Choice D (hemizygous) applies to sex chromosomes in males, not an autosomal flower-color locus in pea plants.</div>
+  </details>
+</div>
+
+<div class="section-label">Passage 2</div>
+<div class="passage-header">
+  <span class="passage-title">Passage 2: Counseling Session for an X-Linked Disorder</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A genetic counselor is asked to estimate risks for an X-linked recessive bleeding disorder in a family. The disorder allele is carried on the X chromosome, and affected individuals have impaired clotting.</p>
+<p>Individual I-1 is an unaffected male. Individual I-2 is an unaffected female whose brother is affected. Neither parent in generation I has a known diagnosis, but no genetic testing has been done. The couple (I-1 and I-2) has two children: an unaffected daughter (II-1) and an affected son (II-2).</p>
+<p>Years later, the unaffected daughter (II-1) plans to have children with an unaffected male partner. She wants a risk estimate without genetic testing. In a separate branch of the family, an affected male cousin is considering having children with an unaffected female partner with no family history of the disorder.</p>
+<p>Assume random X-chromosome segregation, no new mutations, and that carriers are clinically unaffected.</p>
+</div>
+
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+<li>For X-linked recessive traits, start by identifying who must carry the affected allele based on <b>affected sons</b> (sons get their X from their mother).</li>
+<li>Convert each individual’s status into possible genotypes, then compute offspring probabilities by tracking <b>which parent contributes which sex chromosome</b>.</li>
+<li>Keep sons and daughters separate: they have different genotype spaces because males are <b>hemizygous</b>.</li>
+  </ol>
+</div>
+
+
+<div class="question" id="p2q1">
+  <b>6. Given that I-2 has an affected son (II-2) with an unaffected father, what must be true about I-2?</b>
+  <div class="choice" onclick="selectChoice('p2q1', this, false)">A. She cannot carry the allele because she is clinically unaffected.</div>
+  <div class="choice" onclick="selectChoice('p2q1', this, false)">B. She must have inherited the affected allele from her father.</div>
+  <div class="choice" onclick="selectChoice('p2q1', this, true)">C. She must carry the affected allele on one of her X chromosomes.</div>
+  <div class="choice" onclick="selectChoice('p2q1', this, false)">D. She must be affected because carriers cannot have affected sons.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p2q1-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">For an X-linked recessive disorder, an affected son must have received the affected X from his mother because his father contributes a Y chromosome to sons. Therefore, I-2 must carry the affected allele on one X chromosome. Choice B is wrong because I-2 could have inherited the allele from either parent; the father does not uniquely determine this. Choice C is wrong because clinical normality is consistent with being a carrier. Choice A is wrong because carriers can absolutely have affected sons if they transmit the affected X.</div>
+  </details>
+</div>
+
+<div class="question" id="p2q2">
+  <b>7. Without genetic testing, what is the most reasonable probability that II-1 is a carrier?</b>
+  <div class="choice" onclick="selectChoice('p2q2', this, false)">A. 1/4</div>
+  <div class="choice" onclick="selectChoice('p2q2', this, true)">B. 1/2</div>
+  <div class="choice" onclick="selectChoice('p2q2', this, false)">C. 1</div>
+  <div class="choice" onclick="selectChoice('p2q2', this, false)">D. 0</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p2q2-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">I-2 is an obligate carrier because she has an affected son. A daughter receives a normal X from her unaffected father and then has a 50% chance of receiving the affected X from her carrier mother. Carriers are unaffected, so the daughter’s unaffected status does not eliminate the carrier possibility. Hence the probability is 1/2. Choice A (0) would only be true if the mother were not a carrier, which contradicts the affected son. Choice C (1/4) would apply in some situations when a mother has a carrier risk rather than being obligate. Choice D (1) would require certainty that the mother transmitted the affected X, which we do not have.</div>
+  </details>
+</div>
+
+<div class="question" id="p2q3">
+  <b>8. If II-1 (from the passage) has a child with an unaffected male partner, what is the probability that a randomly chosen son will be affected?</b>
+  <div class="choice" onclick="selectChoice('p2q3', this, false)">A. 1/8</div>
+  <div class="choice" onclick="selectChoice('p2q3', this, false)">B. 1/2</div>
+  <div class="choice" onclick="selectChoice('p2q3', this, false)">C. 0</div>
+  <div class="choice" onclick="selectChoice('p2q3', this, true)">D. 1/4</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p2q3-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">First, II-1 has a 1/2 chance of being a carrier. If she is a carrier, each son has a 1/2 chance of inheriting her affected X and being affected. Multiply: (1/2) × (1/2) = 1/4. Choice A (1/2) ignores the uncertainty that II-1 is a carrier. Choice C (1/8) would be appropriate if II-1 had only a 1/4 carrier probability, which is not the case here. Choice D (0) would require that II-1 cannot be a carrier, which is false.</div>
+  </details>
+</div>
+
+<div class="question" id="p2q4">
+  <b>9. In the separate branch, an affected male cousin has children with an unaffected female partner with no family history. Assuming the partner is not a carrier, which statement is most accurate?</b>
+  <div class="choice" onclick="selectChoice('p2q4', this, false)">A. All sons will be carriers, and all daughters will be affected.</div>
+  <div class="choice" onclick="selectChoice('p2q4', this, true)">B. All daughters will be carriers, and no sons will be affected.</div>
+  <div class="choice" onclick="selectChoice('p2q4', this, false)">C. Half of the daughters will be affected because they inherit an affected X from their father.</div>
+  <div class="choice" onclick="selectChoice('p2q4', this, false)">D. Half of the sons will be affected, and half of the daughters will be carriers.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p2q4-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">An affected male has genotype XᵈY. If his partner is not a carrier (XᴺXᴺ), all daughters receive Xᵈ from their father and Xᴺ from their mother, making them carriers; all sons receive Y from their father and Xᴺ from their mother, so none are affected. Choice B incorrectly assigns a 50% affected-son risk, which would require a carrier mother. Choice C is wrong because sons cannot be carriers for an X-linked recessive trait; they either have the affected allele (affected) or they do not. Choice D is wrong because daughters would need two affected alleles to be affected; they receive only one affected X from the father in this scenario.</div>
+  </details>
+</div>
+
+<div class="question" id="p2q5">
+  <b>10. Which scenario would increase the prevalence of an X-linked recessive disorder over generations most directly through a non-Mendelian population effect?</b>
+  <div class="choice" onclick="selectChoice('p2q5', this, true)">A. Nonrandom mating that increases the chance carriers mate within a subgroup.</div>
+  <div class="choice" onclick="selectChoice('p2q5', this, false)">B. A single meiosis event that produces crossing over between X and Y chromosomes in a male.</div>
+  <div class="choice" onclick="selectChoice('p2q5', this, false)">C. A silent point mutation in an unrelated autosomal gene.</div>
+  <div class="choice" onclick="selectChoice('p2q5', this, false)">D. Complete dominance of the affected allele.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p2q5-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">Nonrandom mating within a subgroup increases the probability that carriers mate with carriers, which raises the proportion of affected offspring over generations even without changing dominance relationships. This is a population-level deviation from random mating. Choice B describes an atypical event; crossing over between X and Y in males is limited to pseudoautosomal regions and does not generally drive prevalence. Choice C is unrelated to the disorder locus and would not increase its prevalence. Choice D is a misunderstanding: complete dominance would change phenotype expression patterns, not inherently increase allele prevalence for a recessive disorder.</div>
+  </details>
+</div>
+
+<div class="section-label">Passage 3</div>
+<div class="passage-header">
+  <span class="passage-title">Passage 3: Building a Genetic Map from Recombination Data</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A lab studies three linked loci on the same autosome in a model insect. The loci affect easily scored traits: wing shape (W), eye color (E), and body banding (B). Two true-breeding lines are crossed to form F1 heterozygotes that carry one chromosome with W E B and the homolog with w e b.</p>
+<p>To map the loci, researchers perform a test cross between an F1 heterozygote and a triple-recessive insect (w e b / w e b). Offspring phenotypes reflect the gametes produced by the F1 parent. A total of 1000 offspring are classified into eight phenotype categories corresponding to parental types, single crossovers, and double crossovers.</p>
+<p>The counts are: 410 W E B, 400 w e b, 70 W e b, 60 w E B, 25 W E b, 20 w e B, 8 W e B, and 7 w E b.</p>
+<p>Assume no chromatid interference and that recombination frequency is approximately additive across adjacent intervals.</p>
+</div>
+
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+<li>Identify the <b>parental</b> classes first: they are typically the most frequent.</li>
+<li>Identify the <b>double crossover</b> classes next: they are typically the least frequent; compare them to parental classes to deduce the <b>middle gene</b>.</li>
+<li>Compute each interval’s recombination frequency by adding the relevant <b>single crossovers</b> plus <b>double crossovers</b>, then divide by total offspring.</li>
+<li>Map units are approximately percent recombination: <b>1% ≈ 1 cM</b>.</li>
+  </ol>
+</div>
+
+
+<div class="question" id="p3q1">
+  <b>11. Which two phenotype classes are most likely to represent the parental (nonrecombinant) gametes produced by the F1 parent?</b>
+  <div class="choice" onclick="selectChoice('p3q1', this, false)">A. W E b and w e B.</div>
+  <div class="choice" onclick="selectChoice('p3q1', this, false)">B. W e B and w E b.</div>
+  <div class="choice" onclick="selectChoice('p3q1', this, false)">C. W e b and w E B.</div>
+  <div class="choice" onclick="selectChoice('p3q1', this, true)">D. W E B and w e b.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p3q1-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">In a test cross, offspring phenotypes mirror the gametes produced by the heterozygous parent. The most frequent classes are typically the parental (nonrecombinant) gametes because recombination is less common than no recombination. Here, 410 W E B and 400 w e b are the largest counts, so they represent parental types. Choice B lists two rare classes that fit double crossovers rather than parental types. Choice C lists intermediate-frequency classes consistent with single crossovers. Choice D lists the clear recombinants between loci.</div>
+  </details>
+</div>
+
+<div class="question" id="p3q2">
+  <b>12. Based on the least frequent classes, which gene is most likely in the middle of the three-locus order?</b>
+  <div class="choice" onclick="selectChoice('p3q2', this, true)">A. E (eye color).</div>
+  <div class="choice" onclick="selectChoice('p3q2', this, false)">B. The middle gene cannot be determined without knowing the parental genotypes.</div>
+  <div class="choice" onclick="selectChoice('p3q2', this, false)">C. W (wing shape).</div>
+  <div class="choice" onclick="selectChoice('p3q2', this, false)">D. B (body banding).</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p3q2-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">The least frequent classes (8 W e B and 7 w E b) are most consistent with double crossovers. In double crossovers, the outside genes match the parental arrangement, while the middle gene flips. Comparing W E B (parental) to W e B (double crossover), only E changes, so E must be in the middle. Choice A and Choice B place the wrong gene in the middle and would not explain why only one locus differs between parental and double-crossover classes. Choice D is incorrect because the parental genotypes are explicitly described.</div>
+  </details>
+</div>
+
+<div class="question" id="p3q3">
+  <b>13. Using the data, what is the approximate recombination frequency between W and E?</b>
+  <div class="choice" onclick="selectChoice('p3q3', this, false)">A. About 30%.</div>
+  <div class="choice" onclick="selectChoice('p3q3', this, false)">B. About 6%.</div>
+  <div class="choice" onclick="selectChoice('p3q3', this, false)">C. About 1.5%.</div>
+  <div class="choice" onclick="selectChoice('p3q3', this, true)">D. About 15%.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p3q3-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">With order W–E–B, recombinants for the W–E interval are those with W e _ or w E _. Add the single crossovers in that interval (70 W e b and 60 w E B) plus the double crossovers (8 W e B and 7 w E b): 70 + 60 + 8 + 7 = 145. Divide by 1000 total offspring to get 14.5%, about 15%. Choice B (6%) is closer to the E–B interval in this dataset. Choice C (1.5%) is too small and would correspond to only ~15 recombinants. Choice A (30%) overestimates and would require ~300 recombinants.</div>
+  </details>
+</div>
+
+<div class="question" id="p3q4">
+  <b>14. Using the data, what is the approximate map distance between E and B?</b>
+  <div class="choice" onclick="selectChoice('p3q4', this, false)">A. 20%</div>
+  <div class="choice" onclick="selectChoice('p3q4', this, false)">B. 14%</div>
+  <div class="choice" onclick="selectChoice('p3q4', this, true)">C. 6%</div>
+  <div class="choice" onclick="selectChoice('p3q4', this, false)">D. 2.5%</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p3q4-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">For the E–B interval, recombinants are W E b (25) and w e B (20) plus double crossovers (8 and 7). Total = 25 + 20 + 8 + 7 = 60, so recombination frequency is 60/1000 = 6%. Choice A (2.5%) would correspond to ~25 recombinants and ignores the double crossovers. Choice C (14%) is closer to the W–E interval. Choice D (20%) is inconsistent with the small number of recombinant classes observed.</div>
+  </details>
+</div>
+
+<div class="question" id="p3q5">
+  <b>15. If a fourth gene X were found to be 2 cM to the right of B (same chromosome), what would be the best estimate of recombination frequency between E and X?</b>
+  <div class="choice" onclick="selectChoice('p3q5', this, true)">A. Approximately 8%.</div>
+  <div class="choice" onclick="selectChoice('p3q5', this, false)">B. Approximately 50%.</div>
+  <div class="choice" onclick="selectChoice('p3q5', this, false)">C. Approximately 18%.</div>
+  <div class="choice" onclick="selectChoice('p3q5', this, false)">D. Approximately 4%.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p3q5-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">If X is 2 cM to the right of B, and E–B is about 6 cM, then E–X is approximately 6 + 2 = 8 cM under additivity. That corresponds to roughly 8% recombination for modest distances. Choice A (4%) would be too small unless B–X or E–B were about 2 cM each. Choice B (50%) is the upper limit for unlinked loci and does not fit a mapped distance of only 8 cM. Choice C (18%) would require a much larger distance.</div>
+  </details>
+</div>
+
+<div class="section-label">Passage 4</div>
+<div class="passage-header">
+  <span class="passage-title">Passage 4: Testing Hardy–Weinberg Assumptions in a Coastal Town</span>
+  <button class="reason-btn" id="p4-btn" onclick="toggleReasoning('p4')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A coastal town is surveyed for an autosomal recessive condition. Individuals with the condition have genotype aa and show a clear phenotype from birth. Over several years, clinicians record that about 1 in 2500 newborns is affected.</p>
+<p>A public health team wants to estimate how many individuals are carriers (Aa) to decide whether to offer voluntary screening. They also interview residents and learn that the town’s population has recently increased due to immigration from a nearby region, and that a small group within the town tends to marry within the group.</p>
+<p>In addition, a new treatment introduced 15 years ago allows many affected individuals to survive to reproductive age and have children.</p>
+<p>Assume the condition is rare, the gene has only two alleles (A and a), and that the newborn prevalence is representative of the town’s current allele frequencies.</p>
+</div>
+
+<div class="reasoning-box" id="p4-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+<li>For a recessive condition, the affected frequency is <b>q²</b>. Take the square root to get <b>q</b>, then compute <b>p = 1 − q</b>.</li>
+<li>Carrier frequency is <b>2pq</b>; when q is small, 2pq is close to <b>2q</b> but don’t assume—calculate.</li>
+<li>After computing expected genotype frequencies, evaluate which Hardy–Weinberg criteria might be violated: <b>random mating</b>, <b>large population</b>, <b>no migration</b>, <b>no selection</b>, <b>no mutation</b>.</li>
+  </ol>
+</div>
+
+
+<div class="question" id="p4q1">
+  <b>16. If 1 in 2500 newborns is affected (aa), what is the best estimate of q (frequency of allele a)?</b>
+  <div class="choice" onclick="selectChoice('p4q1', this, false)">A. 0.0004</div>
+  <div class="choice" onclick="selectChoice('p4q1', this, false)">B. 0.98</div>
+  <div class="choice" onclick="selectChoice('p4q1', this, false)">C. 0.04</div>
+  <div class="choice" onclick="selectChoice('p4q1', this, true)">D. 0.02</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p4q1-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">For an autosomal recessive condition, affected frequency equals q². If q² = 1/2500 = 0.0004, then q = √0.0004 = 0.02. Choice B is q², not q. Choice C (0.04) would correspond to q² = 0.0016 (1/625). Choice D is p, not q.</div>
+  </details>
+</div>
+
+<div class="question" id="p4q2">
+  <b>17. Using the estimate above, what is the approximate carrier frequency (Aa) under Hardy–Weinberg assumptions?</b>
+  <div class="choice" onclick="selectChoice('p4q2', this, true)">A. About 4%.</div>
+  <div class="choice" onclick="selectChoice('p4q2', this, false)">B. About 96%.</div>
+  <div class="choice" onclick="selectChoice('p4q2', this, false)">C. About 2%.</div>
+  <div class="choice" onclick="selectChoice('p4q2', this, false)">D. About 0.04%.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p4q2-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">Compute p = 1 − q = 0.98. Carrier frequency is 2pq = 2(0.98)(0.02) ≈ 0.0392, about 4%. Choice A (0.04%) confuses carriers with affected frequency. Choice C (2%) would be close to 2q only if p ≈ 0.5, which is not true here. Choice D (96%) is far too high and roughly corresponds to p².</div>
+  </details>
+</div>
+
+<div class="question" id="p4q3">
+  <b>18. Which observation from the interviews most directly violates the Hardy–Weinberg requirement of random mating?</b>
+  <div class="choice" onclick="selectChoice('p4q3', this, false)">A. The condition is rare.</div>
+  <div class="choice" onclick="selectChoice('p4q3', this, false)">B. Immigration from a nearby region.</div>
+  <div class="choice" onclick="selectChoice('p4q3', this, false)">C. A treatment allows affected individuals to survive longer.</div>
+  <div class="choice" onclick="selectChoice('p4q3', this, true)">D. A subgroup tends to marry within the subgroup.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p4q3-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">Random mating is violated when individuals preferentially mate within a subgroup, which increases homozygosity relative to Hardy–Weinberg expectations. Choice B (immigration) violates the no-migration criterion, not random mating. Choice C (improved survival) relates to selection, not random mating. Choice D is irrelevant; rarity does not violate Hardy–Weinberg.</div>
+  </details>
+</div>
+
+<div class="question" id="p4q4">
+  <b>19. How would improved survival of affected individuals most likely affect allele frequencies over time, all else equal?</b>
+  <div class="choice" onclick="selectChoice('p4q4', this, false)">A. It has no possible effect on q because allele frequencies never change after birth.</div>
+  <div class="choice" onclick="selectChoice('p4q4', this, true)">B. It reduces negative selection against a, tending to increase q compared with the pre-treatment era.</div>
+  <div class="choice" onclick="selectChoice('p4q4', this, false)">C. It forces q to decrease because affected individuals must now be removed from the population.</div>
+  <div class="choice" onclick="selectChoice('p4q4', this, false)">D. It increases mutation rate at the locus, directly changing q.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p4q4-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">If affected individuals (aa) previously had reduced reproductive success, the treatment reduces that disadvantage. That weakens selection against allele a, so q can increase (or at least decline less) over time compared with the era without treatment. Choice B reverses the logic of selection. Choice C is wrong because allele frequencies can change across generations. Choice D confuses selection with mutation.</div>
+  </details>
+</div>
+
+<div class="question" id="p4q5">
+  <b>20. Suppose screening finds fewer carriers than predicted by Hardy–Weinberg. Which explanation best fits that direction of discrepancy?</b>
+  <div class="choice" onclick="selectChoice('p4q5', this, false)">A. The allele must be dominant, not recessive.</div>
+  <div class="choice" onclick="selectChoice('p4q5', this, true)">B. Selection against heterozygotes (Aa) or nonrandom sampling that undercounts carriers.</div>
+  <div class="choice" onclick="selectChoice('p4q5', this, false)">C. Migration always increases the number of carriers relative to Hardy–Weinberg.</div>
+  <div class="choice" onclick="selectChoice('p4q5', this, false)">D. q² must be larger than q, so the math must have been wrong.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p4q5-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">Fewer carriers than predicted could occur if carriers are undercounted (sampling bias) or if there is selection against heterozygotes, which would reduce 2pq relative to Hardy–Weinberg. Choice B is wrong because migration can increase or decrease carrier frequency depending on incoming allele frequencies; it is not directionally fixed. Choice C is wrong because dominance changes phenotype mapping, not the algebra already based on a recessive phenotype. Choice D reflects a misunderstanding of the relationship between q and q².</div>
+  </details>
+</div>
+
+<div class="section-label">Passage 5</div>
+<div class="passage-header">
+  <span class="passage-title">Passage 5: Combining Mapping and Population Data in Conservation Genetics</span>
+  <button class="reason-btn" id="p5-btn" onclick="toggleReasoning('p5')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A conservation team monitors an endangered mammal that lives in two valleys separated by a mountain ridge. Valley East has 800 animals; Valley West has 120 animals. A recessive coat phenotype is observed and is suspected to be caused by allele r at a single locus (R is dominant).</p>
+<p>In Valley West, 3 of 120 animals show the recessive phenotype. In Valley East, 2 of 800 animals show the recessive phenotype. The team considers relocating 20 animals from East to West to increase genetic diversity.</p>
+<p>Separately, geneticists identify a DNA marker locus (M/m) near the coat locus by doing a controlled breeding study. In 500 informative offspring from a test-cross-like design, marker and coat phenotype show 45 recombinant individuals.</p>
+<p>Assume random mating within each valley before relocation, the recessive phenotype is fully penetrant, and the marker and coat loci are on the same chromosome.</p>
+</div>
+
+<div class="reasoning-box" id="p5-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+<li>Within each valley, estimate q from recessive phenotype frequency (<b>q²</b>) and then compute carriers (<b>2pq</b>).</li>
+<li>Relocation changes allele frequencies via <b>migration (gene flow)</b>; combine allele counts from each valley to predict the new q in West.</li>
+<li>Marker recombination frequency estimates genetic distance: recombinant fraction ≈ <b>percent recombination</b>, capped near 50% for unlinked loci.</li>
+  </ol>
+</div>
+
+
+<div class="question" id="p5q1">
+  <b>21. Before relocation, which valley has the higher estimated frequency of allele r?</b>
+  <div class="choice" onclick="selectChoice('p5q1', this, false)">A. Both valleys must have the same r frequency because they are the same species.</div>
+  <div class="choice" onclick="selectChoice('p5q1', this, true)">B. Valley West.</div>
+  <div class="choice" onclick="selectChoice('p5q1', this, false)">C. Cannot be determined without knowing carrier counts directly.</div>
+  <div class="choice" onclick="selectChoice('p5q1', this, false)">D. Valley East.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p5q1-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">Recessive phenotype frequency equals q². Valley West has 3/120 = 0.025, giving q ≈ √0.025 ≈ 0.158. Valley East has 2/800 = 0.0025, giving q = √0.0025 = 0.05. Therefore Valley West has the higher allele r frequency. Choice B is wrong because East’s recessive phenotype frequency is much lower. Choice C ignores population structure; the same species can have different allele frequencies in different subpopulations. Choice D is wrong because recessive phenotype frequency provides q² directly.</div>
+  </details>
+</div>
+
+<div class="question" id="p5q2">
+  <b>22. Under Hardy–Weinberg assumptions, what is the best estimate of carrier frequency (Rr) in Valley East?</b>
+  <div class="choice" onclick="selectChoice('p5q2', this, false)">A. About 50%.</div>
+  <div class="choice" onclick="selectChoice('p5q2', this, true)">B. About 9.5%.</div>
+  <div class="choice" onclick="selectChoice('p5q2', this, false)">C. About 2.5%.</div>
+  <div class="choice" onclick="selectChoice('p5q2', this, false)">D. About 0.25%.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p5q2-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">In Valley East, q² = 0.0025, so q = 0.05 and p = 0.95. Carrier frequency is 2pq = 2(0.95)(0.05) = 0.095, or 9.5%. Choice B (0.25%) confuses q with q². Choice C (2.5%) is q² expressed as a percent. Choice D (50%) would require q near 0.5, which is inconsistent with the rare recessive phenotype.</div>
+  </details>
+</div>
+
+<div class="question" id="p5q3">
+  <b>23. If 20 animals are moved from East to West and mating becomes random in West, what is the most direct population-genetic effect this intervention is intended to reduce in West?</b>
+  <div class="choice" onclick="selectChoice('p5q3', this, true)">A. Genetic drift and inbreeding due to small population size.</div>
+  <div class="choice" onclick="selectChoice('p5q3', this, false)">B. Complete dominance of the R allele.</div>
+  <div class="choice" onclick="selectChoice('p5q3', this, false)">C. Mutation rate at the coat locus.</div>
+  <div class="choice" onclick="selectChoice('p5q3', this, false)">D. Crossing over frequency between the coat locus and the marker.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p5q3-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">Valley West is small, so chance fluctuations and mating among relatives can strongly change allele frequencies and increase homozygosity. Bringing in individuals from a larger population increases genetic diversity and counters genetic drift/inbreeding. Choice B is wrong because relocation does not directly change mutation rate. Choice C is wrong because recombination frequency is a property of meiosis and physical distance, not population size. Choice D is wrong because dominance is a trait of allele expression, not something migration reduces.</div>
+  </details>
+</div>
+
+<div class="question" id="p5q4">
+  <b>24. The marker–coat data show 45 recombinants out of 500 informative offspring. What is the best estimate of the distance between the marker and coat loci?</b>
+  <div class="choice" onclick="selectChoice('p5q4', this, false)">A. About 4.5 cM.</div>
+  <div class="choice" onclick="selectChoice('p5q4', this, false)">B. About 45 cM.</div>
+  <div class="choice" onclick="selectChoice('p5q4', this, false)">C. About 90 cM.</div>
+  <div class="choice" onclick="selectChoice('p5q4', this, true)">D. About 9 cM.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p5q4-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">Recombinant fraction = 45/500 = 0.09, or 9%. For modest distances, percent recombination is approximately map distance in centimorgans, so the loci are about 9 cM apart. Choice A (4.5 cM) would match 22–23 recombinants. Choice C (45 cM) misreads 45 recombinants as 45%. Choice D (90 cM) is not meaningful because recombination frequency does not exceed ~50% for unlinked loci.</div>
+  </details>
+</div>
+
+<div class="question" id="p5q5">
+  <b>25. If the marker and coat loci were actually unlinked, which outcome would be most expected in a very large test-cross-like dataset?</b>
+  <div class="choice" onclick="selectChoice('p5q5', this, false)">A. All offspring would match one of the two parental classes.</div>
+  <div class="choice" onclick="selectChoice('p5q5', this, false)">B. Recombinant frequency would equal q² for the recessive coat allele.</div>
+  <div class="choice" onclick="selectChoice('p5q5', this, true)">C. Approximately half of offspring would be recombinant with respect to marker and coat phenotype.</div>
+  <div class="choice" onclick="selectChoice('p5q5', this, false)">D. Recombinant frequency would approach 0% as sample size grows.</div>
+  <div class="feedback fb-correct"><span class="icon">✅</span><span>Correct</span></div>
+  <div class="feedback fb-incorrect"><span class="icon">❌</span><span>Incorrect</span></div>
+  <details class="explain" id="p5q5-exp">
+    <summary>Explanation</summary>
+    <div class="exp-body">If loci are unlinked (different chromosomes or far apart), recombination approaches 50% in large datasets because marker and trait assort independently. Choice B would describe very tight linkage, not unlinked loci. Choice C confuses linkage with allele frequency of the recessive trait. Choice D describes zero recombination, again implying tight linkage.</div>
+  </details>
+</div>
+
+</body>
+</html>

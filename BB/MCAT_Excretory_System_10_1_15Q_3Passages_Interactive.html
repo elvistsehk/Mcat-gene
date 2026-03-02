@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Biology Chapter 10.1 — Excretory System (15Q + 3 Passages)</title>
+<style>
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+</style>
+<script>
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+</script>
+</head>
+
+
+<body>
+  <div class="main-header">
+    <div class="title">MCAT Biology Chapter 10.1 — Excretory System (Kidney, Nephron, Urine Regulation)</div>
+    <button class="reset-btn" onclick="resetAll()">Reset all</button>
+  </div>
+
+  <div class="container">
+    <div class="section-label">Standalone Questions (Q1–Q15)</div>
+    
+  <div class="question" id="q1">
+    <div class="qstem"><b>A physiologist describes the kidney as a portal system. Which feature best supports this description?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q1', this, false)"><span class="letter">A</span> Blood passes through the renal artery before reaching the kidney cortex.</div><div class="choice" onclick="selectChoice('q1', this, false)"><span class="letter">B</span> Urine passes through two sphincters before leaving the body.</div><div class="choice" onclick="selectChoice('q1', this, false)"><span class="letter">C</span> The nephron contains both horizontal and vertical segments.</div><div class="choice" onclick="selectChoice('q1', this, true)"><span class="letter">D</span> Blood passes through two capillary beds in series before returning to the heart.</div>
+    </div>
+    <div class="feedback" id="q1-fb"></div>
+    <div class="explanation" id="q1-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: D</div>
+          <p>A portal system has two capillary beds in series. In the kidney, blood goes through the glomerular capillaries first, then exits via the efferent arteriole and forms a second capillary bed (vasa recta/peritubular capillaries) before venous return.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> Renal arterial inflow is true of many organs and does not define a portal system.</li><li><b>B.</b> Sphincters are part of urinary outflow control, not a defining vascular feature.</li><li><b>C.</b> Nephron geometry relates to function but does not define a portal system.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q2">
+    <div class="qstem"><b>During the micturition reflex, which nervous system input directly causes contraction of the detrusor muscle?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q2', this, false)"><span class="letter">A</span> Somatic motor neurons to the external urethral sphincter</div><div class="choice" onclick="selectChoice('q2', this, true)"><span class="letter">B</span> Parasympathetic neurons to the bladder wall</div><div class="choice" onclick="selectChoice('q2', this, false)"><span class="letter">C</span> Sympathetic neurons causing contraction of the internal sphincter</div><div class="choice" onclick="selectChoice('q2', this, false)"><span class="letter">D</span> Sensory afferents from stretch receptors in the bladder</div>
+    </div>
+    <div class="feedback" id="q2-fb"></div>
+    <div class="explanation" id="q2-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: B</div>
+          <p>Parasympathetic activity contracts the detrusor muscle. Stretch afferents trigger the reflex, but the efferent limb that contracts the detrusor is parasympathetic.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> Somatic input controls the external sphincter (voluntary), not detrusor contraction.</li><li><b>C.</b> Sympathetic tone generally promotes storage (relax detrusor/contract internal sphincter), not voiding.</li><li><b>D.</b> Afferents detect filling but do not directly contract smooth muscle.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q3">
+    <div class="qstem"><b>A ureter is obstructed by a kidney stone, causing back pressure into the nephron. What is the most direct effect on glomerular filtration?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q3', this, true)"><span class="letter">A</span> Filtration decreases because hydrostatic pressure in Bowman’s space increases.</div><div class="choice" onclick="selectChoice('q3', this, false)"><span class="letter">B</span> Filtration increases because hydrostatic pressure in the glomerulus increases.</div><div class="choice" onclick="selectChoice('q3', this, false)"><span class="letter">C</span> Filtration increases because oncotic pressure in Bowman’s space increases.</div><div class="choice" onclick="selectChoice('q3', this, false)"><span class="letter">D</span> Filtration is unchanged because only oncotic pressure determines filtration.</div>
+    </div>
+    <div class="feedback" id="q3-fb"></div>
+    <div class="explanation" id="q3-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: A</div>
+          <p>Obstruction raises hydrostatic pressure downstream, including Bowman’s space. This pressure opposes filtration, reducing net filtration pressure and decreasing glomerular filtration.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>B.</b> A stone does not directly raise glomerular hydrostatic pressure; it raises pressure opposing filtration.</li><li><b>C.</b> Oncotic pressure in Bowman’s space is normally low because proteins do not filter; obstruction doesn’t create oncotic pressure there.</li><li><b>D.</b> Both hydrostatic and oncotic pressure gradients matter; hydrostatic is usually the dominant driver.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q4">
+    <div class="qstem"><b>Which nephron segment is uniquely capable of making the filtrate more dilute than blood?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q4', this, false)"><span class="letter">A</span> Proximal convoluted tubule</div><div class="choice" onclick="selectChoice('q4', this, false)"><span class="letter">B</span> Descending limb of the loop of Henle</div><div class="choice" onclick="selectChoice('q4', this, true)"><span class="letter">C</span> Thick ascending limb (diluting segment) of the loop of Henle</div><div class="choice" onclick="selectChoice('q4', this, false)"><span class="letter">D</span> Collecting duct</div>
+    </div>
+    <div class="feedback" id="q4-fb"></div>
+    <div class="explanation" id="q4-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: C</div>
+          <p>The thick ascending limb actively reabsorbs NaCl while remaining impermeable to water, so solute leaves without water following. This can make tubular fluid hypotonic relative to plasma.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> PCT reabsorbs solute and water together, keeping filtrate roughly isotonic.</li><li><b>B.</b> Descending limb is permeable to water, so it concentrates (not dilutes) the filtrate.</li><li><b>D.</b> Collecting duct water permeability is variable, but it does not create hypotonic fluid; with ADH it concentrates urine.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q5">
+    <div class="qstem"><b>A patient has glucosuria (glucose in urine) despite a normal blood glucose level. Dysfunction in which nephron segment best explains this finding?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q5', this, false)"><span class="letter">A</span> Ascending limb of loop of Henle</div><div class="choice" onclick="selectChoice('q5', this, true)"><span class="letter">B</span> Proximal convoluted tubule</div><div class="choice" onclick="selectChoice('q5', this, false)"><span class="letter">C</span> Distal convoluted tubule</div><div class="choice" onclick="selectChoice('q5', this, false)"><span class="letter">D</span> Collecting duct</div>
+    </div>
+    <div class="feedback" id="q5-fb"></div>
+    <div class="explanation" id="q5-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: B</div>
+          <p>Glucose is filtered and then almost completely reabsorbed in the proximal convoluted tubule. A defect in PCT transporters can cause glucose to remain in the filtrate and appear in urine even when plasma glucose is normal.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> This segment mainly handles salt reabsorption and is impermeable to water; it is not the primary site for glucose reabsorption.</li><li><b>C.</b> The DCT fine-tunes ions and responds to aldosterone, but most glucose reabsorption has already occurred.</li><li><b>D.</b> The collecting duct mainly adjusts water permeability (ADH) and certain ions; it is not where glucose is normally reclaimed.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q6">
+    <div class="qstem"><b>As filtrate travels deeper into the medulla in the descending limb of the loop of Henle, what happens to the filtrate and why?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q6', this, true)"><span class="letter">A</span> It becomes more concentrated because water leaves into an increasingly hypertonic interstitium.</div><div class="choice" onclick="selectChoice('q6', this, false)"><span class="letter">B</span> It becomes more dilute because salts leave but water remains in the tubule.</div><div class="choice" onclick="selectChoice('q6', this, false)"><span class="letter">C</span> It remains isotonic because the descending limb is impermeable to water.</div><div class="choice" onclick="selectChoice('q6', this, false)"><span class="letter">D</span> It becomes more concentrated because NaCl is actively pumped into the tubule.</div>
+    </div>
+    <div class="feedback" id="q6-fb"></div>
+    <div class="explanation" id="q6-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: A</div>
+          <p>The descending limb is permeable to water but relatively impermeable to solutes. As medullary osmolarity rises with depth, water exits the tubule down its gradient, concentrating the filtrate.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>B.</b> Salt reabsorption without water characterizes the ascending limb, not the descending limb.</li><li><b>C.</b> The descending limb is water-permeable; that’s why it concentrates the filtrate.</li><li><b>D.</b> Active pumping of NaCl out of the tubule occurs in the thick ascending limb, not into the tubule.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q7">
+    <div class="qstem"><b>Aldosterone levels rise after a drop in blood pressure. Which change in urine composition is most expected?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q7', this, false)"><span class="letter">A</span> Decreased potassium excretion</div><div class="choice" onclick="selectChoice('q7', this, false)"><span class="letter">B</span> Increased sodium excretion</div><div class="choice" onclick="selectChoice('q7', this, true)"><span class="letter">C</span> Increased potassium and hydrogen ion excretion with increased sodium reabsorption</div><div class="choice" onclick="selectChoice('q7', this, false)"><span class="letter">D</span> Decreased water reabsorption with unchanged sodium handling</div>
+    </div>
+    <div class="feedback" id="q7-fb"></div>
+    <div class="explanation" id="q7-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: C</div>
+          <p>Aldosterone acts mainly on the distal convoluted tubule and collecting duct to increase sodium reabsorption (water follows) while increasing secretion of potassium and hydrogen ions into the filtrate.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> Aldosterone increases, not decreases, potassium secretion/excretion.</li><li><b>B.</b> It promotes sodium retention (reabsorption), so sodium excretion generally falls.</li><li><b>D.</b> It increases sodium reabsorption and tends to increase water reabsorption secondarily, not decrease it.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q8">
+    <div class="qstem"><b>Which outcome is most consistent with high antidiuretic hormone (ADH) activity?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q8', this, false)"><span class="letter">A</span> Higher plasma osmolarity and more dilute urine</div><div class="choice" onclick="selectChoice('q8', this, false)"><span class="letter">B</span> Lower water reabsorption in the collecting duct</div><div class="choice" onclick="selectChoice('q8', this, false)"><span class="letter">C</span> Increased sodium reabsorption without changing collecting duct water permeability</div><div class="choice" onclick="selectChoice('q8', this, true)"><span class="letter">D</span> More concentrated urine and a decrease in plasma osmolarity</div>
+    </div>
+    <div class="feedback" id="q8-fb"></div>
+    <div class="explanation" id="q8-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: D</div>
+          <p>ADH increases collecting duct water permeability so more water is reabsorbed back into the bloodstream, concentrating urine and lowering plasma osmolarity.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> ADH tends to lower plasma osmolarity by retaining water; urine becomes concentrated, not dilute.</li><li><b>B.</b> ADH increases, not decreases, collecting duct water permeability and water reabsorption.</li><li><b>C.</b> That describes aldosterone more than ADH; ADH primarily governs water handling.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q9">
+    <div class="qstem"><b>Which change would most directly stimulate renin release from juxtaglomerular cells?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q9', this, false)"><span class="letter">A</span> Dilation of the efferent arteriole increasing glomerular hydrostatic pressure</div><div class="choice" onclick="selectChoice('q9', this, false)"><span class="letter">B</span> Increased blood osmolarity sensed by hypothalamic osmoreceptors</div><div class="choice" onclick="selectChoice('q9', this, true)"><span class="letter">C</span> Constriction of the afferent arteriole lowering pressure at the glomerulus</div><div class="choice" onclick="selectChoice('q9', this, false)"><span class="letter">D</span> Increased plasma oncotic pressure from elevated albumin levels</div>
+    </div>
+    <div class="feedback" id="q9-fb"></div>
+    <div class="explanation" id="q9-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: C</div>
+          <p>Lower perfusion pressure in the afferent arteriole/glomerulus is a key trigger for renin release, initiating the renin–angiotensin–aldosterone system to raise blood pressure.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> Efferent dilation tends to reduce (not increase) glomerular pressure and is not the classic direct trigger described here.</li><li><b>B.</b> High osmolarity primarily triggers ADH release, not renin.</li><li><b>D.</b> Albumin affects oncotic pressure but is not the direct pressure-sensing trigger for renin release in this context.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q10">
+    <div class="qstem"><b>Blood exiting a glomerulus next travels through which vessel?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q10', this, false)"><span class="letter">A</span> Afferent arteriole</div><div class="choice" onclick="selectChoice('q10', this, true)"><span class="letter">B</span> Efferent arteriole</div><div class="choice" onclick="selectChoice('q10', this, false)"><span class="letter">C</span> Renal vein</div><div class="choice" onclick="selectChoice('q10', this, false)"><span class="letter">D</span> Renal pelvis</div>
+    </div>
+    <div class="feedback" id="q10-fb"></div>
+    <div class="explanation" id="q10-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: B</div>
+          <p>Blood enters the glomerulus via the afferent arteriole and exits via the efferent arteriole, which then contributes to the second capillary network (vasa recta/peritubular capillaries).</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> The afferent arteriole is upstream of the glomerulus.</li><li><b>C.</b> The renal vein is much later in the vascular pathway after capillary networks drain.</li><li><b>D.</b> The renal pelvis collects urine, not blood.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q11">
+    <div class="qstem"><b>Movement of urea from peritubular capillaries into the nephron tubule is best classified as which process?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q11', this, true)"><span class="letter">A</span> Secretion</div><div class="choice" onclick="selectChoice('q11', this, false)"><span class="letter">B</span> Filtration</div><div class="choice" onclick="selectChoice('q11', this, false)"><span class="letter">C</span> Reabsorption</div><div class="choice" onclick="selectChoice('q11', this, false)"><span class="letter">D</span> Endocytosis</div>
+    </div>
+    <div class="feedback" id="q11-fb"></div>
+    <div class="explanation" id="q11-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: A</div>
+          <p>Filtration occurs at Bowman’s capsule. Reabsorption moves substances from filtrate to blood. Secretion moves substances from blood into the tubule elsewhere along the nephron—such as secretion of urea into the PCT.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>B.</b> Filtration specifically refers to movement from glomerular blood into Bowman’s space.</li><li><b>C.</b> Reabsorption is the opposite direction (tubule to blood).</li><li><b>D.</b> Most solute transfer here occurs via transporters (active/passive), not bulk endocytosis.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q12">
+    <div class="qstem"><b>Why does opposite-direction flow between the loop of Henle and the vasa recta enhance water conservation?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q12', this, false)"><span class="letter">A</span> It eliminates all osmolarity differences between cortex and medulla.</div><div class="choice" onclick="selectChoice('q12', this, false)"><span class="letter">B</span> It forces water to move from blood into the tubule throughout the medulla.</div><div class="choice" onclick="selectChoice('q12', this, true)"><span class="letter">C</span> It prevents rapid equilibrium and maintains a medullary osmotic gradient for continued water reabsorption.</div><div class="choice" onclick="selectChoice('q12', this, false)"><span class="letter">D</span> It allows proteins to enter Bowman’s space to increase oncotic pressure.</div>
+    </div>
+    <div class="feedback" id="q12-fb"></div>
+    <div class="explanation" id="q12-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: C</div>
+          <p>Countercurrent flow exposes filtrate to progressively different interstitial osmolarities while the vasa recta preserves the gradient. Opposite directions reduce washout and prevent quick equilibrium, supporting sustained water reabsorption.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> The system creates and maintains (not eliminates) a cortex-to-medulla osmolarity gradient.</li><li><b>B.</b> In conservation mode, water generally moves out of the tubule into the interstitium and back to blood.</li><li><b>D.</b> Proteins normally do not filter into Bowman’s space; that would signal glomerular pathology.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q13">
+    <div class="qstem"><b>A patient can no longer voluntarily hold urine despite intact bladder stretch sensation and an intact internal urethral sphincter. Which structure is most likely compromised?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q13', this, false)"><span class="letter">A</span> Detrusor smooth muscle</div><div class="choice" onclick="selectChoice('q13', this, false)"><span class="letter">B</span> Internal urethral sphincter (smooth muscle)</div><div class="choice" onclick="selectChoice('q13', this, false)"><span class="letter">C</span> Afferent sensory fibers from bladder stretch receptors</div><div class="choice" onclick="selectChoice('q13', this, true)"><span class="letter">D</span> External urethral sphincter (skeletal muscle)</div>
+    </div>
+    <div class="feedback" id="q13-fb"></div>
+    <div class="explanation" id="q13-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: D</div>
+          <p>Voluntary urinary control depends on the skeletal muscle of the external urethral sphincter (somatic control). If it cannot be voluntarily contracted, the patient loses the ability to ‘hold’ urine.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> Detrusor dysfunction affects emptying force, not specifically voluntary retention with intact sensation.</li><li><b>B.</b> The internal sphincter is involuntary; intact internal sphincter doesn’t restore voluntary control.</li><li><b>C.</b> If stretch sensation were lost, the patient would not reliably feel bladder filling; the prompt says sensation is intact.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q14">
+    <div class="qstem"><b>A patient develops metabolic acidosis (low blood pH). Which renal response would help restore blood pH toward normal?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q14', this, false)"><span class="letter">A</span> Decrease hydrogen ion secretion and decrease bicarbonate reabsorption</div><div class="choice" onclick="selectChoice('q14', this, true)"><span class="letter">B</span> Increase hydrogen ion secretion and increase bicarbonate reabsorption</div><div class="choice" onclick="selectChoice('q14', this, false)"><span class="letter">C</span> Increase bicarbonate secretion and increase hydrogen ion reabsorption</div><div class="choice" onclick="selectChoice('q14', this, false)"><span class="letter">D</span> Decrease filtration of all solutes at Bowman’s capsule</div>
+    </div>
+    <div class="feedback" id="q14-fb"></div>
+    <div class="explanation" id="q14-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: B</div>
+          <p>To correct low pH, the kidneys excrete more H+ (removing acid) and conserve/reabsorb bicarbonate (the major buffer), raising blood pH over time.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> That would worsen acidosis by retaining acid and losing buffer.</li><li><b>C.</b> That would also worsen acidosis by losing bicarbonate and retaining H+.</li><li><b>D.</b> Global decreased filtration is not a targeted acid–base correction and would impair waste removal.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q15">
+    <div class="qstem"><b>A protein hormone is synthesized and destined to be secreted from a cell. Which sequence best represents the secretory pathway?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q15', this, true)"><span class="letter">A</span> Rough ER → Golgi apparatus → secretory vesicles → plasma membrane</div><div class="choice" onclick="selectChoice('q15', this, false)"><span class="letter">B</span> Smooth ER → lysosome → nucleus → plasma membrane</div><div class="choice" onclick="selectChoice('q15', this, false)"><span class="letter">C</span> Cytosol → mitochondria → Golgi apparatus → plasma membrane</div><div class="choice" onclick="selectChoice('q15', this, false)"><span class="letter">D</span> Rough ER → nucleus → peroxisome → plasma membrane</div>
+    </div>
+    <div class="feedback" id="q15-fb"></div>
+    <div class="explanation" id="q15-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: A</div>
+          <p>Secreted proteins are synthesized into the rough ER, processed and sorted in the Golgi, packaged into secretory vesicles, and then released by exocytosis at the plasma membrane.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>B.</b> Smooth ER is for lipid synthesis/detox; lysosomes degrade, and proteins do not route through the nucleus for secretion.</li><li><b>C.</b> Mitochondria are not part of the classical secretory route.</li><li><b>D.</b> Nucleus and peroxisomes are not steps in the secretion pathway for proteins.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+
+    <div class="section-label">Passage-Based Questions (3 Passages × 3 Questions)</div>
+    
+<div class="passage-header">
+  <div>Passage 1</div>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 24-year-old endurance runner collapses after a long race on a hot day. On exam, she is tachycardic, her blood pressure is low, and she has dry mucous membranes.</p><p>Laboratory tests show elevated plasma osmolarity and elevated serum sodium. Her urine volume over the prior two hours is low, and the urine is very dark.</p><p>A urinalysis reports a high urine osmolarity. The clinician explains that the kidney can change the permeability of the collecting duct to conserve water when the body is dehydrated.</p><p>Over the next hour she drinks water and rests in a cool environment. Her heart rate decreases, her thirst improves, and her urine output gradually increases.</p><p>She mentions that during the race she drank several cups of coffee and intentionally avoided stopping to urinate.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p>• <b>Step 1:</b> Use plasma osmolarity + urine volume to decide whether the body is in <b>water conservation</b> mode.</p><p>• <b>Step 2:</b> Identify which hormone directly changes <b>collecting duct water permeability</b> (ADH).</p><p>• <b>Step 3:</b> Predict how lowering that hormone after drinking water changes urine <b>volume</b> and <b>concentration</b>.</p>
+</div>
+
+  <div class="question" id="q16">
+    <div class="qstem"><b>Which hormonal change most directly explains the runner’s low urine volume and highly concentrated urine during the race?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q16', this, false)"><span class="letter">A</span> Decreased aldosterone leading to natriuresis</div><div class="choice" onclick="selectChoice('q16', this, false)"><span class="letter">B</span> Decreased ADH leading to reduced water reabsorption</div><div class="choice" onclick="selectChoice('q16', this, false)"><span class="letter">C</span> Increased gastrin leading to increased stomach acid</div><div class="choice" onclick="selectChoice('q16', this, true)"><span class="letter">D</span> Increased ADH leading to increased collecting duct water permeability</div>
+    </div>
+    <div class="feedback" id="q16-fb"></div>
+    <div class="explanation" id="q16-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: D</div>
+          <p>High plasma osmolarity stimulates ADH release. ADH increases collecting duct water permeability, so more water is reabsorbed, producing low-volume, concentrated urine.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> Lower aldosterone would increase sodium loss and typically increase urine volume, not concentrate it.</li><li><b>B.</b> Lower ADH would reduce water reabsorption and produce a larger volume of more dilute urine.</li><li><b>C.</b> Gastrin affects the stomach, not renal water handling.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q17">
+    <div class="qstem"><b>After she drinks water and plasma osmolarity falls, which immediate change in the collecting duct best supports the observed rise in urine output?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q17', this, true)"><span class="letter">A</span> Decreased water permeability of the collecting duct due to lower ADH signaling</div><div class="choice" onclick="selectChoice('q17', this, false)"><span class="letter">B</span> Increased active NaCl pumping into the collecting duct lumen</div><div class="choice" onclick="selectChoice('q17', this, false)"><span class="letter">C</span> Increased glucose reabsorption in the proximal tubule</div><div class="choice" onclick="selectChoice('q17', this, false)"><span class="letter">D</span> Increased hydrostatic pressure in Bowman’s space</div>
+    </div>
+    <div class="feedback" id="q17-fb"></div>
+    <div class="explanation" id="q17-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: A</div>
+          <p>As plasma osmolarity drops, ADH secretion decreases. With less ADH, the collecting duct becomes less permeable to water, reducing water reabsorption and increasing urine volume.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>B.</b> Active NaCl pumping is characteristic of the thick ascending limb, not the collecting duct as an immediate response here.</li><li><b>C.</b> Glucose reabsorption occurs mainly in the PCT and is not the driver of rapid volume changes after water intake.</li><li><b>D.</b> Bowman’s space pressure relates to filtration; the scenario describes hormone-driven changes in reabsorption.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q18">
+    <div class="qstem"><b>The runner’s coffee intake likely contributed to her frequent production of dilute urine on another day. Based on the passage, which mechanism best explains this effect?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q18', this, false)"><span class="letter">A</span> Caffeine directly increases bile secretion, reducing fat absorption and water retention.</div><div class="choice" onclick="selectChoice('q18', this, true)"><span class="letter">B</span> Caffeine inhibits ADH release, reducing collecting duct water reabsorption.</div><div class="choice" onclick="selectChoice('q18', this, false)"><span class="letter">C</span> Caffeine increases aldosterone release, decreasing sodium reabsorption.</div><div class="choice" onclick="selectChoice('q18', this, false)"><span class="letter">D</span> Caffeine blocks glomerular pores, preventing filtration of water.</div>
+    </div>
+    <div class="feedback" id="q18-fb"></div>
+    <div class="explanation" id="q18-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: B</div>
+          <p>The passage states that caffeine inhibits ADH release. Less ADH means lower collecting duct water permeability and less water reabsorption, resulting in more dilute urine.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> Bile secretion relates to digestion, not ADH-mediated water balance.</li><li><b>C.</b> Aldosterone increases (not decreases) sodium reabsorption; caffeine’s key effect here is on ADH.</li><li><b>D.</b> Glomerular pores are structural; caffeine does not ‘block’ filtration this way.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+<div class="passage-header">
+  <div>Passage 2</div>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 52-year-old patient presents with severe, colicky flank pain radiating toward the groin and nausea. Imaging reveals a stone lodged in the ureter near the kidney.</p><p>Over several hours, urine backs up behind the obstruction. The renal pelvis becomes distended and ultrasound suggests increasing pressure within the collecting system.</p><p>Clinicians note that urine output from the affected kidney is reduced. Blood tests show rising levels of nitrogenous wastes, consistent with impaired clearance.</p><p>The patient asks why a blockage in the ureter can affect filtration even though filtration occurs in the glomerulus. The clinician replies that filtration depends on pressure differences across the glomerular membrane.</p><p>The clinician also notes that, under normal conditions, the filtrate lacks cells and large proteins because the glomerular barrier selects by size.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p>• <b>Step 1:</b> Translate “backup” into <b>increased downstream hydrostatic pressure</b> in the nephron.</p><p>• <b>Step 2:</b> Apply Starling forces: net filtration decreases when <b>Bowman’s space pressure rises</b>.</p><p>• <b>Step 3:</b> Predict consequences of reduced GFR: lower urine output and <b>waste accumulation</b> in blood.</p>
+</div>
+
+  <div class="question" id="q19">
+    <div class="qstem"><b>Which change in Starling forces most directly reduces filtration in the obstructed kidney?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q19', this, false)"><span class="letter">A</span> Decreased oncotic pressure in glomerular blood</div><div class="choice" onclick="selectChoice('q19', this, false)"><span class="letter">B</span> Increased hydrostatic pressure in the glomerulus</div><div class="choice" onclick="selectChoice('q19', this, true)"><span class="letter">C</span> Increased hydrostatic pressure in Bowman’s space</div><div class="choice" onclick="selectChoice('q19', this, false)"><span class="letter">D</span> Decreased hydrostatic pressure in Bowman’s space</div>
+    </div>
+    <div class="feedback" id="q19-fb"></div>
+    <div class="explanation" id="q19-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: C</div>
+          <p>Urine backup raises pressure in the nephron, including Bowman’s space. Increased Bowman’s space hydrostatic pressure opposes fluid movement into the nephron, lowering net filtration pressure and reducing GFR.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> Lower oncotic pressure would reduce opposition to filtration and tend to increase filtration, not decrease it.</li><li><b>B.</b> Higher glomerular hydrostatic pressure would favor more filtration, not less.</li><li><b>D.</b> Lower Bowman’s space pressure would favor filtration, not inhibit it.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q20">
+    <div class="qstem"><b>If the obstruction persists, which downstream consequence is most consistent with the reduced filtration described?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q20', this, false)"><span class="letter">A</span> Rapid appearance of large plasma proteins in the filtrate due to enlarged glomerular pores</div><div class="choice" onclick="selectChoice('q20', this, false)"><span class="letter">B</span> A sudden increase in urine volume due to enhanced collecting duct water reabsorption</div><div class="choice" onclick="selectChoice('q20', this, false)"><span class="letter">C</span> A decrease in blood volume because all filtered water must be excreted</div><div class="choice" onclick="selectChoice('q20', this, true)"><span class="letter">D</span> Accumulation of wastes in the blood because less filtrate is formed for excretion</div>
+    </div>
+    <div class="feedback" id="q20-fb"></div>
+    <div class="explanation" id="q20-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: D</div>
+          <p>With reduced filtration, fewer solutes enter the filtrate to be excreted. Nitrogenous wastes (such as urea and related metabolites) can accumulate in the blood when GFR falls.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> Protein in urine suggests glomerular barrier damage, not a typical effect of ureteral obstruction alone.</li><li><b>B.</b> Urine volume generally falls with reduced filtration; water reabsorption does not create urine.</li><li><b>C.</b> Much filtered water is normally reabsorbed; reduced filtration would not force fluid loss this way.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q21">
+    <div class="qstem"><b>Relief of the obstruction restores filtration. Which finding would most specifically suggest an additional primary problem at the level of the glomerular filter rather than the ureter?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q21', this, true)"><span class="letter">A</span> Persistent protein and blood cells in the urine</div><div class="choice" onclick="selectChoice('q21', this, false)"><span class="letter">B</span> Rapid normalization of plasma osmolarity after drinking water</div><div class="choice" onclick="selectChoice('q21', this, false)"><span class="letter">C</span> Decreased potassium excretion after aldosterone rises</div><div class="choice" onclick="selectChoice('q21', this, false)"><span class="letter">D</span> Increased bicarbonate reabsorption during acidosis</div>
+    </div>
+    <div class="feedback" id="q21-fb"></div>
+    <div class="explanation" id="q21-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: A</div>
+          <p>The glomerular filter normally prevents cells and large proteins from entering the filtrate. Persistent proteinuria and hematuria after obstruction relief points to glomerular barrier pathology rather than a purely downstream blockage.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>B.</b> That reflects systemic water balance and ADH, not specific glomerular barrier integrity.</li><li><b>C.</b> Aldosterone typically increases potassium excretion; this option is inconsistent and not glomerulus-specific.</li><li><b>D.</b> That is a kidney response but is not specific to the filtration barrier at the glomerulus.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+<div class="passage-header">
+  <div>Passage 3</div>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A 60-year-old patient with long-standing hypertension is started on an ACE inhibitor. Over the next week, blood pressure decreases and mild swelling in the ankles improves.</p><p>The clinician explains that when renal perfusion pressure is low, the kidney releases renin. Renin leads to formation of angiotensin II, which normally promotes aldosterone release from the adrenal cortex.</p><p>With ACE inhibition, less angiotensin II is produced, so aldosterone levels fall. The patient’s labs show a modest rise in serum potassium after starting therapy.</p><p>The clinician reminds the patient that aldosterone primarily acts in the distal convoluted tubule and collecting duct to increase sodium reabsorption while promoting potassium and hydrogen ion secretion.</p><p>The patient asks how changing sodium handling can lower blood pressure without necessarily changing blood osmolarity.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p>• <b>Step 1:</b> Trace the pathway: renin → angiotensin II → <b>aldosterone</b>; ACE inhibitors reduce aldosterone.</p><p>• <b>Step 2:</b> Recall aldosterone effects: <b>Na+ reabsorption</b> and <b>K+/H+ secretion</b> in the distal nephron.</p><p>• <b>Step 3:</b> Separate <b>volume</b> (blood pressure) from <b>osmolarity</b>: aldosterone changes reabsorption of <b>isotonic fluid</b>.</p>
+</div>
+
+  <div class="question" id="q22">
+    <div class="qstem"><b>The rise in serum potassium after starting an ACE inhibitor is best explained by which change?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q22', this, false)"><span class="letter">A</span> Increased ADH leading to dilutional hyperkalemia</div><div class="choice" onclick="selectChoice('q22', this, true)"><span class="letter">B</span> Decreased aldosterone leading to reduced potassium secretion in the distal nephron</div><div class="choice" onclick="selectChoice('q22', this, false)"><span class="letter">C</span> Increased enteropeptidase leading to increased potassium absorption</div><div class="choice" onclick="selectChoice('q22', this, false)"><span class="letter">D</span> Increased glomerular pore size allowing potassium to remain in blood</div>
+    </div>
+    <div class="feedback" id="q22-fb"></div>
+    <div class="explanation" id="q22-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: B</div>
+          <p>ACE inhibitors reduce angiotensin II formation, which lowers aldosterone release. With less aldosterone, potassium secretion in the distal nephron falls, so serum potassium can rise.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> ADH mainly changes water handling; it does not directly reduce potassium secretion as described.</li><li><b>C.</b> Enteropeptidase is a digestive enzyme activator, unrelated to renal potassium secretion.</li><li><b>D.</b> Potassium is freely filterable; pore size changes are not the mechanism here.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q23">
+    <div class="qstem"><b>Which nephron segments are the primary targets for aldosterone’s sodium-retaining action referenced in the passage?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q23', this, false)"><span class="letter">A</span> Bowman’s capsule and proximal convoluted tubule</div><div class="choice" onclick="selectChoice('q23', this, false)"><span class="letter">B</span> Descending limb and thick ascending limb of the loop of Henle</div><div class="choice" onclick="selectChoice('q23', this, true)"><span class="letter">C</span> Distal convoluted tubule and collecting duct</div><div class="choice" onclick="selectChoice('q23', this, false)"><span class="letter">D</span> Renal pelvis and ureter</div>
+    </div>
+    <div class="feedback" id="q23-fb"></div>
+    <div class="explanation" id="q23-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: C</div>
+          <p>Aldosterone acts mainly on the distal convoluted tubule and collecting duct to increase sodium reabsorption (and increase potassium/hydrogen secretion).</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> Most bulk reabsorption occurs in the PCT, but aldosterone’s classic regulated effect is distal.</li><li><b>B.</b> Loop of Henle segments set gradients and reabsorb salt/water in characteristic ways, but aldosterone’s major regulated site is distal.</li><li><b>D.</b> These are urine-collecting/transport structures, not hormone-regulated reabsorptive epithelium.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="question" id="q24">
+    <div class="qstem"><b>How can lowering aldosterone-mediated sodium reabsorption reduce blood pressure without necessarily changing blood osmolarity?</b></div>
+    <div class="choices">
+      <div class="choice" onclick="selectChoice('q24', this, false)"><span class="letter">A</span> It increases water reabsorption more than sodium reabsorption, making blood hypotonic.</div><div class="choice" onclick="selectChoice('q24', this, false)"><span class="letter">B</span> It decreases bicarbonate reabsorption, making blood hypertonic.</div><div class="choice" onclick="selectChoice('q24', this, false)"><span class="letter">C</span> It selectively removes proteins from plasma, lowering oncotic pressure.</div><div class="choice" onclick="selectChoice('q24', this, true)"><span class="letter">D</span> It reduces reabsorption of isotonic salt and water, lowering blood volume while keeping solute concentration roughly stable.</div>
+    </div>
+    <div class="feedback" id="q24-fb"></div>
+    <div class="explanation" id="q24-exp">
+      <details>
+        <summary>Show Explanation</summary>
+        <div class="exp-body">
+          <div class="correct">Correct Answer: D</div>
+          <p>Aldosterone promotes reabsorption of sodium, and water follows, resulting in reabsorption of isotonic fluid. Blocking this lowers blood volume (and pressure) but does not inherently change osmolarity because salt and water move together.</p>
+          <div class="why"><b>Why the other choices are wrong:</b>
+            <ul>
+              <li><b>A.</b> ADH-driven water handling can change osmolarity, but aldosterone primarily changes volume via isotonic reabsorption.</li><li><b>B.</b> Bicarbonate handling is tied to acid–base balance, not the core explanation here.</li><li><b>C.</b> Aldosterone does not ‘selectively remove’ proteins; proteins do not filter under normal conditions.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  </div>
+</body>
+
+</html>
