@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Sociological Theories, Institutions, Ethics (Ch. 11.1)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Sociological Theories, Institutions & Ethics (Ch. 11.1)</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 Correct: C -->
+<div class="question" id="q1">
+  <b>1. A sociologist notes that the “peace sign” originally represented nuclear disarmament, but later came to symbolize peace and freedom more broadly. Which theoretical approach is most directly being applied?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Rational choice (exchange) theory</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Conflict theory</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Social constructionism</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Structural-functionalism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> <b>Social constructionism</b> emphasizes that meanings are not inherent in objects or symbols; they are <b>created and maintained by social agreement</b> and can change over time.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Rational choice focuses on individuals maximizing perceived rewards vs costs in decisions.</li>
+        <li><b>B:</b> Conflict theory focuses on power struggles and inequality at the macro level.</li>
+        <li><b>D:</b> Structural-functionalism asks how institutions contribute to social stability and cohesion, not how meanings evolve.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 Correct: A -->
+<div class="question" id="q2">
+  <b>2. A resident considers whether to volunteer for an extra clinic shift. They list potential “rewards” (praise from the program director, stronger evaluations) and “costs” (lost free time, fatigue), then choose the option with the best balance. This reasoning best exemplifies:</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Rational choice (exchange) theory</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Symbolic interactionism</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Feminist theory</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Social constructionism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Rational choice (social exchange) theory models social actions as <b>transactions</b> where people weigh perceived <b>benefits and costs</b> (social approval, prestige, sanctions, etc.).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Symbolic interactionism focuses on interpreting symbols and meanings in interaction.</li>
+        <li><b>C:</b> Feminist theory critiques gendered power structures and institutional disadvantages.</li>
+        <li><b>D:</b> Social constructionism examines how societies collectively construct concepts (e.g., money, norms).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 Correct: D -->
+<div class="question" id="q3">
+  <b>3. A sociologist studies the U.S. healthcare system by asking which groups (patients, hospitals, insurers, pharmaceutical companies, government) control resources and shape policies. Which approach best matches this analysis?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Symbolic interactionism</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Social constructionism</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Structural-functionalism</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Conflict theory</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Conflict theory</b> (macro-level) emphasizes <b>power differentials</b>, control of resources, and how groups with power preserve the status quo while less powerful groups organize for change.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Symbolic interactionism is micro/meso and focuses on meaning-making via symbols.</li>
+        <li><b>B:</b> Social constructionism focuses on how concepts are socially agreed upon (e.g., “disease”), not primarily on resource control.</li>
+        <li><b>C:</b> Structural-functionalism emphasizes cohesion and the functions of institutions in maintaining equilibrium.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 Correct: B -->
+<div class="question" id="q4">
+  <b>4. A researcher compares the meaning of a “thumbs-up” gesture across cultures and notes that in one setting it is praise, while in another it is offensive. Which approach is most directly focused on this phenomenon?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Conflict theory</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Symbolic interactionism</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Structural-functionalism</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Feminist theory</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Symbolic interactionism explains human interaction by analyzing <b>symbols</b> and the <b>meanings</b> people attach to them through social interaction and interpretation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Conflict theory emphasizes inequality and group struggle.</li>
+        <li><b>C:</b> Structural-functionalism emphasizes how institutions maintain social stability.</li>
+        <li><b>D:</b> Feminist theory centers gendered power structures.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 Correct: A -->
+<div class="question" id="q5">
+  <b>5. A sociologist argues that formal schooling does more than teach math and reading. It also creates peer networks and reinforces social stratification through tracking. From a structural-functional perspective, the peer-networking and stratification effects are best labeled as:</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Latent functions</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Manifest functions</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Dysfunctions</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Social constructs</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> In structural-functionalism, <b>manifest</b> functions are intended outcomes; <b>latent</b> functions are unintended but beneficial outcomes. Peer socialization and identity formation are classic latent functions of schooling.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Teaching academic skills is the manifest function described in the chapter.</li>
+        <li><b>C:</b> Dysfunctions are negative consequences; “reinforcing stratification” can be argued as harmful, but the stem frames the effects as additional roles of schooling. On the MCAT, “peer socialization” is the clean latent-function choice.</li>
+        <li><b>D:</b> “Social constructs” are collectively created ideas; not the functionalist label tested here.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 Correct: C -->
+<div class="question" id="q6">
+  <b>6. A professional medical society holds an annual conference. The stated goal is sharing new research and updating clinical guidelines. An additional unintended benefit is that attendees build stronger professional identity and interpersonal bonds. Which outcome is the <i>latent</i> function?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Sharing new research findings</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Updating clinical guidelines</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Strengthening professional identity and bonds</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Setting official goals for the next year</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The unintended, beneficial consequence (identity/bonding) is <b>latent</b>. The other outcomes are intended (manifest) functions of the meeting.</p>
+      <p><b>Other choices:</b> A, B, and D are part of the explicit stated purpose and planning of the conference (manifest).</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 Correct: B -->
+<div class="question" id="q7">
+  <b>7. In a hospital, a male nurse is repeatedly “encouraged” into administrative leadership roles more quickly than equally qualified female colleagues, even though he did not seek promotion. Feminist theory would most directly label this pattern as:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Glass ceiling</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Glass escalator</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Latent function</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Rational exchange</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The <b>glass escalator</b> describes invisible forces that push men upward in traditionally female occupations, even when they are not actively trying to “climb.”</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The glass ceiling is the invisible barrier limiting women’s rise to top positions.</li>
+        <li><b>C:</b> Latent function is a functionalist concept, not a gender-stratification mechanism.</li>
+        <li><b>D:</b> Rational exchange frames choices as cost–benefit decisions; it does not capture structural gendered promotion pressure.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 Correct: D -->
+<div class="question" id="q8">
+  <b>8. A hospital allocates a scarce ICU bed. Two patients have similar medical need, but the team prioritizes one based on celebrity status. Which medical ethics tenet is most directly violated?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Beneficence</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Nonmaleficence</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Respect for autonomy</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Justice</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Justice</b> requires treating similar patients similarly and distributing resources fairly. Prioritizing based on fame is unfair allocation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Beneficence is acting in an individual patient’s best interest; the issue here is fairness between patients.</li>
+        <li><b>B:</b> Nonmaleficence is avoiding harm; the stem emphasizes biased distribution rather than iatrogenic harm.</li>
+        <li><b>C:</b> Autonomy concerns respecting patient choices; it does not address allocation fairness.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 Correct: A -->
+<div class="question" id="q9">
+  <b>9. A sociologist evaluates how a national policy change in health insurance coverage shifts access to care across the entire country. This analysis is most clearly occurring at which level?</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Macro level</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Micro level</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Individual level only</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Symbolic level</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> <b>Macro</b> analysis addresses large-scale national/international systems. Micro focuses on families and small groups; meso focuses on organizations and institutions.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Micro is family/local community interactions.</li>
+        <li><b>C:</b> “Individual level only” is not one of the sociological levels described (micro/meso/macro).</li>
+        <li><b>D:</b> “Symbolic level” is not a level of analysis; it mixes with symbolic interactionism terminology.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 Correct: C -->
+<div class="question" id="q10">
+  <b>10. Which statement best distinguishes <b>symbolic interactionism</b> from <b>social constructionism</b> as presented in the chapter?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Symbolic interactionism explains macro power struggles; social constructionism explains micro facial expressions</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Symbolic interactionism treats meaning as fixed; social constructionism treats meaning as innate</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Symbolic interactionism focuses on how people use symbols in interaction; social constructionism focuses on how societies collectively construct concepts and principles</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Symbolic interactionism is about institutions only; social constructionism is about biology only</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The chapter’s key distinction: symbolic interactionism = symbols in interaction; social constructionism = society’s construction of meanings (social constructs) like money, honor, gender roles.</p>
+      <p><b>Other choices:</b> They incorrectly swap levels, claim meanings are fixed/innate, or misstate the subject matter.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 Correct: B -->
+<div class="question" id="q11">
+  <b>11. In structural-functionalism, which term best refers to <i>negative consequences</i> of an institution’s existence within society?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Manifest functions</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. Dysfunctions</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Latent functions</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Exchange rewards</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Functionalism labels unintended or intended benefits as functions, but <b>dysfunctions</b> are the harmful/negative consequences of institutions or practices.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/C:</b> Manifest and latent functions are beneficial consequences (intended vs unintended).</li>
+        <li><b>D:</b> Exchange rewards belong to rational choice/exchange theory, not functionalism.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 Correct: D -->
+<div class="question" id="q12">
+  <b>12. A physician considers an experimental treatment with a small chance of modest benefit but a large chance of severe harm. Which ethics principle most directly cautions against offering the treatment under these conditions?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Justice</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Respect for autonomy</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Beneficence</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Nonmaleficence</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Nonmaleficence</b> (“do no harm”) emphasizes avoiding interventions in which expected harm outweighs expected benefit.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Justice is fairness in distribution and similar treatment of similar patients.</li>
+        <li><b>B:</b> Autonomy is respecting patient choices, but clinicians still must avoid offering clearly harmful options.</li>
+        <li><b>C:</b> Beneficence supports acting for patient benefit, but the question’s key detail is high harm likelihood.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 Correct: C -->
+<div class="question" id="q13">
+  <b>13. Classic sociologists described the “sick role” as involving which pair of expectations?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Patients are blamed for illness and must continue all normal duties</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Patients must hide illness to preserve group cohesion</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">C. Patients are exempt from normal roles but are expected to want to get well and seek competent help</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Patients’ symptoms are always fully explained by biology</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The chapter’s description: the sick are not held responsible and may be exempt from normal social roles, but they have an <b>obligation</b> to want to become well and to seek appropriate help.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Opposite of the “not responsible/exempt” component.</li>
+        <li><b>B:</b> Not part of the classic sick role.</li>
+        <li><b>D:</b> The chapter emphasizes illness experience and shifting definitions (disease vs illness), not strict biological determinism.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 Correct: A -->
+<div class="question" id="q14">
+  <b>14. A physician chooses a treatment plan because it maximizes the patient’s expected health benefit, even if it is time-consuming for the care team. Which ethics principle is most directly expressed by this choice?</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Beneficence</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Justice</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Respect for autonomy</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Nonmaleficence</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> <b>Beneficence</b> requires acting in the patient’s <b>best interest</b> (promoting benefit).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Justice concerns fairness across patients and resource distribution.</li>
+        <li><b>C:</b> Autonomy concerns respecting the patient’s informed choices; it isn’t specified here.</li>
+        <li><b>D:</b> Nonmaleficence is avoiding harm; beneficence is the primary emphasis in the stem.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 Correct: B -->
+<div class="question" id="q15">
+  <b>15. A competent adult refuses a life-saving blood transfusion for personal reasons after understanding risks and alternatives. Which ethics principle most directly requires the physician to respect this refusal?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Justice</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Respect for patient autonomy</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Nonmaleficence</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Conflict theory</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Autonomy</b> requires respecting competent patients’ informed choices about their own healthcare, including the right to refuse treatment (with limited exceptions).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Justice is fairness among patients.</li>
+        <li><b>C:</b> Nonmaleficence is avoiding harm, but the key ethical duty tested is respecting the patient’s decision.</li>
+        <li><b>D:</b> Conflict theory is a sociological lens, not an ethical principle.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: The White Coat, the “Code,” and the Chart</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>On an inpatient service, a new medical student notices that staff members behave differently depending on what the student is wearing. When the student wears a short white coat, nurses offer fewer corrections and families frequently address the student as “Doctor.” When the student wears plain scrubs without a coat, staff members speak more casually and patients ask fewer questions.</p>
+  <p>The student also overhears a team member call out, “Code blue!” Immediately, several people run toward a room. Later, the student learns that the same words may trigger very different responses in other hospitals because some sites use different “codes” for emergencies.</p>
+  <p>Finally, the hospital’s quality committee recently expanded the definition of “medication error” to include delayed documentation. Some clinicians argue this change will improve safety culture; others argue it will inflate the hospital’s error statistics without changing patient outcomes.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify whether the passage is about <b>meaning</b> in interaction (symbols) vs <b>society constructing categories</b> (social constructs) vs <b>cost–benefit choices</b>.</li>
+    <li>Clues for <b>symbolic interactionism</b>: clothing/labels/words that change behavior because of shared meanings.</li>
+    <li>Clues for <b>social constructionism</b>: a committee changes a definition/category; the “thing” changes because people agree to define it differently.</li>
+    <li>When asked about decisions, look for explicit weighing of social rewards/punishments → <b>rational choice</b>.</li>
+  </ol>
+</div>
+
+<!-- Q16 Correct: D -->
+<div class="question" id="q16">
+  <b>16. The change in how staff and families respond to the student depending on whether the white coat is worn is best explained by:</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Conflict theory</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Structural-functionalism</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Feminist theory</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Symbolic interactionism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The white coat functions as a <b>symbol</b> that carries socially learned meaning (authority/physician identity), altering interactions. That is the core of <b>symbolic interactionism</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Conflict theory could discuss hierarchy and power broadly, but the mechanism highlighted is meaning attached to a symbol.</li>
+        <li><b>B:</b> Functionalism focuses on how institutions maintain stability; it does not focus on micro-level symbol interpretation.</li>
+        <li><b>C:</b> Feminist theory centers gendered power structures; not indicated here.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 Correct: A -->
+<div class="question" id="q17">
+  <b>17. The quality committee’s decision to expand the definition of “medication error” is most directly an example of:</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Social constructionism</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Conflict theory</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Symbolic interactionism</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Rational choice theory</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> A <b>social construct</b> is an idea/category defined by social agreement. Changing what “counts” as a medication error changes the construct via institutional agreement—classic <b>social constructionism</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Conflict theory could apply if the focus were power struggles between groups; the stem emphasizes category definition.</li>
+        <li><b>C:</b> Symbolic interactionism emphasizes the meaning of symbols in interaction; here the emphasis is institutional redefinition.</li>
+        <li><b>D:</b> Rational choice would emphasize individuals weighing costs/benefits in decisions, not redefining categories.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 Correct: C -->
+<div class="question" id="q18">
+  <b>18. Suppose some clinicians oppose the expanded “medication error” definition because they fear increased stigma or sanctions for delayed documentation. Their reaction most closely reflects which reasoning pattern?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Structural-functionalism focusing on equilibrium</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Symbolic interactionism focusing on gestures</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Rational choice (exchange) theory weighing punishments vs benefits</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Feminist theory focusing on patriarchy</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> They evaluate potential <b>social punishments</b> (stigma, sanctions) versus perceived benefits (safety culture), consistent with <b>rational choice/exchange theory</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Functionalism asks how institutions maintain social order; the stem emphasizes individual cost–benefit concerns.</li>
+        <li><b>B:</b> Symbolic interactionism is about meanings of symbols in interaction; not the decision calculus here.</li>
+        <li><b>D:</b> Feminist theory is not cued by the passage details.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: A School District’s “Improvement Plan”</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A city implements a new districtwide education initiative aimed at improving standardized test scores. The official plan includes additional tutoring hours, new textbooks, and teacher training sessions. Within months, students report forming new friendships in tutoring groups and spending more time socializing on campus.</p>
+  <p>Meanwhile, teachers are instructed to identify “high-potential” students for advanced tracks. Some teachers assume students from one neighborhood are “not academic,” set lower expectations, and provide less challenging feedback. Those students’ performance later declines, which administrators cite as evidence that the neighborhood “needs stricter discipline.”</p>
+  <p>Parents from the affected neighborhood form an advocacy coalition, attend school board meetings, and lobby for equal funding and transparent criteria for placement in advanced tracks.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>When asked about <b>manifest vs latent</b>, separate the <b>stated purpose</b> from unintended benefits.</li>
+    <li>When you see expectation → changed treatment → outcome that “confirms” the expectation, recognize a <b>self-fulfilling prophecy</b> (teacher expectancy).</li>
+    <li>For theory selection: <b>conflict theory</b> looks for power/resource inequality and collective action by disadvantaged groups; <b>functionalism</b> looks for social cohesion and roles.</li>
+    <li>Use passage evidence (who holds power? what resources? what actions?) to justify your choice.</li>
+  </ol>
+</div>
+
+<!-- Q19 Correct: B -->
+<div class="question" id="q19">
+  <b>19. From a structural-functional perspective, students forming new friendships and social networks in tutoring groups is best described as a:</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Manifest function of the initiative</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">B. Latent function of the initiative</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Dysfunction caused by symbolic interactionism</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Glass escalator effect</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The stated purpose is improving test scores (manifest). Unintended but beneficial social bonding is a <b>latent function</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Not the official purpose listed in the passage.</li>
+        <li><b>C:</b> “Dysfunction caused by symbolic interactionism” is not a correct pairing of concepts.</li>
+        <li><b>D:</b> Glass escalator is a gendered workplace promotion concept.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 Correct: D -->
+<div class="question" id="q20">
+  <b>20. The parents’ advocacy coalition—formed to demand equal funding and transparent placement criteria—most directly exemplifies which theoretical prediction?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Symbolic interactionism: meanings create all behavior</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Rational choice: people always behave altruistically</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Structural-functionalism: social systems naturally remain in equilibrium</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Conflict theory: lower-power groups organize to challenge the status quo and redistribute resources</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Conflict theory predicts that when a disadvantaged group recognizes a power/resource disparity, they can form <b>interest groups</b> and use tools like lobbying and protests to push for change.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Symbolic interactionism may apply to meanings in communication, but the central dynamic here is resource inequality and organized challenge.</li>
+        <li><b>B:</b> Rational choice does not claim people “always behave altruistically”; it emphasizes self-interest and cost–benefit decisions.</li>
+        <li><b>C:</b> Functionalism emphasizes stability and cohesion; conflict theory is more appropriate for disruption and redistribution themes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 Correct: A -->
+<div class="question" id="q21">
+  <b>21. Which outcome is most clearly the <b>manifest</b> function of the district’s initiative?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Improved standardized test scores through tutoring, new textbooks, and training</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Students forming new friendships on campus</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Administrators labeling one neighborhood as needing “stricter discipline”</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Parents forming an advocacy coalition</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The manifest function is the <b>intended</b> consequence explicitly stated: raising test scores via specific educational inputs.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Unintended but beneficial → latent function.</li>
+        <li><b>C:</b> This is an interpretation/response that may reflect bias and could be seen as a dysfunction, but it is not the intended purpose.</li>
+        <li><b>D:</b> Collective action is not the intended purpose of the initiative.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Promotions, “Leadership Fit,” and Care Ethics</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A large hospital system announces a goal of “leadership diversity” but continues to promote employees through informal sponsorship. Several women physicians report being praised as “excellent clinicians” yet repeatedly told they are “not quite leadership material,” even when their performance metrics match male colleagues. In one department, a male physician receives frequent invitations to leadership meetings and is promoted within a year despite expressing little interest in management.</p>
+  <p>Separately, the system’s ethics committee debates whether a costly new therapy should be offered only to patients with private insurance. Committee members note that the therapy could help some patients, but that limiting it by insurance status may worsen disparities.</p>
+  <p>In internal discussions, executives argue that “leadership material” is an objective trait; critics argue it is shaped by shared expectations of what leaders “look like” and “sound like” in medicine.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>For feminist theory questions, look for <b>institutional power structures</b> that disadvantage women (promotion barriers, biased sponsorship).</li>
+    <li>Differentiate <b>glass ceiling</b> (barriers for women reaching top roles) from <b>glass escalator</b> (men propelled upward in female-typed settings).</li>
+    <li>For ethics, decide which principle is being tested: <b>justice</b> (fair distribution), <b>beneficence</b> (best interest), <b>nonmaleficence</b> (avoid harm), <b>autonomy</b> (respect choices).</li>
+    <li>For “objective trait vs shared expectations,” consider whether “leadership material” is a <b>social construct</b> shaped by agreement and norms.</li>
+  </ol>
+</div>
+
+<!-- Q22 Correct: C -->
+<div class="question" id="q22">
+  <b>22. The pattern in which women physicians are evaluated as “not leadership material” despite similar performance metrics most directly aligns with which theoretical lens?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Structural-functionalism (equilibrium maintenance)</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Symbolic interactionism (gesture interpretation only)</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Feminist theory (institutional power structures disadvantaging women)</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Rational choice (purely individual cost–benefit decisions)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Feminist theory critiques <b>institutional and cultural power structures</b> that sustain gender stratification (e.g., biased promotion norms, “leadership fit” gatekeeping).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Functionalism focuses on cohesion; it is not the best tool for analyzing inequality mechanisms.</li>
+        <li><b>B:</b> Symbolic interactionism can discuss meanings of labels, but the core issue here is structural disadvantage by gender.</li>
+        <li><b>D:</b> Rational choice alone does not explain consistent gendered barriers when metrics are equal.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 Correct: B -->
+<div class="question" id="q23">
+  <b>23. The male physician being propelled into leadership roles quickly despite little interest most specifically illustrates:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Glass ceiling</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. Glass escalator</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Manifest function</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Sick role</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The <b>glass escalator</b> refers to subtle social forces that push men upward in settings where women are disadvantaged or in female-typed roles; the key is rapid promotion not fully explained by interest or merit signals.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Glass ceiling is the barrier preventing women from reaching top roles.</li>
+        <li><b>C:</b> Manifest function is an intended consequence of an institution.</li>
+        <li><b>D:</b> Sick role concerns norms around illness behavior.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 Correct: D -->
+<div class="question" id="q24">
+  <b>24. Critics argue that “leadership material” is shaped by shared expectations of what leaders should look and sound like. This claim most directly treats “leadership material” as:</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. A biological instinct</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. A manifest function</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. An inevitable class conflict</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. A social construct</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> If a category exists because people collectively agree on its meaning and apply it through norms and expectations, it functions as a <b>social construct</b> (a core idea in social constructionism).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The argument is the opposite of biology: it emphasizes social shaping.</li>
+        <li><b>B:</b> “Leadership material” is not an intended consequence label (manifest/latent) of an institution in this stem.</li>
+        <li><b>C:</b> Conflict theory could analyze power dynamics, but the question asks specifically about the <i>status of the concept</i> as constructed.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

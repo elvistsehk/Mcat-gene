@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Social Interaction: Status, Roles, Groups, Networks, Organizations (Ch. 9.1)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Social Interaction (Ch. 9.1)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 (Correct: B) -->
+<div class="question" id="q1">
+  <b>1. Which statement best captures the sociological meaning of a <i>status</i>?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. A set of behaviors an individual is expected to perform in a given situation</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. A perceived position in society used to classify an individual relative to others</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. A pattern of social relationships mapped by nodes and ties</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. A complex secondary group designed to accomplish specific goals</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> A <b>status</b> is a <b>socially recognized position</b> (e.g., student, physician) that gains meaning in relation to other statuses.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This describes a <b>role</b> (expected behaviors tied to a status).</li>
+        <li><b>C:</b> This is a <b>network</b> definition.</li>
+        <li><b>D:</b> This describes an <b>organization</b> (often a complex secondary group).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 (Correct: D) -->
+<div class="question" id="q2">
+  <b>2. A person becomes a licensed physician after years of training and exams. This is best categorized as which type of status?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Ascribed status</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Master status</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Status set</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Achieved status</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Achieved statuses</b> are gained through <b>effort and choices</b> (training, exams, career path).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Ascribed statuses are involuntary (often at birth).</li>
+        <li><b>B:</b> Master status is the status most central to identity/perception; “physician” can become a master status, but the question asks about <i>how it is obtained</i>.</li>
+        <li><b>C:</b> Status set is the collection of statuses a person holds, not a type of status itself.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 (Correct: A) -->
+<div class="question" id="q3">
+  <b>3. A senator is frequently treated as “the senator” even at a child’s school event, and others ignore their hobbies, family roles, or personality. This best illustrates:</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Pigeonholing due to a master status</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Role strain across multiple roles</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Network redundancy in overlapping ties</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Interaction process analysis (SYMLOG)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> A <b>master status</b> is the status by which someone is <b>most identified</b>, and it can lead to <b>pigeonholing</b>—viewing the person only through that lens.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Role strain is difficulty meeting multiple demands of <i>one</i> role (not being reduced to one identity).</li>
+        <li><b>C:</b> Network redundancy is repeated/overlapping connections, not identity reduction.</li>
+        <li><b>D:</b> SYMLOG is a framework to classify interactions (dominance, friendliness, expressiveness).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 (Correct: C) -->
+<div class="question" id="q4">
+  <b>4. A person is simultaneously a sibling, student, employee, and volunteer. Sociologically, these combined positions are best referred to as the person’s:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Role set</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Master status</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Status set</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Reference group</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> A <b>status set</b> is the collection of all statuses a person holds at a given time.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Role set is the collection of roles tied to <i>one</i> status (e.g., “doctor” includes roles with patients, nurses, admin).</li>
+        <li><b>B:</b> Master status is the single status most central to identity/perception.</li>
+        <li><b>D:</b> Reference group is a comparison standard, not a list of one’s positions.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 (Correct: B) -->
+<div class="question" id="q5">
+  <b>5. A resident physician struggles because the resident role requires simultaneously documenting thoroughly, teaching students, and managing many patients under time pressure. This is best described as:</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Role conflict</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Role strain</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Role exit</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Groupthink</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Role strain</b> is difficulty meeting <b>multiple expectations of the same role</b> (all are demands of “resident”).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Role conflict is tension between <b>different</b> roles (e.g., resident vs parent).</li>
+        <li><b>C:</b> Role exit is leaving one identity for another (e.g., student → employee).</li>
+        <li><b>D:</b> Groupthink is a group decision-making failure, not a single-role overload.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 (Correct: A) -->
+<div class="question" id="q6">
+  <b>6. A graduate student is also a caregiver for an ill parent. When lab meetings overlap with medical appointments, the student experiences tension between incompatible expectations. This is best described as:</b>
+  <div class="choice" onclick="selectChoice('q6', this, true)">A. Role conflict</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Role strain</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Gemeinschaft</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. McDonaldization</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> <b>Role conflict</b> occurs when expectations of <b>two different roles</b> clash (student vs caregiver).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Role strain is overload within one role.</li>
+        <li><b>C:</b> Gemeinschaft is “community” groups based on togetherness and shared ties.</li>
+        <li><b>D:</b> McDonaldization is a societal shift toward efficiency/predictability/calculability/control.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 (Correct: D) -->
+<div class="question" id="q7">
+  <b>7. An individual who identifies for years as a “competitive athlete” stops competing after a serious injury and begins embracing the identity of “coach.” This change is best described as:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Role strain</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Status set expansion</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Group conformity</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. Role exit</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Role exit</b> is the process of <b>dropping one identity for another</b> (athlete → coach).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Role strain is difficulty within the same role, not leaving it.</li>
+        <li><b>B:</b> Status set refers to holding multiple statuses; the core here is an identity transition.</li>
+        <li><b>C:</b> Conformity is matching group norms, not switching roles.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 (Correct: C) -->
+<div class="question" id="q8">
+  <b>8. Compared with a dyad, a triad is generally more:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Intimate and emotionally intense</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Dependent on a single relationship to remain stable</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Stable but less intimate, because interaction does not hinge on only one tie</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Likely to be a primary group by definition</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> As group size increases, groups typically trade <b>intimacy</b> for <b>stability</b>. A dyad is fragile because if one leaves, the group dissolves; a triad can continue with two.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Dyads tend to be more intimate.</li>
+        <li><b>B:</b> That describes dyads more than triads.</li>
+        <li><b>D:</b> Primary vs secondary depends on relationship quality and purpose, not simply size.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 (Correct: A) -->
+<div class="question" id="q9">
+  <b>9. A student says, “I don’t dislike that major; I just prefer people in my major,” and consistently favors classmates from their own department. This pattern most directly reflects:</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. In-group favoritism rather than out-group hatred</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Groupthink driven by consensus-seeking</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Role exit from one identity to another</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Network redundancy due to overlapping ties</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The passage content emphasizes that negative feelings toward an out-group are often due to <b>favoritism for the in-group</b>, not necessarily direct dislike of the out-group’s traits.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Groupthink is a decision-making failure during group deliberation.</li>
+        <li><b>C:</b> Role exit is an identity transition (leaving one role).</li>
+        <li><b>D:</b> Network redundancy is repeated connections; nothing here is about overlapping ties.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 (Correct: B) -->
+<div class="question" id="q10">
+  <b>10. An applicant evaluates their competitiveness for medical school by comparing themselves to “all medical school applicants.” This comparison group is best described as a:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Peer group</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Reference group</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Primary group</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Dyad</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> A <b>reference group</b> is used as a <b>standard for self-evaluation</b> (“How do I stack up?”).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Peer groups are self-selected equals who provide belonging and friendship.</li>
+        <li><b>C:</b> Primary groups are intimate, long-lasting ties; this is a comparison category.</li>
+        <li><b>D:</b> A dyad is two people, not a large comparison set.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 (Correct: C) -->
+<div class="question" id="q11">
+  <b>11. A close-knit group of lifelong friends provides emotional support and frequent direct interaction. This is most consistent with a:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Secondary group</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Gesellschaft</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Primary group</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Formal organization</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> <b>Primary groups</b> are characterized by <b>close, personal, enduring bonds</b> and direct interaction.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Secondary groups are impersonal, task-focused, and often short-lived.</li>
+        <li><b>B:</b> Gesellschaft is a broad “society” type formed by self-interest and goal pursuit, not necessarily intimate.</li>
+        <li><b>D:</b> Formal organizations are structured secondary groups with explicit goals and roles.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 (Correct: D) -->
+<div class="question" id="q12">
+  <b>12. A neighborhood in which families share traditions, long-standing relationships, and a strong sense of togetherness is most consistent with:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Gesellschaft</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. McDonaldization</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Groupthink</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Gemeinschaft</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Gemeinschaft</b> (community) is based on <b>togetherness</b> from shared beliefs, ancestry, or geography (families, neighborhoods).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Gesellschaft (society) is more impersonal and goal-driven.</li>
+        <li><b>B:</b> McDonaldization is efficiency/predictability/calculability/control in institutions.</li>
+        <li><b>C:</b> Groupthink is a group decision-making problem, not a community type.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 (Correct: A) -->
+<div class="question" id="q13">
+  <b>13. SYMLOG (system for multiple level observation of groups) classifies group interaction using three dimensions. Which option lists them correctly?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Dominance–submission; friendliness–unfriendliness; instrumentally controlled–emotionally expressive</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Id–ego–superego; conscious–preconscious–unconscious; fixation–regression–projection</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Efficiency–predictability; calculability–control; rationality–charisma</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. In-group–out-group; primary–secondary; Gemeinschaft–Gesellschaft</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> SYMLOG centers on three basic interaction dimensions: <b>dominance vs submission</b>, <b>friendliness vs unfriendliness</b>, and <b>instrumental control vs emotional expressiveness</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Psychoanalytic concepts, not SYMLOG.</li>
+        <li><b>C:</b> McDonaldization characteristics are not SYMLOG axes.</li>
+        <li><b>D:</b> Those are useful group distinctions but not the SYMLOG measurement dimensions.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 (Correct: D) -->
+<div class="question" id="q14">
+  <b>14. A committee avoids raising objections because members want to preserve harmony and quickly reach agreement, even though critical evidence is ignored. This is best described as:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Group conformity</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Role performance</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Network analysis</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">D. Groupthink</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Groupthink</b> is consensus-seeking at the expense of <b>critical evaluation</b>, often with self-censorship and limited exploration of alternatives.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Conformity is aligning behavior with group expectations, but groupthink specifically involves <b>decision-making failure</b>.</li>
+        <li><b>B:</b> Role performance is how well someone carries out expected behaviors of a role.</li>
+        <li><b>C:</b> Network analysis maps social ties; it does not describe faulty deliberation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 (Correct: C) -->
+<div class="question" id="q15">
+  <b>15. Two friends introduce you to the exact same mentor for internship advice. In network terms, this overlap is best described as:</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Weak ties that increase access to novel information</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. A dyad becoming a triad to increase intimacy</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Network redundancy from overlapping connections</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Bureaucracy producing fixed-salary officials</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> <b>Network redundancy</b> occurs when your connections overlap so that multiple ties lead to the <b>same</b> person/resource, reducing novelty.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Weak ties often provide new information precisely because they connect you to different circles.</li>
+        <li><b>B:</b> Dyad/triad concepts describe group size dynamics, not overlapping contacts.</li>
+        <li><b>D:</b> Bureaucracy is an organizational form; it’s unrelated to overlapping mentors.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Identity in the Clinic</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Dr. Rivera is in the first year of residency at a large teaching hospital. In addition to being a physician-in-training, Rivera is also the first person in their family to finish college, and many relatives frequently introduce Rivera at gatherings as “our doctor.” Rivera notices that even distant acquaintances ask for medical advice at weddings and family parties, and some people seem surprised when Rivera mentions hobbies unrelated to medicine.</p>
+  <p>At work, Rivera’s day includes rounding with attending physicians, coordinating with nurses and pharmacists, answering pages from patients’ families, and supervising medical students. Rivera feels pulled in different directions: students want detailed teaching, while the attending expects speed and efficiency. Rivera also feels pressure when a family member calls during a shift asking for help scheduling a specialist appointment.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate <b>status</b> (position) from <b>role</b> (expected behaviors). Then identify <b>which status dominates how others see the person</b> → master status.</li>
+    <li>When one status comes with <b>multiple interaction partners</b>, list them and label this as a <b>role set</b> (roles linked to one status).</li>
+    <li>For stress, ask: are demands coming from <b>one role</b> (strain) or <b>two roles</b> (conflict)? Use passage clues to justify your choice.</li>
+    <li>Pick answers that integrate <b>multiple details</b> (who expects what, where, and why), not ones that simply quote a line.</li>
+  </ol>
+</div>
+
+<!-- Q16 (Correct: B) -->
+<div class="question" id="q16">
+  <b>16. Rivera being treated as “our doctor” in many social settings, even when trying to talk about other interests, most strongly illustrates:</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. An achieved status becoming an ascribed status</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">B. A master status shaping others’ perceptions (and potential pigeonholing)</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Network redundancy reducing access to resources</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Groupthink within a primary group</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The passage shows Rivera being <b>most identified</b> as “the doctor,” across contexts, with others discounting other traits—classic <b>master status</b> effects and <b>pigeonholing</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Achieved vs ascribed is about how status is obtained; nothing indicates involuntary assignment at birth.</li>
+        <li><b>C:</b> Networks are not described; this is about identity perception.</li>
+        <li><b>D:</b> No decision-making consensus failure is described.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 (Correct: D) -->
+<div class="question" id="q17">
+  <b>17. Rivera’s interactions with attendings, nurses, pharmacists, students, and patients’ families are best used to illustrate the concept of a:</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Status set</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Reference group</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Secondary group converting into a primary group</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Role set, shaped by different role partners</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The resident/physician status comes with different expected behaviors depending on the <b>role partner</b> (attending vs student vs patient family). The collection of these roles is a <b>role set</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Status set would include multiple statuses (resident, family member, etc.), not multiple partners tied to one status.</li>
+        <li><b>B:</b> Reference groups are comparison standards, not interaction partners.</li>
+        <li><b>C:</b> The passage does not describe increasing intimacy; it describes role expectations.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 (Correct: A) -->
+<div class="question" id="q18">
+  <b>18. Rivera feeling pressure when family calls during a shift for help with appointments most directly adds which sociological tension?</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. Role conflict between family member and resident roles</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Role strain within the resident role only</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Groupthink within the hospital team</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. McDonaldization increasing calculability</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The pressure comes from competing expectations of <b>two different roles</b>: being an attentive family member versus fulfilling resident duties during a shift—<b>role conflict</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Role strain would be multiple demands within resident duties only (e.g., charting + teaching + rounding).</li>
+        <li><b>C:</b> No evidence of consensus-at-all-costs decision-making.</li>
+        <li><b>D:</b> McDonaldization isn’t the key driver of the family call dilemma.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: The Student Council Vote</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A student council committee of eight members must decide whether to spend most of its annual budget on a single large concert or distribute funds across smaller events. Two popular members strongly advocate for the concert and repeatedly say that “a big splash is what students want.” During meetings, several quieter members avoid offering alternative ideas, even though they privately worry that weather or low turnout could waste the budget. After the vote, a few members admit they “didn’t want to be the only one pushing back.”</p>
+  <p>In the following weeks, the committee works efficiently by assigning each person a narrow task (ticketing, promotion, security coordination). Members follow a checklist and avoid deviating from the plan. When a new member suggests surveying students to reassess interest, the group dismisses the idea as “too slow” and insists on sticking to the original schedule.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify <b>why dissent disappears</b>: fear of social cost → conformity; agreement-at-all-costs + poor evaluation → groupthink.</li>
+    <li>Look for passage evidence of <b>self-censorship</b>, <b>ignored risks</b>, and <b>limited alternatives</b> to support groupthink.</li>
+    <li>When the passage describes standardized checklists and narrow tasks, consider whether it resembles <b>bureaucratic/efficiency-oriented</b> organization patterns.</li>
+    <li>Choose answers that require you to <b>connect multiple clues</b> (popular leaders + silence + post-vote admissions), not just restate one sentence.</li>
+  </ol>
+</div>
+
+<!-- Q19 (Correct: C) -->
+<div class="question" id="q19">
+  <b>19. Which additional finding would most strongly support the interpretation that the committee’s decision process reflects <i>groupthink</i> rather than simple conformity?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Members wear the same school colors during meetings to signal belonging</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Several members attend the concert because they want to fit in socially</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. The group fails to seriously evaluate alternatives and ignores obvious risks to preserve consensus</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Members mostly agree with the concert plan after reading detailed budget analyses independently</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Groupthink is about consensus-seeking that <b>suppresses critical evaluation</b>—poor risk assessment and limited consideration of alternatives.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B:</b> These reflect <b>conformity</b> or group identity, not necessarily faulty decision evaluation.</li>
+        <li><b>D:</b> Independent analysis suggests critical evaluation occurred, which argues against groupthink.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 (Correct: B) -->
+<div class="question" id="q20">
+  <b>20. The quieter members staying silent because they do not want to be “the only one pushing back” most directly demonstrates:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Role exit</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">B. Group conformity driven by desire for acceptance</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Network redundancy reducing dissent</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Master status creating pigeonholing</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The passage explicitly signals <b>pressure to fit in</b> and avoid social isolation, which is classic <b>conformity</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> No identity is being dropped; they’re withholding dissent.</li>
+        <li><b>C:</b> Network redundancy is about overlapping ties, not silence.</li>
+        <li><b>D:</b> Master status is about dominant identity; not central here.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 (Correct: C) -->
+<div class="question" id="q21">
+  <b>21. The committee’s reliance on narrow task assignments and a checklist, combined with rejecting a new survey as “too slow,” most closely mirrors which organizational tendency discussed in the chapter?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Gemeinschaft, driven by shared ancestry and togetherness</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Role strain within a single status</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">C. A push toward bureaucratic efficiency and predictability (standardized procedures)</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Weak ties increasing access to novel information</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Narrow tasks + checklists + resistance to change reflects a <b>bureaucratic</b> style emphasizing <b>efficiency, predictability, and control</b> (conceptually aligned with McDonaldization/bureaucracy themes).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The committee is not unified by shared ancestry/geography and intimate ties.</li>
+        <li><b>B:</b> This is about organizational procedure, not one person’s overload.</li>
+        <li><b>D:</b> Weak ties are about network structure, not standardized procedures.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Scaling a Community Clinic</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A community clinic that began as a small neighborhood initiative grows rapidly after receiving a large grant. To handle increased demand, leadership creates formal job titles, a rigid chain of command, and detailed rules for how staff should schedule patients and document visits. New employees are hired based on credentials and training, and promotions require passing internal competency exams. Over time, staff complain that even small changes require multiple approvals and that “the system feels slower than when we were small.”</p>
+  <p>Although the clinic initially advertised itself as egalitarian, a small group of long-tenured administrators gradually gains control over key decisions (budget, staffing, and policy). The clinic also introduces standardized “quick-visit” templates that prioritize measurable counts (number of visits per hour) and consistent scripting for patient education. Some clinicians worry that the new approach reduces flexibility and makes patient encounters feel more like a predictable routine.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Match passage features to definitions: credentials + fixed rules + hierarchy + exams → <b>bureaucracy</b>.</li>
+    <li>When a small leadership group increasingly controls decisions, think <b>iron law of oligarchy</b> (power centralizes).</li>
+    <li>When the system emphasizes efficiency, predictability, calculability, and control (e.g., scripts, quotas), label it <b>McDonaldization</b>.</li>
+    <li>Answer choices should be supported by <b>multiple passage clues</b> (not just “it’s a clinic”).</li>
+  </ol>
+</div>
+
+<!-- Q22 (Correct: B) -->
+<div class="question" id="q22">
+  <b>22. Which passage detail most strongly supports classifying the clinic as a <i>bureaucracy</i>?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. The clinic started as a neighborhood initiative with shared local ties</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Promotions requiring exams, rigid procedures, and a hierarchical chain of command</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Clinicians worrying that visits feel routine and scripted</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Staff complaining that approvals are slow</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The chapter’s bureaucracy characteristics include <b>hierarchy</b>, <b>rigidly defined procedures</b>, <b>credential-based entry</b>, and <b>promotion via exams/milestones</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> That points more toward Gemeinschaft origins, not bureaucracy.</li>
+        <li><b>C:</b> This fits McDonaldization (predictable scripting) more than bureaucracy as a whole.</li>
+        <li><b>D:</b> Slowness is a common criticism/outcome, but not the strongest defining evidence.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 (Correct: A) -->
+<div class="question" id="q23">
+  <b>23. The gradual concentration of decision-making power in a small group of long-tenured administrators most directly illustrates:</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. The iron law of oligarchy</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Network redundancy in the clinic’s social ties</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Gemeinschaft replacing Gesellschaft</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Role exit among clinicians</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The <b>iron law of oligarchy</b> argues that even democratic/egalitarian organizations tend to become dominated by an <b>elite leadership core</b> due to specialization and organizational needs.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Network redundancy is overlapping ties, not leadership concentration.</li>
+        <li><b>C:</b> Gemeinschaft/Gesellschaft describe community vs impersonal society forms, not elite capture of leadership.</li>
+        <li><b>D:</b> Clinicians are not described as changing identities; power is centralizing.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 (Correct: D) -->
+<div class="question" id="q24">
+  <b>24. The “quick-visit” templates, focus on visit counts per hour, and standardized scripting most strongly reflect which broader societal shift?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Role strain</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Interaction process analysis (SYMLOG)</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Reference group comparison</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. McDonaldization (efficiency, predictability, calculability, control)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The emphasis on <b>efficiency</b> (quick visits), <b>predictability</b> (scripts), <b>calculability</b> (counts per hour), and <b>control</b> aligns with <b>McDonaldization</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Role strain is one person’s overload within a role, not an institutional design shift.</li>
+        <li><b>B:</b> SYMLOG is a method to classify interaction dimensions.</li>
+        <li><b>C:</b> Reference groups are used for self-evaluation, unrelated to standardized service templates.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

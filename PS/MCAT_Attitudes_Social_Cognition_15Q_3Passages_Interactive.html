@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Attitudes & Social Cognition (Ch. 8.3) (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Attitudes & Social Cognition (Ch. 8.3)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A student reads two editorials about a new campus policy and spends an hour comparing the authors’ evidence, checking counterarguments, and evaluating assumptions before deciding. This pattern best illustrates which process in the elaboration likelihood model?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Peripheral route processing (low elaboration)</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Attitude change driven primarily by slogans and source attractiveness</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Central route processing (high elaboration)</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Observational learning of attitudes through modeling</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> <b>Central route processing</b> involves <b>deep scrutiny</b> of message content (evidence, logic, assumptions). High elaboration predicts more stable attitude change when the argument is strong.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B:</b> Peripheral processing relies on <b>superficial cues</b> (appearance, slogans, “credible source”) rather than argument quality.</li>
+        <li><b>D:</b> Observational learning is Bandura’s social cognitive mechanism (learning by watching), not the ELM’s “route” distinction.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A teenager who failed several math tests says, “Math is pointless anyway,” and begins expressing a strong dislike for math to feel less embarrassed. In functional attitude theory, this attitude most directly serves which function?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Ego defense</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Knowledge</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Adaptation</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Ego expression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> <b>Ego-defensive attitudes</b> protect self-esteem and help justify an outcome that threatens the self (“I dislike it anyway,” so failure hurts less).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Knowledge function organizes information and helps predict behavior, not primarily self-protection.</li>
+        <li><b>C:</b> Adaptation is about social acceptance (“I say what’s popular to fit in”).</li>
+        <li><b>D:</b> Ego expression communicates identity/values (e.g., “I wear this to show who I am”).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. A participant says, “I hate those people who go to networking events,” but repeatedly attends those events and later explains, “Networking is essential for career success.” Which option best matches the <i>cognitive</i> component of the attitude?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. “I hate those people who go to networking events.”</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Attending networking events repeatedly</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Feeling anxious before the events</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. “Networking is essential for career success.”</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The <b>cognitive</b> component is the <b>belief/justification</b> (thoughts) that often supports feelings and behavior. “Networking is essential…” is a belief about the situation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/C:</b> These are <b>affective</b> (emotional) reactions—hate or anxiety.</li>
+        <li><b>B:</b> This is <b>behavioral</b>—what the person does.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. A company pairs a neutral chime with a pleasant, uplifting jingle in repeated ads. Weeks later, employees report a more positive feeling toward the chime alone. Which learning process best explains the attitude change?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Observational learning</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Classical conditioning</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Central route processing</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Knowledge function of attitudes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> A neutral stimulus (chime) gains positive valence by repeated pairing with a positive stimulus (jingle). That is the core pattern of <b>classical conditioning</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Observational learning requires watching a model.</li>
+        <li><b>C:</b> Central route is deep evaluation of arguments, not stimulus pairing.</li>
+        <li><b>D:</b> Knowledge function is about organizing/predicting, not conditioning.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. Bandura’s triadic reciprocal causation (reciprocal determinism) emphasizes that behavior is shaped by interactions among:</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Behavior, personal factors, and environment</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Id, ego, and superego</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Knowledge, ego expression, adaptation, and ego defense</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Central route, peripheral route, and cognitive dissonance</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Bandura’s model links <b>behavior</b>, <b>personal factors</b> (cognitions/attitudes), and the <b>environment</b> in a two-way feedback system—each can influence the others.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Freud’s structural model.</li>
+        <li><b>C:</b> Four functions in functional attitude theory.</li>
+        <li><b>D:</b> Central/peripheral are ELM routes; “cognitive dissonance” is a separate theory not required here.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. A physician quickly categorizes a patient’s symptoms using a familiar framework because it helps organize information and predict what the patient will do next (e.g., adherence to treatment). In functional attitude theory, this reflects the:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Ego-defensive function</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Adaptive function</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Knowledge function</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Ego-expressive function</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The <b>knowledge function</b> provides <b>organization</b> and helps people <b>predict behavior</b> (their own and others’).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Ego defense protects self-esteem (e.g., “I don’t care anyway”).</li>
+        <li><b>B:</b> Adaptation helps gain acceptance by endorsing socially approved attitudes.</li>
+        <li><b>D:</b> Ego expression communicates identity/values.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. A campaign poster includes almost no data, but features a beloved celebrity smiling next to a short slogan: “Choose Health. Choose Us.” Which processing route is the ad primarily targeting?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Central route processing</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Peripheral route processing</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Knowledge function</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Direct contact learning</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Celebrity appeal and a slogan are <b>superficial cues</b> (likability, catchphrase). That is the hallmark of <b>peripheral route</b> persuasion.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Central route requires careful evaluation of argument quality and evidence.</li>
+        <li><b>C:</b> Knowledge function is a purpose of attitudes, not a processing route.</li>
+        <li><b>D:</b> Direct contact is learning through experience with the object, not via an ad cue.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. A college student starts praising a blockbuster film in a new friend group—despite privately thinking it was average—because the group loves it and the student wants to bond. Which function of attitudes best explains this behavior?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Knowledge</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Ego defense</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Ego expression</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Adaptation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The <b>adaptive</b> function is about <b>social approval</b>: expressing socially acceptable attitudes helps a person be accepted and build bonds.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Knowledge organizes thoughts/predicts, not “fitting in.”</li>
+        <li><b>B:</b> Ego defense protects self-esteem from threat.</li>
+        <li><b>C:</b> Ego expression is authentic identity/values (not necessarily strategic agreement).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. A resident’s stress about speaking up in rounds decreases after joining a supportive team. Over time, the resident begins speaking more (behavior) and later reports thinking “I’m actually competent” (personal factor), which makes speaking up even easier. Which concept best captures this feedback pattern?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Knowledge function of attitudes</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Peripheral route persuasion</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. Triadic reciprocal causation</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Ego-defensive attitude formation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The scenario shows a <b>loop</b> across <b>environment</b> (supportive team), <b>behavior</b> (speaking more), and <b>personal factors</b> (self-belief), consistent with Bandura’s reciprocal determinism.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Knowledge function is about organization/prediction, not mutual influence loops.</li>
+        <li><b>B:</b> Peripheral route is persuasion via superficial cues, not a multi-factor feedback cycle.</li>
+        <li><b>D:</b> Ego defense explains self-protective attitudes, not this reciprocal change pattern.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. Compared with peripheral route persuasion, central route persuasion is more likely to produce attitude change that is:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Driven primarily by source attractiveness and mood</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Enduring and predictive of behavior when the arguments are strong</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Unrelated to motivation or ability to process information</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Based on operant reinforcement histories rather than message content</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Central route involves careful processing of argument quality, so changes are typically <b>more stable</b> and <b>more predictive of behavior</b> than changes driven by superficial cues.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> That describes peripheral route.</li>
+        <li><b>C:</b> ELM explicitly depends on <b>motivation and ability</b> to elaborate.</li>
+        <li><b>D:</b> Operant conditioning is learning theory, not the ELM’s persuasion routes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. A patient believes “Vaccines reduce hospitalizations,” feels reassured when thinking about vaccines, and schedules the appointment. Which component is best represented by the belief statement?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Affective component</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Behavioral component</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. The action tendency only (behavior) with no cognition</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">D. Cognitive component</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The <b>cognitive</b> component is made up of <b>beliefs and thoughts</b> (“Vaccines reduce hospitalizations”).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> “Feels reassured” is affective.</li>
+        <li><b>B:</b> “Schedules the appointment” is behavioral.</li>
+        <li><b>C:</b> The statement is explicitly a belief, not just behavior.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. A child forms a negative attitude toward curse words primarily because caregivers repeatedly state, “Those words are unacceptable,” and correct the child whenever they are used. This is best described as attitude formation through:</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Direct instruction</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Central route processing of persuasive arguments</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. The ego-expressive function of attitudes</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Knowledge function of attitudes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The child’s attitude is shaped by <b>explicit teaching</b> from others—<b>direct instruction</b>—rather than personal analysis or identity signaling.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> ELM central route refers to elaboration of persuasive information; the key cue here is caretakers teaching rules.</li>
+        <li><b>C:</b> Ego expression is about communicating identity, not learning rules from authority.</li>
+        <li><b>D:</b> Knowledge function is a purpose of attitudes, not a pathway for acquiring them.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A student who previously avoided the gym joins a new workout group that texts reminders and praises attendance. The student begins attending more often largely because they do not want to disappoint the group. Which influence is most directly highlighted?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Knowledge function</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Central route persuasion</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Classical conditioning</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Peer pressure as an environmental factor</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The main driver is <b>social influence</b> from a group—approval, reminders, accountability—consistent with <b>peer pressure</b> (environment shaping behavior).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Knowledge function is about organizing/predicting, not motivation via social approval.</li>
+        <li><b>B:</b> Central route persuasion would require careful evaluation of arguments, not group accountability.</li>
+        <li><b>C:</b> Classical conditioning requires stimulus pairing; this is social reinforcement/pressure.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. A medical student wears a pin that says “Science Saves Lives” and often shares articles about public health to show what they stand for. In functional attitude theory, this behavior is best explained by the attitude’s:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Ego-defensive function</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Adaptive function</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">C. Ego-expressive function</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Knowledge function</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Ego-expressive attitudes help a person <b>communicate identity and values</b> (“this is who I am / what I believe”).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Ego defense protects self-esteem from threat; nothing here is self-protective.</li>
+        <li><b>B:</b> Adaptation is about fitting in with a group’s norms; the cue here is identity signaling.</li>
+        <li><b>D:</b> Knowledge function is about organizing experiences and predicting behavior.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. According to the elaboration likelihood model, which condition most strongly increases the likelihood that a person will use the central route to evaluate a persuasive message?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. The message is delivered by a highly attractive spokesperson, and the listener is distracted</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. The listener is motivated and has sufficient ability (time/attention/knowledge) to process the arguments</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. The listener is tired and relies mainly on slogans and simple heuristics</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. The message contains no evidence but uses repeated catchphrases</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Central route requires <b>motivation</b> (the issue matters) and <b>ability</b> (time, attention, cognitive resources/knowledge) to elaborate on arguments.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/C/D:</b> Distraction, fatigue, attractiveness cues, and slogans are classic triggers for <b>peripheral route</b> processing.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Two Persuasion Campaigns on the Same Topic</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A university health center wants to increase uptake of a new influenza vaccine clinic. They pilot two outreach campaigns in different dorms. In Dorm A, students receive a one-page brief that summarizes a randomized trial, explains absolute risk reduction, and includes a short section anticipating common objections (e.g., “I’m healthy, so I don’t need it”). Students are encouraged to take a minute to compare the brief with what they already believe and to discuss it with a peer.</p>
+  <p>In Dorm B, the center places large posters showing a popular athlete holding a bandage with the slogan “Real Champions Protect the Team.” A QR code links to a 10-second video of the athlete saying the clinic is “the smart move,” but the video includes no statistics. Survey data show that students in Dorm A report reading and discussing the brief more often, whereas students in Dorm B mostly recall the athlete and slogan. Four weeks later, the athlete is involved in an unrelated scandal and the posters are removed.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>First, label each campaign as <b>central-cue</b> (argument quality, evidence) or <b>peripheral-cue</b> (likability, slogans, source appeal).</li>
+    <li>Then predict <b>durability</b>: central route changes are typically more stable; peripheral changes depend on cues that can disappear or backfire.</li>
+    <li>When the passage adds a new fact (e.g., scandal, removal of posters), ask: <b>which route should be most sensitive to that fact</b>?</li>
+    <li>Pick answers that use the passage’s evidence (who read/discussed vs who recalled slogans) to justify a <b>prediction</b>, not a quote.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. Based on the passage, which dorm is most likely to show <i>more persistent</i> pro-vaccination attitudes even after the posters are removed and the athlete’s image becomes less credible?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Dorm A, because the campaign relies more on central route processing</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Dorm B, because slogans are easier to remember and therefore more stable</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Dorm B, because the athlete’s scandal increases elaboration on the message content</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Dorm A, because central processing depends mainly on spokesperson attractiveness</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Dorm A’s brief prompts <b>analysis of evidence and counterarguments</b>—central route cues. Central-route attitude change is typically <b>more durable</b> and less dependent on a single source cue.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Memorability is not the same as stability; peripheral-route attitudes can be <b>fragile</b> when cues change.</li>
+        <li><b>C:</b> The scandal undermines the <b>source cue</b>; it does not supply stronger arguments.</li>
+        <li><b>D:</b> Spokesperson attractiveness is a <b>peripheral</b> cue, not a driver of central processing.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Which element of Dorm B’s campaign is the clearest example of a <i>peripheral cue</i> in the elaboration likelihood model?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Encouraging students to compare the message to their prior beliefs</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Presenting absolute risk reduction data from a randomized trial</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">C. Using a popular athlete’s endorsement and a short slogan with no evidence</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Anticipating objections and offering rebuttals</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Peripheral route persuasion relies on cues like <b>likability, credibility heuristics, and slogans</b> rather than argument quality. The athlete endorsement + slogan is a textbook peripheral cue.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/D:</b> These invite elaboration and are central-route supportive.</li>
+        <li><b>B:</b> Data and evidence are central-route content cues.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. After the scandal, which outcome would most strongly suggest that Dorm B students’ attitudes were changed primarily through peripheral route processing?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Dorm B students begin asking detailed questions about trial design and statistics</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Dorm B students’ vaccination intentions drop sharply once the athlete cue is removed</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Dorm B students maintain intentions because they carefully evaluated counterarguments</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Dorm B students maintain intentions because they computed absolute risk reduction themselves</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> If attitudes depend on a <b>source cue</b> (athlete endorsement), removing or discrediting that cue should cause a <b>large reversal</b>. That pattern is characteristic of peripheral-route influence.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/C/D:</b> These describe central-route engagement (analysis of evidence/counterarguments), which should be less sensitive to a source scandal.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: The New Fitness Group at a Gym</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A gym tracks member attendance and basic fitness measures (resting heart rate, estimated VO<sub>2</sub> max) each month. Over five years, one subgroup consistently shows low attendance and low fitness scores, despite seasonal surges of motivation in January and late spring. When interviewed, many members in this subgroup describe frequent gym-goers as “obsessive” and “show-offs.” Several also admit that they feel embarrassed working out in front of others and worry they will be judged.</p>
+  <p>This year, the gym launches a “3–4 Days Together” initiative: members can join small teams that schedule workouts as a group and send supportive messages if someone misses a session. Team members share beginner-friendly workouts and celebrate small improvements publicly on a group chat. After two months, attendance improves for some individuals in the low-attendance subgroup, but not for all. Among those who participate, a few report that they “used to dislike gym people,” but now they find the group “less intimidating.”</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Look for language that signals <b>why</b> an attitude exists: protecting self-esteem → ego defense; identity signaling → ego expression; fitting in → adaptation; organizing/predicting → knowledge.</li>
+    <li>When you see a behavior pattern that is <b>consistent across years</b>, consider whether the passage hints at a <b>dispositional attribution</b> (about “who they are”) rather than a one-time situational barrier.</li>
+    <li>For Bandura, map evidence into the triangle: <b>environment</b> (new peer group), <b>behavior</b> (attendance), <b>personal factors</b> (beliefs, embarrassment, attitudes). Then ask what changes what.</li>
+    <li>Prefer answer choices that require you to <b>combine multiple clues</b> (dislike of gym-goers + embarrassment + group change) instead of restating one sentence.</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. The five-year pattern of low attendance and low fitness scores most strongly supports which interpretation of the subgroup’s behavior <i>in the absence of other constraints</i>?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. The pattern must be entirely due to temporary situational barriers each year</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. The pattern is best explained by peripheral route persuasion from gym advertisements</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. The pattern implies the members have already achieved self-actualization needs</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. The pattern is consistent with a dispositional attribution (stable personal factors) contributing to avoidance</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> A behavior that is <b>consistent over time</b> is often attributed to <b>stable personal/dispositional factors</b> (e.g., beliefs like “I’ll be judged,” anxiety, low self-efficacy), rather than a one-off situational barrier.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Situational barriers can matter, but the passage emphasizes a stable multi-year pattern, which points beyond “temporary” explanations.</li>
+        <li><b>B:</b> ELM routes describe persuasion processing, not long-term attendance consistency.</li>
+        <li><b>C:</b> Self-actualization is unrelated to gym avoidance here.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. The subgroup’s tendency to label frequent gym-goers as “show-offs” while also admitting embarrassment about being judged most directly suggests that this attitude may serve which function?</b>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. Ego defense</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Knowledge</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Adaptation</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Ego expression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> If members feel threatened (“people will judge me”), dismissing gym-goers as “show-offs” can <b>protect self-esteem</b> and reduce the sting of comparison. That is ego-defensive.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Knowledge function would emphasize organization/predictability, not self-protection from embarrassment.</li>
+        <li><b>C:</b> Adaptation would be expressing attitudes to gain acceptance; here they’re rationalizing avoidance.</li>
+        <li><b>D:</b> Ego expression is identity/values signaling; this attitude looks more defensive than value-based.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. Which prediction best applies Bandura’s triadic reciprocal causation to members who join the new “3–4 Days Together” teams?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Only the environment will change; personal factors will remain completely fixed</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">B. Changing the environment (peer group) can shift behavior (attendance), which may gradually change personal factors (attitudes/self-beliefs)</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Personal factors alone determine attendance regardless of group structure</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Attitudes will change only if the group provides a celebrity endorsement</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Reciprocal determinism predicts <b>mutual influence</b>: the new group environment increases attendance, successful experiences can improve attitudes and confidence, and those personal changes can further support continued behavior.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/C:</b> These deny reciprocity by claiming only one factor matters.</li>
+        <li><b>D:</b> Celebrity endorsement is a peripheral persuasion cue, not required for reciprocal causation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: A School Program to Reduce Vaping</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A high school introduces a program aimed at reducing vaping. Students who submit to weekly nicotine tests and remain negative earn points that can be exchanged for privileges (front-row seating at events, extra lab time in popular electives). The school also recruits older students who previously vaped to speak about how quitting improved their sports performance and relationships. Teachers notice that some students start repeating the speakers’ phrases (“I don’t want a product controlling me”) during peer conversations.</p>
+  <p>In follow-up interviews, one student says, “I used to think vaping was harmless, but now I’m convinced it increases my risk of poor performance.” Another says, “I still think it’s risky, but I just like how it looks—everyone thinks it’s cool.” A third student avoids vaping mainly because “my friend group would roast me if I got caught,” even though the student admits they miss the feeling of nicotine.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Spot the learning mechanisms: <b>points → operant conditioning (reinforcement)</b>; <b>role models → observational learning</b>.</li>
+    <li>For attitude components (ABC), translate statements: <b>beliefs</b> = cognitive; <b>feelings</b> = affective; <b>actions/avoidance</b> = behavioral.</li>
+    <li>For functional attitude theory, ask what the attitude is doing: <b>fit in</b> (adaptation), <b>protect self-esteem</b> (ego defense), <b>signal identity</b> (ego expression), or <b>organize/predict</b> (knowledge).</li>
+    <li>Choose answers that integrate at least <b>two clues</b> (what the program changes + what the student says) to classify the mechanism.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. Which program element most directly targets the <i>behavioral</i> component of attitudes by changing what students do through consequences?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Having former vapers describe how quitting improved relationships</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Students repeating motivational phrases from the speakers</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Awarding points for negative tests that can be exchanged for privileges</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Students believing vaping is risky for performance</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The point system is a direct <b>operant conditioning</b> strategy (reinforcement). It primarily changes <b>behavior</b> by attaching consequences to actions.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> This targets beliefs/values via narrative persuasion and modeling, not direct behavioral consequences.</li>
+        <li><b>B:</b> Repeating phrases suggests observational learning; it’s not the reinforcement mechanism itself.</li>
+        <li><b>D:</b> That is the cognitive component (belief), not the behavioral lever.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. Which additional observation would provide the strongest evidence that vaping reduction reflects reciprocal determinism rather than environment-only control?</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Students begin choosing different social settings (e.g., avoiding vape-friendly hangouts), which reduces cravings and further decreases vaping</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Vaping drops only in weeks when privileges are doubled, and returns immediately when points are removed</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Vaping drops only when teachers strictly monitor bathrooms</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Vaping drops equally across all students regardless of their beliefs or peer groups</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Reciprocal determinism requires two-way influence: the person <b>selects/changes the environment</b>, which changes internal states (personal factors) and behavior, creating a feedback loop.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B/C:</b> These emphasize environment → behavior only (reinforcement or monitoring), not mutual influence.</li>
+        <li><b>D:</b> If beliefs/peer groups don’t matter, you lose the “personal factors” part of the triad.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. The student who avoids vaping mainly because “my friend group would roast me if I got caught” is most directly showing an attitude that serves which function?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Knowledge</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">B. Adaptation</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Ego defense</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Ego expression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The motivation is to <b>avoid social disapproval</b> and maintain acceptance in a peer group—classic <b>adaptive</b> function.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Knowledge function is about organizing information/predicting behavior, not fitting in.</li>
+        <li><b>C:</b> Ego defense is self-esteem protection from internal threat (e.g., “I dislike it anyway”).</li>
+        <li><b>D:</b> Ego expression is identity/values signaling (“this is who I am”), not fear of being roasted.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

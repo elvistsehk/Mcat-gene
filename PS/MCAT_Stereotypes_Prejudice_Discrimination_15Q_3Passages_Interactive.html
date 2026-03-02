@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Stereotypes, Prejudice, Discrimination (Ch. 10.3)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Stereotypes, Prejudice, Discrimination (Ch. 10.3)</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 Correct: B -->
+<div class="question" id="q1">
+  <b>1. A student believes that members of Group X are “naturally bad at public speaking.” Before meeting a new classmate from Group X, the student already feels uneasy and dislikes the classmate. Which construct is best represented by the student’s uneasy dislike?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Stereotype</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Prejudice</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Discrimination</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Cultural relativism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Prejudice</b> is the <b>affective</b> (emotional/attitudinal) response toward a group prior to direct experience—here, uneasy dislike.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The belief “Group X is bad at public speaking” is a <b>stereotype</b> (cognitive expectation), but the question asks about the <i>feeling</i>.</li>
+        <li><b>C:</b> Discrimination is <b>behavior</b> (actions), not feelings.</li>
+        <li><b>D:</b> Cultural relativism is evaluating cultures on their own terms, not liking/disliking a group.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 Correct: D -->
+<div class="question" id="q2">
+  <b>2. A manager privately thinks a neighborhood is “unsafe,” feels anxious when driving through it, and then refuses to interview applicants who list addresses from that area. The refusal to interview is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Stereotyping only</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Prejudice only</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Ethnocentrism</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Discrimination</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Discrimination</b> is the <b>behavioral</b> component—differential treatment of groups (refusing interviews).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> “Unsafe neighborhood” belief is a stereotype, but the stem asks about the action.</li>
+        <li><b>B:</b> Anxiety is prejudice (affect), but again the question asks about behavior.</li>
+        <li><b>C:</b> Ethnocentrism is judging other <i>cultures</i> by one’s own culture.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 Correct: A -->
+<div class="question" id="q3">
+  <b>3. Which option best matches the “cognitive–affective–behavioral” mapping described in the chapter?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Stereotype = cognitive; prejudice = affective; discrimination = behavioral</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Stereotype = behavioral; prejudice = cognitive; discrimination = affective</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Stereotype = affective; prejudice = behavioral; discrimination = cognitive</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Stereotype = cultural; prejudice = economic; discrimination = political</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The chapter’s key concept: <b>stereotypes</b> are <b>cognitive</b>, <b>prejudice</b> is <b>affective</b>, and <b>discrimination</b> is <b>behavioral</b>.</p>
+      <p><b>Other choices:</b> All other mappings scramble those definitions.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 Correct: C -->
+<div class="question" id="q4">
+  <b>4. A researcher applies the stereotype content model to describe how an in-group may view an out-group. According to the model, groups perceived as <i>not competing</i> with the in-group and having <i>high status</i> are most likely to be categorized as:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Paternalistic stereotypes (warm but incompetent)</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Contemptuous stereotypes (cold and incompetent)</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Admiration stereotypes (warm and competent)</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Envious stereotypes (cold but competent)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> In the stereotype content model, <b>warmth</b> is linked to low competition; <b>competence</b> is linked to high status. Warm + competent → <b>admiration</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Paternalistic = warm but <i>low competence</i> (low status).</li>
+        <li><b>B:</b> Contemptuous = cold + incompetent (high competition + low status).</li>
+        <li><b>D:</b> Envious = cold but competent (high competition + high status).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 Correct: A -->
+<div class="question" id="q5">
+  <b>5. A teacher assumes a student from Group Y will struggle in science, calls on the student less, and gives fewer challenging problems. The student’s performance later declines, reinforcing the teacher’s initial belief. This cycle is best described as:</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Self-fulfilling prophecy</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Cultural relativism</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Ethnocentrism</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Institutional discrimination</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> A <b>self-fulfilling prophecy</b> occurs when expectations create conditions that make the expectation come true (reduced opportunities → reduced performance).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B/C:</b> These are about judging cultures, not expectation-driven performance outcomes.</li>
+        <li><b>D:</b> Institutional discrimination is discrimination by an institution’s structure; this stem focuses on an interpersonal expectation cycle. (It could contribute, but the mechanism tested is self-fulfilling prophecy.)</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 Correct: D -->
+<div class="question" id="q6">
+  <b>6. A student worries intensely about confirming a negative stereotype about their group during an exam. The resulting anxiety and self-monitoring distract them, lowering performance. This phenomenon is best labeled as:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Prejudice</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Discrimination</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Ethnocentrism</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. Stereotype threat</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Stereotype threat</b> is anxiety about confirming a negative stereotype, which can impair performance and even create a self-fulfilling prophecy.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Prejudice is an attitude toward a group, not anxiety about one’s own evaluation.</li>
+        <li><b>B:</b> Discrimination is behavior toward groups.</li>
+        <li><b>C:</b> Ethnocentrism is judging other cultures by one’s own culture.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 Correct: B -->
+<div class="question" id="q7">
+  <b>7. A politician releases a series of posters portraying a target group with exaggerated features and warning that the group will “destroy the nation,” aiming to generate fear and hostility. This is best characterized as:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Cultural relativism</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Propaganda fostering prejudice</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Stereotype threat</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Self-fulfilling prophecy</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The chapter notes that <b>propaganda</b> often uses fear-based messaging and exaggeration to shape attitudes; here it is being used to create <b>prejudice</b> (negative affect) toward a group.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cultural relativism is a method for studying cultures without judging them as superior/inferior.</li>
+        <li><b>C:</b> Stereotype threat is an individual’s anxiety about confirming a stereotype.</li>
+        <li><b>D:</b> Self-fulfilling prophecy is expectation → conditions → expectation becomes true.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 Correct: C -->
+<div class="question" id="q8">
+  <b>8. Which situation best illustrates how <b>social inequality</b> can influence prejudice, as described in the chapter?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Two friends disagree over a movie and stop talking</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. A person learns a new language to communicate better while traveling</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. “Have-nots” develop resentment toward “haves,” while “haves” justify advantages by viewing “have-nots” as undeserving</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. A student experiences anxiety about a stereotype during a test</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The chapter ties prejudice to <b>power, prestige, and class</b>: unequal distributions can drive resentment from those with fewer resources and defensive justifications by those with more.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Interpersonal conflict is not the social-inequality mechanism described.</li>
+        <li><b>B:</b> Language learning is not prejudice formation.</li>
+        <li><b>D:</b> This is stereotype threat.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 Correct: D -->
+<div class="question" id="q9">
+  <b>9. A clinic receptionist believes a certain group is “always irresponsible,” and therefore schedules them at inconvenient times. The receptionist later points to the group’s missed appointments as proof. Which paired sequence best fits the chapter’s logic?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Cultural relativism → reduced discrimination</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Ethnocentrism → increased competence stereotypes</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Stereotype threat → better performance</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">D. Stereotype → self-fulfilling prophecy → apparent confirmation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> A cognitive expectation (<b>stereotype</b>) shapes behavior toward the target group (scheduling at inconvenient times), creating conditions that produce the expected outcome (missed visits), thereby validating the original stereotype: <b>self-fulfilling prophecy</b>.</p>
+      <p><b>Other choices:</b> None of the alternatives describe an expectation-driven cycle that creates its own evidence.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 Correct: B -->
+<div class="question" id="q10">
+  <b>10. Which statement most accurately contrasts <b>ethnocentrism</b> and <b>cultural relativism</b>?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Ethnocentrism rejects group membership; cultural relativism promotes stereotyping</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Ethnocentrism judges other cultures by one’s own values; cultural relativism studies cultures on their own terms</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Ethnocentrism is always benign pride; cultural relativism always requires approval of all practices</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Ethnocentrism is behavioral; cultural relativism is affective</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Ethnocentrism</b> uses one’s own cultural norms as the standard for judging other cultures; <b>cultural relativism</b> aims to understand cultures within their own context.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Backwards and unrelated.</li>
+        <li><b>C:</b> Ethnocentrism can range from pride to supremacy; cultural relativism is not “automatic approval,” but an analytic stance to avoid judging as superior/inferior.</li>
+        <li><b>D:</b> The cognitive/affective/behavioral mapping applies to stereotype/prejudice/discrimination, not ethnocentrism/relativism.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 Correct: A -->
+<div class="question" id="q11">
+  <b>11. A social psychologist defines prejudice as an “irrational positive or negative attitude” formed prior to direct experience. Which example best fits this definition?</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Disliking a person from a group you have never interacted with because of what you were taught about that group</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Memorizing a list of typical features of kitchen chairs to recognize them quickly</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Refusing to rent an apartment to someone because of their group membership</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Studying another culture’s dietary rules without calling them “better” or “worse”</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> This is an <b>attitude/emotional response</b> formed before direct contact, matching the chapter’s definition of prejudice.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Categorizing furniture is a neutral, useful stereotype-like categorization not aimed at human groups.</li>
+        <li><b>C:</b> That is <b>discrimination</b> (behavior).</li>
+        <li><b>D:</b> That is <b>cultural relativism</b>.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 Correct: C -->
+<div class="question" id="q12">
+  <b>12. A university’s legacy admissions policy disproportionately benefits applicants from higher socioeconomic backgrounds, even when no individual admissions officer intends harm. This is best described as:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Individual discrimination</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Stereotype threat</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. Institutional discrimination</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Cultural relativism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> <b>Institutional discrimination</b> is discrimination embedded in an institution’s structure and policies; it can be covert and maintained by the status quo without overt intent by a single person.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Individual discrimination is one person’s direct discriminatory behavior.</li>
+        <li><b>B:</b> Stereotype threat is a performance-impairing anxiety.</li>
+        <li><b>D:</b> Cultural relativism is an analytic method for understanding cultures.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 Correct: B -->
+<div class="question" id="q13">
+  <b>13. A social inequality most directly referenced in the chapter as shaping prejudice is:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Differences in personality traits</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. Unequal distribution of power, prestige, and class</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Differences in eye contact norms across cultures</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Variations in memory capacity across age groups</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The chapter explicitly highlights <b>power, prestige, and class</b> as key societal factors influencing prejudice and discrimination.</p>
+      <p><b>Other choices:</b> These do not describe the structural inequalities discussed in this chapter.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 Correct: D -->
+<div class="question" id="q14">
+  <b>14. An interviewer thinks, “People from Group Z are lazy,” but still treats a Group Z applicant politely and hires them based on qualifications. This scenario best illustrates which principle emphasized in the chapter?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Discrimination must always accompany prejudice</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Stereotype threat always improves performance</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Ethnocentrism prevents any fair evaluation</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">D. Prejudice can exist without necessarily leading to discrimination</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The chapter notes that <b>prejudice (attitude)</b> does not always translate into <b>discrimination (behavior)</b>. Here, the interviewer holds a negative attitude but does not enact differential treatment.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Incorrect; prejudice does not always produce discrimination.</li>
+        <li><b>B:</b> Stereotype threat typically <i>reduces</i> performance via anxiety/distraction.</li>
+        <li><b>C:</b> Ethnocentrism can bias judgments, but the stem is about prejudice vs discrimination linkage.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 Correct: C -->
+<div class="question" id="q15">
+  <b>15. A researcher wants to reduce ethnocentric conclusions while comparing two cultures’ religious dietary rules. Which approach best aligns with cultural relativism?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Rank the rules from “most rational” to “least rational” based on the researcher’s culture</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Treat one set of rules as superior because it is more familiar to the researcher</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Interpret each rule set within its own cultural context without labeling it superior or inferior</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Assume the rules reflect biological inferiority of one group</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> <b>Cultural relativism</b> studies cultural beliefs and practices <b>on their own terms</b>—as coherent within that culture—rather than judging them by another culture’s standards.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B/D:</b> All impose an external ranking or superiority claim, which is characteristic of ethnocentrism (and D adds an unsupported essentialist claim).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: “Don’t Mess Up the Knots”</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>During the first week of a surgery clerkship, a supervising resident tells new students, “Third-years are always slow at knot-tying.” Some students laugh nervously and begin practicing in the skills lab late into the night.</p>
+  <p>On the first day in the operating room, one student, Mina, hears the comment repeated by a scrub nurse. Mina becomes hyperaware of every hand movement and worries that any error will confirm the stereotype. She notices her heart racing and repeatedly checks whether others are watching her hands. Her performance is shaky, and she drops the suture twice.</p>
+  <p>Afterward, the resident concludes, “See? Third-years really can’t do it,” and assigns Mina fewer opportunities to practice in the operating room. Over the next two weeks Mina improves more slowly than her peers who received more practice time.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>First, label what is <b>belief</b> vs <b>feeling</b> vs <b>behavior</b>. Stereotypes = beliefs/expectations; prejudice = emotions; discrimination = actions.</li>
+    <li>Identify whether anxiety is about <b>confirming a negative stereotype</b> → that’s <b>stereotype threat</b>.</li>
+    <li>Then check if the authority’s expectation changes the environment (fewer opportunities), which can make the expectation come true → <b>self-fulfilling prophecy</b>.</li>
+    <li>Pick the answer that best matches the specific mechanism described by the evidence, not just the topic word.</li>
+  </ol>
+</div>
+
+<!-- Q16 Correct: A -->
+<div class="question" id="q16">
+  <b>16. Mina’s racing heart, self-monitoring, and fear of confirming the negative “third-years are slow” expectation most directly illustrate:</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Stereotype threat</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Institutional discrimination</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Ethnocentrism</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Cultural relativism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The passage shows anxiety about confirming a negative stereotype, plus distraction and reduced performance—textbook <b>stereotype threat</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> There is an interpersonal reduction in opportunities, but the immediate mechanism described in the question is performance anxiety about confirming a stereotype.</li>
+        <li><b>C/D:</b> These relate to judging cultures, not performance under stereotype-related pressure.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 Correct: D -->
+<div class="question" id="q17">
+  <b>17. The resident’s choice to give Mina fewer opportunities after the early mistakes is most likely to contribute to which downstream process?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Cultural relativism increasing empathy</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Ethnocentrism reducing out-group conflict</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Paternalistic stereotypes increasing perceived competence</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Self-fulfilling prophecy that slows Mina’s improvement and “confirms” the expectation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The expectation (“third-years are slow”) changes the environment (less practice), which then produces the expected outcome (slower improvement), thereby <b>validating</b> the original stereotype: a <b>self-fulfilling prophecy</b>.</p>
+      <p><b>Other choices:</b> They don’t match the expectation → restricted opportunity → outcome confirmation chain shown in the passage.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 Correct: B -->
+<div class="question" id="q18">
+  <b>18. In this scenario, the supervising resident’s statement “Third-years are always slow at knot-tying” is best classified as a:</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Prejudice, because it is an emotional reaction</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Stereotype, because it is a cognitive expectation about a group</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Discrimination, because it is differential treatment</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Cultural relativist claim about training cultures</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> It’s a generalized belief/expectation about a category (“third-years”)—a <b>cognitive</b> claim, which the chapter defines as a <b>stereotype</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> No emotion is described; it’s a belief about ability.</li>
+        <li><b>C:</b> The statement itself is not an action; reduced opportunities would be closer to discriminatory behavior.</li>
+        <li><b>D:</b> Not a culture-comparison stance.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Hiring “Fit” and Promotion Pipelines</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A midsize company prides itself on being “merit-based.” In practice, entry-level hires come largely from a few elite universities, and promotions heavily depend on informal mentorship by senior staff. New hires who did not attend the elite schools report fewer invitations to networking events where senior staff choose mentees.</p>
+  <p>During interviews, some managers casually describe certain candidates as “not a culture fit” without specifying job-related reasons. These managers rarely express overt hostility, but a pattern emerges: candidates from non-elite universities are less likely to receive offers, and employees from those schools are less likely to be promoted.</p>
+  <p>In response, a few employees create a slideshow arguing that non-elite graduates are “less disciplined” and that the company’s outcomes “prove” this. The slideshow is circulated widely to justify continuing the current system.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate <b>individual</b> actions from <b>institutional</b> structures. Policies/practices that produce group disparities without one “bad actor” are often <b>institutional discrimination</b>.</li>
+    <li>Identify whether a claim is a <b>belief</b> (stereotype), a <b>feeling</b> (prejudice), or an <b>action/outcome</b> (discrimination).</li>
+    <li>Look for how <b>power, prestige, and class</b> operate: elite pipelines and informal networks can preserve unequal access.</li>
+    <li>When justification materials appear, ask: are they amplifying stereotypes to rationalize inequality (a common function of prejudice/discrimination)?</li>
+  </ol>
+</div>
+
+<!-- Q19 Correct: C -->
+<div class="question" id="q19">
+  <b>19. The company’s reliance on elite-university pipelines and informal mentorship that systematically disadvantages non-elite graduates is most consistent with:</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Stereotype threat</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Cultural relativism</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Institutional discrimination</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Ethnocentrism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The disparity comes from <b>structures</b> (pipelines, mentorship selection, networking access) that produce unequal outcomes. That matches <b>institutional discrimination</b>, which is embedded and maintained by the status quo.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Stereotype threat is an individual’s anxiety about confirming a stereotype.</li>
+        <li><b>B/D:</b> Cultural relativism/ethnocentrism concern culture judgments, not organizational inequality mechanisms.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 Correct: A -->
+<div class="question" id="q20">
+  <b>20. The slideshow claim that non-elite graduates are “less disciplined” is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. A stereotype (cognitive belief about a group)</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Discrimination (behavioral differential treatment)</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Cultural relativism (studying values on their own terms)</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Stereotype threat (fear of confirming a stereotype)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> “Less disciplined” is a generalized <b>belief</b> about a category, which is the chapter’s definition of a <b>stereotype</b> (cognitive).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Discrimination would be refusing offers/promotions, not the belief itself.</li>
+        <li><b>C:</b> Not analyzing a culture’s rules; it’s labeling a group.</li>
+        <li><b>D:</b> Stereotype threat concerns the target’s anxiety, not the evaluator’s belief.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 Correct: D -->
+<div class="question" id="q21">
+  <b>21. Which observation would most strongly support the conclusion that the company’s unequal outcomes are driven more by <b>institutional</b> factors than by a few biased individuals?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. One manager openly insults candidates from non-elite schools</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. A single interviewer reports feeling anxious during hiring season</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. A few employees privately dislike non-elite graduates</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. Disparities persist across departments even after replacing several managers, because the same pipelines and mentorship rules remain</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> If outcomes remain despite personnel changes, the driver is likely the <b>structure</b> (pipelines, informal mentorship access)—the hallmark of <b>institutional discrimination</b> described as covert and difficult to remove.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> That would indicate individual discrimination by a specific person.</li>
+        <li><b>B:</b> Anxiety is not a system-level indicator.</li>
+        <li><b>C:</b> Private dislike is prejudice (attitude) but does not establish institutional causation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Study Abroad, “Normal” Rules, and Group Images</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A group of students from Country A studies abroad in Country B. During a local festival in Country B, one host family avoids direct criticism and instead uses subtle hints and long pauses to signal disagreement. Several visitors from Country A complain, “They should just say what they mean—this is so dishonest,” and begin avoiding conversations with hosts.</p>
+  <p>One visitor, Lian, takes a different approach: she asks the host family to explain how disagreement is typically expressed in their community and learns that direct confrontation is considered disrespectful. Lian starts interpreting pauses as a polite form of refusal rather than deception.</p>
+  <p>Back on campus, students debate a campus group that is high-status and competes for limited scholarships. Some students describe this group as “capable but cold,” while another campus group that does not compete for resources is described as “nice, but not very competent.”</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>When someone calls another culture “dishonest” because it violates their own norms, that’s <b>ethnocentrism</b> (judging by one’s own culture).</li>
+    <li>When someone tries to understand a practice within that culture’s context, that’s <b>cultural relativism</b>.</li>
+    <li>For the campus groups, map <b>competition → warmth</b> (competition lowers perceived warmth) and <b>status → competence</b> (status raises perceived competence).</li>
+    <li>Use the stereotype content labels: warm+incompetent = paternalistic; cold+competent = envious; warm+competent = admiration; cold+incompetent = contemptuous.</li>
+  </ol>
+</div>
+
+<!-- Q22 Correct: B -->
+<div class="question" id="q22">
+  <b>22. The visitors from Country A labeling Country B’s indirect disagreement style as “dishonest” primarily demonstrates:</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Cultural relativism</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Ethnocentrism</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Stereotype threat</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Self-fulfilling prophecy</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> They judge another culture’s communication norms using their own culture’s standards (“should just say what they mean”), which is <b>ethnocentrism</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Cultural relativism would attempt to understand the practice within Country B’s norms.</li>
+        <li><b>C:</b> Stereotype threat involves anxiety about confirming a stereotype.</li>
+        <li><b>D:</b> Self-fulfilling prophecy involves expectations shaping outcomes through changed conditions.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 Correct: C -->
+<div class="question" id="q23">
+  <b>23. Lian’s decision to ask for the host family’s explanation of local norms and then reinterpret pauses as polite refusals is most consistent with:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Discrimination</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Prejudice</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. Cultural relativism</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Institutional discrimination</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> <b>Cultural relativism</b> means studying beliefs and rules in their own context—Lian learns what pauses signify in Country B and interprets them accordingly.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Discrimination is differential treatment; Lian is doing the opposite (seeking understanding).</li>
+        <li><b>B:</b> Prejudice would be an emotional attitude formed prior to experience; Lian reduces judgment.</li>
+        <li><b>D:</b> Institutional discrimination is structure-based unequal treatment by systems.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 Correct: A -->
+<div class="question" id="q24">
+  <b>24. The campus group that is <i>high-status</i> and <i>competes</i> for limited scholarships being described as “capable but cold” best fits which stereotype-content category?</b>
+  <div class="choice" onclick="selectChoice('q24', this, true)">A. Envious stereotypes (competent but low warmth)</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Admiration stereotypes (warm and competent)</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Paternalistic stereotypes (warm but incompetent)</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Contemptuous stereotypes (cold and incompetent)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> High status → perceived <b>competence</b>. Competition with the in-group → lower perceived <b>warmth</b>. Competent + cold maps to <b>envious stereotypes</b> in the stereotype content model.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Admiration = warm + competent (low competition + high status).</li>
+        <li><b>C:</b> Paternalistic = warm + incompetent (low competition + low status).</li>
+        <li><b>D:</b> Contemptuous = cold + incompetent (high competition + low status).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

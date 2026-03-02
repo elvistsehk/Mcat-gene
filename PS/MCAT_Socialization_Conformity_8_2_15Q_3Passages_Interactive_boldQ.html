@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <title>MCAT Behavioral Sciences — Socialization, Conformity, Compliance &amp; Obedience (Chapter 8.2)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .q-title{ font-weight:700; }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+</head>
+<body>
+  <div class='main-header'>
+    <span>MCAT Behavioral Sciences — Socialization, Conformity, Compliance &amp; Obedience (Chapter 8.2)</span>
+    <button class='reset-btn' onclick='resetAll()'>Reset All</button>
+  </div>
+  <div class='container'>
+    <div class='section-label'>Standalone Questions (1–15)</div>
+<!-- Q1 -->
+<div class="question" id="q1">
+  <div class="q-title">Q1. During childhood, Maya learns to say “please” and “thank you” because her caregivers model the behavior and praise her for it. Years later, she learns to use formal email salutations after starting a corporate internship. The second change is best described as:</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Cultural diffusion</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Resocialization</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Secondary socialization</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Primary socialization</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C</b></p>
+<p><b>Why this is correct:</b> Secondary socialization is learning the norms and expected behaviors of specific subgroups or new social settings outside the home (e.g., school, workplace).</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Cultural diffusion = spread of cultural elements between cultures, not learning within one setting.</li>
+<li><b>B</b>: Resocialization = discarding old behaviors via intensive retraining in a total institution.</li>
+<li><b>D</b>: Primary socialization = early childhood learning of basic norms at home.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <div class="q-title">Q2. A new recruit in the military rapidly abandons previous habits and adopts strict routines after intensive training designed to produce unquestioning adherence to orders. This process most directly illustrates:</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Primary socialization</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Identification</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Anticipatory socialization</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Resocialization</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D</b></p>
+<p><b>Why this is correct:</b> Resocialization involves unlearning prior norms/roles and adopting new ones through intensive retraining, often in total institutions (e.g., the military).</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Primary socialization = earliest learning in childhood, not adult retraining.</li>
+<li><b>B</b>: Identification = surface-level acceptance without internal attitude change.</li>
+<li><b>C</b>: Anticipatory socialization = preparing for a future role before entering it.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <div class="q-title">Q3. A city introduces a fine for littering and a public “clean block” award for neighborhoods with the lowest litter rates. From a sociological perspective, these are examples of:</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Stigma</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">B. Formal sanctions</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Folkways</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Informal sanctions</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B</b></p>
+<p><b>Why this is correct:</b> Fines and official awards are enforced/recognized by formal institutions (government), making them formal sanctions (negative and positive, respectively).</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Stigma is social disapproval of a person/group, not a sanction category.</li>
+<li><b>C</b>: Folkways are polite customs, not reward/punishment mechanisms.</li>
+<li><b>D</b>: Informal sanctions are peer-enforced (teasing, praise), not government fines/awards.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <div class="q-title">Q4. After being repeatedly called “a troublemaker” at school, a student begins skipping class and joining peers who shoplift, eventually seeing delinquency as part of who they are. This trajectory is most consistent with:</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Strain theory</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Social facilitation</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Labeling theory leading to role engulfment</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Cultural transmission</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C</b></p>
+<p><b>Why this is correct:</b> Labeling theory predicts that being labeled deviant can shape self-image and others’ responses; internalizing the label can lead to role engulfment where the label dominates identity.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Strain theory explains deviance via blocked access to culturally valued goals.</li>
+<li><b>B</b>: Social facilitation is performance change in presence of others, unrelated to labels.</li>
+<li><b>D</b>: Cultural transmission is passing norms across generations, not identity takeover by a label.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <div class="q-title">Q5. A teenager who spends most evenings with friends who vandalize property begins to view vandalism as normal and later participates. This pattern is best explained by:</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Multiculturalism</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Obedience</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">C. Differential association theory</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Foot-in-the-door technique</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C</b></p>
+<p><b>Why this is correct:</b> Differential association proposes deviance is learned through interactions; when deviant associations are more frequent/intense than normative ones, deviant behavior becomes more likely.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Multiculturalism concerns coexisting cultures, unrelated to deviance learning.</li>
+<li><b>B</b>: Obedience is responding to authority, not adopting vandalism from peers.</li>
+<li><b>D</b>: Foot-in-the-door is a persuasion technique, not a deviance-learning theory.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <div class="q-title">Q6. A student privately agrees that cheating is wrong and stops cheating after realizing their friends value academic integrity. Another student stops cheating only when a proctor is present, but still believes cheating is acceptable. The first student’s change reflects:</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Identification</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">B. Internalization</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Obedience</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Projection</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B</b></p>
+<p><b>Why this is correct:</b> Internalization is conforming while also adopting the group’s beliefs internally; the student genuinely changes their attitude about cheating.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Identification is outward conformity without private agreement.</li>
+<li><b>C</b>: Obedience involves authority’s command, not peer group influence.</li>
+<li><b>D</b>: Projection is attributing one’s own unwanted feelings to others.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <div class="q-title">Q7. In a role-play study, participants assigned as “guards” begin acting harshly toward “prisoners,” and later report surprise at their own behavior because they felt the role became real. This is most consistent with:</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Internalization of social roles</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Door-in-the-face compliance</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Cultural diffusion</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Social loafing</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A</b></p>
+<p><b>Why this is correct:</b> Zimbardo-style findings are commonly interpreted as participants internalizing social roles and associated norms, altering both behavior and self-perception.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>B</b>: Door-in-the-face relies on rejecting a big request first; no initial big request here.</li>
+<li><b>C</b>: Cultural diffusion is cross-cultural spread, not within-lab role behavior.</li>
+<li><b>D</b>: Social loafing is reduced effort in groups, not role adoption.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <div class="q-title">Q8. A charity volunteer first asks a passerby to sign a small petition supporting nutrition programs. After the person signs, the volunteer asks for a $20 donation. This sequence best exemplifies:</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">A. Foot-in-the-door technique</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Door-in-the-face technique</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Obedience</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Lowball technique</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A</b></p>
+<p><b>Why this is correct:</b> Foot-in-the-door starts with a small request to gain compliance, increasing the likelihood of agreeing to a larger request later.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>B</b>: Door-in-the-face starts with a large request first; here it starts small.</li>
+<li><b>C</b>: Obedience requires authority; this is a peer request.</li>
+<li><b>D</b>: Lowball increases the cost after commitment, not request size.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <div class="q-title">Q9. A salesperson asks a customer to buy a premium appliance warranty for $400. When the customer refuses, the salesperson offers a basic warranty for $80, which the customer accepts. This is best described as:</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Foot-in-the-door technique</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. That’s-not-all technique</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. Door-in-the-face technique</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Internalization</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C</b></p>
+<p><b>Why this is correct:</b> Door-in-the-face begins with an unreasonably large request that is likely to be rejected, followed by a smaller request that seems reasonable by comparison.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Foot-in-the-door starts small then escalates; here the first request is huge.</li>
+<li><b>B</b>: That’s-not-all sweetens an offer before acceptance, not after refusal.</li>
+<li><b>D</b>: Internalization is attitude change, not a request sequencing strategy.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <div class="q-title">Q10. A manager convinces an employee to chair a committee by emphasizing it will require only one short meeting per month. After the employee agrees, the manager reveals there will also be weekly reports and extra meetings. This is an example of:</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Informal sanction</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Identification</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. That’s-not-all technique</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">D. Lowball technique</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D</b></p>
+<p><b>Why this is correct:</b> Lowball obtains initial commitment, then increases the cost (time/effort/money) after the person has psychologically committed.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Informal sanction is peer-enforced social reward/punishment, not a persuasion technique.</li>
+<li><b>B</b>: Identification is surface-level acceptance; not about escalating costs after commitment.</li>
+<li><b>C</b>: That’s-not-all adds bonuses/discounts before decision, not hidden extra work after yes.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <div class="q-title">Q11. An infomercial offers a blender for $29.99, and before you can decide, the host adds “and we’ll include a second set of blades for free!” This persuasion strategy is:</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. That’s-not-all technique</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Obedience</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Lowball technique</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Door-in-the-face technique</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A</b></p>
+<p><b>Why this is correct:</b> That’s-not-all improves the offer (adds bonuses or discounts) before you make a decision, increasing perceived value and compliance.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>B</b>: Obedience requires authority; infomercials use persuasion, not authority.</li>
+<li><b>C</b>: Lowball raises costs after commitment; here costs decrease via extra bonus.</li>
+<li><b>D</b>: Door-in-the-face requires an initial large request and a rejection.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <div class="q-title">Q12. A professor instructs a student to hand in their phone immediately during an exam. The student complies primarily because the professor can impose consequences. This behavior is best categorized as:</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Conformity</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Compliance</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Deviance</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Obedience</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D</b></p>
+<p><b>Why this is correct:</b> Obedience is behavior change in response to a direct order from an authority figure who has social power.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Conformity is matching group norms, not following a direct order.</li>
+<li><b>B</b>: Compliance is a request without authority; professor has authority in exam context.</li>
+<li><b>C</b>: Deviance is violating norms; handing in the phone is norm/authority compliance.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <div class="q-title">Q13. In Milgram’s paradigm, participants continue administering what they believe are shocks largely because the experimenter insists the procedure must continue. This finding best supports the idea that:</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Deviance is primarily caused by culture shock</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. People comply more readily with peers than authorities</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Conformity requires private agreement with group norms</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Perceived authority can produce obedience even against personal reluctance</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D</b></p>
+<p><b>Why this is correct:</b> Milgram demonstrated high rates of obedience to authority, even when participants felt conflicted, highlighting the power of situational authority cues.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Culture shock is distress from unfamiliar culture; not Milgram’s mechanism.</li>
+<li><b>B</b>: Peers generally elicit less obedience than authority; Milgram is about authority power.</li>
+<li><b>C</b>: Conformity can be surface-level (identification) and doesn’t require private agreement.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <div class="q-title">Q14. A teenager refuses to report a friend’s minor theft because “everyone in my group does it and it would be disloyal to speak up.” This best illustrates conformity driven by:</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Resocialization</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Normative influence</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Cultural diffusion</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Informational influence</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B</b></p>
+<p><b>Why this is correct:</b> Normative influence is conforming to be liked/accepted or to avoid rejection; loyalty concerns and fear of social cost drive the behavior.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Resocialization is intensive retraining that replaces old norms.</li>
+<li><b>C</b>: Cultural diffusion is spread of culture between groups/cultures.</li>
+<li><b>D</b>: Informational influence is conforming because others are assumed correct, not for acceptance.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <div class="q-title">Q15. A community strongly endorses the “American dream” as a social goal, but offers limited access to quality education and high-paying jobs. Some residents turn to theft to obtain wealth. This example aligns most closely with:</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Identification</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Strain theory</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Differential association theory</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Social facilitation</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B</b></p>
+<p><b>Why this is correct:</b> Strain theory explains deviance as a response to the gap between culturally valued goals and the socially structured means to achieve them.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Identification is surface conformity, not structural goal–means mismatch.</li>
+<li><b>C</b>: Differential association focuses on learning deviance through close peer interactions.</li>
+<li><b>D</b>: Social facilitation is performance change with observers.</li></ul>
+    </div>
+  </details>
+</div>
+
+    <div class='section-label'>Passage-Based Questions (16–24)</div>
+<!-- PASSAGE 1 -->
+<div class="passage-header">
+  <span>Passage 1: School Culture, Labels, and Identity</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>At Northbridge High, first‑year students attend a two‑day “campus culture” program. On Day 1, older student leaders demonstrate expected behaviors: how to address teachers, how to join clubs, and even where to sit during lunch to avoid social conflict. New students who follow the program’s rules receive public shout‑outs during announcements; those who break rules (for example, eating in a restricted hallway) are required to stay after school for a brief clean‑up duty.</p>
+  <p>During the semester, one student, Lina, is repeatedly teased as “weird” because she eats lunch alone and avoids eye contact. Over time, she starts sitting with a group that prides itself on being “outsiders.” The group jokes about being ‘bad influences’ and begins skipping assemblies together. Lina reports that being called weird used to bother her, but now she feels ‘like an outsider is who I really am.’ Teachers notice that Lina’s grades and attendance decline after she becomes close with this group.</p>
+</div>
+<div class="reasoning-box" id="p1-reason" style="display:none;">
+  <p>1) Identify the *social mechanism* described (socialization, sanctions, labeling). 2) Separate what is enforced by institutions (formal) vs by peers (informal). 3) Use the passage’s timeline: what changed first, and what changed after the label/peer group appeared? 4) Pick the choice that best explains both the behavior change *and* the identity shift described.</p>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <div class="q-title">Q16. Which observation would most strongly support the claim that the “campus culture” program is functioning as **secondary socialization** rather than primary socialization?</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Students who already learned basic manners at home still change their behavior to match school-specific expectations (e.g., how to address teachers or join clubs).</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Students adopt new behaviors only after an intensive, isolating boot‑camp style retraining.</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Students learn to speak their first language during the program.</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Students imitate only their parents’ behavior during early childhood.</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A</b></p>
+<p><b>Why this is correct:</b> Secondary socialization refines behavior for specific settings outside the home. The program teaches school‑specific norms on top of earlier childhood learning.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>B</b>: Intensive isolating retraining that replaces prior norms is resocialization.</li>
+<li><b>C</b>: Learning a first language is classic primary socialization in childhood.</li>
+<li><b>D</b>: Imitating parents in early childhood is primary socialization, not secondary.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <div class="q-title">Q17. Lina’s shift from feeling hurt by the label “weird” to embracing an “outsider” identity best illustrates which sequence?</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Formal sanction → folkway → cultural diffusion</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Resocialization → anticipatory socialization → internalization</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Informational influence → group polarization → obedience</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Stigma → labeling → role engulfment</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D</b></p>
+<p><b>Why this is correct:</b> The passage shows stigmatization/negative labeling by peers, then Lina internalizes the deviant label and it becomes central to identity—role engulfment.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Formal sanction/folkway/diffusion doesn’t describe identity takeover by a deviant label.</li>
+<li><b>B</b>: Resocialization/anticipatory/internalization is about role prep or retraining, not stigmatizing labels.</li>
+<li><b>C</b>: Informational influence/polarization/obedience are group decision/authority concepts, not labeling.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <div class="q-title">Q18. Suppose the school wants to reduce rule‑breaking in the restricted hallway. Based on the passage, which change most directly targets the **type of sanction currently maintaining compliance** for many students?</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Eliminate all rules because norms do not influence behavior.</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Reduce the public announcement praise for rule-following and instead have peers give private approval in small groups.</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Replace clean‑up duty with a rumor campaign because rumors are formal sanctions.</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Increase the after‑school clean‑up duty because it is an informal sanction.</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B</b></p>
+<p><b>Why this is correct:</b> The passage’s shout‑outs are **formal positive sanctions** (school announcements). Changing the institution’s reward structure targets that mechanism; shifting to peer approval changes the sanction type.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Norms strongly influence behavior; removing all rules doesn’t address compliance mechanisms.</li>
+<li><b>C</b>: Rumors are informal sanctions; calling them formal is incorrect.</li>
+<li><b>D</b>: Clean-up duty is formal negative sanction (school-imposed), not informal.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- PASSAGE 2 -->
+<div class="passage-header">
+  <span>Passage 2: Designing a Vaccination Sign‑Up Campaign</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A public health team wants to increase vaccination sign‑ups at a community clinic. In Week 1, volunteers stand outside the clinic and ask pedestrians to answer a one‑question survey: “Do you support protecting the community from preventable disease?” Most people say yes. In Week 2, the same volunteers approach many of the same pedestrians and say, “Since you support protecting the community, can you schedule your vaccination appointment today?”</p>
+  <p>In a second condition, volunteers begin by asking pedestrians to commit to a two‑hour weekend shift at the clinic. Most refuse. Volunteers then respond, “Okay—could you at least share this clinic link with one friend?” Many pedestrians agree to the smaller request. In a third condition, a volunteer says, “Appointments take only 10 minutes,” gets a yes, and then adds, “Actually, because of paperwork it may take closer to 45 minutes, but you’re already scheduled.”</p>
+  <p>Across conditions, researchers track two outcomes: (1) immediate agreement to the request, and (2) whether the person later reports they genuinely believe scheduling was the ‘right thing to do’ rather than ‘something I did to avoid awkwardness.’</p>
+</div>
+<div class="reasoning-box" id="p2-reason" style="display:none;">
+  <p>1) Match each condition to a compliance technique by focusing on the *order and size* of requests. 2) Use the second outcome to separate attitude change (internalization) from surface-level acceptance (identification). 3) When two choices sound plausible, ask: does the technique involve adding benefits, increasing costs, or changing request size after refusal?</p>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <div class="q-title">Q19. In Week 1 → Week 2, the researchers are primarily testing which compliance technique?</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Door-in-the-face</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. That’s-not-all</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Obedience</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. Foot-in-the-door</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D</b></p>
+<p><b>Why this is correct:</b> A small initial request (one-question survey) is used to gain agreement, increasing the likelihood of agreeing to a larger request later (scheduling).</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Door-in-the-face begins with a large request and a refusal; not described here.</li>
+<li><b>B</b>: That’s-not-all improves the deal by adding extras, not by escalating request size later.</li>
+<li><b>C</b>: Obedience requires authority power; volunteers are making requests.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <div class="q-title">Q20. The second condition (two‑hour shift request, then ‘share the link’) is best categorized as:</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">A. Door-in-the-face</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Conformity</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Lowball</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Foot-in-the-door</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A</b></p>
+<p><b>Why this is correct:</b> A large, likely-to-be-refused request is followed by a smaller request that seems reasonable, increasing compliance via perceived concession.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>B</b>: Conformity is matching group norms, not responding to a requester’s sequence.</li>
+<li><b>C</b>: Lowball increases costs after a commitment, not after an initial refusal.</li>
+<li><b>D</b>: Foot-in-the-door starts with a small request; here the first request is large.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <div class="q-title">Q21. Which condition is most likely to produce **higher immediate agreement** but **lower genuine attitude change** (i.e., more identification than internalization), based on typical mechanisms?</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. None—compliance techniques always create internalization</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">B. The lowball condition where time costs increase after commitment</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. The foot-in-the-door condition (survey then schedule)</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. The door-in-the-face condition (two-hour shift then share link)</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B</b></p>
+<p><b>Why this is correct:</b> Lowball can secure a ‘yes’ by underplaying costs; people may follow through to stay consistent, yet still attribute the action to social pressure/commitment rather than truly endorsing the belief.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Compliance can be purely behavioral; attitude change (internalization) is not guaranteed.</li>
+<li><b>C</b>: Foot-in-the-door can sometimes produce internalization via self-perception; not necessarily lowest attitude change.</li>
+<li><b>D</b>: Door-in-the-face uses perceived concession/reciprocity; attitude change varies and isn’t inherently lowest.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- PASSAGE 3 -->
+<div class="passage-header">
+  <span>Passage 3: Explaining Vandalism—Peers vs. Structure</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A city council is deciding how to address a rise in late‑night vandalism in a neighborhood where unemployment recently increased. Interviews with teenagers show two common themes. Group A describes spending most evenings with the same small peer group; several members boast about graffiti as ‘our signature,’ and newcomers are praised when they vandalize a highly visible wall. Group A members report that older peers teach them which streets have cameras and which store owners ‘never call the police.’</p>
+  <p>Group B teens report little connection to any one peer group. Instead, they describe feeling ‘stuck’ because they see social success defined as owning expensive items, yet they believe there are few legitimate ways to achieve that goal. Some report stealing spray paint or breaking into storage sheds because ‘it’s the only way to get what people respect.’</p>
+  <p>The council considers two interventions: (1) a mentorship program that pairs teens with employed adults who model norm‑abiding behavior, and (2) expanded job training and scholarships aimed at increasing access to education and stable work.</p>
+</div>
+<div class="reasoning-box" id="p3-reason" style="display:none;">
+  <p>1) Decide whether the passage emphasizes *learning deviance from peers* (differential association) or *goal–means mismatch* (strain theory). 2) Use the proposed interventions: mentorship changes associations; job training changes access to legitimate means. 3) For each question, point to the specific evidence (peer teaching vs blocked opportunity) that supports the best theory.</p>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <div class="q-title">Q22. Which pairing of teen group and theory is best supported by the passage?</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Group A: labeling theory; Group B: cultural diffusion</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Group A: strain theory; Group B: differential association</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Group A: differential association; Group B: strain theory</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Group A: obedience; Group B: social loafing</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C</b></p>
+<p><b>Why this is correct:</b> Group A emphasizes learning techniques/norms of vandalism through close peer interactions (differential association). Group B emphasizes blocked legitimate means to culturally valued goals (strain).</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Labeling theory would require being formally labeled deviant as the driver; diffusion is cross-cultural spread.</li>
+<li><b>B</b>: Group A shows peer teaching/reinforcement (fits differential association), not goal–means mismatch; Group B fits strain.</li>
+<li><b>D</b>: Obedience and social loafing do not explain learned vandalism norms or blocked opportunities.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <div class="q-title">Q23. If the city’s primary goal is to reduce vandalism specifically among **Group A**, which intervention is most directly aligned with the implied causal mechanism?</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Scholarships/job training to improve access to legitimate means</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Increasing fines because vandalism is mainly controlled by informal sanctions</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. Mentorship that increases exposure to norm-abiding peers</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Publicly praising ‘good kids’ because stigma is the main driver</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C</b></p>
+<p><b>Why this is correct:</b> Because Group A’s behavior is learned and reinforced within a deviant peer network, changing the pattern of associations (more normative models, fewer deviant reinforcers) targets the mechanism.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>A</b>: Scholarships/job training targets blocked legitimate means (strain), more relevant to Group B.</li>
+<li><b>B</b>: Fines are formal sanctions, but passage highlights peer learning/reinforcement more than punishment probability.</li>
+<li><b>D</b>: Public praise targets stigma/labels, which are not the central causal story for Group A.</li></ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <div class="q-title">Q24. Imagine a new policy that publicly posts the names of arrested teens on the city website. Over time, some listed teens report feeling unemployable and begin vandalizing more frequently. Which concept best explains this unintended effect?</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">A. Labeling theory with role engulfment</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Informational influence</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Lowball technique</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Cultural assimilation</div>
+  <div class="fb-correct" style="display:none;">✅ Correct</div>
+  <div class="fb-incorrect" style="display:none;">❌ Incorrect</div>
+  <details class="explain" style="display:none;">
+    <summary>Explanation (click to expand)</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A</b></p>
+<p><b>Why this is correct:</b> Public labeling can alter self-concept and others’ responses (e.g., employers), increasing deviance as the ‘deviant’ role becomes central—role engulfment.</p>
+<p><b>Why the other choices are not correct:</b></p>
+<ul><li><b>B</b>: Informational influence is conformity due to believing others are correct, not identity takeover by a label.</li>
+<li><b>C</b>: Lowball is a compliance technique, unrelated to increased deviance after public labeling.</li>
+<li><b>D</b>: Assimilation is merging cultures; irrelevant to public posting of arrests.</li></ul>
+    </div>
+  </details>
+</div>
+
+  </div>
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</body></html>

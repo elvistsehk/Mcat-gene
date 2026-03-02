@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Practice — Learning (Ch 3.1)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:22px; font-weight:bold; margin-bottom:20px; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{ background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06); }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+  .section-header{ background:#0f4fa0; color:#fff; padding:12px 15px; border-radius:8px; font-size:18px; font-weight:bold; margin-top:5px; margin-bottom:12px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold; display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff; border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:20px; font-weight:bold; margin-top:35px; margin-bottom:10px; }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; line-height:1.85; box-shadow:0 1px 3px rgba(0,0,0,0.08);
+                 text-align: justify; text-justify: inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .passage-header{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .passage-toggle-btn{ background:rgba(255,255,255,0.92); border:1px solid rgba(255,255,255,0.55);
+                       color:#0b3f8e; padding:9px 14px; border-radius:10px; cursor:pointer; font-weight:bold;
+                       font-size:15px; box-shadow:0 1px 2px rgba(0,0,0,0.12); white-space:nowrap; }
+  .passage-toggle-btn:hover{ transform: translateY(-1px); }
+  .passage-guide{ display:none; background:#ffffff; border-left:5px solid #1565c0; border-radius:8px;
+                  padding:12px 14px; margin: 0 0 14px 0; line-height:1.75;
+                  box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .passage-guide h4{ margin:0 0 8px 0; color:#0f4fa0; font-size:16px; }
+  .passage-guide ul{ margin:8px 0 0 18px; }
+  .passage-guide li{ margin:6px 0; }
+
+
+
+/* How-to-reason button (ensure consistent size across passages) */
+.passage-header button[data-guide]{
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255,255,255,0.95);
+  color: #1565c0;
+  border: 1px solid rgba(0,0,0,0.18);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+  flex: 0 0 auto;
+  min-height: 32px;
+  line-height: 1.1;
+
+  transform: none;
+  letter-spacing: 0.1px;}
+.passage-header button[data-guide]:active{ transform: translateY(1px); }
+.passage-header button[data-guide]:hover{ filter: brightness(0.98); }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct');
+    const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none';
+    if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct':'incorrect');
+    const fbC=q.querySelector('.fb-correct');
+    const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct');
+      const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none';
+      if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn=document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+
+  function togglePassageGuide(id){
+    const el=document.getElementById(id);
+    if(!el) return;
+    const open = (el.style.display === 'block');
+    el.style.display = open ? 'none' : 'block';
+    const btn=document.querySelector('[data-guide="'+id+'"]');
+    if(btn){ btn.textContent = open ? 'How to reason' : 'Hide reasoning'; }
+  }
+
+
+</script>
+</head>
+<body>
+
+
+<div class="main-header">
+    🧠 MCAT Practice — Learning (Chapter 3.1) (15Q + 3 Passages × 3Q)
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+  <div class="section-header">Standalone Questions (15)</div>
+
+<div class="question" id="q1">
+  <b>1. A student startles strongly the first time they hear a cadaver saw, but after several lab sessions the sound barely affects them. Which learning-related process best describes this change?</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q1', this, 'A', true)"><span class="letter">A</span> Habituation</div>
+    <div class="choice" onclick="selectChoice('q1', this, 'B', false)"><span class="letter">B</span> Sensitization</div>
+    <div class="choice" onclick="selectChoice('q1', this, 'C', false)"><span class="letter">C</span> Spontaneous recovery</div>
+    <div class="choice" onclick="selectChoice('q1', this, 'D', false)"><span class="letter">D</span> Avoidance learning</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Habituation</b> is a decreased response after repeated exposure to the <i>same</i> stimulus. In the passage you provided, repeated exposure to an intense stimulus (e.g., cadaver lab sights/sounds) leads to a reduced reaction over time—this is the definition of habituation.</p>
+<p><b>Why the others are wrong:</b> Sensitization is the opposite pattern (responses grow stronger with repeated exposure). Spontaneous recovery is the reappearance of an extinguished <i>conditioned</i> response after time. Avoidance learning is an operant conditioning phenomenon (a behavior performed to prevent an unpleasant stimulus).</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q2">
+  <b>2. A stimulus is presented at such a low intensity that it fails to elicit any detectable response from the organism. In the terminology of the passage, this stimulus is best described as:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q2', this, 'A', false)"><span class="letter">A</span> a conditioned stimulus</div>
+    <div class="choice" onclick="selectChoice('q2', this, 'B', true)"><span class="letter">B</span> a subthreshold stimulus</div>
+    <div class="choice" onclick="selectChoice('q2', this, 'C', false)"><span class="letter">C</span> an unconditioned stimulus</div>
+    <div class="choice" onclick="selectChoice('q2', this, 'D', false)"><span class="letter">D</span> a discriminative stimulus</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The text explicitly notes that a stimulus “too weak to elicit a response” is a <b>subthreshold stimulus</b>. This is <i>before</i> we even get to conditioning labels like CS/UCS.</p>
+<p><b>Why the others are wrong:</b> A <b>CS</b> is a previously neutral stimulus that now triggers a learned response; a <b>UCS</b> naturally triggers a reflex. A <b>discriminative stimulus</b> signals that reinforcement is available in operant conditioning.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q3">
+  <b>3. During a long highway drive, a driver becomes less aware of the engine noise (habituation). After taking an exit ramp and then merging back onto a similar highway, the engine noise suddenly feels noticeable again. This renewed response to the original engine noise is best termed:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q3', this, 'A', false)"><span class="letter">A</span> Generalization</div>
+    <div class="choice" onclick="selectChoice('q3', this, 'B', true)"><span class="letter">B</span> Dishabituation</div>
+    <div class="choice" onclick="selectChoice('q3', this, 'C', false)"><span class="letter">C</span> Extinction</div>
+    <div class="choice" onclick="selectChoice('q3', this, 'D', false)"><span class="letter">D</span> Negative reinforcement</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Dishabituation</b> is the <i>recovery</i> of a response to the <i>original</i> stimulus after habituation, often triggered by introducing a second, different stimulus. The exit ramp changes sensory input and interrupts habituation, restoring attention to the original highway stimuli.</p>
+<p><b>Why the others are wrong:</b> Generalization is responding similarly to similar <i>conditioned</i> stimuli; extinction is loss of a conditioned response when CS is presented without UCS; negative reinforcement is operant (removing an unpleasant stimulus increases a behavior).</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q4">
+  <b>4. In a Pavlovian setup, a tone is paired repeatedly with an air puff to the eye, which reflexively causes blinking. Eventually, the tone alone elicits blinking. In this paradigm, the air puff is the:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q4', this, 'A', false)"><span class="letter">A</span> Conditioned stimulus (CS)</div>
+    <div class="choice" onclick="selectChoice('q4', this, 'B', false)"><span class="letter">B</span> Conditioned response (CR)</div>
+    <div class="choice" onclick="selectChoice('q4', this, 'C', true)"><span class="letter">C</span> Unconditioned stimulus (UCS)</div>
+    <div class="choice" onclick="selectChoice('q4', this, 'D', false)"><span class="letter">D</span> Neutral stimulus (NS)</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>An <b>unconditioned stimulus (UCS)</b> is any stimulus that naturally/innately produces a reflexive response. An air puff naturally causes blinking (the <b>UCR</b>) without learning. The tone begins as a neutral stimulus and becomes the CS after pairing.</p>
+<p><b>Key MCAT rule from the passage:</b> identify the <i>stimulus</i> that triggers the response—UCS → UCR, CS → CR.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q5">
+  <b>5. Pavlov repeatedly rings a bell immediately before presenting food. Over trials, the bell changes from neutral to capable of eliciting salivation on its own. The process of turning a neutral stimulus into a conditioned stimulus by pairing it with a UCS is called:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q5', this, 'A', false)"><span class="letter">A</span> Extinction</div>
+    <div class="choice" onclick="selectChoice('q5', this, 'B', true)"><span class="letter">B</span> Acquisition</div>
+    <div class="choice" onclick="selectChoice('q5', this, 'C', false)"><span class="letter">C</span> Shaping</div>
+    <div class="choice" onclick="selectChoice('q5', this, 'D', false)"><span class="letter">D</span> Latent learning</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Acquisition</b> is the learning phase in classical conditioning where the neutral stimulus is repeatedly paired with the UCS, and the association is formed so that the neutral stimulus becomes a <b>CS</b>.</p>
+<p><b>Why the others are wrong:</b> Extinction is loss of CR when CS is presented without UCS. Shaping is operant (rewarding successive approximations). Latent learning is learning without reinforcement, expressed later when reinforcement appears.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q6">
+  <b>6. After conditioning, a dog stops salivating to the bell when the bell is presented many times without food. Two days later, the bell briefly elicits salivation again before fading. Which pairing of concepts best matches these observations?</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q6', this, 'A', false)"><span class="letter">A</span> Generalization then discrimination</div>
+    <div class="choice" onclick="selectChoice('q6', this, 'B', true)"><span class="letter">B</span> Extinction then spontaneous recovery</div>
+    <div class="choice" onclick="selectChoice('q6', this, 'C', false)"><span class="letter">C</span> Sensitization then habituation</div>
+    <div class="choice" onclick="selectChoice('q6', this, 'D', false)"><span class="letter">D</span> Avoidance learning then escape learning</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Presenting the <b>CS</b> (bell) repeatedly without the <b>UCS</b> (food) produces <b>extinction</b>—the conditioned response weakens. Later, the reappearance of a <i>weak</i> CR after time is <b>spontaneous recovery</b>.</p>
+<p><b>MCAT trap:</b> extinction doesn’t necessarily erase the association; spontaneous recovery shows the learning can persist even when performance disappears temporarily.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q7">
+  <b>7. A child is conditioned to fear a specific white rat paired with a loud noise. Later, the child shows fear toward a white rabbit and a man with a white beard. This illustrates:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q7', this, 'A', false)"><span class="letter">A</span> Stimulus discrimination</div>
+    <div class="choice" onclick="selectChoice('q7', this, 'B', true)"><span class="letter">B</span> Generalization</div>
+    <div class="choice" onclick="selectChoice('q7', this, 'C', false)"><span class="letter">C</span> Negative reinforcement</div>
+    <div class="choice" onclick="selectChoice('q7', this, 'D', false)"><span class="letter">D</span> Operant conditioning</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Generalization</b> is a “broadening effect” in which stimuli sufficiently similar to the CS also evoke the CR. The original conditioned fear spreads from the white rat to other similar white, furry/white stimuli.</p>
+<p><b>Why A is wrong:</b> discrimination is the opposite—learning to respond to one stimulus but <i>not</i> to similar ones. C and D are operant concepts, not classical stimulus–stimulus pairing.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q8">
+  <b>8. A driver hears an annoying seat-belt alarm that stops only after buckling up. Over time, the driver starts buckling before the car moves to prevent the alarm. The initial learning (buckling to stop the alarm once it starts) is best classified as:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q8', this, 'A', false)"><span class="letter">A</span> Positive punishment</div>
+    <div class="choice" onclick="selectChoice('q8', this, 'B', true)"><span class="letter">B</span> Escape learning via negative reinforcement</div>
+    <div class="choice" onclick="selectChoice('q8', this, 'C', false)"><span class="letter">C</span> Avoidance learning via positive reinforcement</div>
+    <div class="choice" onclick="selectChoice('q8', this, 'D', false)"><span class="letter">D</span> Extinction</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The alarm is an unpleasant stimulus. Buckling removes it, which <b>increases</b> the likelihood of buckling in the future—this is <b>negative reinforcement</b> (removal of something unpleasant strengthens behavior). When the unpleasant stimulus has already begun and the behavior stops it, that is <b>escape learning</b>.</p>
+<p><b>Why others are wrong:</b> Positive punishment would be adding something unpleasant to <i>reduce</i> buckling (opposite direction). Avoidance learning is when the driver buckles <i>before</i> the alarm occurs (later stage). Extinction pertains to weakening of a conditioned response.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q9">
+  <b>9. Which scenario best exemplifies &lt;i&gt;negative punishment&lt;/i&gt; rather than negative reinforcement?</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q9', this, 'A', true)"><span class="letter">A</span> A child loses phone privileges after breaking curfew, and curfew-breaking decreases</div>
+    <div class="choice" onclick="selectChoice('q9', this, 'B', false)"><span class="letter">B</span> A person takes aspirin and is more likely to take it again when they have a headache</div>
+    <div class="choice" onclick="selectChoice('q9', this, 'C', false)"><span class="letter">C</span> A rat receives a food pellet after pressing a lever, increasing lever pressing</div>
+    <div class="choice" onclick="selectChoice('q9', this, 'D', false)"><span class="letter">D</span> A driver buckles a seat belt to stop an alarm, increasing buckling</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Negative punishment</b> means <i>removing</i> a desirable stimulus to <i>decrease</i> a behavior. Taking away phone privileges removes something the child likes, reducing curfew-breaking.</p>
+<p><b>Why the others are reinforcement:</b> Aspirin removes pain (negative reinforcement). Food pellet adds something pleasant (positive reinforcement). Buckling removes an unpleasant alarm (negative reinforcement).</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q10">
+  <b>10. A dog trainer pairs a clicker sound with food until the clicker itself increases the dog’s trick performance. In operant conditioning terms, the clicker is best described as a:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q10', this, 'A', false)"><span class="letter">A</span> Primary reinforcer</div>
+    <div class="choice" onclick="selectChoice('q10', this, 'B', true)"><span class="letter">B</span> Conditioned (secondary) reinforcer</div>
+    <div class="choice" onclick="selectChoice('q10', this, 'C', false)"><span class="letter">C</span> Unconditioned stimulus</div>
+    <div class="choice" onclick="selectChoice('q10', this, 'D', false)"><span class="letter">D</span> Neutral stimulus that remains neutral</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The dog responds to food naturally, making food a <b>primary reinforcer</b>. The clicker becomes reinforcing only after it is associated with food via classical conditioning, so it becomes a <b>conditioned (secondary) reinforcer</b>.</p>
+<p><b>Why A is wrong:</b> primary reinforcers have innate value (food, water). UCS/NS labels are classical-conditioning stimulus labels, but the question asks for operant terminology.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q11">
+  <b>11. A student receives extra credit immediately after answering questions correctly in class and begins volunteering answers more frequently. This consequence is best classified as:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q11', this, 'A', true)"><span class="letter">A</span> Positive reinforcement</div>
+    <div class="choice" onclick="selectChoice('q11', this, 'B', false)"><span class="letter">B</span> Negative reinforcement</div>
+    <div class="choice" onclick="selectChoice('q11', this, 'C', false)"><span class="letter">C</span> Positive punishment</div>
+    <div class="choice" onclick="selectChoice('q11', this, 'D', false)"><span class="letter">D</span> Negative punishment</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Behavior (volunteering answers) increases because a pleasant stimulus (extra credit) is <i>added</i>. Adding a positive consequence that increases a behavior is <b>positive reinforcement</b>.</p>
+<p><b>Quick MCAT grid:</b> Reinforcement increases behavior; punishment decreases behavior. Positive adds a stimulus; negative removes a stimulus.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q12">
+  <b>12. Which reinforcement schedule typically produces the &lt;b&gt;fastest response rate&lt;/b&gt; and the &lt;b&gt;greatest resistance to extinction&lt;/b&gt;?</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q12', this, 'A', false)"><span class="letter">A</span> Fixed-interval (FI)</div>
+    <div class="choice" onclick="selectChoice('q12', this, 'B', false)"><span class="letter">B</span> Fixed-ratio (FR)</div>
+    <div class="choice" onclick="selectChoice('q12', this, 'C', false)"><span class="letter">C</span> Variable-interval (VI)</div>
+    <div class="choice" onclick="selectChoice('q12', this, 'D', true)"><span class="letter">D</span> Variable-ratio (VR)</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The passage emphasizes that <b>variable-ratio (VR)</b> schedules (e.g., gambling/slot machines) create very rapid responding because each response <i>might</i> be the winning one, and they are the most resistant to extinction.</p>
+<p><b>Why the others are less effective:</b> Interval schedules limit reinforcement by time, often lowering response rate. Fixed schedules produce more predictable patterns and typically show post-reinforcement pauses.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q13">
+  <b>13. A lab rat receives one food pellet the &lt;i&gt;first time&lt;/i&gt; it presses a lever after 60 seconds have passed since the previous pellet. Presses during the 60 seconds have no effect. This schedule is:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q13', this, 'A', true)"><span class="letter">A</span> Fixed-interval (FI)</div>
+    <div class="choice" onclick="selectChoice('q13', this, 'B', false)"><span class="letter">B</span> Variable-interval (VI)</div>
+    <div class="choice" onclick="selectChoice('q13', this, 'C', false)"><span class="letter">C</span> Fixed-ratio (FR)</div>
+    <div class="choice" onclick="selectChoice('q13', this, 'D', false)"><span class="letter">D</span> Variable-ratio (VR)</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>This is classic <b>fixed-interval</b>: reinforcement becomes available after a <i>fixed time</i> period, and the <i>first</i> response after that interval is reinforced. The 60-second window resets after reinforcement.</p>
+<p><b>Contrast:</b> FR/VR depend on number of responses; VI varies the time requirement; VR varies the number of responses required.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q14">
+  <b>14. A trainer wants a bird to peck a keyboard key. First, the bird gets food for stepping toward the keyboard, then only for standing near it, then only for touching the key, and finally only for pecking it. This procedure is best described as:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q14', this, 'A', false)"><span class="letter">A</span> Latent learning</div>
+    <div class="choice" onclick="selectChoice('q14', this, 'B', false)"><span class="letter">B</span> Stimulus generalization</div>
+    <div class="choice" onclick="selectChoice('q14', this, 'C', true)"><span class="letter">C</span> Shaping</div>
+    <div class="choice" onclick="selectChoice('q14', this, 'D', false)"><span class="letter">D</span> Extinction</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Shaping</b> rewards <i>successive approximations</i> to a desired behavior—reinforcement criteria become increasingly specific as the animal gets closer to the target response.</p>
+<p><b>Why others are wrong:</b> latent learning is learning without reward shown later; generalization is responding similarly to similar stimuli; extinction is loss of a conditioned response when reinforcement/UCS is removed.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q15">
+  <b>15. Raccoons are trained to drop coins into a piggy bank, but after initial success they begin rubbing the coins together and repeatedly dipping them into the bank instead of depositing them. This failure is most consistent with:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q15', this, 'A', false)"><span class="letter">A</span> Preparedness (biological predisposition)</div>
+    <div class="choice" onclick="selectChoice('q15', this, 'B', true)"><span class="letter">B</span> Instinctive drift (reversion to innate behavior)</div>
+    <div class="choice" onclick="selectChoice('q15', this, 'C', false)"><span class="letter">C</span> Spontaneous recovery</div>
+    <div class="choice" onclick="selectChoice('q15', this, 'D', false)"><span class="letter">D</span> Dishabituation</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The passage describes <b>instinctive drift</b> as reverting to an instinctive behavior after learning a similar behavior—especially when the trained behavior conflicts with the animal’s natural tendencies. The raccoon returns to its food-washing/rubbing instinct.</p>
+<p><b>Why A is tempting but wrong:</b> preparedness is being predisposed to learn certain behaviors more easily; drift is the <i>re-emergence</i> of instinct that disrupts conditioning after learning initially seemed to work.</p>
+    </div>
+  </details>
+</div>
+
+  <div class="section-header">Passage-Based Questions (3 passages × 3)</div>
+
+<div class="passage">
+  <div class="passage-header">
+    <div class="passage-title">Passage 1: Eyeblink conditioning</div>
+    <button class="passage-toggle-btn" data-guide="pg1" onclick="togglePassageGuide('pg1')">How to reason</button>
+  </div>
+  <div class="passage-guide" id="pg1" style="display:none;">
+<p><b>How to reason (Classical conditioning)</b></p>
+<ol>
+<li><b>Label what is reflexive.</b> Identify the stimulus that naturally triggers a response (that’s the <b>UCS</b>) and the reflex itself (the <b>UCR</b>).</li>
+<li><b>Track what changes with learning.</b> A previously neutral cue becomes the <b>CS</b> once pairing causes the cue to elicit a learned response (<b>CR</b>).</li>
+<li><b>Use time-course clues.</b> Decline in CR with CS-alone presentations → <b>extinction</b>. Reappearance after a delay → <b>spontaneous recovery</b>.</li>
+<li><b>Check for spread vs precision.</b> Responding to similar cues → <b>generalization</b>. Responding only to the trained cue after differential training → <b>discrimination</b>.</li>
+</ol>
+  </div>
+  <div class="passage-box">
+    <p>A researcher studies classical conditioning of a startle-like eyeblink in adults. Participants wear a headset that can deliver a brief air puff to the eye and can also play tones of different pitches. At baseline, the air puff reliably produces an eyeblink, while tones alone do not.</p>
+    <p>During training, a 1000-Hz tone is played for 1 second immediately before each air puff. After 20 pairings, many participants begin blinking during the tone, even when the air puff is withheld on occasional probe trials.</p>
+    <p>Next, the researcher repeatedly presents the 1000-Hz tone without any air puff. Eyeblinks during the tone gradually decline. The following week, participants return and hear the 1000-Hz tone again; a weak tone-evoked eyeblink reappears in several participants.</p>
+    <p>Finally, the researcher tests tones at 900 Hz, 1000 Hz, and 1100 Hz. Participants blink most strongly to 1000 Hz, but some blinking occurs to nearby pitches as well.</p>
+  </div>
+</div>
+
+<div class="question" id="q16">
+  <b>16. In the training phase, which pairing correctly identifies the tone and the air puff?</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q16', this, 'A', false)"><span class="letter">A</span> Tone = UCS; Air puff = CS</div>
+    <div class="choice" onclick="selectChoice('q16', this, 'B', false)"><span class="letter">B</span> Tone = UCR; Air puff = UCS</div>
+    <div class="choice" onclick="selectChoice('q16', this, 'C', false)"><span class="letter">C</span> Tone = CS; Air puff = NS</div>
+    <div class="choice" onclick="selectChoice('q16', this, 'D', true)"><span class="letter">D</span> Tone = CS; Air puff = UCS</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The air puff naturally triggers eyeblinking, so it is the <b>UCS</b>. The tone starts neutral but, after pairing, comes to elicit blinking on its own, making it the <b>CS</b>. Thus: <b>tone = CS</b>, <b>air puff = UCS</b>.</p>
+<p><b>Why C is wrong:</b> once conditioning occurs, the air puff cannot be a neutral stimulus because it already elicits a reflexive response.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q17">
+  <b>17. The decline in tone-evoked blinking when the tone is presented repeatedly without the air puff is best explained as evidence of:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q17', this, 'A', true)"><span class="letter">A</span> Extinction due to CS-alone presentations</div>
+    <div class="choice" onclick="selectChoice('q17', this, 'B', false)"><span class="letter">B</span> Generalization to new stimuli</div>
+    <div class="choice" onclick="selectChoice('q17', this, 'C', false)"><span class="letter">C</span> Avoidance learning</div>
+    <div class="choice" onclick="selectChoice('q17', this, 'D', false)"><span class="letter">D</span> Positive punishment</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Extinction occurs when the <b>CS</b> is repeatedly presented without the <b>UCS</b>, weakening the conditioned response. Here, tone-alone trials reduce tone-evoked blinking over time.</p>
+<p><b>Why the others are wrong:</b> generalization is spread to similar stimuli; avoidance learning and punishment are operant concepts involving consequences of voluntary behavior.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q18">
+  <b>18. The weak reappearance of tone-evoked blinking one week later (after extinction training) most directly supports which conclusion?</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q18', this, 'A', false)"><span class="letter">A</span> The UCS has become a conditioned reinforcer</div>
+    <div class="choice" onclick="selectChoice('q18', this, 'B', true)"><span class="letter">B</span> The original association was not necessarily erased by extinction</div>
+    <div class="choice" onclick="selectChoice('q18', this, 'C', false)"><span class="letter">C</span> Participants developed stimulus discrimination during training</div>
+    <div class="choice" onclick="selectChoice('q18', this, 'D', false)"><span class="letter">D</span> Tone-evoked blinking was a subthreshold response</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Spontaneous recovery—reappearance of a weak conditioned response after time—suggests that extinction reduces <i>performance</i> of the CR but may not completely erase the underlying CS–UCS association. The memory can re-emerge after a delay.</p>
+<p><b>Why C is wrong:</b> some blinking to 900/1100 Hz indicates generalization, not strong discrimination.</p>
+    </div>
+  </details>
+</div>
+
+<div class="passage">
+  <div class="passage-header">
+    <div class="passage-title">Passage 2: Consequences and schedules</div>
+    <button class="passage-toggle-btn" data-guide="pg2" onclick="togglePassageGuide('pg2')">How to reason</button>
+  </div>
+  <div class="passage-guide" id="pg2" style="display:none;">
+<p><b>How to reason (Operant conditioning)</b></p>
+<ol>
+<li><b>Decide: reinforcement or punishment?</b> Ask whether the consequence makes the behavior <i>more</i> frequent (reinforcement) or <i>less</i> frequent (punishment).</li>
+<li><b>Decide: positive or negative?</b> Positive = <i>adding</i> a stimulus; negative = <i>removing</i> a stimulus. Combine with step 1 (e.g., remove unpleasant + behavior increases = <b>negative reinforcement</b>).</li>
+<li><b>Classify schedules by what varies.</b> Ratio = based on number of responses; interval = based on time. Fixed = predictable; variable = unpredictable.</li>
+<li><b>Predict extinction.</b> Variable-ratio schedules typically persist the longest when reinforcement stops.</li>
+</ol>
+  </div>
+  <div class="passage-box">
+    <p>A clinic tests two behavioral interventions to increase medication adherence. In Program A, a smartwatch emits a loud buzz every 10 minutes until the patient logs that they took the pill; once logged, the buzzing stops. In Program B, patients earn a raffle entry each day they take the pill; a weekly drawing awards gift cards.</p>
+    <p>In a separate animal study, rats press a lever for sugar water. Group 1 receives sugar water every 5 presses. Group 2 receives sugar water after a changing number of presses (e.g., 2, then 8, then 4, then 6), with a similar average payoff.</p>
+    <p>After training, the researchers stop delivering sugar water entirely. Group 2 continues pressing longer before giving up.</p>
+    <p>Finally, the researchers add a mild air puff to the cage whenever a rat presses the lever. Lever pressing drops sharply.</p>
+  </div>
+</div>
+
+<div class="question" id="q19">
+  <b>19. Program A (buzzing stops only after logging the pill) most directly uses which learning principle to increase adherence?</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q19', this, 'A', false)"><span class="letter">A</span> Positive punishment</div>
+    <div class="choice" onclick="selectChoice('q19', this, 'B', true)"><span class="letter">B</span> Negative reinforcement</div>
+    <div class="choice" onclick="selectChoice('q19', this, 'C', false)"><span class="letter">C</span> Negative punishment</div>
+    <div class="choice" onclick="selectChoice('q19', this, 'D', false)"><span class="letter">D</span> Stimulus discrimination</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Logging the pill-taking behavior <i>removes</i> an unpleasant stimulus (the loud buzz), which increases the likelihood of logging/taking pills in the future. That is <b>negative reinforcement</b>.</p>
+<p><b>Why A is wrong:</b> positive punishment would add something unpleasant to reduce a behavior; here the behavior is strengthened.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q20">
+  <b>20. In the rat study, Group 2’s reinforcement schedule is best classified as:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q20', this, 'A', false)"><span class="letter">A</span> Fixed-ratio</div>
+    <div class="choice" onclick="selectChoice('q20', this, 'B', false)"><span class="letter">B</span> Fixed-interval</div>
+    <div class="choice" onclick="selectChoice('q20', this, 'C', true)"><span class="letter">C</span> Variable-ratio</div>
+    <div class="choice" onclick="selectChoice('q20', this, 'D', false)"><span class="letter">D</span> Variable-interval</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Reinforcement depends on the <i>number of presses</i> (ratio), and the required number changes unpredictably while maintaining an average (variable). Therefore, Group 2 is on a <b>variable-ratio</b> schedule.</p>
+<p><b>Why not VI:</b> no time requirement is described—only counts of responses.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q21">
+  <b>21. When the researchers add an air puff every time a rat presses the lever and lever pressing decreases, this consequence is best described as:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q21', this, 'A', false)"><span class="letter">A</span> Negative reinforcement</div>
+    <div class="choice" onclick="selectChoice('q21', this, 'B', false)"><span class="letter">B</span> Negative punishment</div>
+    <div class="choice" onclick="selectChoice('q21', this, 'C', true)"><span class="letter">C</span> Positive punishment</div>
+    <div class="choice" onclick="selectChoice('q21', this, 'D', false)"><span class="letter">D</span> Positive reinforcement</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The air puff is an added unpleasant stimulus contingent on the behavior, and the behavior decreases. Adding an aversive consequence to reduce a behavior is <b>positive punishment</b> (also called aversive conditioning).</p>
+<p><b>Common trap:</b> “positive” does not mean “good”—it means the stimulus is added.</p>
+    </div>
+  </details>
+</div>
+
+<div class="passage">
+  <div class="passage-header">
+    <div class="passage-title">Passage 3: Models, consequences, and constraints</div>
+    <button class="passage-toggle-btn" data-guide="pg3" onclick="togglePassageGuide('pg3')">How to reason</button>
+  </div>
+  <div class="passage-guide" id="pg3" style="display:none;">
+<p><b>How to reason (Observational + biological constraints)</b></p>
+<ol>
+<li><b>Observational learning needs a model.</b> Look for behavior changes after <i>watching</i> someone else, especially when consequences to the model (reward/scolding) shift the observer’s behavior.</li>
+<li><b>Separate imitation from learning rules.</b> If observers adjust behavior based on whether the model is rewarded or punished, that’s stronger evidence for observational learning than simple mimicry.</li>
+<li><b>Use neural evidence carefully.</b> Neurons that fire during both doing and observing an action match the definition of <b>mirror neurons</b>.</li>
+<li><b>Check biology vs training.</b> If a learned behavior collapses into an instinctive pattern over time, consider <b>instinctive drift</b> rather than “poor reinforcement.”</li>
+</ol>
+  </div>
+  <div class="passage-box">
+    <p>A daycare investigates how children learn new behaviors by watching peers. In Week 1, children watch an older child calmly place toys back on a shelf while an adult smiles and says, “Nice job.” In free-play afterward, many observers also begin tidying toys.</p>
+    <p>In Week 2, a different group watches an older child hit a large inflatable clown toy. When the adult laughs and gives the child a sticker, observers later show more hitting behaviors toward the clown. However, when the adult instead scolds the model after hitting, observers show fewer hitting behaviors.</p>
+    <p>Researchers also record brain activity in a subset of children. They find neurons in frontal and parietal regions that fire when a child performs a reaching-and-grasping action and also when the child watches another person perform the same action.</p>
+    <p>Finally, in an animal-training side project, trainers teach raccoons to place small disks into a container for food rewards. After initial learning, many raccoons begin rubbing the disks and repeatedly dipping them into the container before pulling them out.</p>
+  </div>
+</div>
+
+<div class="question" id="q22">
+  <b>22. The Week 2 finding that observers hit the clown more when the model is rewarded (but less when the model is scolded) most strongly supports that the observers are engaging in:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q22', this, 'A', false)"><span class="letter">A</span> Latent learning</div>
+    <div class="choice" onclick="selectChoice('q22', this, 'B', false)"><span class="letter">B</span> Habituation</div>
+    <div class="choice" onclick="selectChoice('q22', this, 'C', true)"><span class="letter">C</span> Observational learning influenced by consequences to the model</div>
+    <div class="choice" onclick="selectChoice('q22', this, 'D', false)"><span class="letter">D</span> Extinction</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Observers change their behavior based on what happens to the model (reward vs scolding). That pattern matches <b>observational learning</b> (learning by watching), and it shows it is not mere imitation—consequences to the model alter the observer’s behavior.</p>
+<p><b>Why not extinction:</b> extinction is reduction of a conditioned response when reinforcement/UCS is removed, not learning from others.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q23">
+  <b>23. The neurons that fire both when a child performs an action and when the child watches another perform the same action are most consistent with:</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q23', this, 'A', false)"><span class="letter">A</span> Feature detector neurons</div>
+    <div class="choice" onclick="selectChoice('q23', this, 'B', true)"><span class="letter">B</span> Mirror neurons</div>
+    <div class="choice" onclick="selectChoice('q23', this, 'C', false)"><span class="letter">C</span> Binocular neurons</div>
+    <div class="choice" onclick="selectChoice('q23', this, 'D', false)"><span class="letter">D</span> Nociceptors</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The passage defines <b>mirror neurons</b> as neurons (noted in frontal and parietal cortex) that fire both during action execution and action observation. That is exactly what the recordings describe.</p>
+<p><b>Why others are wrong:</b> feature detectors are visual-cortex cells for specific visual features; binocular neurons compare inputs from both eyes; nociceptors detect pain.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q24">
+  <b>24. The raccoons’ tendency to revert to rubbing/dipping disks after learning to place them into a container most closely parallels which concept from the learning chapter?</b>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q24', this, 'A', false)"><span class="letter">A</span> Preparedness</div>
+    <div class="choice" onclick="selectChoice('q24', this, 'B', false)"><span class="letter">B</span> Stimulus generalization</div>
+    <div class="choice" onclick="selectChoice('q24', this, 'C', false)"><span class="letter">C</span> Spontaneous recovery</div>
+    <div class="choice" onclick="selectChoice('q24', this, 'D', true)"><span class="letter">D</span> Instinctive drift</div>
+  </div>
+  <div class="feedback fb-correct">✅ Correct</div>
+  <div class="feedback fb-incorrect">❌ Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>This resembles the classic description of <b>instinctive drift</b>: after conditioning seems successful, the animal gradually reverts to an innate behavior pattern that interferes with the trained response (raccoon “food-washing” motions).</p>
+<p><b>Why A is not best:</b> preparedness is being predisposed to learn some behaviors easily; drift is the <i>post-learning re-emergence</i> of instinct that disrupts the conditioned behavior.</p>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

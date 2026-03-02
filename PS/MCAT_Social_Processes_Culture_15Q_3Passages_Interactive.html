@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Behavioral Sciences — Social Processes &amp; Culture (8.1)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Social Processes &amp; Culture (8.1)</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="container">
+  <div class="section-label">Standalone Questions (1–15)</div>
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. During a lab practical, an experienced student performs a well-practiced pipetting routine faster while classmates watch. A novice student makes more errors when watched. This pattern best illustrates:</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Deindividuation caused by anonymity and loss of self-awareness</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Social loafing due to diffusion of responsibility in groups</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Social facilitation explained by the Yerkes–Dodson relationship between arousal and performance</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Groupthink driven by pressure for harmony in decision-making</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Social facilitation means the mere presence of others raises arousal. By the <b>Yerkes–Dodson law</b>, higher arousal improves performance on <b>simple or well-learned</b> tasks but impairs <b>complex/novel</b> tasks.</p>
+      <p><b>Other choices:</b> Social loafing is reduced effort in groups on shared tasks; deindividuation is loss of self-awareness and increased antinormative behavior; groupthink is faulty group decision-making driven by harmony.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A medical student who knows a procedure poorly is asked to demonstrate it in front of a large audience. Which change is most likely to explain a performance drop?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Reduced arousal lowers performance on simple tasks regardless of skill level</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">B. Increased arousal shifts the student past the optimal point on the Yerkes–Dodson curve for complex/novel tasks</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Anonymity in the crowd eliminates evaluation and improves complex task performance</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Peer pressure increases accuracy by strengthening internal locus of control</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> For difficult or unfamiliar tasks, too much arousal pushes performance down the right side of the inverted-U curve (over-arousal → errors).</p>
+      <p><b>Other choices:</b> Arousal does not universally lower simple-task performance; anonymity tends to reduce evaluation apprehension rather than create it; peer pressure is about conforming to peers’ norms, not fixing skill deficits.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. A masked crowd at a rivalry game begins throwing objects and vandalizing property. Which factor most directly increases the likelihood of this behavior?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Anonymity within a cohesive group that reduces personal accountability (deindividuation)</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Low arousal that reduces risk-taking and impulsive behavior</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Strong internal locus of control that increases personal responsibility</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. High individual self-awareness and private self-reflection</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Masks/uniforms + a cohesive crowd increase <b>anonymity</b> and diffuse personal responsibility, producing <b>deindividuation</b> and more antinormative behavior.</p>
+      <p><b>Other choices:</b> High self-awareness typically restrains behavior; internal locus of control is about attributing outcomes to oneself; low arousal is not the driver of mob-like escalation described.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. In a subway station, multiple people see someone collapse, but no one calls for help for several minutes. Which mechanism best accounts for this delay?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Assimilation pressures bystanders to adopt the victim’s cultural behaviors</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Social facilitation improves emergency response because observers increase arousal</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Group polarization makes individuals adopt more extreme helping norms</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. Diffusion of responsibility and social cues from others reduce perceived need to act (bystander effect)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> With many bystanders, each person feels less personal responsibility (<b>diffusion of responsibility</b>) and may look to others for cues (<b>pluralistic ignorance</b>), delaying help.</p>
+      <p><b>Other choices:</b> Group polarization is about becoming more extreme in beliefs after discussion; social facilitation is performance on tasks, not emergency helping; assimilation concerns cultural merging.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A professor notices that students contribute less in large group projects than when graded individually. Which intervention would most directly reduce the effect?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Add a competitive leaderboard to trigger deindividuation</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Increase individual accountability by making each member’s contribution identifiable</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Encourage members to remain anonymous to reduce evaluation apprehension</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Increase group size so responsibility is shared more evenly</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Social loafing is reduced effort when individual output is not identifiable. Making contributions <b>measurable</b> and <b>personally accountable</b> directly counters it.</p>
+      <p><b>Other choices:</b> Larger groups usually worsen loafing; anonymity reduces accountability; competition may increase effort but the choice given mislabels mechanisms and does not address identifiability as directly.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. After joining a new friend group, a teen starts dressing the same way to avoid rejection. Later, they report that the style now feels 'authentic' and criticize their old preferences. This best reflects:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Learned helplessness due to repeated uncontrollable outcomes</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Displacement of frustration from parents onto peers</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Self-handicapping to protect self-esteem from failure</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. Identity shift that reduces cognitive dissonance by internalizing group norms</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The teen first conforms to avoid rejection, then resolves the uncomfortable mismatch between behavior and prior preferences by adopting the group’s standards as their own—an <b>identity shift</b> that reduces <b>cognitive dissonance</b>.</p>
+      <p><b>Other choices:</b> Self-handicapping creates excuses for failure; displacement redirects emotion to a safer target; learned helplessness involves giving up after uncontrollable outcomes.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. In Asch’s line-judgment setup, a participant says the wrong line matches even though the correct answer is obvious. The most likely explanation is:</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Normative social influence: conforming to avoid standing out or being rejected</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Informational social influence: believing the group must be correct because the task is ambiguous</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Groupthink: suppressing dissent during a high-stakes policy decision</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Social loafing: reducing effort because others will answer for them</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> In Asch, the task is simple and unambiguous, so conformity is usually <b>normative</b> (avoid social disapproval), not informational.</p>
+      <p><b>Other choices:</b> Informational influence is more likely when the situation is unclear; social loafing is reduced effort on a group task; groupthink involves decision-making processes in cohesive groups.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. Which scenario is the best example of social action rather than social interaction?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Two coworkers negotiate who will present first during a meeting</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Someone lowers their voice in a library because others are present, without directly coordinating with anyone</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Two friends mirror each other’s posture during a conversation</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. A couple adjusts plans after discussing each other’s preferences</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Social action</b> is behavior adjusted because others are around, without necessarily coordinating with them. Lowering one’s voice because a social environment implies norms fits.</p>
+      <p><b>Other choices:</b> The remaining options involve mutual influence/coordination between people, which is <b>social interaction</b>.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. A committee initially leaning slightly toward a risky investment ends up endorsing a very risky strategy after discussion. This is best described as:</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Group polarization (choice shift) toward a more extreme position</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Groupthink producing a poor decision by suppressing alternatives</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Social facilitation increasing performance on complex reasoning tasks</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Deindividuation producing antinormative behavior through anonymity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> After discussion, groups often move to a <b>more extreme</b> version of their initial lean (risky or cautious). That’s <b>group polarization</b> / <b>choice shift</b>.</p>
+      <p><b>Other choices:</b> Groupthink is about suppressing dissent to maintain harmony; social facilitation concerns task performance under observation; deindividuation concerns anonymity-driven antinormative behavior.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. Which situation is most characteristic of groupthink (not group polarization)?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Individuals reduce effort on a shared task because performance is not individually tracked</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Members move toward a more extreme stance after hearing reinforcing arguments</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Observers fail to help because they assume someone else will intervene</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">D. Members self-censor objections and a 'mindguard' filters out outside criticism to preserve unanimity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Groupthink shows up when harmony/consensus becomes the priority: <b>self-censorship</b>, <b>illusion of unanimity</b>, and <b>mindguards</b> blocking dissenting information.</p>
+      <p><b>Other choices:</b> Polarization can happen even with good critical thinking; loafing and bystander effect are different group phenomena about effort and helping.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. A school district encourages students from many backgrounds to maintain their languages and traditions, and it builds curricula that celebrate differences. This approach is best described as:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Deindividuation (loss of self-awareness in a crowd)</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Groupthink (consensus without critical evaluation)</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Assimilation (a melting pot in which minority traits are replaced by dominant ones)</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">D. Multiculturalism (a cultural mosaic that values coexisting cultures)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Multiculturalism</b> encourages and celebrates multiple coexisting cultures (a “cultural mosaic”).</p>
+      <p><b>Other choices:</b> Assimilation implies convergence toward a dominant culture (“melting pot”); deindividuation and groupthink are group-psych phenomena unrelated to cultural policy.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. Which observation would best indicate cultural assimilation in an immigrant community?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Residents cluster into an ethnic enclave and primarily marry within the enclave</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. Over time, language attainment and intermarriage rates increase while distinctive cultural practices decline</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Community members become anonymous in crowds and engage in antinormative behavior</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Different cultural groups remain distinct and celebrate differences in public festivals</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Increased <b>language attainment</b> in the dominant language and increased <b>intermarriage</b> are classic markers that a group’s practices are converging toward the broader society.</p>
+      <p><b>Other choices:</b> Enclaves can preserve culture and slow assimilation; festivals celebrating differences align with multiculturalism; anonymity-driven rioting is deindividuation.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A neighborhood with many shops, schools, and media outlets in one shared heritage language forms around new arrivals. Sociologists would most likely label this as:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. A demonstration of group polarization in online discussions</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. A counterculture whose main goal is to oppose the dominant society</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. A case of social facilitation in which arousal improves simple task performance</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. An ethnic enclave that can maintain cultural practices and slow certain aspects of assimilation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> An <b>ethnic enclave</b> is a neighborhood with high concentration of one ethnicity that often supports cultural maintenance (shops, language, institutions).</p>
+      <p><b>Other choices:</b> Counterculture explicitly opposes dominant mores; social facilitation concerns arousal/performance; polarization concerns opinion extremity after group discussion.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. A group of students adopts a distinctive clothing style and music preference that differentiates them from the mainstream, but they do not aim to overturn societal values. This is most accurately called a:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Groupthink coalition</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Subculture</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Assimilationist movement</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Counterculture</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> A <b>subculture</b> differentiates itself (symbols, music, clothing) but does not necessarily reject mainstream values. A <b>counterculture</b> deliberately opposes dominant norms.</p>
+      <p><b>Other choices:</b> Assimilation is cultural merging; groupthink is faulty decision-making.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. A person traveling abroad feels disoriented and anxious because everyday norms—greetings, meal times, and personal space—are unfamiliar. This experience is best termed:</b>
+  <div class="choice" onclick="selectChoice('q15', this, true)">A. Culture shock</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Learned helplessness</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Illusion of invulnerability</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Social loafing</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> <b>Culture shock</b> is the disorientation that arises when familiar social cues and norms are missing or replaced by different ones.</p>
+      <p><b>Other choices:</b> Social loafing is reduced effort in groups; learned helplessness is giving up after uncontrollable outcomes; illusion of invulnerability is a groupthink indicator.</p>
+    </div>
+  </details>
+</div>
+
+
+  <div class="section-label">Passages (3 passages × 3 questions)</div>
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Performance Under Observation in EMT Training</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A fire department evaluates new EMT recruits on two stations. Station A is a <b>simple</b>, well-rehearsed sequence: assemble an oxygen mask and start oxygen flow. Station B is a <b>complex</b> scenario: interpret changing vital signs, choose an intervention, and communicate a plan while a supervisor asks rapid follow-up questions.</p>
+  <p>Recruits first practice alone in a quiet room. One week later, they repeat both stations in a public skills lab while ten peers watch from behind a glass wall. For Station A, average completion time drops from 55 s (alone) to 45 s (observed), with no change in error rate. For Station B, average completion time is similar, but decision errors rise from 8% (alone) to 22% (observed).</p>
+  <p>After the observed session, several recruits report that they felt "amped up" and hyper-aware of being evaluated, even though the peers behind the glass did not speak.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Label task type: Station A is <b>simple/well-learned</b>; Station B is <b>complex/novel</b>.</li>
+    <li>Map arousal → performance: social presence can raise arousal; the <b>inverted-U</b> predicts improvement for simple tasks but impairment for complex tasks.</li>
+    <li>Use the numbers: faster time + stable errors suggests facilitation; higher error rate on complex decisions suggests over-arousal.</li>
+    <li>Beware distractors: peer pressure changes beliefs/behavior to fit norms; here the peers are silent—think <b>evaluation apprehension</b> and arousal.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. Which concept best explains why Station A improved while Station B showed more errors when peers were present?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Social facilitation: increased arousal enhances simple tasks but impairs complex tasks (Yerkes–Dodson)</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Groupthink: consensus-seeking that reduces critical evaluation</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Assimilation: adopting the dominant culture’s behaviors</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Social loafing: reduced effort because others share responsibility</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The passage contrasts a simple, practiced task (time improves) with a complex decision task (errors increase) under observation—classic <b>social facilitation</b> via the <b>Yerkes–Dodson</b> curve.</p>
+      <p><b>Other choices:</b> Social loafing would predict <i>less</i> effort on a shared group task; groupthink is faulty group decision-making; assimilation is cultural merging.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Which additional result would most strongly support the passage’s implied mechanism for Station B errors?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Physiologic measures show higher sympathetic arousal (e.g., increased heart rate) during the observed Station B trial than when alone</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Errors remain high even when the complex task is fully overlearned and automated</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Recruit performance improves as the peer audience becomes larger and more anonymous</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Recruits report stronger agreement with peers’ medical opinions after the session</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The mechanism is <b>arousal</b> under perceived evaluation. A direct biomarker of sympathetic arousal aligns with Yerkes–Dodson.</p>
+      <p><b>Other choices:</b> Agreement with peers speaks to <b>conformity/peer influence</b>, not arousal; anonymity would reduce evaluation apprehension; overlearning should convert a complex task into a simpler one, reducing the impairment.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. Suppose the peers behind the glass were replaced by a single expert evaluator who provides immediate written scoring. What change would you most predict for Station A?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Lower effort on Station A due to diffusion of responsibility among bystanders</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Worse performance on Station A because any evaluation necessarily decreases arousal</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Even greater performance on Station A up to an optimal arousal point, because evaluation increases arousal on a simple task</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. No change, because social facilitation requires the peers to verbally encourage the recruit</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Evaluation generally raises arousal more than mere presence. For a <b>simple/well-practiced</b> task, moderate extra arousal can improve speed/precision—until over-arousal.</p>
+      <p><b>Other choices:</b> Evaluation tends to increase (not decrease) arousal; facilitation does not require verbal encouragement; diffusion of responsibility concerns helping behavior, not task execution.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Online Committee, Extremes, and Consensus Pressure</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A hospital forms an online committee to decide whether to adopt a new triage protocol. Before discussion, most members privately rate the protocol as "somewhat helpful" but note limitations. Over three days, members post messages in a shared forum that is visible to the whole group.</p>
+  <p>As the thread grows, members who favor adoption share success stories and upvote one another. A smaller number of skeptics post concerns about staffing and unintended consequences, but those posts receive little engagement. One senior member repeatedly replies, "We don’t need to overthink this," and summarizes the discussion by highlighting only pro-adoption arguments.</p>
+  <p>At the final vote, the group chooses an <b>extremely aggressive</b> adoption plan with minimal pilot testing. Later, an external auditor notes that several major risks were never seriously evaluated.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate two group phenomena: moving to <b>more extreme</b> beliefs = <b>group polarization</b>; making a <b>poor decision</b> because dissent is suppressed = <b>groupthink</b>.</li>
+    <li>Look for groupthink markers: <b>pressure for conformity</b>, <b>self-censorship</b>, <b>illusion of unanimity</b>, and <b>mindguards</b> (filtering info).</li>
+    <li>Use passage evidence: upvotes amplify one side (polarization), and a senior member filters/discounts concerns (groupthink).</li>
+    <li>Predict interventions: add structured dissent, outside review, or independent subgroups to reduce groupthink.</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. Which pair of concepts best captures what is happening in the committee’s final decision?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Deindividuation combined with social facilitation</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Assimilation combined with multiculturalism</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Group polarization (more extreme adoption stance) occurring alongside groupthink (poor evaluation of alternatives)</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Social loafing combined with the bystander effect</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The group moves from "somewhat helpful" to an <b>extreme</b> plan (polarization) and also fails to evaluate risks due to suppressed dissent (groupthink).</p>
+      <p><b>Other choices:</b> Loafing/bystander are about effort/helping; assimilation/multiculturalism are cultural processes; deindividuation/facilitation do not match the decision-making clues.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. Which detail from the passage is the clearest example of a 'mindguard' role?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Skeptics receive little engagement on their posts</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Members upvote stories that confirm their initial lean</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. The final vote occurs after three days of discussion</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. The senior member summarizes the thread by highlighting only pro-adoption arguments and downplaying concerns</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> A <b>mindguard</b> shields the group from dissenting information. Selectively filtering the content of the discussion fits this exactly.</p>
+      <p><b>Other choices:</b> Upvoting is reinforcing and can fuel polarization; low engagement may encourage self-censorship but is not itself mindguarding; timing alone is not diagnostic.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. Which change would most directly reduce the risk of groupthink in future protocol decisions?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Encourage faster decisions to prevent overthinking</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Remove anonymity so members feel more personally responsible for the outcome</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">C. Require an independent 'devil’s advocate' and invite external reviewers before final votes</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Increase group cohesiveness by selecting only close colleagues</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Structured dissent and outside critique counteract self-censorship, illusion of unanimity, and mindguards—core groupthink mechanisms.</p>
+      <p><b>Other choices:</b> Cohesiveness can worsen groupthink; rushing increases it; anonymity is more central to deindividuation and is not the primary driver shown here.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Neighborhood Change: Enclaves, Assimilation, and Subcultures</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A city tracks outcomes for newcomers from Country X. Many families initially settle in a neighborhood where grocery stores, clinics, and after-school programs operate primarily in the heritage language. Over the next decade, two patterns emerge.</p>
+  <p><b>Pattern 1:</b> Some residents remain concentrated in the neighborhood, marry within the community, and consume mostly heritage-language media. Their children often become bilingual but report feeling "at home" mainly inside the neighborhood.</p>
+  <p><b>Pattern 2:</b> Other residents move throughout the city, predominantly use the majority language at work and school, and have higher rates of intermarriage. Their children report fewer heritage practices but feel comfortable navigating multiple social settings.</p>
+  <p>In the same city, a yearly festival celebrates multiple cultural traditions side-by-side. Meanwhile, a youth group adopts distinctive music and fashion to stand out, but they still endorse most mainstream rules and goals.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Tag each pattern: concentrated neighborhood + heritage institutions → <b>ethnic enclave</b>; spreading out + intermarriage/language shift → <b>assimilation</b>.</li>
+    <li>Use the four assimilation indicators mentioned in the chapter: <b>socioeconomic status</b>, <b>geographic distribution</b>, <b>language attainment</b>, <b>intermarriage</b>.</li>
+    <li>Identify multiculturalism: public celebration of coexisting cultures (a <b>mosaic</b>).</li>
+    <li>For youth groups: distinctive symbols without rejecting society → <b>subculture</b>; active opposition → <b>counterculture</b>.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. Which label best applies to the neighborhood described at the start of the passage, and what is one likely consequence?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Multiculturalism; it necessarily eliminates heritage-language institutions</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Ethnic enclave; it can preserve cultural practices and slow some markers of assimilation like majority-language dominance</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Deindividuation; it increases antinormative behavior by anonymity</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Groupthink; it produces uniform opinions through mindguards</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> A high-concentration neighborhood with heritage-language services is an <b>ethnic enclave</b>. Enclaves can support cultural maintenance, which may slow certain assimilation indicators (e.g., language shift).</p>
+      <p><b>Other choices:</b> Multiculturalism is a broader societal approach; groupthink/deindividuation are unrelated to neighborhood cultural concentration.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. Based on the chapter’s four assimilation indicators, which Pattern shows greater assimilation, and why?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Pattern 1, because bilingualism always implies complete cultural assimilation</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Pattern 2, because maintaining heritage festivals prevents cultural mixing</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. Pattern 2, because geographic dispersal, majority-language use, and higher intermarriage rates indicate stronger assimilation</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Pattern 1, because clustering in one neighborhood increases contact with the dominant culture</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The indicators include <b>geographic distribution</b>, <b>language attainment</b>, and <b>intermarriage</b>—all stronger in Pattern 2.</p>
+      <p><b>Other choices:</b> Clustering often maintains cultural separation; bilingualism does not guarantee assimilation; festivals celebrating multiple cultures align with multiculturalism rather than blocking mixing.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. The youth group described is best classified as which of the following?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Counterculture, because it rejects mainstream rules and values</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Assimilation, because it adopts the dominant culture’s norms</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. Subculture, because it differentiates itself symbolically without aiming to oppose dominant social mores</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Social loafing, because effort decreases in group settings</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The passage says the group wants to stand out but still endorses mainstream rules/goals—consistent with a <b>subculture</b>.</p>
+      <p><b>Other choices:</b> Counterculture would involve deliberate opposition; assimilation is cultural convergence, not symbolic differentiation; loafing concerns reduced effort on tasks.</p>
+    </div>
+  </details>
+</div>
+
+</div>
+</body>
+</html>

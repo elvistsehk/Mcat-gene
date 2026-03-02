@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Biological Basis of Mental Disorders (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Biological Basis of Mental Disorders (Chapter 7.3)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. An antipsychotic medication reduces hallucinations in a patient with schizophrenia by blocking dopamine receptors. Which change is the most direct therapeutic mechanism for reducing the patient’s positive symptoms?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Increased acetylcholine release in the nucleus basalis</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Increased dopaminergic signaling in the nigrostriatal pathway</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Decreased dopaminergic signaling in the mesolimbic pathway</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Decreased serotonin reuptake in the raphe nuclei</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Schizophrenia is strongly associated with excess dopamine signaling, and many antipsychotics (neuroleptics) work primarily by antagonizing dopamine receptors. Reducing dopamine activity in the mesolimbic pathway is most closely linked to improvement in positive symptoms (hallucinations, delusions).</p>
+      <p><b>Other choices:</b> B: ACh loss is more classically tied to Alzheimer’s disease. C: Increasing nigrostriatal dopamine would counter Parkinson-like side effects but isn’t the antipsychotic mechanism for positive symptoms. D: Decreasing serotonin reuptake is an SSRI mechanism used for depression/anxiety, not the primary dopamine-blocking antipsychotic action.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A patient with major depressive disorder is evaluated for biological markers discussed in MCAT behavioral science review. Which lab finding best matches the typical endocrine abnormality associated with depression?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Elevated glucocorticoid levels reflecting HPA-axis activation</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Elevated insulin levels due to pancreatic hypersecretion</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Low ACTH due to pituitary failure</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Low morning cortisol due to adrenal suppression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Depression is associated with abnormally high levels of glucocorticoids (especially cortisol), consistent with chronic stress/HPA-axis hyperactivity.</p>
+      <p><b>Other choices:</b> A: The pattern is typically higher, not lower, cortisol. C: Insulin changes are not a core marker listed for depression here. D: If cortisol is elevated from HPA activation, ACTH is not expected to be low from pituitary failure.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. A clinician starts an antidepressant that increases synaptic monoamines. Which observation best supports the monoamine theory connection between depression and neurotransmitters?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Depressed patients show increased monoamine production with faster breakdown</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Depressed patients show normal monoamines but increased acetylcholine</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Depressed patients show increased dopamine specifically in the substantia nigra</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Depressed patients show decreased monoamines and decreased monoamine metabolites</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The passage notes that norepinephrine, serotonin, and dopamine (and their metabolites) are decreased in depressed patients, suggesting decreased production (not just increased degradation).</p>
+      <p><b>Other choices:</b> A: Opposite of the described finding. C: Acetylcholine reduction is emphasized in Alzheimer’s disease, not depression. D: Substantia nigra dopamine is central to Parkinson’s disease; depression is not described as increased nigral dopamine.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. Which genetic association best explains the increased risk of Alzheimer’s disease in individuals with Down syndrome?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Mutation in APOE on chromosome 19</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Mutation in HTT gene on chromosome 4</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Mutation in presenilin genes on chromosomes 1 and 14</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. β-amyloid precursor protein gene located on chromosome 21</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The β-amyloid precursor protein (APP) gene is on chromosome 21. Trisomy 21 increases APP dosage, helping explain the higher Alzheimer’s risk in Down syndrome.</p>
+      <p><b>Other choices:</b> A: APOE affects risk but does not explain Down syndrome linkage. B: Presenilin mutations are linked to Alzheimer’s but not specifically to trisomy 21. D: HTT is Huntington disease.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A neuropathology slide from a patient with progressive memory loss shows extracellular deposits of misfolded protein in β-pleated sheet form and intracellular aggregates of hyperphosphorylated tau. Which diagnosis is most consistent?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Major depressive disorder</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Schizophrenia</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">C. Alzheimer’s disease</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Parkinson’s disease</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Alzheimer’s disease is associated with β-amyloid senile plaques (β-pleated sheet) and neurofibrillary tangles composed of hyperphosphorylated tau.</p>
+      <p><b>Other choices:</b> B: Parkinson’s features loss of dopaminergic neurons and Lewy bodies (α-synuclein), not β-amyloid/tau as the classic pairing here. C: Depression has neuroendocrine/neurotransmitter markers rather than plaques/tangles. D: Schizophrenia is not defined by amyloid plaques/tau tangles.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. A patient has resting tremor, bradykinesia, cogwheel rigidity, and a shuffling gait. The underlying pathology most directly involves decreased dopamine production in which structure?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Hippocampus</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">B. Substantia nigra</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Ventral tegmental area</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Amygdala</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Parkinson’s disease is caused by decreased dopamine production from dopaminergic neurons in the substantia nigra, impairing basal ganglia function and movement initiation/termination.</p>
+      <p><b>Other choices:</b> B: VTA dopamine is more associated with reward/mesolimbic pathways. C: Amygdala metabolism is discussed in depression markers. D: Hippocampal atrophy is discussed in depression and memory processes, but Parkinson’s core deficit is nigral dopamine.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. A patient treated with a high-potency antipsychotic develops muscle rigidity and a flattened facial expression. These “parkinsonian” side effects most directly result from:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Decreased β-amyloid production</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Excess acetylcholine in the hippocampus</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">C. Blockade of dopamine signaling in motor pathways</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Increased dopamine signaling in the striatum</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Antipsychotics often block dopamine receptors; dopamine blockade in nigrostriatal (motor) pathways can produce extrapyramidal, Parkinson-like symptoms (rigidity, bradykinesia, flat affect).</p>
+      <p><b>Other choices:</b> A: The side effects are due to decreased, not increased, dopamine signaling. C: Not the key mechanism for these motor side effects. D: β-amyloid relates to Alzheimer’s, not acute antipsychotic motor effects.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. Which pairing correctly matches dopamine changes to clinical syndromes described in the text?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Depression: dopamine excess; Parkinson’s: dopamine excess</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Schizophrenia: dopamine excess; Parkinson’s: dopamine deficit</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Schizophrenia: dopamine excess; Alzheimer’s: dopamine deficit</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Schizophrenia: dopamine deficit; Parkinson’s: dopamine excess</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Schizophrenia is associated with excess dopamine, while Parkinson’s disease is associated with decreased dopamine production (substantia nigra).</p>
+      <p><b>Other choices:</b> A: Reversed. C: Alzheimer’s is described primarily with acetylcholine reduction and plaques/tangles. D: Depression is described with decreased monoamines, not excess dopamine.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. A researcher studying schizophrenia risk factors designs a retrospective cohort study. Which exposure is explicitly noted in the passage as being associated with increased schizophrenia risk?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. High dietary cholesterol during adulthood</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Prenatal exposure to low acetylcholine levels</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. Excessive marijuana use during adolescence</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Childhood exposure to bright light therapy</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The text states that excessive marijuana use in adolescence is associated with increased schizophrenia risk (along with genetic factors and perinatal hypoxemia).</p>
+      <p><b>Other choices:</b> B: Not discussed here. C: Bright light therapy is used for seasonal affective disorder in a different section, not schizophrenia risk. D: Low acetylcholine is emphasized in Alzheimer’s, not as a prenatal exposure for schizophrenia.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. An epidemiologist explains familial risk by stating: “If one person has schizophrenia, their first-degree relatives are about ten times more likely to have the disorder than unrelated individuals.” This statement most directly supports which conclusion?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Schizophrenia is best explained by acetylcholine deficiency</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Bipolar disorder is more heritable than schizophrenia</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Schizophrenia has a significant inherited component even after accounting for environment</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Schizophrenia is caused entirely by social environment</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> A tenfold increased risk among first-degree relatives (noted as controlling for environmental effects) supports a meaningful genetic/inherited contribution to schizophrenia risk.</p>
+      <p><b>Other choices:</b> A: The finding argues against an exclusively environmental cause. B: The statement is about schizophrenia specifically, not a comparison. D: Acetylcholine deficiency is tied to Alzheimer’s, not schizophrenia.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. A 70-year-old has gradual memory loss, disorientation, and trouble with abstract thought. MRI shows diffuse cortical atrophy and enlarged ventricles. Which additional biochemical finding best matches the disease’s classic profile?</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Reduced acetylcholine levels</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Markedly elevated dopamine in the substantia nigra</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Increased choline acetyltransferase activity</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Elevated cortisol as the primary driver</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Alzheimer’s disease is associated with reduced acetylcholine and reduced choline acetyltransferase (ChAT), along with diffuse brain atrophy and enlarged ventricles.</p>
+      <p><b>Other choices:</b> A: ChAT is reduced, not increased. C: Nigral dopamine changes are central to Parkinson’s disease. D: Elevated cortisol is discussed as a depression marker; it’s not the hallmark biochemical change for Alzheimer’s.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. In Parkinson’s disease, L-DOPA is used as therapy because it:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Directly increases acetylcholine synthesis in the basal forebrain</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Blocks dopamine receptors to reduce psychosis</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. Crosses the blood–brain barrier and is converted to dopamine in the brain</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Prevents formation of β-amyloid plaques</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> L-DOPA is a dopamine precursor that can cross the blood–brain barrier and then be converted to dopamine, partially replacing dopamine lost due to substantia nigra degeneration.</p>
+      <p><b>Other choices:</b> A: That describes antipsychotics. C: β-amyloid relates to Alzheimer’s. D: Parkinson’s core deficit is dopamine, not acetylcholine synthesis.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A clinician notes that higher educational attainment is associated with a lower risk of Alzheimer’s disease. Which interpretation best fits this observation as presented?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Education eliminates genetic risk from APOE variants</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Education prevents β-amyloid from adopting β-pleated sheet structure</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Education increases dopamine synthesis in the substantia nigra</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Education may provide cognitive reserve that delays functional impairment</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The text notes an inverse association between education and Alzheimer’s risk; a common interpretation in medicine is cognitive reserve—more resilient cognitive networks may delay noticeable functional decline.</p>
+      <p><b>Other choices:</b> A: Education does not remove genetic variants. C: Education is unlikely to directly change protein folding into β-pleated sheets. D: Nigral dopamine pertains to Parkinson’s disease.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. A patient with Alzheimer’s disease is found to have reduced acetylcholine. Which enzymatic change most directly contributes to this neurotransmitter deficit?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Increased monoamine oxidase activity</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Reduced choline acetyltransferase (ChAT) activity</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Reduced tyrosine hydroxylase activity</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Reduced tryptophan hydroxylase activity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Choline acetyltransferase (ChAT) synthesizes acetylcholine; the text notes reduced ChAT in Alzheimer’s, contributing to reduced acetylcholine levels.</p>
+      <p><b>Other choices:</b> B: MAO relates to monoamine breakdown, not ACh synthesis. C: Tyrosine hydroxylase is for catecholamines (including dopamine), tied to Parkinson’s. D: Tryptophan hydroxylase is for serotonin, tied to monoamine pathways.</p>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. A patient with bipolar disorder presents with a manic episode. According to the simplified monoamine/catecholamine theory described, which neurotransmitter pattern is most consistent with mania?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Low acetylcholine and low choline acetyltransferase</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. High norepinephrine and high serotonin</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Low norepinephrine and low serotonin</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. High cortisol with no monoamine changes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The passage notes that in the simplified monoamine theory, mania is linked to increased norepinephrine and serotonin (and depression to decreased).</p>
+      <p><b>Other choices:</b> A: More consistent with depression in the simplified model. C: Alzheimer’s markers. D: Cortisol is discussed for depression/stress markers, but mania in this model is tied to elevated monoamines.</p>
+    </div>
+  </details>
+</div>
+
+
+<div class="section-label">Passages (3 passages × 3 questions each)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Passage 1: Dopamine Pathways, Psychosis, and Parkinsonism</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A neurology–psychiatry consult service follows two patients receiving medications that alter dopamine signaling. Patient X was admitted for new-onset persecutory delusions, auditory hallucinations, and disorganized speech. The team starts Drug D, a medication that blocks dopamine receptors, and within a week Patient X’s hallucinations become less frequent.</p>
+  <p>Patient Y has a several-year history of resting tremor, bradykinesia, and cogwheel rigidity. Imaging suggests degeneration of dopaminergic neurons that normally project to motor circuits. The team starts Drug L, a dopamine precursor that can be converted to dopamine in the brain. Patient Y’s gait improves, but after dose escalation the patient begins reporting vivid visual hallucinations.</p>
+  <p>A resident proposes using Drug D to treat Patient Y’s hallucinations. Another resident worries that this may worsen Patient Y’s motor function. The attending asks the team to justify which symptoms would be expected to improve or worsen based on dopamine’s role in different brain pathways.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify the core dopamine problem in each condition: schizophrenia is linked to dopamine excess; Parkinson’s to dopamine deficit (substantia nigra).</li>
+    <li>Map symptom type to pathway: positive psychotic symptoms improve with dopamine blockade; Parkinson motor symptoms worsen with dopamine blockade and improve with dopamine replacement.</li>
+    <li>Use medication logic: L-DOPA can overshoot and cause psychosis; antipsychotics can cause parkinsonism by blocking dopamine in motor pathways.</li>
+  </ol>
+</div>
+
+<div class="question" id="q16">
+  <b>16. Based on the passage, which mechanism best explains why Drug D reduces Patient X’s hallucinations?</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Blocking dopamine receptors decreases mesolimbic dopamine signaling linked to positive symptoms</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Blocking dopamine receptors increases acetylcholine synthesis in the hippocampus</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Blocking dopamine receptors increases dopamine release in the substantia nigra</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Blocking dopamine receptors prevents β-amyloid plaque formation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Antipsychotics reduce positive symptoms largely by decreasing dopamine signaling (classically via dopamine receptor antagonism) in pathways associated with psychosis (often summarized as mesolimbic dopamine excess).</p>
+      <p><b>Other choices:</b> B: Increasing nigral dopamine would not explain antipsychotic benefit and would be more relevant to Parkinson motor function. C: ACh synthesis is not the primary mechanism here. D: β-amyloid plaques are Alzheimer-related.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q17">
+  <b>17. Patient Y develops visual hallucinations after higher doses of Drug L. Which explanation best integrates the text’s schizophrenia–Parkinson’s dopamine connection?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Drug L primarily increases acetylcholine, leading to delusions</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Drug L blocks dopamine receptors, mimicking schizophrenia</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Drug L lowers dopamine broadly, causing psychosis as a withdrawal phenomenon</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Drug L increases brain dopamine, which can produce psychotic symptoms when excessive</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> L-DOPA increases dopamine availability in the brain; excess dopaminergic signaling can lead to psychotic side effects (hallucinations/delusions), paralleling the dopamine-excess association described for schizophrenia.</p>
+      <p><b>Other choices:</b> A: It increases dopamine rather than lowering it. C: ACh is not the core mechanism for L-DOPA–induced psychosis. D: L-DOPA does not block dopamine receptors.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q18">
+  <b>18. If the team gives Patient Y Drug D for hallucinations, which outcome is most likely based on the passage evidence and core neurobiology?</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. Improved hallucinations but worsening bradykinesia/rigidity</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Worsened hallucinations due to dopamine blockade</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Improved tremor and improved gait because dopamine blockade stabilizes motor circuits</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Improved hallucinations with no change in motor function because pathways are independent</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Dopamine blockade can reduce psychotic symptoms but tends to worsen Parkinson motor symptoms because Parkinson’s disease involves insufficient dopamine for basal ganglia motor function; antipsychotics can produce parkinsonian side effects.</p>
+      <p><b>Other choices:</b> A: Dopamine blockade generally worsens, not improves, Parkinson motor symptoms. C: Pathways are partially distinct but dopamine antagonism can still worsen motor function via nigrostriatal blockade. D: Dopamine blockade typically reduces, not worsens, hallucinations.</p>
+    </div>
+  </details>
+</div>
+
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Passage 2: Alzheimer Genetics—Chromosomes 14, 19, and 21</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A family medicine clinic follows an extended family with unusually early-onset dementia. Two siblings begin showing progressive memory loss and disorientation in their late 40s. A genetic counselor explains that some Alzheimer’s cases have strong genetic components, and she orders testing for several genes discussed in medical education materials.</p>
+  <p>In the same clinic, a separate patient with trisomy 21 (Down syndrome) asks why clinicians frequently screen for dementia symptoms earlier in life. The counselor notes that one gene implicated in Alzheimer’s disease is located on chromosome 21, and that gene dosage changes can influence disease risk.</p>
+  <p>Testing returns the following results: the early-onset siblings carry a mutation in a gene located on chromosome 14 that is involved in processing amyloid-related proteins. Another relative carries a risk-associated allele on chromosome 19 but has no symptoms at age 55. The counselor emphasizes that genes can influence likelihood and timing, but do not fully determine outcome.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Match each chromosome clue to the gene list in the text: presenilin genes (1 and 14), APOE (19), APP (21).</li>
+    <li>Distinguish ‘risk allele’ from deterministic early-onset mutations: APOE variants alter risk; presenilin mutations are classically tied to familial/early onset.</li>
+    <li>Use the Down syndrome clue: trisomy 21 increases APP gene dosage, linking to Alzheimer risk.</li>
+  </ol>
+</div>
+
+<div class="question" id="q19">
+  <b>19. Which gene–chromosome pairing from the text best fits the counselor’s statement about Down syndrome and Alzheimer risk?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. APOE on chromosome 14</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. ChAT on chromosome 1</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Presenilin on chromosome 19</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. APP on chromosome 21</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The β-amyloid precursor protein (APP) gene is on chromosome 21, explaining increased Alzheimer risk in Down syndrome (trisomy 21).</p>
+      <p><b>Other choices:</b> B: Presenilin genes are on chromosomes 1 and 14, not 19. C: APOE is on chromosome 19, not 14. D: ChAT reduction is a biochemical marker, but the passage’s gene list highlights APP/presenilin/APOE; ChAT is not the named chromosome-1 Alzheimer gene here.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q20">
+  <b>20. The early-onset siblings have a mutation on chromosome 14 involved in amyloid processing. Based on the text, which gene is most consistent with this description?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. APOE</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">B. Presenilin</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Tyrosine hydroxylase</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. β-amyloid precursor protein</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Mutations in presenilin genes on chromosomes 1 and 14 are described as contributing to Alzheimer’s disease; chromosome 14 points to presenilin involvement.</p>
+      <p><b>Other choices:</b> A: APOE is on chromosome 19 and alters risk. C: APP is on chromosome 21. D: Tyrosine hydroxylase relates to dopamine synthesis (Parkinson’s).</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q21">
+  <b>21. A 55-year-old relative has a risk-associated allele on chromosome 19 but no dementia symptoms. Which interpretation best fits the counselor’s emphasis and the text?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. A chromosome 19 allele guarantees Alzheimer’s disease by age 60</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">B. Chromosome 19 variants can alter likelihood of developing Alzheimer’s but are not fully deterministic</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Chromosome 19 variants directly increase acetylcholine production</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Chromosome 19 variants primarily cause Parkinson’s disease</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The text notes that mutations/variants in the apolipoprotein E gene on chromosome 19 can alter likelihood of acquiring Alzheimer’s disease; risk alleles influence probability and timing but do not guarantee disease.</p>
+      <p><b>Other choices:</b> A: Overstates determinism. C: Parkinson’s is tied to nigral dopamine loss, not APOE. D: Alzheimer’s is associated with reduced acetylcholine; APOE does not directly increase ACh production.</p>
+    </div>
+  </details>
+</div>
+
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Passage 3: Depression Biomarkers, Brain Circuits, and Diagnostic Shifts</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A research team recruits adults with a history of recurrent major depressive episodes and matched controls. Participants undergo functional neuroimaging while viewing emotionally negative images, and blood samples are collected at several time points across the day.</p>
+  <p>Compared with controls, the depressed group shows higher glucose metabolism in the amygdala during the task. Their bloodwork reveals persistently elevated cortisol levels across the day. Structural MRI additionally shows smaller hippocampal volume in participants who report the longest cumulative duration of depressive symptoms.</p>
+  <p>After 8 weeks of treatment with a medication that increases synaptic serotonin, many participants report improved mood. However, a subset develops abnormally elevated energy, decreased need for sleep, and increased goal-directed activity, prompting clinicians to reconsider the initial diagnosis.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Link each brain region to the marker described: amygdala ↔ emotional salience/negative affect; hippocampus ↔ memory and stress-related atrophy over time.</li>
+    <li>Connect elevated cortisol to HPA-axis activation and chronic stress physiology in depression.</li>
+    <li>Use treatment response: SSRIs raise serotonin; emergence of mania-like symptoms suggests an underlying bipolar spectrum rather than unipolar depression.</li>
+  </ol>
+</div>
+
+<div class="question" id="q22">
+  <b>22. Which finding in the passage most directly reflects the endocrine marker associated with depression discussed in the text?</b>
+  <div class="choice" onclick="selectChoice('q22', this, true)">A. Persistently elevated cortisol across the day</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Reduced dopamine production in the substantia nigra</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Elevated acetylcholine levels in CSF</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Reduced cortisol with blunted stress response</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Depression is associated with abnormally high levels of glucocorticoids (cortisol). Persistently elevated cortisol matches this endocrine marker.</p>
+      <p><b>Other choices:</b> A: Opposite of the described pattern. C: Alzheimer’s is associated with reduced acetylcholine; elevated ACh is not the marker here. D: Substantia nigra dopamine loss is Parkinson’s.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q23">
+  <b>23. The researchers observe smaller hippocampal volume in participants with long-duration illness. Which inference best matches the text’s depression markers and the hippocampus’s function?</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Hippocampal atrophy can develop over time in depression and may relate to memory/consolidation difficulties</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Hippocampal atrophy is diagnostic of schizophrenia rather than depression</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Hippocampal enlargement is expected because cortisol stimulates neurogenesis</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. The hippocampus primarily controls voluntary movement, explaining tremor symptoms</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The text lists hippocampal atrophy after long duration of illness as a depression-associated marker. Given the hippocampus’s role in memory, volume loss can plausibly align with concentration/memory complaints seen in depression.</p>
+      <p><b>Other choices:</b> B: Chronic high cortisol is generally associated with stress-related damage, not hippocampal enlargement as presented. C: Voluntary movement circuits are basal ganglia–related. D: Schizophrenia is not defined by hippocampal atrophy as its core marker here.</p>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q24">
+  <b>24. After 8 weeks of a serotonin-increasing medication, some participants develop decreased need for sleep and increased goal-directed activity. Which interpretation best fits the chapter’s mood disorder framework and the passage evidence?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. The medication has cured depression and unmasked Alzheimer’s disease</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. These symptoms indicate inevitable progression to schizophrenia</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. These symptoms are expected in all patients with major depressive disorder</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. These symptoms suggest a manic/hypomanic shift, raising concern for bipolar disorder</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Mania/hypomania includes decreased need for sleep and increased goal-directed activity. Antidepressant treatment can precipitate or reveal bipolar-spectrum illness in some individuals, prompting reconsideration of diagnosis.</p>
+      <p><b>Other choices:</b> A: Alzheimer’s is characterized by progressive cognitive decline, not acute manic activation from SSRI. C: Schizophrenia diagnosis requires psychotic symptoms and a different course. D: Not expected in all MDD patients; it’s a red flag for bipolarity.</p>
+    </div>
+  </details>
+</div>
+
+
+</body>
+</html>

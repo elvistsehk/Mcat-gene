@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Behavioral Sciences — Ch4 Review (5 Passages, 25Q)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.85;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+
+<body>
+  <div class="main-header">
+    🧠 MCAT Practice — Cognition, Problem Solving, Consciousness, Drugs, Attention & Language (5 Passages × 5 Questions)
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+
+<div class="passage-header">
+  <div>📘 Passage 1 — Cognitive Development in a Science Museum</div>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Researchers at a children’s science museum compare how children of different ages solve problems that require either concrete manipulation or abstract reasoning. In one station, children see a toy mouse “hide” under one of three cups, then the cups are moved behind a screen and swapped twice. The child is asked to point to the cup that still contains the mouse.</p><p>In a second station, children see two identical beakers with the same amount of colored water. The experimenter then pours one beaker into a taller, thinner cylinder and asks which container has “more water.” The experimenter also asks children to explain their choice. Finally, in a third station, children are shown a pendulum rig where they can vary string length, bob mass, and release angle. They are told: “Find what changes how fast it swings.” They may perform as many trials as they want, and their strategy is recorded.</p><p>Results: Children ages 18–24 months often search for the mouse where it was last seen before the screen. Children ages 3–5 years frequently say the tall cylinder has more water and justify it by pointing to the height of the water line. Children ages 8–10 years usually answer that the amounts are equal but struggle to isolate one variable at a time in the pendulum task. Adolescents (12–14 years) are most likely to hold two variables constant while systematically changing one, and they correctly identify string length as the key determinant.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <b>How to reason (Passage 1):</b><ol><li><b>Map age → Piaget stage:</b> 0–2 sensorimotor; 2–7 preoperational; 7–11 concrete operational; 11+ formal operational.</li><li><b>Match task → hallmark:</b> hidden object search → <b>object permanence</b>; water-in-different-shape → <b>conservation</b>; variable isolation → <b>hypothetical/scientific reasoning</b>.</li><li><b>Use explanations:</b> “It’s taller” suggests <b>centration</b> (focus on one dimension).</li><li><b>Predict limitations:</b> concrete operational kids can do logic with concrete info, but struggle with abstract variable control.</li><li><b>Eliminate distractors:</b> Don’t confuse with memory capacity; this is about developmental stage features.</li></ol>
+</div>
+
+<div class="question" id="q1">
+  <p><b>Q1.</b> A 20-month-old repeatedly searches for the mouse in the location where it was last seen before the cups moved behind the screen. This behavior most strongly suggests the child has not fully developed:</p>
+  <div class="choice" onclick="selectChoice('q1', this, true);"><b>A.</b> Object permanence</div><div class="choice" onclick="selectChoice('q1', this, false);"><b>B.</b> Conservation</div><div class="choice" onclick="selectChoice('q1', this, false);"><b>C.</b> Hypothetical reasoning</div><div class="choice" onclick="selectChoice('q1', this, false);"><b>D.</b> Crystallized intelligence</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A</b> — Object permanence</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>✅ A.</b> Object permanence (sensorimotor milestone) is understanding that objects continue to exist when out of view. Searching where it was last seen (and failing to track hidden switches) is classic pre–object permanence behavior.</li>
+<li><b>❌ B.</b> Conservation concerns quantity staying the same despite shape change; that’s the water task, not the hidden-object task.</li>
+<li><b>❌ C.</b> Hypothetical reasoning is a formal-operational skill for isolating variables; it’s tested by the pendulum task in older children/adolescents.</li>
+<li><b>❌ D.</b> Crystallized intelligence is knowledge-based problem solving and isn’t the main explanation for a 20‑month‑old’s hidden-object error.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q2">
+  <p><b>Q2.</b> A 4-year-old insists the tall cylinder has more water after the pour, and explains: “Look, it’s higher.” Which cognitive feature best explains this error?</p>
+  <div class="choice" onclick="selectChoice('q2', this, false);"><b>A.</b> Egocentrism</div><div class="choice" onclick="selectChoice('q2', this, true);"><b>B.</b> Centration</div><div class="choice" onclick="selectChoice('q2', this, false);"><b>C.</b> Object permanence</div><div class="choice" onclick="selectChoice('q2', this, false);"><b>D.</b> Deductive reasoning</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B</b> — Centration</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Egocentrism is difficulty taking another person’s perspective; it doesn’t directly explain failing conservation judgments.</li>
+<li><b>✅ B.</b> Centration is focusing on one salient aspect (here, height) while ignoring others (width/overall volume), producing conservation errors in the preoperational stage.</li>
+<li><b>❌ C.</b> Object permanence is an earlier sensorimotor milestone about hidden objects, not quantity transformations.</li>
+<li><b>❌ D.</b> Deductive reasoning applies general rules to derive necessary conclusions; the child isn’t applying a logical rule set—they’re over-weighting one perceptual cue.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q3">
+  <p><b>Q3.</b> Adolescents in the pendulum station hold bob mass and release angle constant while changing string length across trials, and then correctly infer what determines swing frequency. This pattern of testing best reflects:</p>
+  <div class="choice" onclick="selectChoice('q3', this, false);"><b>A.</b> Trial-and-error without a strategy</div><div class="choice" onclick="selectChoice('q3', this, false);"><b>B.</b> A mental set preventing new solutions</div><div class="choice" onclick="selectChoice('q3', this, true);"><b>C.</b> Formal operational hypothetical reasoning</div><div class="choice" onclick="selectChoice('q3', this, false);"><b>D.</b> Proactive interference from earlier tasks</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C</b> — Formal operational hypothetical reasoning</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Randomly changing variables would be trial-and-error; the passage describes a controlled, methodical strategy.</li>
+<li><b>❌ B.</b> A mental set can lock someone into a familiar approach; here they are using an effective experimental approach, not being stuck.</li>
+<li><b>✅ C.</b> Systematically holding variables constant and manipulating one variable at a time is hallmark hypothetical/scientific reasoning, characteristic of the formal operational stage.</li>
+<li><b>❌ D.</b> Proactive interference is old information disrupting new learning; it doesn’t explain variable control strategies.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q4">
+  <p><b>Q4.</b> After several demonstrations, a child who initially said the tall cylinder had more water begins to say the amounts are equal and explains, “It just looks different.” In Piagetian terms, this change is best described as:</p>
+  <div class="choice" onclick="selectChoice('q4', this, false);"><b>A.</b> Assimilation (fitting new info into an unchanged schema)</div><div class="choice" onclick="selectChoice('q4', this, false);"><b>B.</b> Overconfidence (inflated certainty)</div><div class="choice" onclick="selectChoice('q4', this, false);"><b>C.</b> A mental set (reusing the same approach)</div><div class="choice" onclick="selectChoice('q4', this, true);"><b>D.</b> Accommodation (modifying a schema to incorporate new information)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D</b> — Accommodation (modifying a schema to incorporate new information)</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Assimilation would keep the old schema and squeeze the new experience into it; the child’s explanation shows the schema itself changed.</li>
+<li><b>❌ B.</b> Overconfidence is a judgment bias about certainty; it doesn’t describe learning a new cognitive rule.</li>
+<li><b>❌ C.</b> A mental set is a habitual problem-solving approach; the key idea here is schema change, not a stuck approach.</li>
+<li><b>✅ D.</b> Accommodation occurs when an existing schema is modified to incorporate information that doesn’t fit—here, updating the ‘taller means more’ intuition to a conservation-consistent understanding.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q5">
+  <p><b>Q5.</b> Which age group in the museum would be expected to correctly judge conservation of water but still struggle to isolate variables in the pendulum task?</p>
+  <div class="choice" onclick="selectChoice('q5', this, true);"><b>A.</b> 8–10 years</div><div class="choice" onclick="selectChoice('q5', this, false);"><b>B.</b> 18–24 months</div><div class="choice" onclick="selectChoice('q5', this, false);"><b>C.</b> 3–5 years</div><div class="choice" onclick="selectChoice('q5', this, false);"><b>D.</b> 12–14 years</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A</b> — 8–10 years</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>✅ A.</b> Children around 7–11 years (concrete operational) typically understand conservation but often have difficulty with abstract, multi-variable hypothesis testing.</li>
+<li><b>❌ B.</b> 18–24 months are typically in sensorimotor; conservation is not yet present and object permanence is still developing.</li>
+<li><b>❌ C.</b> 3–5 years are typically preoperational and commonly fail conservation because of centration.</li>
+<li><b>❌ D.</b> 12–14 years are more likely to be formal operational and can isolate variables methodically.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="passage-header">
+  <div>📘 Passage 2 — Diagnoses, Heuristics, and Belief Perseverance</div>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A hospital trains new interns using computer-based diagnostic cases. Each case begins with a short vignette (symptoms + a few labs). Interns choose an initial diagnosis, then decide what single additional test to order next. After seeing the test result, they may revise the diagnosis. Interns also estimate (0–100%) how confident they are in their final diagnosis.</p><p>In one module, a rare condition (Disease R) occurs in only 1 out of 200 cases in the training set, while a common condition (Disease C) occurs in 1 out of 5 cases. Disease R and Disease C can produce similar chest pain. A subset of interns repeatedly choose Disease R after reading vivid stories about Disease R during orientation (including a dramatic near-death narrative), even when the base rates are displayed on screen. When additional test results contradict Disease R, these interns often order a second confirmatory test for Disease R rather than switching to Disease C. They remain highly confident even when their final answer is incorrect.</p><p>In a second module, interns are given a classic “candle problem” variant: they receive a candle, a book of matches, and a box of thumbtacks. They must mount the candle so wax won’t drip on a table. Most interns initially try to tack the candle directly or melt wax to glue it. Only after a hint (“Think about the box”) do many solve it quickly.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <b>How to reason (Passage 2):</b><ol><li><b>Start with base rates:</b> if a disease is rare (1/200), it should be the default <i>low</i> probability unless strong evidence overrides.</li><li><b>Spot the trap:</b> vivid stories → <b>availability heuristic</b>; using “prototype” over numbers → <b>base rate fallacy</b>.</li><li><b>Watch what they do after disconfirming data:</b> ordering more supportive tests instead of switching → <b>confirmation bias</b> + failure to apply the <b>disconfirmation principle</b>.</li><li><b>Confidence ≠ accuracy:</b> high confidence despite errors → <b>overconfidence</b> and <b>belief perseverance</b>.</li><li><b>Object-use rigidity:</b> candle task failure until re-framing object function → <b>functional fixedness</b>.</li></ol>
+</div>
+
+<div class="question" id="q6">
+  <p><b>Q6.</b> Interns choose the rare Disease R after hearing vivid orientation stories, even when base rates are displayed showing it is uncommon. This is best described as:</p>
+  <div class="choice" onclick="selectChoice('q6', this, false);"><b>A.</b> Retroactive interference</div><div class="choice" onclick="selectChoice('q6', this, true);"><b>B.</b> Base rate fallacy influenced by the availability heuristic</div><div class="choice" onclick="selectChoice('q6', this, false);"><b>C.</b> The spacing effect improving recall of Disease R</div><div class="choice" onclick="selectChoice('q6', this, false);"><b>D.</b> An algorithm guaranteeing correct diagnosis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B</b> — Base rate fallacy influenced by the availability heuristic</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Retroactive interference is new information disrupting older memories; here it’s a decision bias, not a memory mix-up.</li>
+<li><b>✅ B.</b> They overweight vivid examples (availability heuristic) and ignore numerical prevalence (base rates), which is the base rate fallacy.</li>
+<li><b>❌ C.</b> Spacing effect is better retention with distributed practice; it doesn’t explain ignoring prevalence data.</li>
+<li><b>❌ D.</b> An algorithm is a step-by-step procedure that reliably solves a problem; the interns are not following a guaranteed procedure.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q7">
+  <p><b>Q7.</b> After a test result contradicts Disease R, some interns order additional tests mainly aimed at “proving” Disease R instead of revising their diagnosis. This behavior most strongly reflects:</p>
+  <div class="choice" onclick="selectChoice('q7', this, false);"><b>A.</b> Inductive reasoning</div><div class="choice" onclick="selectChoice('q7', this, false);"><b>B.</b> Functional fixedness</div><div class="choice" onclick="selectChoice('q7', this, true);"><b>C.</b> Confirmation bias with poor use of the disconfirmation principle</div><div class="choice" onclick="selectChoice('q7', this, false);"><b>D.</b> State-dependent memory</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C</b> — Confirmation bias with poor use of the disconfirmation principle</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Inductive reasoning builds generalizations from specific observations; the problem is biased evaluation, not the reasoning direction.</li>
+<li><b>❌ B.</b> Functional fixedness is using objects only in their typical way; that’s relevant to the candle task, not diagnostic testing.</li>
+<li><b>✅ C.</b> They seek supportive evidence and discount disconfirming results—classic confirmation bias—and they fail to discard a hypothesis when evidence refutes it (disconfirmation principle).</li>
+<li><b>❌ D.</b> State-dependent memory is better recall in the same mental state; it’s not the main driver of selective test ordering.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q8">
+  <p><b>Q8.</b> In the candle variant, most interns fail until they reframe the matchbox as something other than a container. The main barrier before the hint is:</p>
+  <div class="choice" onclick="selectChoice('q8', this, false);"><b>A.</b> Mental set</div><div class="choice" onclick="selectChoice('q8', this, false);"><b>B.</b> Availability heuristic</div><div class="choice" onclick="selectChoice('q8', this, false);"><b>C.</b> Algorithmic thinking</div><div class="choice" onclick="selectChoice('q8', this, true);"><b>D.</b> Functional fixedness</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D</b> — Functional fixedness</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Mental set can contribute, but the classic explanation for Duncker-style object-use tasks is functional fixedness.</li>
+<li><b>❌ B.</b> Availability heuristic concerns judging likelihood by ease of recall; it’s not about object use.</li>
+<li><b>❌ C.</b> Algorithms are stepwise procedures; the issue isn’t ‘too algorithmic’ but constrained object representation.</li>
+<li><b>✅ D.</b> Functional fixedness is the inability to see an object’s nontraditional uses (using the box as a platform/holder).</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q9">
+  <p><b>Q9.</b> A redesigned training module tells interns: “If symptom pattern X plus lab Y, then order Test Z; if Test Z is positive, diagnose Disease C.” This approach is best characterized as:</p>
+  <div class="choice" onclick="selectChoice('q9', this, true);"><b>A.</b> An algorithm</div><div class="choice" onclick="selectChoice('q9', this, false);"><b>B.</b> Trial-and-error problem solving</div><div class="choice" onclick="selectChoice('q9', this, false);"><b>C.</b> Belief perseverance</div><div class="choice" onclick="selectChoice('q9', this, false);"><b>D.</b> Representativeness heuristic</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A</b> — An algorithm</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>✅ A.</b> It’s a defined step-by-step procedure intended to produce the correct result given the inputs—an algorithm.</li>
+<li><b>❌ B.</b> Trial-and-error involves trying options until one works, usually without a guaranteed procedure.</li>
+<li><b>❌ C.</b> Belief perseverance is holding a belief despite contrary evidence; here the module is an instruction set.</li>
+<li><b>❌ D.</b> Representativeness heuristic is judging based on stereotypes/prototypes rather than data; the module is explicitly data-driven.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q10">
+  <p><b>Q10.</b> Interns who report 95% confidence even when they choose incorrect diagnoses are most clearly demonstrating:</p>
+  <div class="choice" onclick="selectChoice('q10', this, false);"><b>A.</b> Proactive interference</div><div class="choice" onclick="selectChoice('q10', this, true);"><b>B.</b> Overconfidence bias</div><div class="choice" onclick="selectChoice('q10', this, false);"><b>C.</b> Semantic priming</div><div class="choice" onclick="selectChoice('q10', this, false);"><b>D.</b> Deductive reasoning</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B</b> — Overconfidence bias</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Proactive interference is old information interfering with new learning; not primarily about confidence calibration.</li>
+<li><b>✅ B.</b> Overconfidence is overestimating the accuracy of one’s beliefs or decisions.</li>
+<li><b>❌ C.</b> Semantic priming is improved processing after related cues; it doesn’t explain inflated certainty.</li>
+<li><b>❌ D.</b> Deductive reasoning can be correct or incorrect; ‘high confidence in wrong answers’ is a bias pattern.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="passage-header">
+  <div>📘 Passage 3 — Sleep Architecture, Circadian Hormones, and Memory</div>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A sleep lab studies how different sleep stages relate to memory. Adult participants learn two tasks at 9:00 PM: (1) a word-pair list (declarative memory) and (2) a mirror-tracing skill task (procedural memory). They then sleep overnight with EEG monitoring. Half the participants keep a normal schedule with dim lights after 9:30 PM. The other half are exposed to bright blue-enriched light until midnight.</p><p>EEG scoring shows typical NREM stages early in the night with slow-wave sleep (SWS) concentrated in the first third of sleep, and more REM toward morning. The bright-light group falls asleep later, has reduced early-night SWS, and shows a delayed melatonin rise. Morning cortisol levels are similar between groups, but the bright-light group reports feeling “less sleepy” at midnight despite taking longer to fall asleep.</p><p>Memory testing at 8:00 AM shows: the normal-light group improves more on word-pair recall, while the bright-light group shows smaller gains on word pairs but similar or slightly better improvement on mirror tracing. A small subset of participants with obstructive sleep apnea shows frequent brief awakenings and reduced REM duration; they perform worse on the procedural task despite adequate total time in bed.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <b>How to reason (Passage 3):</b><ol><li><b>Decode EEG/stages:</b> SWS (deep NREM) is linked to <b>declarative</b> consolidation; REM is linked more to <b>procedural</b> consolidation.</li><li><b>Use circadian cues:</b> less evening light → more melatonin → easier sleep onset; bright light delays melatonin and can shift sleep.</li><li><b>Separate feeling vs performance:</b> “less sleepy” doesn’t guarantee better cognition; sleep deprivation can reduce insight into impairment.</li><li><b>Apply disorder logic:</b> sleep apnea fragments sleep → can reduce REM and impair tasks tied to REM/procedural consolidation.</li><li><b>Pick the strongest inference:</b> connect stage changes (SWS/REM) to which memory outcome changes.</li></ol>
+</div>
+
+<div class="question" id="q11">
+  <p><b>Q11.</b> The bright-light group shows reduced early-night SWS and smaller improvements in word-pair recall. The most plausible explanation is that SWS is especially important for consolidating:</p>
+  <div class="choice" onclick="selectChoice('q11', this, false);"><b>A.</b> Procedural memories</div><div class="choice" onclick="selectChoice('q11', this, false);"><b>B.</b> Primacy effects</div><div class="choice" onclick="selectChoice('q11', this, true);"><b>C.</b> Declarative memories</div><div class="choice" onclick="selectChoice('q11', this, false);"><b>D.</b> Implicit conditioning responses</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C</b> — Declarative memories</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Procedural skill consolidation is more strongly linked to REM in many models.</li>
+<li><b>❌ B.</b> Primacy effect is a list-position phenomenon; it isn’t specifically consolidated by SWS.</li>
+<li><b>✅ C.</b> Slow-wave sleep (deep NREM) is strongly associated with consolidation of declarative/explicit information such as word pairs.</li>
+<li><b>❌ D.</b> Implicit conditioning can involve many circuits; the pattern (word pairs vs skill) points to declarative consolidation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q12">
+  <p><b>Q12.</b> The delayed melatonin rise in the bright-light condition is most consistent with the idea that:</p>
+  <div class="choice" onclick="selectChoice('q12', this, false);"><b>A.</b> Melatonin is released from the adrenal cortex in response to CRF</div><div class="choice" onclick="selectChoice('q12', this, false);"><b>B.</b> Melatonin increases wakefulness by depolarizing neurons</div><div class="choice" onclick="selectChoice('q12', this, false);"><b>C.</b> Cortisol release requires the pineal gland to be dark</div><div class="choice" onclick="selectChoice('q12', this, true);"><b>D.</b> Retinal input to the hypothalamus can suppress pineal melatonin release in bright light</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D</b> — Retinal input to the hypothalamus can suppress pineal melatonin release in bright light</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> CRF→ACTH→adrenal cortex describes cortisol physiology, not melatonin.</li>
+<li><b>❌ B.</b> Melatonin generally promotes sleepiness rather than wakefulness.</li>
+<li><b>❌ C.</b> Cortisol is regulated by the HPA axis and tends to rise toward morning; it does not require pineal darkness.</li>
+<li><b>✅ D.</b> Light detected by the retina signals the hypothalamus, which influences the pineal gland; brighter light in the evening delays melatonin secretion.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q13">
+  <p><b>Q13.</b> Participants with obstructive sleep apnea have reduced REM duration and do worse on mirror tracing. This finding most strongly supports the claim that REM contributes to consolidation of:</p>
+  <div class="choice" onclick="selectChoice('q13', this, true);"><b>A.</b> Procedural skills</div><div class="choice" onclick="selectChoice('q13', this, false);"><b>B.</b> Short-term memory capacity</div><div class="choice" onclick="selectChoice('q13', this, false);"><b>C.</b> Source monitoring</div><div class="choice" onclick="selectChoice('q13', this, false);"><b>D.</b> Context-dependent recall</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A</b> — Procedural skills</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>✅ A.</b> Mirror tracing is a procedural skill; reduced REM with worse procedural performance supports REM’s role in procedural consolidation.</li>
+<li><b>❌ B.</b> Short-term memory capacity (7±2) is not what mirror tracing measures.</li>
+<li><b>❌ C.</b> Source monitoring involves memory origin judgments; not tested here.</li>
+<li><b>❌ D.</b> Context-dependent recall concerns matching physical context; not the key variable.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q14">
+  <p><b>Q14.</b> A child episode with thrashing, screaming, sympathetic activation, and no memory the next morning is most likely to occur during:</p>
+  <div class="choice" onclick="selectChoice('q14', this, false);"><b>A.</b> REM sleep</div><div class="choice" onclick="selectChoice('q14', this, true);"><b>B.</b> Slow-wave sleep (NREM3/4) with delta waves</div><div class="choice" onclick="selectChoice('q14', this, false);"><b>C.</b> Stage 1 sleep with theta waves</div><div class="choice" onclick="selectChoice('q14', this, false);"><b>D.</b> Wakefulness with beta waves</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B</b> — Slow-wave sleep (NREM3/4) with delta waves</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> REM dreams are vivid and often remembered more; REM features paralysis rather than thrashing.</li>
+<li><b>✅ B.</b> Night terrors are parasomnias typically occurring during deep NREM slow-wave sleep (NREM3/4), characterized by delta waves and difficult arousal.</li>
+<li><b>❌ C.</b> Stage 1 is light sleep and not the classic stage for night terrors.</li>
+<li><b>❌ D.</b> Beta waves indicate wakefulness, not a sleep terror.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q15">
+  <p><b>Q15.</b> Because REM becomes more frequent toward morning, an adult awakened at 5:30 AM near the end of a typical night is comparatively more likely to be awakened from:</p>
+  <div class="choice" onclick="selectChoice('q15', this, false);"><b>A.</b> Stage 1 only</div><div class="choice" onclick="selectChoice('q15', this, false);"><b>B.</b> Stage 2 only</div><div class="choice" onclick="selectChoice('q15', this, true);"><b>C.</b> REM sleep</div><div class="choice" onclick="selectChoice('q15', this, false);"><b>D.</b> Slow-wave sleep</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C</b> — REM sleep</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Stage 1 is common at sleep onset and transitions, but REM predominance late night is the more informative cue.</li>
+<li><b>❌ B.</b> Stage 2 occurs throughout the night; it does not preferentially dominate near morning like REM tends to.</li>
+<li><b>✅ C.</b> REM periods lengthen and occur more often toward morning, increasing the chance of awakening from REM late in the night.</li>
+<li><b>❌ D.</b> SWS is concentrated early in the night, making it less likely at 5:30 AM.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="passage-header">
+  <div>📘 Passage 4 — Drugs, Synapses, and the Reward Pathway</div>
+  <button class="reason-btn" id="p4-btn" onclick="toggleReasoning('p4')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>In a rodent study, researchers compare how different drug classes alter neural signaling and behavior. One group receives a moderate dose of ethanol. Another receives a benzodiazepine. A third receives cocaine. A fourth receives morphine. Animals are tested on (a) a maze requiring flexible planning, (b) a simple lever-press task for food, and (c) respiratory rate monitoring.</p><p>Neural recordings show that ethanol and the benzodiazepine increase inhibitory signaling in cortical circuits and reduce overall firing, while cocaine increases catecholamine signaling in a reward-related circuit and produces high locomotor activity. Morphine produces strong analgesia and euphoria-like behavior but markedly slows breathing at high doses. In an additional condition, animals receive ethanol plus the benzodiazepine, leading to profound sedation and occasional loss of righting reflex. Cocaine-treated animals show repeated lever pressing even when food rewards are made less frequent; their behavior is difficult to extinguish.</p><p>To probe addiction circuitry, the team measures dopamine in the nucleus accumbens after each drug. Dopamine rises for cocaine and also rises (more modestly) after ethanol. When dopamine signaling between the ventral tegmental area and nucleus accumbens is pharmacologically blocked, cocaine no longer produces strong approach behavior toward drug-paired cues.</p>
+</div>
+<div class="reasoning-box" id="p4-reason">
+  <b>How to reason (Passage 4):</b><ol><li><b>Match drug class → neurotransmission:</b> depressants (alcohol, benzos, barbiturates) ↑GABA<sub>A</sub> effects → CNS inhibition.</li><li><b>Look for synergy:</b> two GABAergic depressants together → additive CNS/respiratory depression risk.</li><li><b>Stimulant signature:</b> cocaine blocks reuptake of DA/NE/5-HT → high arousal + reinforcement.</li><li><b>Opiate risk:</b> opioid receptor agonism can suppress brainstem breathing drive → overdose via respiratory depression.</li><li><b>Addiction pathway:</b> VTA → (MFB) → NAc, dopamine; blocking that link reduces cue-driven approach.</li></ol>
+</div>
+
+<div class="question" id="q16">
+  <p><b>Q16.</b> Which mechanism best explains why benzodiazepines produce calming, sedating effects in the rodent study?</p>
+  <div class="choice" onclick="selectChoice('q16', this, false);"><b>A.</b> They directly activate dopamine receptors in the nucleus accumbens</div><div class="choice" onclick="selectChoice('q16', this, false);"><b>B.</b> They block serotonin reuptake at the synapse</div><div class="choice" onclick="selectChoice('q16', this, false);"><b>C.</b> They antagonize opioid receptors in the brainstem</div><div class="choice" onclick="selectChoice('q16', this, true);"><b>D.</b> They enhance GABA_A receptor–mediated chloride influx, increasing neuronal inhibition</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D</b> — They enhance GABA_A receptor–mediated chloride influx, increasing neuronal inhibition</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Direct dopamine receptor activation is not the primary benzodiazepine mechanism.</li>
+<li><b>❌ B.</b> Serotonin reuptake blockade is typical of SSRIs; benzodiazepines act through GABA_A.</li>
+<li><b>❌ C.</b> Opioid antagonism would reduce opioid effects; it does not explain benzodiazepine sedation.</li>
+<li><b>✅ D.</b> Benzodiazepines enhance GABA_A effects (often by increasing channel opening frequency), allowing Cl⁻ influx and hyperpolarization → CNS inhibition and sedation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q17">
+  <p><b>Q17.</b> The ethanol + benzodiazepine condition causes profound sedation and loss of righting reflex. The best interpretation is that combining the two drugs:</p>
+  <div class="choice" onclick="selectChoice('q17', this, true);"><b>A.</b> Produces additive enhancement of inhibitory signaling, increasing risk of coma/respiratory depression</div><div class="choice" onclick="selectChoice('q17', this, false);"><b>B.</b> Converts REM sleep into slow-wave sleep</div><div class="choice" onclick="selectChoice('q17', this, false);"><b>C.</b> Eliminates dopamine signaling in the mesolimbic pathway</div><div class="choice" onclick="selectChoice('q17', this, false);"><b>D.</b> Prevents tolerance by downregulating GABA receptors</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A</b> — Produces additive enhancement of inhibitory signaling, increasing risk of coma/respiratory depression</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>✅ A.</b> Both alcohol and benzodiazepines enhance GABAergic inhibition; together they can produce additive CNS depression and dangerous respiratory suppression.</li>
+<li><b>❌ B.</b> This is an acute CNS-depressant interaction, not a targeted manipulation of sleep stages.</li>
+<li><b>❌ C.</b> The key danger is inhibition; dopamine changes are not the primary mechanism of coma here.</li>
+<li><b>❌ D.</b> No evidence is given about preventing tolerance; dependence can still develop.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q18">
+  <p><b>Q18.</b> Which description best matches cocaine’s primary synaptic action in the passage?</p>
+  <div class="choice" onclick="selectChoice('q18', this, false);"><b>A.</b> Increasing GABA release to hyperpolarize neurons</div><div class="choice" onclick="selectChoice('q18', this, true);"><b>B.</b> Decreasing reuptake of dopamine, norepinephrine, and serotonin at the synapse</div><div class="choice" onclick="selectChoice('q18', this, false);"><b>C.</b> Acting as an endorphin agonist at opioid receptors</div><div class="choice" onclick="selectChoice('q18', this, false);"><b>D.</b> Directly stimulating the pineal gland to release melatonin</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B</b> — Decreasing reuptake of dopamine, norepinephrine, and serotonin at the synapse</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Increasing GABA is characteristic of depressants like alcohol/benzodiazepines.</li>
+<li><b>✅ B.</b> Cocaine decreases reuptake of DA/NE/5‑HT, increasing their concentration in the synaptic cleft and producing stimulant effects.</li>
+<li><b>❌ C.</b> Endorphin agonism describes opioids like morphine.</li>
+<li><b>❌ D.</b> Melatonin relates to circadian rhythms and light, not cocaine’s primary mechanism.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q19">
+  <p><b>Q19.</b> At high doses, morphine markedly slows breathing. On the MCAT, death from opioid overdose is most directly attributed to:</p>
+  <div class="choice" onclick="selectChoice('q19', this, false);"><b>A.</b> Overactivation of the reticular formation causing seizures</div><div class="choice" onclick="selectChoice('q19', this, false);"><b>B.</b> Long-term hippocampal atrophy causing amnesia</div><div class="choice" onclick="selectChoice('q19', this, true);"><b>C.</b> Respiratory depression (suppressed brainstem drive to breathe)</div><div class="choice" onclick="selectChoice('q19', this, false);"><b>D.</b> REM rebound causing prolonged dreaming</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C</b> — Respiratory depression (suppressed brainstem drive to breathe)</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Seizures are not the typical direct cause of opioid overdose death.</li>
+<li><b>❌ B.</b> Memory impairment may occur in other conditions, but it is not the acute lethal mechanism of opioid overdose.</li>
+<li><b>✅ C.</b> Opioids can suppress the brain’s respiratory drive, leading to hypoventilation/apnea and death—this is the classic lethal mechanism of overdose.</li>
+<li><b>❌ D.</b> REM rebound can occur after sleep deprivation; it does not explain opioid overdose lethality.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q20">
+  <p><b>Q20.</b> Blocking dopamine signaling between the ventral tegmental area and nucleus accumbens reduces cue-driven drug seeking. Which pathway is most directly implicated by this result?</p>
+  <div class="choice" onclick="selectChoice('q20', this, false);"><b>A.</b> Nigrostriatal motor pathway</div><div class="choice" onclick="selectChoice('q20', this, false);"><b>B.</b> Tuberoinfundibular pathway</div><div class="choice" onclick="selectChoice('q20', this, false);"><b>C.</b> Reticulospinal arousal pathway</div><div class="choice" onclick="selectChoice('q20', this, true);"><b>D.</b> Mesolimbic reward pathway (VTA → medial forebrain bundle → NAc)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D</b> — Mesolimbic reward pathway (VTA → medial forebrain bundle → NAc)</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Nigrostriatal dopamine is most associated with movement (Parkinson’s), not reward cue reinforcement.</li>
+<li><b>❌ B.</b> Tuberoinfundibular dopamine regulates prolactin release; not the core addiction circuit described.</li>
+<li><b>❌ C.</b> Reticulospinal pathways relate to arousal/motor control; not the dopamine reward circuit in the passage.</li>
+<li><b>✅ D.</b> The mesolimbic pathway links VTA to nucleus accumbens (via the medial forebrain bundle) and uses dopamine to mediate reinforcement and motivation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="passage-header">
+  <div>📘 Passage 5 — Selective Attention Meets Language</div>
+  <button class="reason-btn" id="p5-btn" onclick="toggleReasoning('p5')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A cognitive neuroscience lab studies how attention and language processing interact. Adults perform a dichotic listening task: different stories play in each ear. Participants must shadow (repeat aloud) the story in the right ear while ignoring the left. During the task, the unattended (left-ear) story occasionally includes the participant’s name or a sudden loud clap. Separately, participants complete a driving simulator where they must keep a car centered while either (a) repeating a list of random digits (new task) or (b) speaking in their native language about their weekend (highly practiced).</p><p>In the dichotic listening test, most participants later report hearing their name despite being told to ignore the left ear; they also show brief shadowing errors immediately after the loud clap. In the driving simulator, lane deviation is much larger during digit repetition than during casual weekend speech. The researchers conclude that selective attention behaves more like a filter that can still allow salient stimuli through, and that automatic processing can support divided attention better than controlled processing.</p><p>In a clinical extension, a patient with a left frontal stroke speaks in short, effortful phrases but follows complex spoken instructions accurately. Another patient with a left temporal lesion speaks fluently but produces nonsensical sentences and cannot follow verbal commands. A third patient can understand and speak fluently but cannot repeat simple phrases.</p>
+</div>
+<div class="reasoning-box" id="p5-reason">
+  <b>How to reason (Passage 5):</b><ol><li><b>Selective attention ≠ perfect block:</b> cocktail party effect (own name) shows some unattended processing.</li><li><b>Controlled vs automatic:</b> new/effortful tasks consume resources; practiced tasks allow better divided attention.</li><li><b>Use symptom patterns:</b> effortful nonfluent speech + intact comprehension → <b>Broca’s aphasia</b>.</li><li><b>Fluent but meaningless + poor comprehension → <b>Wernicke’s aphasia</b></b>.</li><li><b>Can’t repeat with intact production/comprehension → <b>conduction aphasia</b> (arcuate fasciculus).</li></ol>
+</div>
+
+<div class="question" id="q21">
+  <p><b>Q21.</b> Most participants later report hearing their own name in the unattended ear during dichotic listening. This finding best supports which view of selective attention?</p>
+  <div class="choice" onclick="selectChoice('q21', this, true);"><b>A.</b> Selective attention functions like a filter that can still allow highly salient stimuli to be processed</div><div class="choice" onclick="selectChoice('q21', this, false);"><b>B.</b> Selective attention is an all-or-nothing gate that completely blocks unattended input</div><div class="choice" onclick="selectChoice('q21', this, false);"><b>C.</b> Attention depends only on working memory capacity (7±2) and not stimulus meaning</div><div class="choice" onclick="selectChoice('q21', this, false);"><b>D.</b> Unattended stimuli are never processed, but are reconstructed later by confabulation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A</b> — Selective attention functions like a filter that can still allow highly salient stimuli to be processed</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>✅ A.</b> The cocktail party effect (detecting your name) shows unattended input can still be processed to some degree when it is salient/meaningful.</li>
+<li><b>❌ B.</b> All-or-nothing blocking is contradicted by detecting the name.</li>
+<li><b>❌ C.</b> Capacity matters, but salience/meaning clearly influences breakthrough of unattended stimuli.</li>
+<li><b>❌ D.</b> Confabulation is a clinical memory-fabrication phenomenon; it’s not needed to explain consistent name detection.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q22">
+  <p><b>Q22.</b> Lane deviation is much larger during digit repetition than during casual weekend speech. The best explanation is that digit repetition more strongly requires:</p>
+  <div class="choice" onclick="selectChoice('q22', this, false);"><b>A.</b> Automatic processing that frees attention for driving</div><div class="choice" onclick="selectChoice('q22', this, true);"><b>B.</b> Controlled (effortful) processing that competes for limited attentional resources</div><div class="choice" onclick="selectChoice('q22', this, false);"><b>C.</b> REM sleep consolidation during the task</div><div class="choice" onclick="selectChoice('q22', this, false);"><b>D.</b> Semantic networks that reduce distraction</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: B</b> — Controlled (effortful) processing that competes for limited attentional resources</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Automatic processing would reduce interference; the result shows increased interference, implying controlled processing.</li>
+<li><b>✅ B.</b> Repeating random digits is effortful/controlled and consumes attentional resources, impairing simultaneous driving performance more than a practiced, natural conversation.</li>
+<li><b>❌ C.</b> REM consolidation occurs during sleep, not during real-time divided-attention driving.</li>
+<li><b>❌ D.</b> Semantic networks can aid retrieval, but the key variable is attentional load and automatic vs controlled processing.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q23">
+  <p><b>Q23.</b> A patient speaks in short, effortful phrases but follows complex spoken instructions accurately. The most likely diagnosis is:</p>
+  <div class="choice" onclick="selectChoice('q23', this, false);"><b>A.</b> Wernicke’s (receptive) aphasia</div><div class="choice" onclick="selectChoice('q23', this, false);"><b>B.</b> Conduction aphasia</div><div class="choice" onclick="selectChoice('q23', this, true);"><b>C.</b> Broca’s (expressive) aphasia</div><div class="choice" onclick="selectChoice('q23', this, false);"><b>D.</b> Agnosia</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: C</b> — Broca’s (expressive) aphasia</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Wernicke’s aphasia is fluent but nonsensical with impaired comprehension—opposite pattern.</li>
+<li><b>❌ B.</b> Conduction aphasia has intact comprehension and fluent speech but impaired repetition; the stem emphasizes production deficit.</li>
+<li><b>✅ C.</b> Nonfluent, effortful speech with relatively intact comprehension is classic Broca’s aphasia (inferior frontal gyrus, dominant hemisphere).</li>
+<li><b>❌ D.</b> Agnosia is inability to recognize objects/people/sounds; it is not primarily a language production syndrome.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q24">
+  <p><b>Q24.</b> A second patient speaks fluently but produces nonsensical sentences and cannot follow verbal commands. This pattern is most consistent with:</p>
+  <div class="choice" onclick="selectChoice('q24', this, false);"><b>A.</b> Broca’s aphasia</div><div class="choice" onclick="selectChoice('q24', this, false);"><b>B.</b> Conduction aphasia</div><div class="choice" onclick="selectChoice('q24', this, false);"><b>C.</b> Delirium tremens</div><div class="choice" onclick="selectChoice('q24', this, true);"><b>D.</b> Wernicke’s aphasia</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: D</b> — Wernicke’s aphasia</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>❌ A.</b> Broca’s is nonfluent with better comprehension.</li>
+<li><b>❌ B.</b> Conduction aphasia has relatively intact comprehension; the key deficit is repetition.</li>
+<li><b>❌ C.</b> Delirium tremens is severe alcohol withdrawal delirium; it’s not the focal language pattern described.</li>
+<li><b>✅ D.</b> Fluent speech with poor comprehension and meaningless output is classic Wernicke’s aphasia (superior temporal gyrus, dominant hemisphere).</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q25">
+  <p><b>Q25.</b> A third patient can understand and speak fluently but cannot repeat simple phrases. The most likely site of damage is:</p>
+  <div class="choice" onclick="selectChoice('q25', this, true);"><b>A.</b> The arcuate fasciculus connecting Broca’s and Wernicke’s areas</div><div class="choice" onclick="selectChoice('q25', this, false);"><b>B.</b> Broca’s area in the inferior frontal gyrus</div><div class="choice" onclick="selectChoice('q25', this, false);"><b>C.</b> The hippocampus</div><div class="choice" onclick="selectChoice('q25', this, false);"><b>D.</b> The pineal gland</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct answer: A</b> — The arcuate fasciculus connecting Broca’s and Wernicke’s areas</p>
+<p><b>Explanation:</b></p><ul>
+<li><b>✅ A.</b> Conduction aphasia results from damage to the arcuate fasciculus, disrupting the link between comprehension and production needed for repetition.</li>
+<li><b>❌ B.</b> Broca’s damage would primarily impair speech production/fluency.</li>
+<li><b>❌ C.</b> Hippocampus damage affects memory consolidation, not selective repetition with intact comprehension/fluency.</li>
+<li><b>❌ D.</b> Pineal gland relates to melatonin and circadian rhythms, not language repetition.</li>
+</ul>
+    </div>
+  </details>
+</div>
+</body>
+</html>

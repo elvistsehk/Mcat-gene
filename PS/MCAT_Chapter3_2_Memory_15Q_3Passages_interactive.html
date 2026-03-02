@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Chapter 3.2 — Memory (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px; font-size:22px; font-weight:bold; margin-bottom:20px; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{ background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06); }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-header{ background:#0f4fa0; color:#fff; padding:12px 15px; border-radius:8px; font-size:18px; font-weight:bold; margin-top:5px; margin-bottom:12px; }
+
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold; display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff; border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:35px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.85;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none;
+    background:#ffffff;
+    padding:12px 14px;
+    border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75;
+    font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+  .mini-note{ color:#444; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){ if (fbC) fbC.style.display='flex'; if (fbI) fbI.style.display='none'; }
+    else { if (fbC) fbC.style.display='none'; if (fbI) fbI.style.display='flex'; }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const nowHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = nowHidden ? "block" : "none";
+    btn.textContent = nowHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+
+<body>
+  <div class="main-header">
+    🧠 MCAT Practice — Chapter 3.2 Memory (15Q + 3 Passages × 3Q)
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+  <div class="section-header">📝 15 Standalone Questions</div>
+
+  <!-- Q1 (Correct: A) -->
+  <div class="question" id="q1">
+    <b>1. A student wants to remember a list of MCAT endocrine hormones by building a story that places each hormone into a meaningful medical scenario. Which encoding mode is the student using most strongly?</b>
+    <div class="choice" onclick="selectChoice('q1', this, true)">A. Semantic encoding</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. Visual encoding</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Acoustic encoding</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Automatic processing</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The student is <b>putting information into a meaningful context</b>, which is <b>semantic encoding</b> and is described as the strongest mode of encoding in this section.
+        <ul>
+          <li><b>B (Visual)</b> is weaker and focuses on mental images without necessarily adding meaning.</li>
+          <li><b>C (Acoustic)</b> stores the way something sounds (e.g., a rhyme), not a meaning-rich scenario.</li>
+          <li><b>D (Automatic processing)</b> is passive and unintentional; building a story is effortful/controlled.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q2 (Correct: B) -->
+  <div class="question" id="q2">
+    <b>2. Order the following encoding modes from strongest to weakest, as described in the chapter: semantic, elaborative, acoustic, visual.</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. Visual &gt; acoustic &gt; elaborative &gt; semantic</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">B. Semantic &gt; elaborative &gt; acoustic &gt; visual</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. Elaborative &gt; semantic &gt; visual &gt; acoustic</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. Acoustic &gt; visual &gt; semantic &gt; elaborative</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter states <b>semantic encoding is the strongest</b> and <b>visual encoding is the weakest</b>. Elaborative encoding (linking to existing knowledge) is deeper than acoustic, so the best order is:
+        <b>Semantic &gt; Elaborative &gt; Acoustic &gt; Visual</b>.
+        <ul>
+          <li><b>A</b> reverses the strength ranking.</li>
+          <li><b>C</b> incorrectly places visual above acoustic and swaps semantic/elaborative.</li>
+          <li><b>D</b> places acoustic/visual above meaning-based encoding, contradicting the chapter’s hierarchy.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q3 (Correct: C) -->
+  <div class="question" id="q3">
+    <b>3. A student repeats “UAA, UGA, UAG” out loud over and over to keep the stop codons in mind during a short quiz. This is best described as:</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. Elaborative rehearsal</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. The self-reference effect</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">C. Maintenance rehearsal</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. Spreading activation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Maintenance rehearsal</b> is repetition used to keep information in consciousness/working memory or to help it progress toward longer-term storage.
+        <ul>
+          <li><b>A (Elaborative rehearsal)</b> would connect stop codons to prior knowledge (e.g., “U = ‘You stop’”), not just repeat them.</li>
+          <li><b>B (Self-reference effect)</b> is remembering better when information is linked to your own life.</li>
+          <li><b>D (Spreading activation)</b> is activation of nearby nodes in a semantic network, not simple repetition.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q4 (Correct: D) -->
+  <div class="question" id="q4">
+    <b>4. Which example best illustrates <i>elaborative rehearsal</i> rather than maintenance rehearsal?</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Repeating a phone number until you dial it</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. Whispering a definition repeatedly so you do not forget it</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. Reading the same paragraph again and again without adding meaning</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">D. Linking a new concept to prior knowledge by generating an analogy and a personal example</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Elaborative rehearsal</b> means <b>associating new information with knowledge already stored in long-term memory</b> (often enhanced by the self-reference effect). Option D explicitly does this.
+        <ul>
+          <li><b>A, B, C</b> are all forms of repetition without deep linking—classic <b>maintenance rehearsal</b>.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q5 (Correct: A) -->
+  <div class="question" id="q5">
+    <b>5. A student takes an exam in the same classroom where they studied and performs better than when testing in a different room. This pattern is best explained by:</b>
+    <div class="choice" onclick="selectChoice('q5', this, true)">A. The context effect (context-dependent memory)</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. The serial-position effect</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Proactive interference</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. Decay of memory traces</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Context effects</b> occur when memory is aided by being in the <b>same physical location</b> where encoding occurred—environmental cues help retrieval.
+        <ul>
+          <li><b>B</b> concerns first/last items in a list (primacy/recency), not location.</li>
+          <li><b>C</b> is old information interfering with new learning, not a location cue.</li>
+          <li><b>D</b> is forgetting over time due to fading traces; the scenario is cue-dependent, not time-dependent.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q6 (Correct: B) -->
+  <div class="question" id="q6">
+    <b>6. Participants learn facts while intoxicated and later show better recall when intoxicated again than when sober. This is an example of:</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. The spacing effect</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">B. State-dependent memory</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. Source-monitoring error</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. Negative priming</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>State-dependent memory</b> is improved retrieval when a person is in the <b>same mental/physiologic state</b> as during encoding (the chapter explicitly uses intoxication as an example).
+        <ul>
+          <li><b>A</b> is improved retention when study sessions are spaced apart.</li>
+          <li><b>C</b> is confusing the origin/source of a memory.</li>
+          <li><b>D</b> is when a prime interferes with processing of a later stimulus (slower responses/more errors), not state matching.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q7 (Correct: C) -->
+  <div class="question" id="q7">
+    <b>7. In list-learning experiments, participants recall the first and last items best immediately after learning. This phenomenon is known as:</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. The misinformation effect</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. The spacing effect</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">C. The serial-position effect (primacy + recency)</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. Retroactive interference</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The <b>serial-position effect</b> is higher recall for items at the beginning (<b>primacy</b>) and end (<b>recency</b>) of a list.
+        <ul>
+          <li><b>A</b> is memory distortion due to outside misinformation.</li>
+          <li><b>B</b> is about spacing study sessions over time.</li>
+          <li><b>D</b> is new information interfering with old information.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q8 (Correct: D) -->
+  <div class="question" id="q8">
+    <b>8. A person has trouble recalling their new address because their old address keeps “popping in” first. This is best described as:</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Retroactive interference</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. Decay</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. Confabulation</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. Proactive interference</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Proactive interference</b> is when <b>old information interferes with new learning</b> (old address blocks the new one).
+        <ul>
+          <li><b>A (Retroactive)</b> is the opposite direction: new information disrupts old memory.</li>
+          <li><b>B</b> is loss over time due to fading traces; here the problem is competing similar information.</li>
+          <li><b>C</b> is fabrication of memories (often linked to Korsakoff’s), not simple retrieval competition.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q9 (Correct: A) -->
+  <div class="question" id="q9">
+    <b>9. Which description best matches <i>sensory memory</i>?</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. A very brief, high-accuracy store that holds raw sensory input (e.g., iconic or echoic) for &lt; 1 second</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. A store that holds ~7 ± 2 items for ~30 seconds and depends on consolidation for long-term storage</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. A system for manipulating information using the central executive, phonological loop, and visuospatial sketchpad</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. A virtually limitless warehouse of knowledge controlled entirely by the cerebral cortex</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Sensory memory</b> preserves information in its original sensory form with high accuracy and lasts <b>less than about a second</b> (iconic = visual; echoic = auditory).
+        <ul>
+          <li><b>B</b> describes <b>short-term memory</b> (capacity ~7 ± 2; duration ~30 s without rehearsal).</li>
+          <li><b>C</b> describes <b>working memory</b> and the Baddeley-Hitch model components.</li>
+          <li><b>D</b> describes <b>long-term memory</b>, but the chapter also notes hippocampal involvement in consolidation.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q10 (Correct: B) -->
+  <div class="question" id="q10">
+    <b>10. A participant can hold a short list of digits for about 30 seconds without rehearsal, with a capacity near 7 ± 2 items. This best describes:</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Echoic memory</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">B. Short-term memory</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. Procedural memory</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Flashbulb memory</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter characterizes <b>short-term memory</b> by a duration of about <b>30 seconds without rehearsal</b> and a capacity around <b>7 ± 2</b>.
+        <ul>
+          <li><b>A</b> is a subtype of sensory memory for auditory input.</li>
+          <li><b>C</b> is an implicit long-term memory for skills/habits.</li>
+          <li><b>D</b> is a vivid explicit memory around emotionally important events.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q11 (Correct: C) -->
+  <div class="question" id="q11">
+    <b>11. Which option best describes <i>working memory</i> as presented in the chapter?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. The ability to store an image for a fraction of a second with high accuracy</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. A passive store that only retains about seven items without manipulation</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">C. A system that keeps several items in consciousness while actively manipulating them (attention + executive function)</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. The unconscious storage of skills and conditioned responses</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Working memory</b> lets you hold a few pieces of information <b>and manipulate them</b> (e.g., doing math in your head). The chapter ties it to short-term memory plus attention and executive function (frontal/parietal involvement).
+        <ul>
+          <li><b>A</b> is iconic (sensory) memory.</li>
+          <li><b>B</b> describes short-term memory but misses “manipulation.”</li>
+          <li><b>D</b> is implicit long-term memory (procedural/conditioning).</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q12 (Correct: D) -->
+  <div class="question" id="q12">
+    <b>12. According to the chapter, which working memory component supports mentally fitting puzzle pieces together by storing and manipulating visual/spatial information?</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Phonological loop</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Central executive</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. Episodic buffer</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. Visuospatial sketchpad</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter highlights the <b>visuospatial sketchpad</b> (Baddeley &amp; Hitch) as the working-memory subsystem for <b>visual and spatial information</b>, including manipulation.
+        <ul>
+          <li><b>A</b> handles speech-based rehearsal (sounds/words).</li>
+          <li><b>B</b> coordinates attention and directs the system but isn’t the “visual workspace.”</li>
+          <li><b>C</b> is not emphasized in the chapter’s three-part description; the question tests the named component tied to visual-spatial manipulation.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q13 (Correct: A) -->
+  <div class="question" id="q13">
+    <b>13. A patient cannot consciously recall having learned to ride a bicycle, but when handed a bicycle, rides smoothly. Which memory type best explains the preserved ability?</b>
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. Procedural memory (implicit)</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Episodic memory (explicit)</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. Echoic memory</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. Short-term memory</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Procedural memory</b> is an <b>implicit</b> long-term memory for skills/habits that does not require conscious recall—exactly what the bicycle example demonstrates.
+        <ul>
+          <li><b>B</b> would be remembering the episode of learning (who taught you, where), which the patient lacks.</li>
+          <li><b>C</b> is brief auditory sensory memory.</li>
+          <li><b>D</b> is limited-capacity short-term storage, not long-term skill retention.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q14 (Correct: B) -->
+  <div class="question" id="q14">
+    <b>14. A word (“doctor”) is flashed briefly before a second word (“nurse”). Participants recognize “nurse” faster after “doctor” than after an unrelated prime. This is best described as:</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Negative priming</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. Positive priming</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. Source amnesia</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Retroactive interference</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Positive priming</b> occurs when exposure to the first stimulus improves processing of the second, often measured by <b>decreased response time</b>. “Doctor” activates nearby semantic-network nodes (spreading activation), helping “nurse.”
+        <ul>
+          <li><b>A</b> would slow responses or increase errors.</li>
+          <li><b>C</b> is forgetting the source of information, not faster recognition.</li>
+          <li><b>D</b> is new information interfering with old information, not a cueing benefit.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q15 (Correct: C) -->
+  <div class="question" id="q15">
+    <b>15. Which pair best matches <i>explicit</i> memory subtypes?</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Procedural and priming</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Iconic and echoic</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">C. Episodic and semantic</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">D. Short-term and working</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Explicit (declarative) memory</b> requires conscious recall and is divided into <b>episodic</b> (events/experiences) and <b>semantic</b> (facts/concepts).
+        <ul>
+          <li><b>A</b> are implicit (nondeclarative) memory forms.</li>
+          <li><b>B</b> are sensory memory subtypes.</li>
+          <li><b>D</b> are storage/processing systems, not explicit subtypes.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- PASSAGE 1 -->
+  <div class="passage-header">
+    <span>📘 Passage 1 — Study Context, Mood, and Retrieval Cues</span>
+    <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>Two friends, Maya and Luis, are preparing for a high-stakes exam. Maya studies in the same quiet library cubicle every day. She always uses the same peppermint gum and listens to a low-volume playlist with the same instrumental tracks. Luis studies in many places: sometimes on a noisy train, sometimes in a coffee shop, and sometimes at home with the television on. He also changes his routine frequently—different snacks, different music, and studying at different times of day.</p>
+    <p>On exam day, both students feel unusually anxious. During the first section, Maya notices the smell of peppermint from her own gum and begins to feel slightly calmer. She reports that certain definitions “pop into mind” as soon as she sees familiar keywords. Luis, in contrast, reports that he recognizes many topics but struggles to pull out precise details quickly, even though he remembers “seeing it somewhere.”</p>
+    <p>Afterward, the instructor comments that memory is helped when retrieval cues match the conditions present at encoding, and that some cues can be internal (like state and emotion) while others are external (like location and sensory details). The instructor also notes that recognition is generally easier than free recall, which is one reason multiple-choice exams can feel more manageable than fill-in-the-blank tests.</p>
+  </div>
+
+  <div class="reasoning-box" id="p1-reason">
+    <b>How to reason (Passage 1):</b>
+    <ol>
+      <li><b>Identify the manipulated variables:</b> Maya keeps the same <i>place</i> and <i>sensory cues</i> (peppermint, playlist); Luis varies them.</li>
+      <li><b>Translate cues into memory terms:</b> Same place/sensory details → <b>context cues</b>. Internal anxiety/calmness → <b>state/mood cues</b>.</li>
+      <li><b>Ask what the question is really testing:</b> Is it about <b>retrieval</b> (recall vs recognition, cues), or about <b>storage</b> (STM/LTM) or <b>distortion</b> (misinformation)?</li>
+      <li><b>Match evidence to the best mechanism:</b> “Details pop in when seeing keywords” suggests cue-triggered retrieval (semantic network/spreading activation); stable study context predicts stronger context-dependent retrieval.</li>
+      <li><b>Eliminate distractors:</b> Interference/decay require competing lists or time-based fading evidence; those aren’t central here.</li>
+    </ol>
+    <div class="mini-note"><i>Tip:</i> For MCAT passages, convert story elements (smell, room, mood) into named effects (context, state, priming), then choose the option that best fits the direction of the effect.</div>
+  </div>
+
+  <!-- Q16 (Correct: D) -->
+  <div class="question" id="q16">
+    <b>16. Which explanation best accounts for Maya’s improved recall when chewing peppermint gum during the exam?</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. Retroactive interference from new material learned on exam day</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. Decay of recent memories due to insufficient consolidation</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Confabulation triggered by anxiety</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">D. A retrieval cue created by matching sensory context between encoding and retrieval</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The peppermint gum is an <b>external sensory cue</b> that was consistently present during studying. Having it present again during testing supports <b>context-dependent retrieval</b> (a context effect), where matching cues help pull memories out.
+        <ul>
+          <li><b>A</b> requires evidence that new learning is disrupting old memories; the gum effect is cue-based, not competition-based.</li>
+          <li><b>B</b> would predict worse recall over time regardless of cues; here recall improves with a matched cue.</li>
+          <li><b>C</b> is vivid fabrication seen in specific disorders (e.g., Korsakoff’s), not a typical cueing effect.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q17 (Correct: A) -->
+  <div class="question" id="q17">
+    <b>17. Luis reports that he recognizes many topics but cannot quickly generate precise details. Which distinction best explains why this happens more easily on multiple-choice tests?</b>
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Recognition generally requires less retrieval effort than recall</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. Recall is easier because it is triggered by choices provided on the page</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Recognition depends on short-term memory capacity, while recall depends on sensory memory</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. Recognition is impaired by semantic networks, while recall is helped by priming</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter emphasizes that <b>recognition (identifying previously learned info)</b> is <b>easier than recall</b> (producing the information without prompts). Multiple-choice formats provide cues that support recognition.
+        <ul>
+          <li><b>B</b> reverses the concept: choices help recognition, not free recall.</li>
+          <li><b>C</b> incorrectly maps recognition/recall to memory stores; both can rely on long-term memory.</li>
+          <li><b>D</b> is incorrect: semantic networks and priming generally <b>aid</b> retrieval rather than impair recognition.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q18 (Correct: B) -->
+  <div class="question" id="q18">
+    <b>18. Maya notes that seeing certain keywords causes related definitions to “pop into mind.” This is most consistent with:</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. The spacing effect</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">B. Spreading activation in a semantic network</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Eidetic memory</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. The retention function showing decay over time</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        A keyword can activate a node in the brain’s <b>semantic network</b>, which then activates linked nodes—<b>spreading activation</b>. This functions as a recall cue and helps retrieval.
+        <ul>
+          <li><b>A</b> involves spacing study sessions, not immediate cue-triggered retrieval.</li>
+          <li><b>C</b> is rare, image-like recall with extreme precision, not concept-to-concept association.</li>
+          <li><b>D</b> describes a general time course of forgetting, not cue-based “pop-in” retrieval.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- PASSAGE 2 -->
+  <div class="passage-header">
+    <span>📘 Passage 2 — Brain Injury, Consolidation, and Memory Systems</span>
+    <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>After a bicycle accident, a 31-year-old patient is evaluated for memory changes. The patient easily recalls childhood facts such as their birthdate and the names of elementary school teachers. However, they repeatedly forget that the clinician visited earlier that morning and ask the same introductory questions every few minutes. When presented with a new list of words, the patient cannot recall the list after a short delay unless they keep repeating it aloud continuously.</p>
+    <p>During occupational therapy, the patient is taught a new sequence of hand movements needed for a routine task. Over several days, the patient’s performance improves steadily, even though the patient insists each session feels “brand new” and cannot describe when or how they learned the sequence. The therapist also notes that when a specific cue word is shown at the start of practice, the patient performs the sequence faster than when an unrelated cue is shown.</p>
+    <p>Neuroimaging suggests injury affecting a structure important for consolidating short-term memories into long-term memory. The clinician explains that some types of long-term memory can remain relatively intact even when conscious recall of recent events is severely impaired.</p>
+  </div>
+
+  <div class="reasoning-box" id="p2-reason">
+    <b>How to reason (Passage 2):</b>
+    <ol>
+      <li><b>Separate “can’t form new memories” vs “lost old memories”:</b> repeating questions &amp; forgetting visits suggests <b>anterograde</b> issues (new memory formation).</li>
+      <li><b>Map behaviors to memory types:</b> improving a skill without conscious recall → <b>implicit/procedural</b>. Forgetting the visit → <b>explicit episodic</b> impairment.</li>
+      <li><b>Use storage clues:</b> needs constant repetition to hold a word list → <b>short-term duration</b> and maintenance rehearsal.</li>
+      <li><b>Use brain-region clue:</b> “structure important for consolidation” in this chapter points to the <b>hippocampus</b>.</li>
+      <li><b>Use cue effects:</b> a cue word improving performance → <b>priming</b> (and spreading activation).</li>
+    </ol>
+    <div class="mini-note"><i>Tip:</i> In MCAT Psych/Soc passages, symptoms often encode the answer: “can do the skill but can’t explain it” nearly screams <b>implicit/procedural</b>.</div>
+  </div>
+
+  <!-- Q19 (Correct: C) -->
+  <div class="question" id="q19">
+    <b>19. Which conclusion is most supported by the patient improving on the hand-movement sequence while insisting each session is “brand new”?</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Semantic memory is impaired but episodic memory is intact</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. Sensory memory is enhanced, allowing unusually long echoic traces</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">C. Procedural (implicit) memory is intact even when explicit recall of new experiences is impaired</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. The serial-position effect has been eliminated by the injury</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The passage provides a classic dissociation: the patient <b>learns a skill</b> (performance improves) but lacks <b>conscious recollection</b> of learning it. That pattern matches <b>implicit/procedural memory preserved</b> with impaired explicit episodic memory formation.
+        <ul>
+          <li><b>A</b> does not fit: the patient recalls many facts (semantic) fine, but cannot recall recent episodes.</li>
+          <li><b>B</b> is unrelated; sensory memory is seconds or less and does not explain multi-day skill learning.</li>
+          <li><b>D</b> is about list position effects, not skill learning vs conscious recall.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q20 (Correct: D) -->
+  <div class="question" id="q20">
+    <b>20. Neuroimaging suggests damage to a structure important for consolidating short-term memory into long-term memory. Which structure best matches the chapter’s description?</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. Occipital lobe</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. Cerebellum</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. Amygdala</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">D. Hippocampus</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter identifies the <b>hippocampus</b> as central to <b>short-term memory</b> and to the <b>consolidation of short-term memory into long-term memory</b>. Damage therefore produces severe difficulty forming new explicit long-term memories.
+        <ul>
+          <li><b>A</b> is visual processing, not consolidation.</li>
+          <li><b>B</b> is strongly tied to motor coordination and some skill learning, but the chapter’s consolidation focus points to hippocampus.</li>
+          <li><b>C</b> is important for emotion, not the primary consolidation hub described here.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q21 (Correct: A) -->
+  <div class="question" id="q21">
+    <b>21. The cue word that makes the patient perform the movement sequence faster is best explained by:</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. Priming that facilitates processing of a related stimulus</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Proactive interference that blocks retrieval of newer information</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Eidetic memory allowing perfect recall after brief exposure</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. Source monitoring that strengthens episodic context binding</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The cue word acts as a <b>prime</b>—exposure to one stimulus improves processing of a second, often measured by <b>faster response time</b>. This is <b>priming</b>, an implicit memory effect linked to spreading activation.
+        <ul>
+          <li><b>B</b> would cause errors or difficulty due to older info blocking new, not faster performance with a related cue.</li>
+          <li><b>C</b> is rare and would produce detailed image recall, not speeded skill execution.</li>
+          <li><b>D</b> concerns identifying the origin of a memory; it does not explain speed improvements from a cue.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- PASSAGE 3 -->
+  <div class="passage-header">
+    <span>📘 Passage 3 — Eyewitness Memory, Misinformation, and Source Confusion</span>
+    <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>In a mock trial study, participants watch a short video of a car stopping at a <i>yield</i> sign. Later, half the participants read a written summary that accurately describes a yield sign, while the other half read a summary that incorrectly describes the car stopping at a <i>stop</i> sign. One week later, all participants are asked to describe the traffic sign they saw.</p>
+    <p>In a second phase, participants watch a different crash video. Some are asked, “How fast were the cars moving when they <i>collided</i>?” Others are asked, “How fast were the cars moving when they <i>crashed</i>?” Participants then estimate speed and later report whether they remember seeing broken glass—even though no glass was shown in the video.</p>
+    <p>Finally, researchers interview participants about a heroic “real-world” rescue story. The story details were actually taken from a movie, but several participants confidently report the story as if it were a factual news event. The researchers conclude that memory is not a perfect recording and that both outside information and internal reconstruction can distort recall.</p>
+  </div>
+
+  <div class="reasoning-box" id="p3-reason">
+    <b>How to reason (Passage 3):</b>
+    <ol>
+      <li><b>Spot the manipulation:</b> the sign description is changed <i>after</i> viewing (yield vs stop) → outside info injected into memory.</li>
+      <li><b>Look for leading language:</b> “crashed” vs “collided” changes perceived severity → a classic leading-question manipulation.</li>
+      <li><b>Identify the error type:</b> reporting broken glass that wasn’t present is a <b>false memory</b> outcome driven by suggestion.</li>
+      <li><b>Source clue:</b> recalling a movie story as real is confusion about the <b>origin/source</b> of a memory.</li>
+      <li><b>Choose the most specific label:</b> “outside misinformation” → misinformation effect; “source of story” → source-monitoring error.</li>
+    </ol>
+  </div>
+
+  <!-- Q22 (Correct: B) -->
+  <div class="question" id="q22">
+    <b>22. Participants who read the incorrect “stop sign” summary later insist they saw a stop sign in the video. This outcome most directly demonstrates:</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. Intrusion error caused by internally mixing two similar personal events</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">B. The misinformation effect from outside information injected into memory</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. Proactive interference caused by old knowledge of traffic rules</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. Agnosia preventing visual recognition of road signs</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The passage explicitly manipulates <b>post-event information</b> (the written summary) and shows it changes recall. That is the <b>misinformation effect</b>.
+        <ul>
+          <li><b>A</b> (intrusion error) is internal mixing of similar memories, not an external summary replacing details.</li>
+          <li><b>C</b> (proactive interference) would involve older learned info blocking new learning, not suggestion changing an observed detail.</li>
+          <li><b>D</b> (agnosia) is an inability to recognize objects due to brain damage; the participants can recognize signs but recall the wrong one.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q23 (Correct: C) -->
+  <div class="question" id="q23">
+    <b>23. The finding that the word “crashed” increases speed estimates (and false reports like broken glass) is best explained by:</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. The spacing effect improving retention over one week</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Negative priming interfering with later perception</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">C. Leading questions that bias memory reconstruction at recall</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. Eidetic memory persisting for minutes after viewing</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The only difference is <b>wording</b> (“crashed” vs “collided”), which acts as a <b>leading question</b>. This biases reconstructive memory, causing people to remember a more severe event and sometimes “remember” details that were never shown.
+        <ul>
+          <li><b>A</b> relates to spaced learning sessions, not wording effects.</li>
+          <li><b>B</b> would slow processing due to an interfering prime; it doesn’t explain inflated speed estimates and suggested details.</li>
+          <li><b>D</b> is unrelated; eidetic memory is rare and would not be selectively changed by question wording.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q24 (Correct: D) -->
+  <div class="question" id="q24">
+    <b>24. Participants who describe a movie-based rescue story as a factual news event are most likely displaying:</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. Retroactive interference that erases the movie memory</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. Confabulation caused by thiamine deficiency</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. Intrusion error from mixing two personal New Year’s celebrations</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">D. Source-monitoring error confusing the origin of the memory</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The participants remember the <b>content</b> of the story but misattribute its <b>source</b> (movie vs real news). That is a classic <b>source-monitoring error</b>.
+        <ul>
+          <li><b>A</b> (retroactive interference) would be new information disrupting old, but the key issue is misattribution of origin.</li>
+          <li><b>B</b> (confabulation) is vivid fabrication typically associated with Korsakoff’s; here the details come from a real movie story, not invented filler.</li>
+          <li><b>C</b> is an intrusion-error example, but the passage’s core mechanism is “where did I learn this?” which is source-monitoring.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+</body>
+</html>

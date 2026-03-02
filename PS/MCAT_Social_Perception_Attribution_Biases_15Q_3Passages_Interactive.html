@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Social Perception & Attribution (Ch. 10.2)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Social Perception & Attribution (Ch. 10.2)</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 Correct: C -->
+<div class="question" id="q1">
+  <b>1. A resident meets a new attending who is curt during introductions. For weeks afterward, the resident interprets the attending’s neutral comments as “rude,” while overlooking moments of kindness. Which concept best explains this selective interpretation after the initial categorization?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Recency effect</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Just-world hypothesis</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Primacy effect</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Attribute substitution</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The <b>primacy effect</b> emphasizes that <b>first impressions</b> disproportionately shape later judgments. After the initial “curt → rude” categorization, the perceiver then selectively notices cues that confirm it and discounts disconfirming cues.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Recency effect would mean the most recent behavior dominates impressions.</li>
+        <li><b>B:</b> Just-world involves believing people “deserve” outcomes.</li>
+        <li><b>D:</b> Attribute substitution is using an easier judgment for a complex one (heuristics), not “first impression locks in.”</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 Correct: A -->
+<div class="question" id="q2">
+  <b>2. A supervisor initially thinks an employee is disorganized, but after observing a month of highly efficient work, the supervisor revises the impression and now primarily relies on the most recent evidence. This shift best illustrates:</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Recency effect</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Self-serving bias</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Fundamental attribution error</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Just-world hypothesis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The <b>recency effect</b> occurs when the <b>most recent information</b> weighs most heavily in impression formation, overriding earlier impressions.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Self-serving bias concerns how people explain <b>their own</b> successes/failures.</li>
+        <li><b>C:</b> Fundamental attribution error is overemphasizing dispositional causes for others’ behavior.</li>
+        <li><b>D:</b> Just-world is about deserved outcomes and victim blaming.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 Correct: D -->
+<div class="question" id="q3">
+  <b>3. A hiring manager thinks, “She seems warm and friendly, so she must also be highly competent,” despite limited job-relevant evidence. Which bias best describes this inference?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Self-serving bias</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Fundamental attribution error</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Attribute substitution</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Halo effect</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The <b>halo effect</b> occurs when a broad positive impression (warm/friendly) biases more specific judgments (competent) without sufficient evidence.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Self-serving bias is about explanations for one’s own outcomes.</li>
+        <li><b>B:</b> Fundamental attribution error concerns dispositional vs situational attributions for behavior.</li>
+        <li><b>C:</b> Attribute substitution is answering an easier question than the one asked (e.g., “Do I like her?” instead of “Is she competent?”). Here the definition in the text is better captured by halo’s trait spillover.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 Correct: B -->
+<div class="question" id="q4">
+  <b>4. After a wealthy entrepreneur is robbed, a commenter says, “If he lost his money, he must have done something shady to deserve it.” This belief most directly reflects:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Primacy effect</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Just-world hypothesis</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Self-serving bias</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Consensus cue</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The <b>just-world hypothesis</b> assumes people get what they deserve; it increases <b>victim blaming</b> (“must have been shady”).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Primacy concerns first impressions.</li>
+        <li><b>C:</b> Self-serving bias concerns self-attributions for success/failure.</li>
+        <li><b>D:</b> Consensus cues compare behavior to others’ behavior, not moral deservingness.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 Correct: A -->
+<div class="question" id="q5">
+  <b>5. A student says, “I aced the exam because I’m smart,” but after failing the next exam says, “The professor wrote unfair questions.” This pattern best illustrates:</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Self-serving bias</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Fundamental attribution error</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Distinctiveness cue</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Out-group bias</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> <b>Self-serving bias</b> attributes <b>success</b> to internal traits and <b>failure</b> to external/situational factors to protect self-esteem.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Fundamental attribution error describes how we judge <b>others</b>, not ourselves.</li>
+        <li><b>C:</b> Distinctiveness cues concern whether behavior varies across situations.</li>
+        <li><b>D:</b> Out-group bias is harsher judgment of those outside one’s group.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 Correct: C -->
+<div class="question" id="q6">
+  <b>6. A person estimates the “likelihood a new policy will succeed” by asking themselves, “Do I like the person proposing it?” without noticing they changed the question. This is best described as:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Halo effect</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Fundamental attribution error</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Attribute substitution</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Recency effect</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> <b>Attribute substitution</b> is replacing a difficult judgment with a simpler heuristic question—often automatically and without realizing it.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Halo is trait spillover (“good person → competent”).</li>
+        <li><b>B:</b> Fundamental attribution error is overemphasizing disposition for others’ behavior.</li>
+        <li><b>D:</b> Recency is overweighting the latest information.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 Correct: D -->
+<div class="question" id="q7">
+  <b>7. A manager praises a colleague from their own department for a successful project as “talented,” but calls another department’s successful team “lucky.” Which pair of concepts best explains this pattern?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Just-world hypothesis and primacy effect</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Attribute substitution and recency effect</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Distinctiveness cues and consensus cues</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. In-group bias and out-group bias</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>In-group bias</b> is favoring one’s own group (dispositional credit: “talented”), whereas <b>out-group bias</b> is judging outsiders more harshly (discounting success as “luck”).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B:</b> Do not target group membership-based favoritism/derogation.</li>
+        <li><b>C:</b> These are attribution <i>cues</i>, but the stem is about systematic group-based evaluation, not evidence about consensus/distinctiveness.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 Correct: B -->
+<div class="question" id="q8">
+  <b>8. Which statement most accurately contrasts dispositional and situational attributions?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Dispositional attributions emphasize social norms; situational attributions emphasize personality</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Dispositional attributions explain behavior via internal traits; situational attributions explain behavior via external context</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Dispositional attributions rely on distinctiveness cues; situational attributions ignore cues</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Dispositional attributions occur only in collectivist cultures</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Dispositional</b> = internal causes (beliefs, attitudes, personality). <b>Situational</b> = external causes (circumstances, social norms, threats, peer pressure).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Reversed.</li>
+        <li><b>C:</b> Both attribution types can use cues; the cue pattern affects which attribution is more likely.</li>
+        <li><b>D:</b> Not only collectivist cultures; culture shifts likelihood, not exclusivity.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 Correct: A -->
+<div class="question" id="q9">
+  <b>9. A student sees a peer refuse to help with a group assignment and immediately concludes, “He’s selfish,” without considering that the peer may have had a family emergency. This is most consistent with:</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Fundamental attribution error</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Self-serving bias</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Recency effect</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Attribute substitution</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The <b>fundamental attribution error</b> is the tendency to over-attribute others’ behavior to <b>disposition</b> while underweighting <b>situational</b> explanations.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Self-serving bias is about one’s own outcomes.</li>
+        <li><b>C:</b> Recency is about the most recent info dominating impressions, not disposition vs situation.</li>
+        <li><b>D:</b> Attribute substitution is swapping a simpler question for a complex one.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 Correct: C -->
+<div class="question" id="q10">
+  <b>10. A clinician explains that people with depression may say, “I only succeeded because I got lucky,” but “I failed because I’m incompetent.” This pattern is best described as:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Just-world hypothesis</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Halo effect</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Reversed attributional bias (reverse of self-serving bias)</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Primacy effect</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The chapter notes that depression is associated with a <b>reversed attributional bias</b>: successes are attributed externally (luck) and failures internally (self-blame), opposite of self-serving bias.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Just-world concerns deservingness of outcomes for others.</li>
+        <li><b>B:</b> Halo concerns trait spillover from global impressions.</li>
+        <li><b>D:</b> Primacy concerns first impressions.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 Correct: D -->
+<div class="question" id="q11">
+  <b>11. A student notices that a classmate is always late to morning lectures but is on time to afternoon labs and weekend events. Which cue is most strongly suggested by this pattern?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Consensus cue is high</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Consistency cue is high across all settings</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. The behavior is highly consistent over time in every context</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">D. Distinctiveness cue is high (behavior varies by situation)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Distinctiveness</b> asks whether someone behaves similarly across different situations. Being late only in morning lectures suggests behavior is <b>situation-specific</b> → high distinctiveness, which can push observers toward situational explanations.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Consensus requires information about how others behave in the same setting.</li>
+        <li><b>B/C:</b> These describe high consistency across contexts, which the stem does not show.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 Correct: A -->
+<div class="question" id="q12">
+  <b>12. A professor notes that one student interrupts in every seminar session all semester. This observation most strongly supports which cue?</b>
+  <div class="choice" onclick="selectChoice('q12', this, true)">A. Consistency cue is high (regular behavior over time)</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Distinctiveness cue is high (behavior varies widely by context)</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Consensus cue is high (everyone interrupts equally)</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Attribute substitution is occurring</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> <b>Consistency cues</b> refer to behavior that is repeated <b>over time</b> in similar circumstances. Interrupting in every seminar session is high consistency.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Would require different contexts (seminar vs lab vs party) showing different behavior.</li>
+        <li><b>C:</b> Consensus requires comparing to others; “one student interrupts” does not give that.</li>
+        <li><b>D:</b> Not about substituting an easier question.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 Correct: B -->
+<div class="question" id="q13">
+  <b>13. You learn that most students in a lecture hall are also confused and ask clarifying questions. This information is most directly an example of which cue in attribution?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Distinctiveness cue</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. Consensus cue</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Primacy effect</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Halo effect</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Consensus</b> refers to whether others behave similarly in the same situation. If “most students” are confused, consensus is high, pushing toward situational explanations (e.g., unclear lecture).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Distinctiveness concerns whether a person behaves similarly across different situations.</li>
+        <li><b>C/D:</b> Concern impression biases, not attribution cues.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 Correct: D -->
+<div class="question" id="q14">
+  <b>14. A colleague unexpectedly helps you at personal cost, and you immediately infer, “She’s genuinely kind,” even though you have little prior information about her. Which theory best predicts this kind of dispositional inference from an unexpected action?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Just-world hypothesis</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Attribute substitution</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Recency effect</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">D. Correspondent inference theory</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Correspondent inference theory</b> emphasizes that when others perform an <b>unexpected, intentional</b> behavior that benefits or harms us, we tend to infer a <b>dispositional trait</b> (“she’s kind”).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Just-world is about deserved outcomes.</li>
+        <li><b>B:</b> Attribute substitution is swapping an easier question, not specifically about unexpected intentional actions.</li>
+        <li><b>C:</b> Recency is about the most recent info dominating impressions, not the “unexpected action → trait” inference.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 Correct: C -->
+<div class="question" id="q15">
+  <b>15. Compared with collectivist cultures, individualist cultures are generally more likely to:</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Avoid all attributions and focus only on raw observation</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Make fewer dispositional attributions because they prioritize interdependence</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Make more dispositional attributions and commit the fundamental attribution error more often</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Rely exclusively on distinctiveness cues and ignore consensus cues</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The passage notes that <b>individualist cultures</b> are more likely to emphasize individual traits/goals and thus make <b>dispositional attributions</b> (and commit the <b>fundamental attribution error</b>) more than collectivist cultures.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> People still make attributions; the issue is which type.</li>
+        <li><b>B:</b> Reversed; collectivist cultures are more likely to consider situational factors.</li>
+        <li><b>D:</b> No culture relies “exclusively” on one cue type.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: The New Intern</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A hospital unit welcomes a new intern, Sara. On her first day, she arrives ten minutes late to rounds and speaks very little during introductions. One resident immediately labels her “unreliable and unfriendly.” Over the next two weeks, that resident notices each time Sara forgets to bring a printout, but rarely notices when Sara stays late to help nurses complete discharge paperwork.</p>
+  <p>During a later morning, Sara arrives late again. Another resident learns that Sara’s commute includes a bus route with frequent delays and that multiple interns from different neighborhoods have been late on days when that route runs behind schedule.</p>
+  <p>By contrast, on weekend shifts Sara is consistently early, and she is on time to all afternoon conferences. A month later, Sara gives a well-organized presentation. Some team members still describe her as “probably lucky,” while others revise their overall impression.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify <b>impression formation</b> versus <b>attribution</b>: first impressions (primacy) can lock in a category that shapes later attention.</li>
+    <li>Look for attribution <b>cues</b> embedded in the story: consistency (over time), consensus (others too), distinctiveness (only in certain settings).</li>
+    <li>When asked about a bias, ask: are they over-blaming disposition (FAE), letting a global vibe spill to specifics (halo), or crediting/deservingness (just-world)?</li>
+    <li>Choose the answer that best matches the <b>evidence pattern</b>, not a single detail.</li>
+  </ol>
+</div>
+
+<!-- Q16 Correct: A -->
+<div class="question" id="q16">
+  <b>16. The resident who labels Sara “unreliable” after day one and then selectively notices lateness and forgetting printouts is most directly demonstrating:</b>
+  <div class="choice" onclick="selectChoice('q16', this, true)">A. Primacy effect</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Attribute substitution</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Just-world hypothesis</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. Self-serving bias</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The initial lateness dominates impression formation; afterward the resident <b>selectively attends</b> to cues that confirm the first impression. That is the primacy-driven, selective-cue pattern described in the text.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Not a heuristic swap; it’s anchoring on first impressions.</li>
+        <li><b>C:</b> No “deserved outcome/victim blaming” logic.</li>
+        <li><b>D:</b> Self-serving bias concerns explaining one’s own successes/failures.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 Correct: C -->
+<div class="question" id="q17">
+  <b>17. The information that multiple interns are late on days when the same bus route is delayed is strongest evidence for which attribution cue?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Consistency cue</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Distinctiveness cue</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">C. Consensus cue</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Halo effect</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> <b>Consensus</b> asks whether others behave similarly in the same context. If many interns are late under the same transit condition, consensus is high → points toward situational causes.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Consistency is whether Sara is late across time in similar situations.</li>
+        <li><b>B:</b> Distinctiveness is whether Sara is late in many different settings (morning vs afternoon vs weekend).</li>
+        <li><b>D:</b> Halo is trait spillover from global impressions.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 Correct: D -->
+<div class="question" id="q18">
+  <b>18. Sara being late to morning rounds but on time for weekend shifts and afternoon conferences most strongly indicates:</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. High consistency across situations</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Low distinctiveness (same behavior everywhere)</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. A purely dispositional cause is most likely</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">D. High distinctiveness, suggesting situational factors may be important</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Behavior changes across contexts (morning vs afternoon/weekend). That is <b>high distinctiveness</b>—often interpreted as evidence for <b>situational</b> causes (e.g., commute constraints specific to mornings).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B:</b> Contradict the passage evidence of variation.</li>
+        <li><b>C:</b> High distinctiveness argues against a single stable disposition as the only cause.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: The Scholarship Interview</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A university committee interviews finalists for a competitive scholarship. Candidate A is impeccably dressed, speaks confidently, and smiles often. Several committee members later say that A is “obviously honest” and “probably a reliable teammate,” even though the interview questions were not designed to test honesty or teamwork directly.</p>
+  <p>Candidate B arrives after running from a distant bus stop. B’s answers are brief and somewhat disorganized, but B later submits a detailed follow-up document with carefully reasoned plans. Some committee members claim B is “careless,” while others highlight the follow-up as evidence that B may simply have faced situational constraints.</p>
+  <p>After the final decision, a committee member explains the winner’s success as “pure talent,” but describes the non-winner’s outcome as “a consequence of not working hard enough,” even though the committee never measured effort.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Spot when a <b>global impression</b> (confidence/appearance) drives unrelated trait judgments → <b>halo effect</b>.</li>
+    <li>For B, weigh <b>situational</b> evidence (running from bus stop) against dispositional labels (“careless”). If observers ignore context, think <b>FAE</b>.</li>
+    <li>For post-decision explanations, notice whether people are using <b>simple internal stories</b> without evidence (a kind of attribution bias).</li>
+    <li>Choose answers that best match the <b>type of error</b> described: impression spillover vs dispositional overreach vs heuristic substitution.</li>
+  </ol>
+</div>
+
+<!-- Q19 Correct: B -->
+<div class="question" id="q19">
+  <b>19. Committee members concluding that Candidate A is honest and reliable primarily because A appears confident and polished best illustrates:</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Attribute substitution</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">B. Halo effect</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Just-world hypothesis</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Self-serving bias</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> A general positive impression (polished, confident, attractive cues) is spilling over into specific judgments (honesty, reliability) without direct evidence—classic <b>halo effect</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Attribute substitution is swapping the question; here it’s more about trait spillover from global impression.</li>
+        <li><b>C:</b> No “deserved outcomes” framing.</li>
+        <li><b>D:</b> Not about explaining one’s own successes/failures.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 Correct: D -->
+<div class="question" id="q20">
+  <b>20. If a committee member insists B is “careless” and dismisses the bus-stop explanation, which attribution bias is most consistent with that judgment?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Recency effect</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Just-world hypothesis</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Self-serving bias</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Fundamental attribution error</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> They overemphasize a <b>dispositional</b> explanation (“careless”) for another person’s behavior while underweighting a clear <b>situational</b> factor (transport constraint). That is the <b>fundamental attribution error</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Not about the last piece of info dominating.</li>
+        <li><b>B:</b> Not about deservingness of outcomes.</li>
+        <li><b>C:</b> Not about explaining one’s own success/failure.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 Correct: A -->
+<div class="question" id="q21">
+  <b>21. The post-decision explanation “the winner succeeded due to pure talent” and “the non-winner failed due to not working hard enough,” despite no effort measurement, most strongly suggests reliance on:</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Dispositional attributions because they provide simpler explanations than situational ones</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Distinctiveness cues to determine whether behavior is situation-specific</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. The just-world hypothesis to punish evil behavior</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Recency effect because the last candidate spoken to was remembered best</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The chapter emphasizes that dispositional explanations are often <b>simpler</b> than situational ones, which contributes to overuse of dispositional attributions (a core feature of attribution error). Here, “talent” and “effort” are internal stories applied without direct evidence.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> No evidence about behavior across different situations is used.</li>
+        <li><b>C:</b> Not framed as deserved punishment; it’s just internal causal stories.</li>
+        <li><b>D:</b> Not about memory order; it’s about causal inference style.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: The Optics Demo and the “Easy Answer”</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>In a perception lab, participants view two birds placed in a photograph with strong perspective cues. Many report that the bird “farther away” looks larger, even after being told the birds are identical in size. The instructor explains that people often rely on three-dimensional context to judge two-dimensional size.</p>
+  <p>Next, participants are shown a shaded checkerboard image. They insist that two squares labeled A and B are different colors, even after the instructor provides a measurement showing the squares reflect the same amount of light.</p>
+  <p>Finally, participants answer a short word problem: “A pencil and an eraser cost $1.10 together. The pencil costs one dollar more than the eraser. How much does the eraser cost?” Most answer “10 cents” rapidly. After the instructor walks through the math, many realize they substituted an easier problem for the one asked.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>For illusions, ask what feature is being judged (size/color) and what <b>context cue</b> might be substituted (3D perspective, shadows).</li>
+    <li>Connect that to the chapter concept: <b>attribute substitution</b>—using an easier attribute (apparent 3D size, perceived illumination) instead of the true attribute (2D size, actual color).</li>
+    <li>For the word problem, identify the “fast” intuitive answer and why it’s tempting (it matches the “$1 more” cue) but inconsistent when checked.</li>
+    <li>Select the answer that explains <b>both</b> the illusion judgments and the word-problem mistake via the same cognitive shortcut.</li>
+  </ol>
+</div>
+
+<!-- Q22 Correct: C -->
+<div class="question" id="q22">
+  <b>22. The instructor’s explanation that participants use perspective cues to judge 2D size (and shadow cues to judge color) is most directly an example of:</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Halo effect</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Fundamental attribution error</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Attribute substitution</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Just-world hypothesis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Participants replace the hard judgment (true 2D size/true color) with an easier one shaped by context cues (expected 3D size, expected illumination) without realizing it—<b>attribute substitution</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Halo concerns person impressions, not perceptual heuristics in illusions.</li>
+        <li><b>B:</b> FAE concerns attributions for behavior.</li>
+        <li><b>D:</b> Just-world concerns deserved outcomes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 Correct: B -->
+<div class="question" id="q23">
+  <b>23. Which statement best explains why “10 cents” feels intuitively correct to many participants in the word problem?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. They are demonstrating the recency effect because the last number read dominates</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. They substitute an easier question (“What number pairs add to $1.10 with a $1 difference?”) and fail to check the implied prices</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. They are applying the just-world hypothesis to a math scenario</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. They are showing self-serving bias by protecting self-esteem</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The “$1 more” cue triggers a quick heuristic. People unconsciously simplify the problem and skip consistency checking (if eraser were 10¢, pencil would be $1.10, totaling $1.20). That is attribute substitution plus insufficient verification.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Not about memory order; it’s about heuristics.</li>
+        <li><b>C:</b> Just-world is irrelevant.</li>
+        <li><b>D:</b> Self-serving bias concerns causal explanations for one’s own outcomes.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 Correct: D -->
+<div class="question" id="q24">
+  <b>24. After the instructor reveals the measurement showing squares A and B reflect the same amount of light, some participants still insist they “look different.” Which inference best matches the chapter’s framing of why this happens?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Participants are committing fundamental attribution error by blaming the squares’ “personality”</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Participants are showing a self-serving bias because admitting error would harm self-esteem</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Participants rely on primacy effect because first impressions about color cannot ever change</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Context cues (shadow) continue to drive an easier perceptual judgment that substitutes for true color, even when told the objective value</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> In the checkerboard illusion, the visual system keeps using <b>shadow/illumination context</b> to infer “real surface color,” which can override knowledge of the measurement. That aligns with attribute substitution for color described in the text.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> FAE is about attributing human behavior, not colors.</li>
+        <li><b>B:</b> Self-serving bias is about causal explanations for outcomes; this is a perceptual heuristic.</li>
+        <li><b>C:</b> Primacy is about social impressions, not sensory processing constraints.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

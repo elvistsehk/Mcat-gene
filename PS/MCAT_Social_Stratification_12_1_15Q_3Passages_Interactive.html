@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Social Stratification &amp; Inequality (Ch. 12.1) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Social Stratification &amp; Inequality (Ch. 12.1)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A public health study classifies participants’ socioeconomic status (SES). Which combination is most directly used to determine SES?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Religious affiliation, marital status, and neighborhood density</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Personality traits, political ideology, and family size</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Income, educational attainment, and occupational prestige</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Age, gender identity, and skin color</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> SES is typically operationalized using indicators like <b>income/wealth</b>, <b>education</b>, and <b>occupation</b> because these capture access to material resources and life opportunities.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> These variables can correlate with SES but are not the core, standard indicators used to define SES.</li>
+<li><b>B:</b> Traits and ideology are not structural resource measures; they may influence outcomes but do not define SES.</li>
+<li><b>D:</b> These are largely <b>ascribed statuses</b>; they can affect opportunities through discrimination, but they do not define SES itself.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A student is treated differently in school because of her skin color, even though her grades and work ethic are strong. In the language of status, skin color is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Ascribed status</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Achieved status</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Role strain</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Cultural capital</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Ascribed status is <b>involuntary</b> and based on identifiable characteristics (e.g., age, gender, race/skin color) that can shape life chances regardless of merit.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Achieved status is earned through individual effort (e.g., education level, job title).</li>
+<li><b>C:</b> Role strain is difficulty meeting expectations within a single role; it is not a type of status.</li>
+<li><b>D:</b> Cultural capital refers to skills/knowledge that can yield advantages (e.g., mannerisms, credentials), not a physical characteristic.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. A physician is described as “a doctor first, everything else second,” and this identity strongly shapes how others treat her and how she sees herself across settings. This best illustrates:</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Horizontal mobility</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. False consciousness</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Weak-tie influence</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Master status</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> A master status is a status that <b>pervades many aspects</b> of a person’s life and dominates social identity and interactions (e.g., being a physician, being a parent, being incarcerated).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Horizontal mobility is a job/lifestyle change that stays within the same class.</li>
+<li><b>B:</b> False consciousness is misperceiving one’s class position and interests in a way that prevents collective action.</li>
+<li><b>C:</b> Weak ties are superficial connections that can provide new information; this is about identity dominance, not networks.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. A city council member can influence zoning decisions by threatening to block funding unless businesses comply. Which concept is most directly being demonstrated?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Prestige</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Power</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Cultural capital</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Social cohesion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Power is the ability to <b>influence others’ behavior</b> through real or perceived rewards and punishments, often rooted in unequal control of valued resources.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Prestige is the positive regard or respect associated with a person or occupation; it is not necessarily coercive influence.</li>
+<li><b>C:</b> Cultural capital is advantage from knowledge/skills; it does not describe coercive leverage over others.</li>
+<li><b>D:</b> Social cohesion is solidarity and connectedness among groups, not leverage over decisions.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A researcher finds that rates of chronic disease decrease steadily as household income and education rise. This pattern is most accurately described as:</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. A socioeconomic gradient in health and development</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. An example of horizontal mobility</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Evidence of a caste system</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. A marker of anomie</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The socioeconomic gradient refers to the <b>stepwise improvement</b> in health outcomes as SES increases, not just a difference between the poorest and richest.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Horizontal mobility is an occupation/lifestyle shift within the same social class, unrelated to population health gradients.</li>
+<li><b>C:</b> A caste system is ascribed and rigid; the finding is about health outcomes across SES levels, not a stratification system type.</li>
+<li><b>D:</b> Anomie is norm breakdown and weakened social bonds; it can relate to deviance, not directly to a graded health pattern.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. According to conflict theory, what most directly prevents the working class from organizing to challenge the capitalist class?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. High levels of social capital among the proletariat</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Intergenerational mobility that guarantees equal opportunity</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. False consciousness about one’s true class position and shared interests</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. The existence of weak ties across social networks</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Marx argued that <b>false consciousness</b>—misperceiving one’s exploitation or failing to recognize shared interests—blocks development of <b>class consciousness</b> and collective action.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> High social capital could facilitate coordination and collective action, not prevent it.</li>
+<li><b>B:</b> High mobility would reduce class rigidity; it is not the key barrier described by conflict theory.</li>
+<li><b>D:</b> Weak ties can spread information and opportunities; they are not the central mechanism blocking class consciousness.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. A community experiences rapid economic change, rising inequality, and weakening shared norms. Over time, rates of rule-breaking behaviors increase. Which pairing best fits this scenario?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Social cohesion → cultural capital</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Anomie → strain theory leading to deviance</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Meritocracy → upward mobility</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. World-systems theory → suburbanization</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Anomie is a <b>breakdown of widely accepted norms</b> and social bonds; strain theory links these anomic conditions to increased <b>deviance</b> as individuals adapt to blocked goals and social disorganization.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Social cohesion is the opposite of the described norm breakdown; cultural capital is skill/knowledge advantage, not deviance.</li>
+<li><b>C:</b> Meritocracy describes mobility based on talent/achievement; it does not explain norm breakdown and deviance.</li>
+<li><b>D:</b> World-systems theory explains global division of labor (core/periphery); suburbanization is a migration pattern, not the primary framework here.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. A nonprofit trains residents to build professional connections and organize neighborhood associations, arguing this will improve job access and political influence. The nonprofit is primarily trying to increase residents’:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Ascribed status</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Psychoticism</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Absolute poverty</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Social capital</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Social capital is the <b>benefit gained from group association</b>—especially through social networks and reciprocity norms—that can yield economic or collective rewards.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Ascribed status is involuntary (e.g., age, race) and not built through training.</li>
+<li><b>B:</b> Psychoticism is an Eysenck PEN trait dimension; unrelated to networks and community organization.</li>
+<li><b>C:</b> Absolute poverty is lack of basic resources; training networks may help, but the target concept is social capital.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. A first-generation college student learns how to navigate office-hours etiquette, internship applications, and professional jargon. These advantages are best described as:</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Social exclusion</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. False consciousness</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Spatial inequality</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">D. Cultural capital</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Cultural capital is the advantage gained from <b>knowledge, skills, and cultural competencies</b> that help people succeed within institutions (schools, workplaces).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Social exclusion is isolation/disconnection from society; the student is gaining tools to integrate, not being excluded.</li>
+<li><b>B:</b> False consciousness is misperception of class interests; not about skills or institutional navigation.</li>
+<li><b>C:</b> Spatial inequality concerns geography-driven resource distributions; this is about learned competencies.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. Which statement best captures why weak ties can be especially valuable for upward mobility?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Weak ties are emotionally intense and provide daily support</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Weak ties connect a person to new social circles and novel information (e.g., job leads)</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Weak ties reduce social inequality by eliminating privilege</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Weak ties are primarily kinship bonds that transmit inherited wealth</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Weak ties are numerous, superficial connections that often serve as <b>bridges</b> to different networks—valuable for new opportunities and information access.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> That describes <b>strong ties</b> (close friends/family), which provide deep support but less network diversity.</li>
+<li><b>C:</b> Weak ties can reproduce inequality if access is unequal; they do not automatically eliminate privilege.</li>
+<li><b>D:</b> Kinship bonds are typically <b>strong ties</b>; inherited wealth is not the defining feature of weak ties.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. In a professional network, two people have similar incomes, but one is connected to many highly influential individuals and sits at the center of information flow. The inequality described is best labeled as:</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Positional inequality within a network</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Absolute poverty</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Horizontal mobility</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Social reproduction</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Positional inequality refers to advantage based on <b>where you sit in a network</b> (centrality and connectivity), independent of immediate SES.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Absolute poverty is lack of resources for basic needs, not about network structure.</li>
+<li><b>C:</b> Horizontal mobility is switching occupations while staying in the same class.</li>
+<li><b>D:</b> Social reproduction is passing inequality/poverty across generations; the scenario is about network position now.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. A woman who is both an older adult and a member of an underrepresented racial/ethnic group experiences compounded barriers to quality housing and healthcare. This is best explained by:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Meritocracy</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Urban renewal</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. Intersectionality</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Class consciousness</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Intersectionality describes how disadvantages can <b>compound</b> when a person belongs to multiple underserved groups, producing unique barriers not explained by a single identity category.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Meritocracy emphasizes advancement by talent/achievement; it does not capture compounding disadvantages from multiple statuses.</li>
+<li><b>B:</b> Urban renewal is redevelopment of city areas; it can affect housing but does not specifically address compounded identity-based disadvantage.</li>
+<li><b>D:</b> Class consciousness is collective working-class awareness; not the primary concept for layered identity barriers.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. After graduating, an individual moves from a lower-middle-class job to a higher-paying professional position during their own lifetime. This is an example of:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Intergenerational mobility</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. Intragenerational mobility</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. A caste-based transition</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Relative poverty</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Intragenerational mobility is movement in social status <b>within a person’s lifetime</b>.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Intergenerational mobility compares parents’ status to children’s status.</li>
+<li><b>C:</b> Caste systems restrict mobility based on ascribed status; the scenario is mobility within a class system.</li>
+<li><b>D:</b> Relative poverty is being poor compared with others in a population; it is not a mobility category.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. A construction worker changes jobs to custodial services and keeps a similar income and lifestyle. This change is most consistent with:</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Horizontal mobility</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Upward mobility</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Downward mobility</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Structural poverty</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Horizontal mobility is a change in occupation or lifestyle that <b>does not substantially change social class</b> position.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Upward mobility would require movement to a higher class position (greater prestige/wealth).</li>
+<li><b>C:</b> Downward mobility is movement to a lower class position.</li>
+<li><b>D:</b> Structural poverty explains poverty via societal “holes,” not a same-class job change.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. Which statement best reflects the structural poverty perspective?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Poverty persists mainly because individuals lack motivation and self-discipline</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Poverty is always absolute and identical across geographic contexts</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Poverty is eliminated when people adopt a future orientation</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">D. Stable features of society create persistent “holes” that keep a fairly constant proportion of people below the poverty line</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Structural poverty emphasizes how durable social and economic structures produce recurring positions of disadvantage; the specific individuals may change, but the <b>overall proportion</b> below the poverty line can remain relatively constant.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This is a “culture of poverty” or individual-blame framing, not structural poverty.</li>
+<li><b>B:</b> Poverty can be <b>absolute</b> or <b>relative</b>, and costs of living vary across places.</li>
+<li><b>C:</b> Future orientation can matter, but structural poverty argues the system itself is a primary driver.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Urban Renewal, Cost of Living, and Health</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>Riverside is an aging urban neighborhood located two blocks from a large industrial corridor. For decades, many residents worked hourly jobs nearby and rented apartments in older buildings. A recent city report shows that a higher-income district across town has far lower asthma and emergency-room visit rates than Riverside, even though both areas are within the same city limits.</p>
+  <p>After a new tech campus opens nearby, investors begin buying and renovating Riverside properties. Over two years, coffee shops and boutique gyms appear, and median rent increases sharply. Some longtime tenants who earn slightly above the federal poverty threshold say that, despite being “above the line,” they cannot cover rent, food, and childcare in the now higher-cost area. Several families relocate to the city’s outskirts where rent is cheaper but public transit is limited.</p>
+  <p>At the same time, the city proposes expanding a waste-processing facility in the industrial corridor. Community members attend hearings, but many report that they lack the time, money, and political connections to influence the decision compared with residents from wealthier neighborhoods.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Skim for the big mechanisms: <b>urban renewal/gentrification</b>, <b>poverty line vs cost of living</b>, and <b>environmental justice</b>.</li>
+    <li>When a question asks for an example of gentrification, look for <b>higher-SES newcomers + renovation + rising costs + displacement</b> (not just “neighborhood improvement”).</li>
+    <li>When a question mentions the poverty line, connect it to <b>geographic cost differences</b> (rent in a city vs rural town).</li>
+    <li>For environmental justice, focus on <b>hazard placement</b> and <b>political power</b>: low-SES areas often have less influence and more exposure.</li>
+    <li>Choose the option that requires using passage evidence to <b>infer the sociological mechanism</b>, not just restate a sentence.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. In Passage 1, which development best illustrates gentrification as a mechanism that can increase social exclusion for long-term low-SES residents?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. The city adds a new bus line that reduces commute times for all neighborhoods</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Community clinics receive additional funding after residents vote in a local referendum</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">C. Rents rise sharply after higher-income newcomers renovate properties, forcing some longtime tenants to relocate</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. A local high school offers free night classes to adults seeking new job skills</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Gentrification occurs when higher-SES groups move into and renovate a deteriorated area, often raising costs (especially rent) and <b>displacing</b> low-SES residents—an exclusion mechanism.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Improved transit could reduce spatial barriers, but it does not capture displacement by rising costs.</li>
+<li><b>B:</b> This reflects increased civic participation/resources, not displacement driven by reinvestment.</li>
+<li><b>D:</b> Education programs may support mobility, but they do not define gentrification or displacement.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Which inference from Passage 1 most strongly supports the claim that the official poverty line can misclassify need when cost of living varies by geography?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. The same hourly wage supports basic needs in one region but falls short in a high-rent urban center</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Residents report that they feel less connected to neighbors after moving</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. A nonprofit teaches networking skills to unemployed adults</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. A national survey finds that physicians are widely respected</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The passage highlights how housing costs differ across places; if the poverty threshold is not adequately adjusted for local cost of living, a wage that is “above the line” in one area may still be insufficient elsewhere.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> This is about social cohesion, not poverty line measurement.</li>
+<li><b>C:</b> This relates to social capital and networks, not geographic cost-of-living misclassification.</li>
+<li><b>D:</b> This is prestige, unrelated to poverty line calculation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. Suppose residents near the industrial site in Passage 1 have unusually high asthma rates. Which explanation best connects this pattern to environmental justice?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Affluent neighborhoods attract more weak ties, improving information flow</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Hazardous facilities are disproportionately located in low-income, politically weaker areas, increasing exposure to pollutants</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. High cultural capital causes residents to seek medical labels for ordinary symptoms</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Intergenerational mobility reduces disease risk by itself</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Environmental justice focuses on how environmental hazards (pollution, toxic waste) are more likely to be placed in <b>low-SES communities</b> that have less political power to resist, producing unequal exposure and health burdens.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Weak ties may affect opportunities, but they do not explain pollutant siting and exposure.</li>
+<li><b>C:</b> Cultural capital does not cause pollutant exposure; it refers to skills/knowledge advantages.</li>
+<li><b>D:</b> Mobility may correlate with health, but the mechanism here is unequal environmental risk distribution.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Networks, Weak Ties, and Opportunity</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>A community college launches a career program for adults who have been unemployed for over a year. Participants learn interview skills, but the program also pushes them to attend industry meetups and build professional contacts. Lina, a participant with strong family support, relies heavily on close relatives and best friends for encouragement, but none work in the industry she wants to enter.</p>
+  <p>At a conference, Lina speaks briefly with a recruiter and later meets a consultant who mentions an opening at a firm Lina had not considered. The consultant introduces Lina to two people in that firm, and within a week Lina receives an interview invitation. Another participant, Omar, has similar training and income but rarely attends events and knows few people outside his immediate circle.</p>
+  <p>Program staff notice that a small group of attendees repeatedly serve as “connectors” who introduce others across industries; referrals tend to pass through them. The staff debate whether unequal interview outcomes are mostly about who has more money and credentials, or about where individuals sit within the network.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify the key vocabulary: <b>social capital</b>, <b>strong vs weak ties</b>, and <b>situational vs positional inequality</b>.</li>
+    <li>Strong ties = close friends/family (high support, fewer new leads). Weak ties = acquaintances (more bridges to new information).</li>
+    <li>Situational inequality is about <b>socioeconomic advantage</b> (resources) that improves opportunities. Positional inequality is about <b>centrality/gatekeeping</b> in the network.</li>
+    <li>For questions, map each answer choice to a network mechanism: bridging, redundancy, gatekeepers, or SES.</li>
+    <li>Prefer answers that explain <b>why</b> the network structure changes opportunity, not just that “connections help.”</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. In Passage 2, why might Lina’s new acquaintance at the conference be more useful for finding a job than her closest friends?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Close friends are more likely to provide positional inequality</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Close friends usually reduce anomie by enforcing shared norms</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Close friends primarily provide cultural capital rather than social capital</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. A weak tie can bridge to different networks and offer nonredundant job information</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Weak ties often connect you to <b>different circles</b>, making them especially good for novel information like job leads; strong ties are supportive but tend to share overlapping information.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Positional inequality refers to centrality; it doesn’t explain why close friends would be less useful for job leads.</li>
+<li><b>B:</b> Norm enforcement can occur, but the question is about job access through networks.</li>
+<li><b>C:</b> Close friends can provide social capital too; the key distinction is network diversity and bridging, not cultural capital vs social capital.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. Passage 2 states that two applicants have similar resumes, but one is connected to the hiring manager through several mutual contacts. This advantage is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Absolute poverty</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Achieved status</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. Situational inequality arising from network-based socioeconomic advantage</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. A caste-based privilege</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Network benefits can produce <b>situational inequality</b> (socioeconomic advantage from connections), even when formal credentials are similar. The advantage comes from access and opportunity, not from the resume itself.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Absolute poverty is deprivation of basic necessities; irrelevant here.</li>
+<li><b>B:</b> Achieved status is earned via effort (education/degree/job title); the edge here is network access.</li>
+<li><b>D:</b> Caste privilege is ascribed and rigid; this is a network-based opportunity difference within a class system.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. In Passage 2, what outcome would most strongly suggest positional inequality (rather than purely situational inequality) is driving who gets interviews?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Applicants with the same income are equally likely to get interviews after training</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">B. A few individuals consistently control introductions between groups and are repeatedly selected for referrals</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Interview rates rise when the company raises wages across the board</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Applicants report feeling alienated in a wealthy neighborhood</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Positional inequality depends on <b>centrality</b>: if a small number of people act as key brokers/gatekeepers for introductions, their network position (not just SES) drives opportunities.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Equal outcomes after training would argue against positional inequality.</li>
+<li><b>C:</b> Raising wages affects SES broadly, not network centrality/gatekeeping.</li>
+<li><b>D:</b> Alienation in an affluent area is social exclusion; it doesn’t establish network centrality effects.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Merit, Credentials, and Social Reproduction</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+
+<div class="passage-box">
+  <p>Two high schools in the same state send graduates to competitive universities. School A is in an affluent suburb with advanced placement courses, college counselors, and frequent alumni networking events. School B is in a low-income urban area with larger class sizes, fewer electives, and frequent teacher turnover.</p>
+  <p>During the admissions cycle, two applicants—Maya (School A) and Jae (School B)—earn similar test scores and grades. Maya’s family pays for expensive test-prep, and Maya receives an interview referral through a legacy alumni connection. Jae works part-time to help cover household expenses and has limited access to tutoring or unpaid internships.</p>
+  <p>An admissions officer argues that the system is merit-based because everyone takes the same standardized exam. A sociologist counters that differences in schooling, time, and connections can reproduce advantage across generations, even when two students appear equally “talented” on paper.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate <b>merit</b> (achievement) from <b>ascribed/resource advantages</b> (legacy ties, paid prep, school quality).</li>
+    <li>When asked to critique meritocracy, look for outcomes that change despite <b>similar performance</b>—that signals non-merit factors.</li>
+    <li>For mobility questions, connect education to <b>credentials → job access</b> (structural mobility).</li>
+    <li>For intergenerational persistence, look for structural channels: <b>schools, housing, neighborhood resources, political influence</b> (social reproduction).</li>
+    <li>Pick the choice that best matches the passage’s causal story rather than a definition in isolation.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. In Passage 3, which observation best undermines a purely meritocratic explanation for admissions outcomes?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Students who study more report feeling less stressed</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Applicants from different regions have different housing costs</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Highly prestigious occupations are respected across society</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. Two students with similar test scores have different acceptance rates because one has legacy connections and costly test-prep access</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> A meritocracy would predict advancement primarily from talent/achievement. When <b>ascribed advantages</b> (legacy ties) and resource-driven opportunities (expensive prep) change outcomes despite similar performance, merit alone cannot explain mobility.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Stress reduction with studying is unrelated to whether admissions reflect merit.</li>
+<li><b>B:</b> Cost-of-living differences matter for poverty definitions, not directly for admissions meritocracy.</li>
+<li><b>C:</b> Prestige describes social regard, not admissions mechanisms.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. If the class system encourages upward mobility through credentials, which mechanism most directly links educational attainment to structural mobility in Passage 3?</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Degrees function as institutional signals that unlock higher-level occupations in the labor market</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Education automatically eliminates intersectionality effects</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Earning a degree prevents suburbanization</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Educational attainment converts absolute poverty into relative poverty</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Structural mobility occurs when the economic/occupational structure allows people to move up given the right <b>credentials</b>. Degrees act as signals/requirements that open access to higher-status jobs.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Education can reduce barriers for some, but it does not eliminate compounded disadvantages from multiple identities.</li>
+<li><b>C:</b> Suburbanization is a migration pattern and not directly prevented by individual education.</li>
+<li><b>D:</b> Absolute vs relative poverty are definitions of deprivation; degrees do not automatically reclassify poverty types.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. A policymaker argues that poverty persists because families remain trapped across generations due to limited school quality, housing instability, and reduced political influence in their neighborhood. This argument most directly reflects:</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Horizontal mobility</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Peak experience</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. Social reproduction of inequality</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Psychoticism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Social reproduction is the <b>intergenerational transmission</b> of inequality (including poverty) through structural conditions—schools, housing, neighborhood resources, and power differences.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Horizontal mobility is same-class job change, not intergenerational persistence.</li>
+<li><b>B:</b> Peak experience is a Maslow term about profound self-actualizing moments.</li>
+<li><b>D:</b> Psychoticism is a trait dimension in PEN; unrelated to intergenerational poverty.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+</body>
+</html>

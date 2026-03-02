@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Stress & Coping (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Stress &amp; Coping (Chapter 5.3)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A student sees an unfamiliar exam prompt and immediately labels it as “dangerous” before thinking about solutions. Which appraisal stage is being demonstrated?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Secondary appraisal (coping-resource evaluation)</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Primary appraisal (initial threat evaluation)</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Problem-focused coping (directly changing the stressor)</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Reappraisal (updating the stress level after coping)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Primary appraisal is the <b>first</b>, rapid evaluation of a situation’s meaning (irrelevant, benign–positive, or stressful). Labeling the situation as a threat happens <b>before</b> evaluating coping options.</p>
+      <p><b>Other choices:</b> A is later and asks “Can I handle this?”; C is a coping strategy, not an appraisal stage; D is a subsequent reassessment that occurs after new information or coping attempts.</p>
+    </div>
+  </details>
+</div>
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. During a sudden loud alarm, which immediate physiological change is most directly driven by sympathetic nervous system activation?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Increased gastric motility and salivation</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Decreased heart rate with peripheral vasodilation</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Release of ACTH from the adrenal cortex</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Increased heart rate with reduced digestion</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The sympathetic “fight-or-flight” response increases cardiovascular output (e.g., <b>heart rate</b>) and diverts energy away from nonessential processes like <b>digestion</b>.</p>
+      <p><b>Other choices:</b> A reflects parasympathetic “rest-and-digest”; B is opposite of SNS effects; C mixes up the endocrine axis—ACTH is released from the <b>pituitary</b>, not the adrenal cortex, and is not the most immediate SNS effect.</p>
+    </div>
+  </details>
+</div>
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. A person experiences stress while planning a wedding but describes it as exciting and motivating. This stressor is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Eustress, because it is perceived as a positive challenge</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Distress, because any life change is unpleasant</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Harm, because damage has already occurred</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Irrelevant appraisal, because weddings do not change physiology</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Eustress is stress experienced as <b>positive</b> (often a “challenge” appraisal) and can increase motivation even though it still requires adaptation.</p>
+      <p><b>Other choices:</b> B is incorrect because stress can be positive; C is a component of secondary appraisal and implies actual damage; D contradicts the idea that lifestyle changes—even positive ones—can trigger physiological stress responses.</p>
+    </div>
+  </details>
+</div>
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. A firefighter reports high stress largely because each shift is unpredictable. Which psychological stress factor is most directly implicated?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Frustration</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Pressure</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Predictability</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Approach–avoidance conflict</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Low <b>predictability</b> increases stress because the person cannot anticipate what demands will occur or plan coping responses in advance.</p>
+      <p><b>Other choices:</b> A is blocked goal attainment; B is external demands/urgency; D is one option with both positive and negative outcomes (not primarily about uncertainty).</p>
+    </div>
+  </details>
+</div>
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A patient evaluates a new diagnosis and thinks, “This could worsen, but I might also learn to manage it and become healthier.” Which secondary appraisal element is emphasized?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Harm only</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Challenge (potential benefit through overcoming)</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Irrelevant appraisal</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Benign–positive appraisal</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Secondary appraisal includes <b>harm</b>, <b>threat</b>, and <b>challenge</b>. Focusing on potential growth/benefit from coping reflects a <b>challenge</b> appraisal.</p>
+      <p><b>Other choices:</b> A ignores the potential benefit; C and D are primary appraisal outcomes, not secondary appraisal components.</p>
+    </div>
+  </details>
+</div>
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. Which event is the best example of an &lt;i&gt;environmental&lt;/i&gt; stressor rather than a daily event or social expectation?</b>
+  <div class="choice" onclick="selectChoice('q6', this, true)">A. Sustained exposure to loud construction noise outside an apartment</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Forgetting where you parked your car</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Feeling pressured to attend every family gathering</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Arguing with a coworker about project roles</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Environmental stressors include external physical conditions like <b>loud sounds</b>, temperature extremes, or weather—independent of one’s schedule mistakes or social demands.</p>
+      <p><b>Other choices:</b> B is a daily hassle; C is a social expectation; D is an interpersonal/social stressor in a workplace context.</p>
+    </div>
+  </details>
+</div>
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. A student has to choose between retaking an exam (time-consuming) or accepting a lower grade (hurts GPA). This is most consistent with which conflict type?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Approach–approach conflict</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Approach–avoidance conflict</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. No conflict because there are two options</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">D. Avoidance–avoidance conflict</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Avoidance–avoidance conflict involves choosing between <b>two undesirable</b> options. Both outcomes are negative: extra time burden vs GPA hit.</p>
+      <p><b>Other choices:</b> A is two desirable options; B is one option with mixed pros/cons; C is wrong because having options doesn’t remove conflict.</p>
+    </div>
+  </details>
+</div>
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. Which finding best fits the &lt;i&gt;exhaustion&lt;/i&gt; stage of the general adaptation syndrome (GAS)?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Brief spike in epinephrine and heart rate immediately after a stressor begins</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Stable coping with sustained hormone output while the stressor persists</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Increased susceptibility to infection after prolonged stress with diminished reserves</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. A complete return to baseline physiology while the stressor continues</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> In exhaustion, the body can no longer sustain the elevated response; chronic activation contributes to <b>illness risk</b>, organ strain, and declining function.</p>
+      <p><b>Other choices:</b> A is alarm; B is resistance; D contradicts continued stress exposure.</p>
+    </div>
+  </details>
+</div>
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. Which endocrine sequence best matches the HPA axis described in the stress response?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Pituitary → epinephrine → hypothalamus → cortisol</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">B. Hypothalamus → pituitary (ACTH) → adrenal cortex (cortisol)</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Adrenal medulla → ACTH → hypothalamus → cortisol</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Thymus → cortisol → pituitary → ACTH</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The passage describes: hypothalamus signals pituitary to release <b>ACTH</b>, which stimulates the adrenal cortex to release <b>cortisol</b> to maintain blood glucose.</p>
+      <p><b>Other choices:</b> A and C scramble the order and mix medulla/cortex roles; D incorrectly assigns a primary endocrine stress role to the thymus.</p>
+    </div>
+  </details>
+</div>
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. A nursing home introduces a program letting residents choose meal times and daily activities. Which outcome would most strongly support the claim that increased control reduces stress?</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. Residents show more active social behavior and improved mood over time</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Residents report more unpredictability in daily life</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Residents exhibit higher cortisol levels and more withdrawal</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Residents show increased approach–avoidance conflicts about meals</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Classic findings show that greater perceived <b>control</b> is associated with more positive, active, and social behavior—consistent with reduced stress.</p>
+      <p><b>Other choices:</b> B would increase stress; C indicates worsening stress; D is not a core prediction of control-based interventions.</p>
+    </div>
+  </details>
+</div>
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. A student copes with MCAT stress by making a study schedule, identifying weak topics, and adjusting practice problems. This is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Emotion-focused coping</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Maladaptive coping</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Problem-focused coping</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Reappraisal only</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Problem-focused coping targets the <b>stressor itself</b> by planning and problem solving to change circumstances or performance.</p>
+      <p><b>Other choices:</b> A changes feelings rather than the stressor; B is harmful (e.g., substance use); D is a cognitive step that may occur but does not describe the core strategy.</p>
+    </div>
+  </details>
+</div>
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. Which coping response is most clearly &lt;i&gt;emotion-focused&lt;/i&gt; rather than problem-focused?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Emailing a professor to clarify assignment expectations</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Creating a to-do list with deadlines</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Joining a study group to divide practice sets</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Using positive reappraisal to reinterpret the stressor as a growth opportunity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Positive reappraisal changes one’s <b>emotional interpretation</b> of the stressor, a hallmark of emotion-focused coping.</p>
+      <p><b>Other choices:</b> A–C primarily aim to change the situation (problem-focused), even if they also provide emotional relief.</p>
+    </div>
+  </details>
+</div>
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. Which acute stress response best matches the table’s description of the immune system during &lt;i&gt;acute&lt;/i&gt; stress?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Immune tissues become primed for response (temporary readiness)</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Diminished immune response due to chronic cortisol</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Autoimmune destruction of the thymus</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Permanent suppression of all leukocyte production</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Acute stress can transiently <b>prime</b> immune activity, whereas chronic stress tends to suppress immunity.</p>
+      <p><b>Other choices:</b> B describes chronic stress; C and D are not supported by the passage and are extreme/incorrect.</p>
+    </div>
+  </details>
+</div>
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. Chronic elevation of cortisol would most directly contribute to which pattern in the table?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Faster recovery from stress due to amplified parasympathetic tone</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Slowed recovery from stress response due to prolonged hormone elevation</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Immediate elimination of epinephrine release from the adrenal medulla</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Increased fertility and higher reproductive hormone output</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Chronic stress is associated with persistently elevated cortisol and other hormones, which can <b>slow recovery</b> and maintain the body in a prolonged stress-responsive state.</p>
+      <p><b>Other choices:</b> A is opposite; C misunderstands cortisol vs catecholamines; D contradicts the table (reproductive suppression and higher infertility risk with chronic stress).</p>
+    </div>
+  </details>
+</div>
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. Why can exercise function as an effective stress management technique according to the passage?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. It eliminates the need for appraisal by preventing perception of stressors</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. It prevents ACTH release entirely by shutting down the hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. It releases endorphins, which can improve mood and perceived well-being</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. It increases chronic cortisol levels to maintain glucose availability</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Exercise can boost mood partly through release of <b>endorphins</b> (opioid neuropeptides) that act as “feel-good” neurotransmitters and support well-being.</p>
+      <p><b>Other choices:</b> A is impossible—appraisal is cognitive; B is physiologically inaccurate; D would worsen stress physiology rather than manage it.</p>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions each)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Appraisal Shifts During MCAT Preparation</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A student begins a 10-week MCAT plan. In Week 1, the student sees a full-length practice exam score far below their goal and reports feeling “doomed.” They interpret the score as evidence that they are not capable of improving, and they spend the rest of the day ruminating. That night, sleep is poor and the next morning the student skips breakfast, reporting a “wired” feeling.</p>
+  <p>By Week 4, after joining a study group and tracking improvement, the student starts describing low scores as “feedback.” They still feel nervous before practice tests but now makes a concrete plan for reviewing missed questions. In the week before the real exam, the student feels energized and focused, but also notices more frequent colds when sleep falls below 6 hours for several nights.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify <b>primary vs secondary appraisal</b>: primary labels the situation (irrelevant/benign–positive/stressful); secondary asks “Can I cope?” (harm/threat/challenge).</li>
+    <li>Use the passage’s <b>behavioral evidence</b> (rumination vs planning, joining a study group, tracking improvement) to infer perceived coping resources.</li>
+    <li>Connect symptoms to physiology: “wired,” poor sleep, skipped digestion-related behaviors → sympathetic activation; repeated short sleep + illness → chronic-stress immunosuppression risk.</li>
+  </ol>
+</div>
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. Which interpretation best explains the student’s change from Week 1 to Week 4 using appraisal theory?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Primary appraisal changed from stressful to irrelevant, eliminating physiological stress responses</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Secondary appraisal became more negative, increasing perceived harm and reducing coping</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Primary appraisal remained benign–positive throughout, but coping strategies changed</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Secondary appraisal shifted toward higher perceived coping and more challenge-oriented evaluation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Week 1 shows threat and low coping (“doomed,” rumination). By Week 4, joining a study group and making review plans indicates increased perceived coping resources and a more <b>challenge</b>-oriented frame—key features of <b>secondary appraisal</b> shifting.</p>
+      <p><b>Other choices:</b> A is wrong because the exam is clearly still meaningful; B contradicts the improved planning/feedback mindset; C is inconsistent because Week 1 is not benign–positive.</p>
+    </div>
+  </details>
+</div>
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. In Week 1, which observation most directly supports that the student’s primary appraisal labeled the event as stressful rather than benign–positive?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. They interpret the score as proof they cannot improve and feel “doomed”</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. They form a study group in Week 4</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. They track improvement across weeks</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. They feel energized in the week before the real exam</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Primary appraisal is the initial meaning assigned to the event. “Doomed” and interpreting the score as incapacity indicates the event was appraised as <b>threatening/stressful</b> rather than beneficial.</p>
+      <p><b>Other choices:</b> B–D occur later and reflect coping or later emotional states; they do not directly show the initial labeling of the event in Week 1.</p>
+    </div>
+  </details>
+</div>
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. Which mechanism best explains the student’s increased frequency of colds during the final week with repeated short sleep?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Acute stress primes immunity permanently, increasing infection risk</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Epinephrine directly kills lymphocytes, causing immediate immunodeficiency</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Chronic stress physiology (including prolonged cortisol elevation) can diminish immune responses</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Primary appraisal automatically suppresses antibody production regardless of sleep</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The passage links repeated inadequate sleep with getting sick more often. Chronic stress states—often accompanied by prolonged cortisol and other hormone changes—are associated with <b>diminished immune response</b> and higher illness susceptibility.</p>
+      <p><b>Other choices:</b> A misstates acute stress effects (priming is temporary and not the same as chronic suppression); B overstates an immediate direct mechanism; D confuses cognition with endocrine/immune regulation.</p>
+    </div>
+  </details>
+</div>
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Control, Pressure, and Performance Under Deadline</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A research lab assigns two groups to complete the same complex data-analysis task. Group C is allowed to decide the order of subtasks, choose when to take breaks, and set intermediate milestones. Group P receives the same final deadline but is given strict instructions about task order and is told they may not deviate; progress will be checked at random times. Both groups are told the task affects their evaluation.</p>
+  <p>During the task, Group P reports feeling rushed and spends more time monitoring the time than checking for errors. Group C reports feeling busy but focused. At the end, both groups finish at similar times, but Group P shows higher self-reported irritability and makes more minor mistakes. A follow-up week later finds Group P also reports lower sleep quality despite no new tasks.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate stressors: <b>pressure</b> (external demands/urgency) vs <b>control</b> (ability to influence the environment).</li>
+    <li>Use performance patterns: time-checking and irritability suggest heightened stress; more errors can occur when cognitive resources shift to threat monitoring.</li>
+    <li>Link persistent sleep issues after the task to a prolonged stress response (not necessarily ongoing danger, but ongoing arousal/reappraisal).</li>
+  </ol>
+</div>
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. Which psychological stressor most directly differs between Group C and Group P, based on the passage design?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Frustration (blocked goals) is higher in Group C because they set their own milestones</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">B. Control is lower in Group P, which can increase stress even with the same deadline</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Approach–approach conflict is higher in Group P because they have two desirable options</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Inclement weather is higher in Group P due to random progress checks</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Both groups face the same deadline (pressure), but Group P has restricted autonomy. Reduced <b>control</b> is a known psychological factor that increases stress, consistent with higher irritability and error patterns.</p>
+      <p><b>Other choices:</b> A is unsupported (goals are not blocked); C mislabels the situation; D is irrelevant and not part of the experimental manipulation.</p>
+    </div>
+  </details>
+</div>
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. Which inference best explains why Group P made more minor mistakes despite completing the task in similar time?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Random progress checks convert the task into an approach–approach conflict, improving speed but reducing accuracy</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Lower predictability always increases dopamine, which directly causes calculation errors</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Higher control in Group P reduced stress too much, lowering motivation and attention</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Heightened stress can divert attentional resources toward threat/time monitoring rather than careful checking</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Group P’s rushed feelings and time monitoring suggest a stress-focused attentional shift. Under higher stress, cognitive resources may be allocated to monitoring demands and perceived threat, reducing careful error-checking and increasing minor mistakes.</p>
+      <p><b>Other choices:</b> A incorrectly characterizes the conflict; B is an unsupported neurotransmitter claim; C reverses the group’s control manipulation and predicts the opposite direction.</p>
+    </div>
+  </details>
+</div>
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. If a biomarker were measured immediately after the task, which result would most strongly support that Group P engaged a stronger acute sympathetic response?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Higher heart rate with reduced digestive activity reported during the task</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Lower blood pressure due to widespread vasodilation</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Complete absence of epinephrine and norepinephrine release</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Higher fertility hormone output and increased reproductive function</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Acute sympathetic activation predicts increased <b>heart rate</b> and diversion of energy away from digestion (consistent with fight-or-flight physiology).</p>
+      <p><b>Other choices:</b> B is opposite of typical SNS vasoconstriction patterns; C contradicts SNS activation; D contradicts the usual temporary suppression of reproductive function under stress.</p>
+    </div>
+  </details>
+</div>
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Mapping Symptoms to Stages and Strategies</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>An emergency dispatcher works rotating shifts for six months. At first, each high-intensity call produces a burst of physical symptoms: rapid heartbeat, sweaty palms, and a sharp decrease in appetite during the shift. After several weeks, the dispatcher reports fewer obvious surges during calls but remains “on edge” for hours after work and has trouble unwinding. Blood pressure at clinic visits begins trending upward.</p>
+  <p>By month six, the dispatcher reports persistent fatigue, more frequent headaches, and catching respiratory infections more often than before the job. They also notice becoming irritable with family members and withdrawing socially. A supervisor recommends a structured program that includes diaphragmatic breathing, progressive muscle relaxation, and moderate exercise three times per week.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Match time course to <b>GAS</b>: alarm = immediate fight-or-flight; resistance = sustained engagement/adaptation with ongoing hormone output; exhaustion = depleted resources + illness risk.</li>
+    <li>Use the passage’s <b>symptom pattern</b> (early surges → later persistent high BP → later fatigue/infections) to identify stage transitions.</li>
+    <li>Classify interventions: breathing/PMR/meditation are <b>relaxation techniques</b>; exercise can improve mood via <b>endorphins</b> and overall stress resilience.</li>
+  </ol>
+</div>
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. The dispatcher’s month-six pattern (fatigue + infections + persistent symptoms) most strongly suggests which GAS stage?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Alarm, because symptoms are immediate and short-lived</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Resistance, because all stress responses have fully resolved</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Exhaustion, because prolonged stress is associated with illness susceptibility and declining reserves</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Benign–positive appraisal, because the job is meaningful</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Month six includes fatigue, frequent infections, and persistent strain—consistent with <b>exhaustion</b>, when the body can no longer maintain elevated responses and becomes more vulnerable to illness and chronic conditions.</p>
+      <p><b>Other choices:</b> A fits the first calls (acute surges), not month six; B contradicts persistent symptoms and rising blood pressure; D is an appraisal label, not a GAS stage.</p>
+    </div>
+  </details>
+</div>
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. Which immediate hormonal signal best fits the passage’s description of the hypothalamus stimulating the pituitary during the alarm stage?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Direct cortisol release from the hypothalamus into the bloodstream</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. Pituitary secretion of ACTH that stimulates adrenal cortisol production</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Thymus secretion of epinephrine to maintain blood glucose</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Adrenal cortex secretion of norepinephrine to activate the sympathetic nervous system</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The hypothalamus stimulates the pituitary to secrete <b>ACTH</b>, which then stimulates the adrenal cortex to produce <b>cortisol</b>—a key endocrine component of the stress response described.</p>
+      <p><b>Other choices:</b> A misassigns cortisol source; C misassigns gland/hormone roles; D confuses adrenal cortex (cortisol) with adrenal medulla (epinephrine/norepinephrine).</p>
+    </div>
+  </details>
+</div>
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. The supervisor’s recommended breathing and progressive muscle relaxation most directly represent which stress-management approach?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Maladaptive coping because it avoids the stressor</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Problem-focused coping because it eliminates rotating shifts</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Secondary appraisal because it evaluates harm/threat/challenge</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Relaxation techniques aimed at reducing physiological arousal</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Diaphragmatic breathing and progressive muscle relaxation are classic <b>relaxation techniques</b> that reduce physiological arousal and help shift the body away from prolonged sympathetic activation.</p>
+      <p><b>Other choices:</b> A is incorrect because these are adaptive, not harmful; B would require changing the schedule itself (not described); C is an appraisal process, not an intervention strategy.</p>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

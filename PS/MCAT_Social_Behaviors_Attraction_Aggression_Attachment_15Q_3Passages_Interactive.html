@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Social Behaviors (Ch. 10.1)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Social Behaviors (Ch. 10.1)</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 Correct: B -->
+<div class="question" id="q1">
+  <b>1. A student reports that they became close friends with their lab partner after both admitted anxieties about the course and responded with nonjudgmental empathy. Which factor of interpersonal attraction is most directly illustrated?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Proximity</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Self-disclosure</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Facial symmetry</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Aggression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Self-disclosure</b> is sharing fears, thoughts, and goals with another person and being met with <b>empathy</b>. That mutual vulnerability tends to deepen attraction and friendship.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Proximity is physical closeness (same dorm/sit nearby), not emotional sharing.</li>
+        <li><b>C:</b> Facial symmetry is a physical-attractiveness cue; nothing about appearance is mentioned.</li>
+        <li><b>D:</b> Aggression is intent to harm or increase dominance—unrelated.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 Correct: D -->
+<div class="question" id="q2">
+  <b>2. A person starts to like a classmate more after hearing that the classmate said, “I think you’re really smart.” This change is best explained by:</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Complementarity</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. The golden ratio</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Mere exposure effect</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Reciprocal liking</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Reciprocal liking</b> means we like others more when we believe <b>they like us</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Complementarity is attraction based on matching needs/traits (nurturer ↔ wants nurturing), not hearing you’re liked.</li>
+        <li><b>B:</b> Golden ratio relates to perceived physical attractiveness, not interpersonal feedback.</li>
+        <li><b>C:</b> Mere exposure is repeated contact; this stem is about perceived approval.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 Correct: A -->
+<div class="question" id="q3">
+  <b>3. Two students become friends primarily because they live on the same dorm floor and frequently run into each other. Which concept most directly explains this pattern?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Proximity</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Esteem support</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Disorganized attachment</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Inclusive fitness</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> <b>Proximity</b> (physical closeness) increases opportunities to interact, making friendships more likely.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Esteem support is praising someone’s abilities during hardship.</li>
+        <li><b>C:</b> Disorganized attachment is an infant-caregiver pattern.</li>
+        <li><b>D:</b> Inclusive fitness is evolutionary success influenced by helping relatives/kin.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 Correct: C -->
+<div class="question" id="q4">
+  <b>4. A marketer repeats a jingle across many ads and observes that consumers’ ratings of the product become more positive over time, even though the information content of the ad is minimal. Which principle best explains this effect?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Secure base</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Indicator traits</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Mere exposure (familiarity) effect</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Cognitive neoassociation model</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The <b>mere exposure effect</b> is a preference for stimuli encountered more frequently; repetition alone can increase liking.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Secure base is about caregiver consistency in attachment.</li>
+        <li><b>B:</b> Indicator traits are mate-choice cues of health/quality.</li>
+        <li><b>D:</b> Cognitive neoassociation predicts aggression when people feel negative affect, not increased liking from repetition.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 Correct: A -->
+<div class="question" id="q5">
+  <b>5. Which scenario best represents <i>complementarity</i> as a contributor to attraction?</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. A highly nurturing person is attracted to someone who strongly prefers being cared for</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Two people are attracted because they share the same political attitudes and hobbies</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Two roommates become friends because they see each other daily in the hallway</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. A person is attracted to a classmate after learning the classmate likes them</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Complementarity can drive attraction when <b>opposing qualities</b> match each other’s needs (nurturer ↔ wants nurturing), while still requiring some underlying similarities for long-term success.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> That is <b>similarity</b>.</li>
+        <li><b>C:</b> That is <b>proximity</b> and potentially mere exposure.</li>
+        <li><b>D:</b> That is <b>reciprocal liking</b>.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 Correct: D -->
+<div class="question" id="q6">
+  <b>6. Which behavior most clearly fits the chapter’s definition of <i>aggression</i>?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Accidentally bumping into someone while rushing to class</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Feeling angry but saying nothing</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Politely disagreeing with a classmate’s argument</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. Intentionally using threats or violence to harm another person or increase social dominance</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Aggression is defined as <b>behavior</b> (not just emotion) with <b>intent</b> to cause harm or increase dominance; it can be physical, verbal, or nonverbal (threat gestures).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Lacks intent to harm.</li>
+        <li><b>B:</b> Emotion without aggressive behavior is not aggression.</li>
+        <li><b>C:</b> Disagreement is not necessarily intended harm/dominance.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 Correct: B -->
+<div class="question" id="q7">
+  <b>7. A driver who is exhausted and in pain after a long shift becomes unusually irritable and honks aggressively at minor inconveniences. Which model best accounts for this escalation?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Inclusive fitness theory</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Cognitive neoassociation model</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Mere exposure effect</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Secure attachment</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The <b>cognitive neoassociation model</b> proposes that <b>negative affect</b> (pain, frustration, heat, hunger, fatigue) increases the likelihood of aggressive responses.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Inclusive fitness concerns evolutionary success via kin/helping, not moment-to-moment irritability.</li>
+        <li><b>C:</b> Mere exposure relates to liking from repeated exposure.</li>
+        <li><b>D:</b> Secure attachment concerns infant-caregiver patterns.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 Correct: C -->
+<div class="question" id="q8">
+  <b>8. A neurologist hypothesizes that a patient’s repeated violent outbursts are partly due to weakened “top-down” inhibition of threat responses. Which finding best supports this hypothesis?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Increased activity in the ventromedial hypothalamus</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Reduced activity in the hypothalamus leading to decreased hunger</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Reduced activity in the prefrontal cortex, allowing the amygdala-driven threat response to dominate</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Increased oxytocin release after social bonding</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The <b>amygdala</b> helps tag stimuli as threats and can increase aggression when activated. The <b>prefrontal cortex</b> provides executive control (“brakes”) that reduces impulsive, emotionally reactive behavior. Lower PFC activity is linked to higher aggression.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B:</b> Hypothalamic regions here relate to satiety/hunger, not aggression control.</li>
+        <li><b>D:</b> Oxytocin is more tied to bonding than to the specific PFC–amygdala brake mechanism described.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 Correct: D -->
+<div class="question" id="q9">
+  <b>9. Which statement best reflects the chapter’s discussion of testosterone and aggression?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Testosterone increases aggression only in males and not in females</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Testosterone eliminates aggression by reducing amygdala activation</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Testosterone has no relationship to aggressive behavior in humans</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">D. Higher testosterone levels are associated with increased aggression regardless of sex or gender</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The chapter notes that <b>higher testosterone</b> is linked to more aggressive behavior in humans <b>irrespective of sex or gender</b>, although average levels differ across populations.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Too restrictive; the association is not limited only to males.</li>
+        <li><b>B:</b> Not supported; testosterone is not described as eliminating aggression.</li>
+        <li><b>C:</b> Contradicts the stated correlation.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 Correct: A -->
+<div class="question" id="q10">
+  <b>10. A bar patron becomes more likely to start a fight after several drinks. Which explanation best matches the chapter’s “real world” point?</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. Alcohol impairs judgment and reduces inhibition by weakening control over aggressive reactions</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Alcohol increases facial symmetry and thus increases attraction</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Alcohol creates a secure base that buffers stress</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Alcohol increases aggression only by increasing proximity to others</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Alcohol increases aggression by <b>impairing judgment</b> and reducing inhibition from social norms that would usually constrain aggressive impulses.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Facial symmetry is unrelated to alcohol’s acute effect on aggression.</li>
+        <li><b>C:</b> Secure base is an attachment concept about caregivers, not alcohol.</li>
+        <li><b>D:</b> Proximity can affect attraction; it is not the key mechanism for alcohol-related aggression.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 Correct: C -->
+<div class="question" id="q11">
+  <b>11. An infant cries when the caregiver leaves, calms quickly when the caregiver returns, and uses the caregiver as a “home base” while exploring a new room. This pattern best indicates:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Avoidant attachment</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Ambivalent attachment</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Secure attachment</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Disorganized attachment</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> <b>Secure attachment</b> involves a <b>consistent, comforting, responsive caregiver</b> (secure base). The child explores but prefers the caregiver and is soothed by reunion.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Avoidant: minimal distress on separation and little preference between caregiver and stranger.</li>
+        <li><b>B:</b> Ambivalent: high distress at separation and mixed/ambivalent response on reunion due to inconsistent caregiving.</li>
+        <li><b>D:</b> Disorganized: no coherent pattern; may appear dazed, frozen, or show contradictory behaviors.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 Correct: B -->
+<div class="question" id="q12">
+  <b>12. A toddler shows intense distress when the caregiver leaves, but when the caregiver returns the toddler both clings and pushes away, appearing uncertain and hard to soothe. Which attachment style is most consistent with this behavior?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Avoidant attachment</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. Ambivalent (anxious–ambivalent) attachment</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Secure attachment</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Network support</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Ambivalent attachment</b> often results from <b>inconsistent caregiving</b>. The child is highly distressed at separation and shows a mixed response (clinging yet resisting) at reunion because they cannot rely on consistent comfort.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Avoidant children show little distress and little preference for the caregiver.</li>
+        <li><b>C:</b> Secure children are soothed by reunion and use the caregiver as a stable base.</li>
+        <li><b>D:</b> Network support is a form of social support, not an attachment style.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 Correct: A -->
+<div class="question" id="q13">
+  <b>13. Which observation most strongly suggests <i>disorganized attachment</i> rather than avoidant attachment?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. The child alternates unpredictably between freezing, rocking, and approaching the caregiver, showing no consistent reunion strategy</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. The child shows no preference between stranger and caregiver and little distress on separation</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. The child is upset at departure but rapidly soothed upon caregiver return</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. The child becomes more friendly toward a peer after repeated exposure to them</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> <b>Disorganized attachment</b> is characterized by <b>no clear pattern</b> (confusion, freezing, repetitive behaviors, contradictory approach/avoidance). It is sometimes associated with erratic caregiving and can be a red flag for abuse.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> That is the hallmark of <b>avoidant</b> attachment.</li>
+        <li><b>C:</b> That suggests <b>secure</b> attachment.</li>
+        <li><b>D:</b> That is mere exposure, not attachment.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 Correct: B -->
+<div class="question" id="q14">
+  <b>14. A resident tells a struggling classmate, “You’ve handled harder rotations than this—you’re capable and efficient, and you’ll catch up.” This is best classified as which type of social support?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Material (tangible) support</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Esteem support</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Informational support</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Network support</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Esteem support</b> affirms a person’s <b>qualities and skills</b>, boosting confidence (“you’re capable and efficient”).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Material support is money/food/resources.</li>
+        <li><b>C:</b> Informational support gives practical information (e.g., steps of a treatment plan).</li>
+        <li><b>D:</b> Network support provides belonging via group connection.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 Correct: C -->
+<div class="question" id="q15">
+  <b>15. Which statement best captures the relationship between <i>altruism</i> and <i>inclusive fitness</i> in the chapter’s discussion?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Altruism can only exist if it directly increases the helper’s immediate number of offspring</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Inclusive fitness rejects the idea that helping relatives could influence genetic success</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Helping relatives or the group can increase genetic success because relatives share genes and supporting them can promote gene transmission</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Inclusive fitness explains altruism only by showing that helpers never incur costs</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Inclusive fitness broadens evolutionary success beyond personal offspring to include benefits gained when an organism helps <b>genetically related</b> individuals survive and reproduce (sharing many of the same genes).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Too narrow—altruism may reduce immediate personal reproduction but still increase inclusive fitness.</li>
+        <li><b>B:</b> Opposite of the concept; helping kin is central to inclusive fitness arguments.</li>
+        <li><b>D:</b> Helpers can incur real costs; the point is that gene transmission can still be favored overall.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: A Dorm, a Study Group, and a “Liked” Signal</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Ravi transfers to a new university and is assigned a room in a large dormitory. During the first week, he repeatedly sees two students—Mina and Jo—near the laundry room and elevator, and they begin exchanging quick greetings. By midsemester, Ravi ends up sitting next to Mina in an evening review session because the only open seats are in the front row. Over the next month, Mina and Ravi walk back to the dorm together after class several times a week and often talk about how overwhelmed they feel by exams.</p>
+  <p>One day Ravi overhears Jo telling a friend, “Ravi is actually pretty cool; I like studying with him.” Ravi later notices that when Jo invites him to join a weekend project, Ravi feels unexpectedly excited to accept—even though the project topic is not especially interesting to him.</p>
+  <p>At the end of the semester, Ravi is surprised to realize he now prefers sitting near Mina and Jo during lectures, even when other seats are available.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Split the passage into <b>attraction mechanisms</b>: proximity (physical closeness), mere exposure (repeated contact), self-disclosure (sharing vulnerabilities), reciprocity/reciprocal liking (belief others like you).</li>
+    <li>For each question, identify <b>which cue is the strongest causal lever</b> (e.g., “overheard they like me” → reciprocal liking).</li>
+    <li>When two cues both fit, ask which is more <b>specific</b> to the behavior change described (excitement to accept invitation vs general familiarity).</li>
+    <li>Choose the answer that explains the <b>behavior shift</b> without requiring extra assumptions.</li>
+  </ol>
+</div>
+
+<!-- Q16 Correct: D -->
+<div class="question" id="q16">
+  <b>16. Which factor most directly explains Ravi’s increased enthusiasm to join Jo’s weekend project after overhearing that Jo likes him?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Similarity in socioeconomic status</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. The golden ratio in facial proportions</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Complementarity of personality traits</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Reciprocal liking</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The key evidence is “overhears Jo likes him” followed by “feels excited to accept.” That is classic <b>reciprocal liking</b>: we tend to like and engage more when we believe the other person likes us.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/C:</b> The passage doesn’t provide evidence about shared attitudes/traits or complementary needs as the trigger for the sudden enthusiasm.</li>
+        <li><b>B:</b> No appearance-based cues are presented.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 Correct: B -->
+<div class="question" id="q17">
+  <b>17. Suppose Ravi’s preference for sitting near Mina and Jo persists even after a long break during which he rarely contacts them. Which explanation best integrates the passage’s evidence for why that preference developed in the first place?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Exclusive mate-choice mechanisms (e.g., indicator traits) are driving the preference</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">B. Repeated proximity likely increased familiarity and comfort, making those seats feel preferable over time</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Aggression toward other classmates made Ravi avoid alternative seats</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Ravi’s preference proves that Mina and Jo provide material support</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The passage repeatedly emphasizes <b>seeing them frequently</b> (laundry room/elevator, walking back, sitting together). This supports <b>proximity → repeated exposure → familiarity/comfort</b>, which can build an enduring preference even if later contact drops.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The passage is about friendships and study contexts; mate-choice mechanisms are not supported.</li>
+        <li><b>C:</b> No evidence of aggression driving seat choice.</li>
+        <li><b>D:</b> Material support (money/resources) is not described.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 Correct: A -->
+<div class="question" id="q18">
+  <b>18. Which detail in the passage most strongly supports the idea that <i>self-disclosure</i> contributed to Ravi’s relationship with Mina?</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. They often talk about how overwhelmed they feel by exams</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. They see each other near the elevator and laundry room</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Ravi sits next to Mina because only front-row seats are open</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Ravi overhears Jo call him “pretty cool”</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Sharing vulnerabilities (stress, fears, goals) is <b>self-disclosure</b>, which can deepen attraction and friendship when met with empathy.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B/C:</b> These support proximity/mere exposure (opportunity to interact).</li>
+        <li><b>D:</b> That supports reciprocal liking with Jo.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Heat, Hunger, and “Brakes” on Threat</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A city installs temporary cooling stations during a summer heat wave. A public health team compares two neighborhoods that are similar in population density and traffic volume. In Neighborhood A, the stations are placed near bus stops and distribute water and shade. In Neighborhood B, logistical delays prevent the stations from opening until late afternoon.</p>
+  <p>During the heat wave, researchers record a higher rate of hostile honking, shouting between drivers, and threatening gestures in Neighborhood B. At the same time, they note that many residents in Neighborhood B report skipped meals due to long work hours and that a popular sports bar is promoting discounted alcohol drinks each day.</p>
+  <p>In a separate clinical study, patients with damage affecting prefrontal functioning show increased impulsive reactions to ambiguous social cues that they interpret as “provocative,” even when no physical confrontation occurs.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>First decide whether the behaviors qualify as <b>aggression</b> (intent to harm/dominance) or just negative emotion. Threat gestures and hostile shouting can count as aggression.</li>
+    <li>Map situational triggers (heat, hunger, pain, frustration) to the <b>cognitive neoassociation model</b>.</li>
+    <li>Layer in biology: <b>amygdala</b> signals threat; <b>prefrontal cortex</b> can inhibit impulsive reactions (the “brakes”).</li>
+    <li>When multiple risk factors appear (heat + hunger + alcohol), avoid single-cause answers that ignore the passage’s converging evidence.</li>
+  </ol>
+</div>
+
+<!-- Q19 Correct: C -->
+<div class="question" id="q19">
+  <b>19. Which interpretation best explains why aggressive displays were higher in Neighborhood B?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Cooling stations increase testosterone levels, which directly reduces aggression</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Aggression is best explained only by fixed personality traits and is unrelated to context</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Negative affectors (heat stress, hunger, frustration) can increase aggressive responding, consistent with cognitive neoassociation</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. The passage shows that aggression requires physical fighting, so the observed behaviors are not aggression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Neighborhood B stacks multiple <b>negative affect</b> conditions (heat, skipped meals, frustration) and shows more hostile behaviors. The <b>cognitive neoassociation model</b> predicts greater aggression under negative emotions and discomfort.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Not supported; cooling stations don’t “reduce aggression” via testosterone in this chapter’s framing.</li>
+        <li><b>B:</b> Contradicted by the passage’s context-driven differences between neighborhoods.</li>
+        <li><b>D:</b> Aggression can be verbal/nonverbal (threat gestures) without physical fighting.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 Correct: D -->
+<div class="question" id="q20">
+  <b>20. Which additional passage detail most strongly suggests that inhibitory control over aggression may be reduced for some individuals in Neighborhood B?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. The neighborhoods have similar traffic volume</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Cooling stations are placed near bus stops in Neighborhood A</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. The behaviors include honking and shouting during the heat wave</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Discounted alcohol promotions coincide with the heat wave period</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The chapter emphasizes that <b>alcohol</b> impairs judgment and reduces inhibition, making people less able to control aggressive reactions—exactly the “inhibitory control” issue.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B:</b> These are controls/context but don’t directly speak to inhibition.</li>
+        <li><b>C:</b> Those are outcome behaviors; the question asks for an additional factor that would plausibly reduce inhibition.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 Correct: C -->
+<div class="question" id="q21">
+  <b>21. The clinical finding that prefrontal damage leads to impulsive reactions to ambiguous cues most directly supports which mechanism for aggression?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. The ventromedial hypothalamus increases aggression by preventing satiety</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Aggression is driven only by proximity and familiarity</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">C. Reduced prefrontal “brakes” can allow threat appraisal systems to drive impulsive aggression</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Aggression requires direct bodily contact and cannot occur via threats</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The <b>prefrontal cortex</b> is described as limiting emotional reactivity and impulsiveness. When PFC control is reduced, individuals may respond aggressively to perceived threat cues that the <b>amygdala</b> flags, even when the situation is ambiguous.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Satiety/hunger regulation is separate from the PFC–amygdala brake mechanism.</li>
+        <li><b>B:</b> Proximity explains attraction, not neurobiological aggression control.</li>
+        <li><b>D:</b> Threat displays can be aggressive without physical contact.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Helping, Fitness, and Strategy</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>On an isolated island, a biologist studies a bird species in which adults sometimes feed chicks that are not their own. In one nesting area, a female’s sibling dies during a storm. Over the next week, the female brings extra food to the sibling’s chicks, reducing the time she spends foraging for herself. The chicks survive the week and later fledge successfully.</p>
+  <p>In another area, two unrelated adults compete for a limited feeding territory. One adult frequently escalates to physical fights. The other initially displays threat postures but retreats once the conflict intensifies, then returns later when the fighter is away. The biologist records that the payoff for winning the territory is high, but the risk of injury is also high.</p>
+  <p>A third observation involves group hunting: young birds improve hunting success after watching skilled hunters, and the group follows a rule that certain individuals feed first after a successful hunt. Over time, the population maintains both “fight” and “avoid-fight” strategies depending on seasonal changes in food availability.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify whether the helping behavior is <b>costly</b> to the helper → that is key for <b>altruism</b>.</li>
+    <li>Ask whether the recipient shares genes with the helper; if yes, connect to <b>inclusive fitness</b>.</li>
+    <li>For the territory competition, map “fight” vs “avoid-fight” to the <b>Hawk–Dove</b> logic: payoff depends on reward value vs injury cost.</li>
+    <li>When asked about stability in a population, think <b>evolutionary stable strategy (ESS)</b>: selection can maintain a mix when no alternative strategy can easily invade given the payoffs.</li>
+  </ol>
+</div>
+
+<!-- Q22 Correct: B -->
+<div class="question" id="q22">
+  <b>22. The female bird feeding her sibling’s chicks at a cost to herself is best classified as which strategic alternative in social interaction?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Spite</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Altruism</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Selfishness</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Groupthink</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Altruism</b> is helping behavior intended to benefit another <b>at a cost to the helper</b> (less time foraging for herself).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Spite harms both parties; here the recipient benefits.</li>
+        <li><b>C:</b> Selfishness benefits the helper at the recipient’s expense—the opposite pattern.</li>
+        <li><b>D:</b> Groupthink is a group decision-making failure mode; irrelevant here.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 Correct: A -->
+<div class="question" id="q23">
+  <b>23. Which reasoning best supports why this altruistic behavior could still be favored by natural selection?</b>
+  <div class="choice" onclick="selectChoice('q23', this, true)">A. Inclusive fitness: helping close relatives can increase shared gene transmission through the relatives’ survival and reproduction</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Mere exposure: repeated contact with chicks makes the helper like them more</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Secure attachment: the helper uses the chicks as a secure base</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Cognitive neoassociation: negative affect makes helping more likely</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The chicks are the offspring of the bird’s <b>sibling</b> (close relatives). Inclusive fitness predicts that helping relatives can still increase the helper’s <b>genetic success</b> because relatives share many genes.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Mere exposure might affect preference, but it does not address evolutionary selection logic tied to gene sharing.</li>
+        <li><b>C:</b> Secure attachment is an infant-caregiver human framework, not an evolutionary explanation here.</li>
+        <li><b>D:</b> Neoassociation explains aggression under negative affect, not kin-directed helping selection.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 Correct: D -->
+<div class="question" id="q24">
+  <b>24. The territorial competition described in the second paragraph most closely mirrors which game-theory result, given that both reward value and injury cost are high?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Only the “fighter” strategy can persist because it always maximizes payoff regardless of cost</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Only the “avoid-fight” strategy can persist because it always wins against fighters</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. The situation cannot be analyzed by game theory because animals do not follow strategies</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. A mixed equilibrium can occur (hawk and dove coexist) because payoffs depend on the balance between reward value and fight cost</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> This is the <b>Hawk–Dove</b> logic: “fighters” (hawks) escalate, “avoiders” (doves) retreat when costs rise. When the <b>reward</b> and <b>injury cost</b> are both high, selection can maintain a <b>coexistence</b> (an equilibrium/ESS mix) depending on the payoff structure.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B:</b> Too absolute; the chapter explicitly notes an equilibrium where both can persist depending on cost vs reward.</li>
+        <li><b>C:</b> The chapter explicitly applies game theory to biological behavior using fitness payoffs.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

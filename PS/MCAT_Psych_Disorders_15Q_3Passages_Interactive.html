@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chapter 7: Psychological Disorders</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <span>Chapter 7: Psychological Disorders</span>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A patient’s depression is evaluated by considering genetic vulnerability, maladaptive thought patterns, and limited social support. Which model is the clinician using?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Biomedical model</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Type theory of personality</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Biopsychosocial model</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Behaviorist model</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> The <b>biopsychosocial</b> model explicitly integrates <b>biological</b> (e.g., genetics), <b>psychological</b> (thoughts/emotions/behaviors), and <b>social</b> (support, stressors, stigma) contributors to a disorder and often guides both direct and indirect interventions.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The biomedical approach focuses primarily on biological disturbances and symptom reduction (e.g., medication) without systematically incorporating social/psychological context.</li>
+<li><b>B:</b> Type theories classify personality into categories (e.g., Type A/B) rather than modeling causes of mental disorders.</li>
+<li><b>D:</b> Behaviorism emphasizes learning histories (reinforcement/conditioning) and does not inherently require biological + social integration.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A clinician uses the DSM-5 to diagnose a disorder by matching a patient’s presentation to a checklist of features. The DSM-5 primarily classifies disorders based on:</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Descriptions of symptoms rather than etiology</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Response to a specific medication</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Family systems dynamics</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Underlying causes and mechanisms</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The DSM-5 is a <b>descriptive</b> diagnostic system: clinicians match a patient’s presentation to <b>symptom criteria</b> rather than diagnosing based on the presumed cause.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Medication response is not the organizing principle of DSM-5 diagnoses.</li>
+<li><b>C:</b> Family dynamics may be relevant clinically, but DSM-5 categories are not built around family-system explanations.</li>
+<li><b>D:</b> That would be an etiologic classification scheme; DSM-5 generally avoids committing to specific causes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. Rosenhan’s pseudopatient study most strongly suggests that once someone receives a psychiatric label, clinicians may:</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Be unable to make any accurate diagnoses at all</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Diagnose only mood disorders, not psychotic disorders</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Rely entirely on biological tests to confirm diagnoses</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Interpret subsequent behaviors through the lens of the diagnosis (labeling/confirmation bias)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Rosenhan showed that once a person is labeled with a mental illness, observers may <b>reinterpret ambiguous or even normal behavior</b> as evidence of pathology, and the label can be difficult to shed.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The study critiques context and labeling effects, not the claim that diagnosis is impossible in principle.</li>
+<li><b>B:</b> Rosenhan’s pseudopatients were diagnosed with psychotic or mood disorders; the key point is the persistence of labels.</li>
+<li><b>C:</b> The study highlights reliance on contextual interpretation, not a shift to biological confirmation tests.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. Which of the following is a classic negative symptom of schizophrenia?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Auditory hallucinations</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Loose associations</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Delusions of grandeur</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. Avolition</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> <b>Avolition</b> is a classic <b>negative symptom</b>: reduced motivation and decreased engagement in goal-directed behavior (a loss of normal function).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Hallucinations are &lt;b&gt;positive symptoms&lt;/b&gt; (added experiences).</li>
+<li><b>B:</b> Disorganized thought/speech is a &lt;b&gt;positive/disorganized&lt;/b&gt; symptom dimension, not negative.</li>
+<li><b>C:</b> Delusions are also &lt;b&gt;positive symptoms&lt;/b&gt;.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A patient insists that the news anchor on TV is sending him secret messages specifically meant for him. This belief is best described as a delusion of:</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Thought insertion</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Grandeur</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">C. Reference</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Persecution</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> <b>Delusions of reference</b> involve the belief that neutral events (TV, news, strangers’ actions) are <b>specifically directed at the person</b>.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Thought insertion is believing thoughts are being placed into one’s mind by an external agent.</li>
+<li><b>B:</b> Grandiose delusions involve exaggerated self-importance (e.g., being uniquely powerful or famous).</li>
+<li><b>D:</b> Persecutory delusions focus on being harmed/targeted by a plot; the stem emphasizes “messages meant for me.”</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. A clinician notes that a patient’s speech jumps between unrelated topics in a way that is difficult to follow. This is most consistent with:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Affective flattening</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">B. Loosening of associations (disorganized thought)</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Echolalia</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Somatic delusions</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Rapid topic shifts with an untraceable train of thought reflect <b>loosening of associations</b>, a hallmark of <b>disorganized thought</b> (sometimes progressing to word salad).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Flat affect is a &lt;b&gt;negative symptom&lt;/b&gt; involving reduced emotional expression, not disorganized speech.</li>
+<li><b>C:</b> Echolalia is &lt;b&gt;repeating another person’s words&lt;/b&gt; (a motor/behavioral phenomenon).</li>
+<li><b>D:</b> Somatic delusions are false beliefs about bodily functions/health (e.g., organs rotting).</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. To meet DSM-5 criteria for schizophrenia, the disturbance must persist for at least 6 months, including at least 1 month of:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Obsessions and compulsions</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Catatonia only</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">C. Positive symptoms (delusions, hallucinations, or disorganized speech)</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. A major depressive episode</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Schizophrenia requires ≥6 months of disturbance, including ≥1 month of <b>core positive/disorganized symptoms</b> such as delusions, hallucinations, or disorganized speech.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Those define OCD-related disorders, not schizophrenia.</li>
+<li><b>B:</b> Catatonia can occur, but schizophrenia diagnosis requires characteristic psychotic symptoms; catatonia alone is insufficient.</li>
+<li><b>D:</b> MDE criteria apply to depressive disorders; depression can be comorbid but is not required for schizophrenia diagnosis.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. A major depressive episode is defined as at least 2 weeks of 5 or more depressive symptoms, including either depressed mood or:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Delusions of reference</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">B. Anhedonia</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Flight of ideas</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Grandiosity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> A major depressive episode must include either <b>depressed mood</b> or <b>anhedonia</b> (loss of interest/pleasure) as one of the symptoms present among the required ≥5.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Delusions are psychotic symptoms; they are not required for a major depressive episode.</li>
+<li><b>C:</b> Flight of ideas/racing thoughts are manic symptoms.</li>
+<li><b>D:</b> Grandiosity is a manic symptom (DIG FAST), not a defining depressive criterion.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. Persistent depressive disorder (dysthymia) requires depressed mood on most days for at least:</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. 2 weeks</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. 6 months</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. 2 years</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. 4 days</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Persistent depressive disorder (dysthymia) is defined primarily by <b>duration</b>: depressed mood for most of the day, more days than not, for <b>≥2 years</b> (≥1 year in children/adolescents).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Two weeks is the minimum duration for a major depressive episode, not PDD.</li>
+<li><b>B:</b> Six months is used in some anxiety diagnoses (e.g., GAD), not PDD.</li>
+<li><b>D:</b> Four days is a hypomania duration threshold, not a depressive disorder duration.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. The single feature that most strongly distinguishes bipolar I disorder from bipolar II disorder is the presence of:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Seasonal onset of symptoms</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Hypomanic episodes only</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. A manic episode</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. A major depressive episode</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Bipolar I is defined by the presence of at least one <b>manic episode</b> (often with depression but not required). Bipolar II requires hypomania + major depression and <b>no</b> mania.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Seasonal onset is a specifier and not the defining difference between bipolar I and II.</li>
+<li><b>B:</b> Hypomania without mania points toward bipolar II (if MDE present) or cyclothymia (if subthreshold), not bipolar I.</li>
+<li><b>D:</b> MDE is required for bipolar II but not for bipolar I; both may have depression so it is not the key separator.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. Cyclothymic disorder is characterized by numerous periods of hypomanic and depressive symptoms for at least 2 years that:</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Do not meet full criteria for hypomanic or major depressive episodes</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Are always triggered by a specific phobic stimulus</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Occur only in the winter months</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Are explained by a single traumatic event</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Cyclothymic disorder involves <b>chronic</b> fluctuation (≥2 years) of hypomanic and depressive <b>symptoms</b> that remain <b>subthreshold</b> for full episodes.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Phobic triggers describe specific phobias, not mood cycling.</li>
+<li><b>C:</b> Seasonal patterns relate to MDD with seasonal onset (SAD), not cyclothymia.</li>
+<li><b>D:</b> Trauma-linked syndromes would point more toward PTSD/acute stress, not cyclothymia.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. Which feature most specifically distinguishes social anxiety disorder from a specific phobia?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. An irrational fear response</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Presence of autonomic arousal</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. Fear of negative evaluation by others in social situations</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Avoidance behavior</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Social anxiety disorder is distinguished by the cognitive component: fear that one will be <b>embarrassed, judged, or negatively evaluated</b> in social/performance situations.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Specific phobias also involve irrational fear; what’s specific here is the social-evaluation ideation.</li>
+<li><b>B:</b> Autonomic symptoms can occur in many anxiety conditions (panic, phobias, social anxiety).</li>
+<li><b>D:</b> Avoidance is common across anxiety disorders and is not specific to social anxiety.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A diagnosis of panic disorder requires recurrent unexpected panic attacks plus at least 1 month of:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. A delusion of persecution</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Compulsions that relieve tension</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. A 2-year depressed mood</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Persistent concern about additional attacks or maladaptive behavior change</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Panic disorder requires recurrent <b>unexpected</b> panic attacks plus ≥1 month of <b>worry about additional attacks</b> and/or maladaptive behavioral change (e.g., avoidance).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> That is a psychotic symptom, not part of panic disorder criteria.</li>
+<li><b>B:</b> That is OCD: compulsions reduce tension from obsessions.</li>
+<li><b>C:</b> That describes PDD duration, not panic disorder.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. A key distinction between obsessive–compulsive disorder (OCD) and obsessive–compulsive personality disorder (OCPD) is that OCD symptoms are typically:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Due only to delusions</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Ego-dystonic (experienced as intrusive and unwanted)</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Always limited to hoarding items</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Defined by hallucinations</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> In OCD, obsessions/compulsions are typically <b>ego-dystonic</b>: the person recognizes they are irrational or excessive but feels driven to perform them to reduce anxiety.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> OCD is not defined by delusions; insight is often present.</li>
+<li><b>C:</b> Hoarding is a distinct OCD-related disorder and is not required for OCD.</li>
+<li><b>D:</b> Hallucinations are psychotic symptoms, not OCD features.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. Symptoms following a traumatic event that persist for more than 1 month are most consistent with:</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Conversion disorder</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Posttraumatic stress disorder (PTSD)</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Acute stress disorder</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Brief psychotic disorder</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> PTSD requires trauma exposure plus symptom clusters (intrusion, avoidance, arousal, negative cognition/mood) persisting for <b>>1 month</b>. Shorter duration (≥3 days to <1 month) suggests acute stress disorder.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Conversion disorder presents with motor/sensory deficits incompatible with neurologic findings, often after stress.</li>
+<li><b>C:</b> ASD has similar symptoms but lasts &lt;b&gt;less than 1 month&lt;/b&gt; (and more than 3 days).</li>
+<li><b>D:</b> Brief psychotic disorder is defined by acute psychotic symptoms lasting &lt;1 month.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage P1 -->
+<div class="passage-header">
+  <span>Passage 1: Mood Episodes, Treatment Choice, and the Biopsychosocial Lens</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Jordan, a 28-year-old graduate student, reports that over the last month he has alternated between two distinct patterns. For about two weeks, he felt persistently “down,” had low energy, slept 11–12 hours per day, and stopped enjoying hobbies he normally loved. He lost about 6% of his body weight because he “couldn’t be bothered to eat,” and he struggled to concentrate on lab work. After this period, Jordan experienced 6 days of unusually elevated mood with racing thoughts and a surge of goal-directed activity: he started three new projects, spoke more quickly than usual, and slept only 3–4 hours per night while still feeling energized. During those 6 days he also made several impulsive online purchases, but he continued attending class and did not require hospitalization. Jordan’s father has a history of recurrent “mood swings,” and Jordan reports that he has been under increased academic stress and has felt isolated since moving away from friends. His clinician recommends a mood stabilizer, structured sleep routines, and a weekly peer support group while educating Jordan’s roommates on warning signs of mood escalation.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li><b>Step 1: Classify the symptom clusters.</b> Separate depressive vs manic/hypomanic features (duration + impairment).</li>
+    <li><b>Step 2: Apply the diagnostic thresholds.</b> MDE = ≥2 weeks + 5/9 (including mood or anhedonia). Hypomania = ≥4 days, ≥3 DIG FAST, not severe enough for marked impairment; Mania = ≥7 days or severe impairment.</li>
+    <li><b>Step 3: Use context as evidence.</b> Family history and social support can inform a biopsychosocial formulation and treatment planning.</li>
+    <li><b>Step 4: Predict consequences of interventions.</b> Antidepressants can precipitate mania/hypomania in vulnerable patients—link to episode history.</li>
+  </ol>
+</div>
+<!-- P1Q1 -->
+<div class="question" id="p1q1">
+  <b>16. Which diagnosis best fits Jordan’s history as presented?</b>
+  <div class="choice" onclick="selectChoice('p1q1', this, true)">A. Bipolar II disorder</div>
+  <div class="choice" onclick="selectChoice('p1q1', this, false)">B. Bipolar I disorder</div>
+  <div class="choice" onclick="selectChoice('p1q1', this, false)">C. Major depressive disorder</div>
+  <div class="choice" onclick="selectChoice('p1q1', this, false)">D. Cyclothymic disorder</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Jordan has a major depressive episode (≥2 weeks + 5/9 with weight change and hypersomnia) and a hypomanic episode (≥4 days with decreased sleep, racing thoughts, increased activity, spending) without clear evidence of full mania.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Bipolar I requires a manic episode (≥7 days or marked impairment/psychosis). The vignette describes hypomania-length symptoms.</li>
+<li><b>C:</b> MDD would not include a distinct hypomanic/manic period; the elevated 6-day episode changes the diagnosis.</li>
+<li><b>D:</b> Cyclothymia requires ≥2 years of subthreshold symptoms that never meet episode criteria; Jordan meets episode criteria.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- P1Q2 -->
+<div class="question" id="p1q2">
+  <b>17. In the clinician’s plan, recommending a peer support group is primarily targeting which component of the biopsychosocial model?</b>
+  <div class="choice" onclick="selectChoice('p1q2', this, false)">A. Psychological component</div>
+  <div class="choice" onclick="selectChoice('p1q2', this, false)">B. It is a purely biomedical intervention</div>
+  <div class="choice" onclick="selectChoice('p1q2', this, false)">C. Biological component</div>
+  <div class="choice" onclick="selectChoice('p1q2', this, true)">D. Social component</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Peer support increases social resources and reduces isolation—an indirect therapy aimed at the social environment.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Psychological targets thoughts/behaviors (e.g., CBT, coping skills) more directly.</li>
+<li><b>B:</b> Biomedical interventions focus on symptom reduction via biological means (e.g., medication).</li>
+<li><b>C:</b> Biological focuses on genetics, neurochemistry, or medications rather than social networks.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- P1Q3 -->
+<div class="question" id="p1q3">
+  <b>18. If Jordan were started on an SSRI without careful monitoring, which outcome is most concerning given the vignette?</b>
+  <div class="choice" onclick="selectChoice('p1q3', this, true)">A. A switch into a manic/hypomanic episode</div>
+  <div class="choice" onclick="selectChoice('p1q3', this, false)">B. Immediate resolution of all symptoms within 24 hours</div>
+  <div class="choice" onclick="selectChoice('p1q3', this, false)">C. Development of a specific phobia</div>
+  <div class="choice" onclick="selectChoice('p1q3', this, false)">D. Onset of catatonia as a primary symptom</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Antidepressants can precipitate mania/hypomania in individuals with bipolar spectrum illness; the episode history makes mood switching a key risk.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> SSRIs typically take weeks for antidepressant effects; immediate complete resolution is unrealistic.</li>
+<li><b>C:</b> Phobias are anxiety disorders and are not a typical direct consequence of SSRI initiation.</li>
+<li><b>D:</b> Catatonia is associated with psychotic disorders or severe mood episodes but is not the classic medication-induced risk highlighted here.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage P2 -->
+<div class="passage-header">
+  <span>Passage 2: Rituals, Personality Style, and Diagnostic Boundaries</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Mei, a 32-year-old accountant, spends 2–3 hours each evening washing her hands and wiping kitchen surfaces in a strict sequence. She reports intrusive thoughts that she might contaminate her younger sibling with germs and that “something terrible will happen” if she does not complete the ritual exactly. Mei recognizes the fear is excessive, yet when she tries to stop she becomes intensely anxious and cannot focus on anything else until she completes the routine. She has attempted to reduce the ritual multiple times, but the anxiety spikes and she returns to the sequence. At work, Mei is organized and likes clear procedures, but she does not describe her organizational style as a problem. In therapy, she asks, “Why can’t I just let this go?” and says the thoughts feel like they are “intruding” into her mind. She denies hearing voices, denies believing coworkers are poisoning her, and states she would be relieved if the thoughts and rituals disappeared. Her clinician is considering several diagnoses and wants to distinguish obsessive thoughts from fixed false beliefs.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li><b>Step 1: Identify the core pattern.</b> Look for intrusive thoughts vs fixed beliefs, and whether behaviors are performed to reduce anxiety.</li>
+    <li><b>Step 2: Check insight (ego-dystonic vs ego-syntonic).</b> OCD is typically ego-dystonic; personality disorders often feel “right” to the person.</li>
+    <li><b>Step 3: Separate disorder categories.</b> Psychosis involves delusions/hallucinations; OCD involves obsessions/compulsions; OCPD is a lifelong style.</li>
+    <li><b>Step 4: Use impairment/time cost as evidence.</b> Hours of rituals and functional impairment support OCD diagnosis.</li>
+  </ol>
+</div>
+<!-- P2Q1 -->
+<div class="question" id="p2q1">
+  <b>19. Mei’s evening cleaning behavior is best explained as:</b>
+  <div class="choice" onclick="selectChoice('p2q1', this, false)">A. A negative symptom of schizophrenia</div>
+  <div class="choice" onclick="selectChoice('p2q1', this, false)">B. A conversion symptom incompatible with neurophysiology</div>
+  <div class="choice" onclick="selectChoice('p2q1', this, false)">C. A delusion of reference followed by avoidance learning</div>
+  <div class="choice" onclick="selectChoice('p2q1', this, true)">D. Compulsions performed to reduce anxiety from obsessions</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Her intrusive contamination thoughts (obsessions) produce tension, and the repetitive ritual reduces that tension—classic OCD pattern.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Negative symptoms include avolition/flat affect; they do not produce ritualized cleaning to neutralize intrusive thoughts.</li>
+<li><b>B:</b> Conversion disorder involves motor/sensory deficits (e.g., paralysis) without neurologic cause, not repetitive rituals.</li>
+<li><b>C:</b> Delusions are fixed false beliefs not shared by culture; Mei recognizes her fear is excessive and describes intrusive thoughts, not delusions.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- P2Q2 -->
+<div class="question" id="p2q2">
+  <b>20. Which detail most strongly supports OCD over obsessive–compulsive personality disorder (OCPD) in this vignette?</b>
+  <div class="choice" onclick="selectChoice('p2q2', this, false)">A. Mei is organized at work</div>
+  <div class="choice" onclick="selectChoice('p2q2', this, true)">B. Mei experiences the thoughts/rituals as unwanted and distressing (ego-dystonic)</div>
+  <div class="choice" onclick="selectChoice('p2q2', this, false)">C. Mei uses a color-coded calendar</div>
+  <div class="choice" onclick="selectChoice('p2q2', this, false)">D. Mei prefers predictable schedules</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> OCD involves intrusive obsessions and anxiety-relieving compulsions that the person recognizes as excessive; OCPD is a pervasive personality style often ego-syntonic.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Organization can be seen in OCPD, but organization alone does not establish OCD vs OCPD.</li>
+<li><b>C:</b> This suggests conscientiousness/orderliness but does not capture the obsession–compulsion cycle.</li>
+<li><b>D:</b> Preference for order is common in OCPD and can also occur in many people without OCD.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- P2Q3 -->
+<div class="question" id="p2q3">
+  <b>21. Mei’s denial that coworkers are poisoning her most directly helps rule out:</b>
+  <div class="choice" onclick="selectChoice('p2q3', this, false)">A. Panic disorder</div>
+  <div class="choice" onclick="selectChoice('p2q3', this, true)">B. Delusional disorder or psychosis driven by fixed false beliefs</div>
+  <div class="choice" onclick="selectChoice('p2q3', this, false)">C. Somatic symptom disorder</div>
+  <div class="choice" onclick="selectChoice('p2q3', this, false)">D. Hoarding disorder</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The question targets psychosis: persecutory delusions would involve fixed beliefs about being harmed despite lack of evidence.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Panic disorder centers on unexpected panic attacks and fear of future attacks, not fixed beliefs about poisoning.</li>
+<li><b>C:</b> Somatic symptom disorder involves disproportionate concern about physical symptoms, not persecutory beliefs.</li>
+<li><b>D:</b> Hoarding is characterized by difficulty discarding items and clutter, unrelated to poisoning beliefs.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage P3 -->
+<div class="passage-header">
+  <span>Passage 3: Psychosis, Phases, and the Power of Labels</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Samuel, a 21-year-old college student, is brought to the emergency department by his roommate, who reports a decline over the last 7 months. During the first several months, Samuel withdrew from friends, stopped attending classes, and began acting “odd,” including laughing inappropriately during serious conversations and neglecting basic hygiene. In the last 5 weeks, Samuel has become convinced that strangers on the subway are part of a plot to monitor him, and he reports hearing a voice commenting on his actions when he is alone. His speech sometimes shifts abruptly between unrelated topics, and he has missed multiple rent payments because he forgets deadlines. Urine toxicology is negative, and there is no evidence of a neurological condition explaining his symptoms. Samuel’s family is worried that once he is “labeled,” clinicians will dismiss alternative explanations and that Samuel will be treated differently by peers and employers. They also report that Samuel recently lost his part-time job and has struggled to maintain housing stability since his symptoms worsened.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li><b>Step 1: Track the timeline.</b> Identify prodromal vs active symptoms and check the DSM-5 duration requirement.</li>
+    <li><b>Step 2: Classify symptoms.</b> Positive (added experiences like delusions/hallucinations) vs negative (loss of normal function).</li>
+    <li><b>Step 3: Use functional impairment as evidence.</b> Disorganized behavior and decline in role functioning support a psychotic disorder diagnosis.</li>
+    <li><b>Step 4: Consider sociological implications.</b> Labels can bias interpretation (Rosenhan) and schizophrenia can worsen SES (downward drift hypothesis).</li>
+  </ol>
+</div>
+<!-- P3Q1 -->
+<div class="question" id="p3q1">
+  <b>22. Which phase of schizophrenia best corresponds to Samuel’s early months of social withdrawal and deterioration before clear psychotic symptoms?</b>
+  <div class="choice" onclick="selectChoice('p3q1', this, true)">A. Prodromal phase</div>
+  <div class="choice" onclick="selectChoice('p3q1', this, false)">B. Manic phase</div>
+  <div class="choice" onclick="selectChoice('p3q1', this, false)">C. Catatonic phase</div>
+  <div class="choice" onclick="selectChoice('p3q1', this, false)">D. Residual phase</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The prodromal phase involves deterioration, social withdrawal, role impairment, and odd behavior prior to prominent positive symptoms.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Mania is a mood episode in bipolar disorder, not a schizophrenia phase.</li>
+<li><b>C:</b> Catatonia describes specific motor abnormalities; it is not the typical named ‘phase’ preceding diagnosis.</li>
+<li><b>D:</b> Residual (recovery) follows an active episode, with reduced positive symptoms and lingering deficits.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- P3Q2 -->
+<div class="question" id="p3q2">
+  <b>23. Samuel’s ‘voice commenting on his actions’ is an example of a:</b>
+  <div class="choice" onclick="selectChoice('p3q2', this, true)">A. Positive symptom (auditory hallucination)</div>
+  <div class="choice" onclick="selectChoice('p3q2', this, false)">B. Compulsion</div>
+  <div class="choice" onclick="selectChoice('p3q2', this, false)">C. Negative symptom (avolition)</div>
+  <div class="choice" onclick="selectChoice('p3q2', this, false)">D. Somatic symptom</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Auditory hallucinations are added perceptual experiences without external stimuli—classic positive psychotic symptom.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Compulsions are repetitive behaviors to relieve anxiety from obsessions (OCD).</li>
+<li><b>C:</b> Avolition is reduced goal-directed behavior, not perception of voices.</li>
+<li><b>D:</b> Somatic symptoms are bodily complaints; hallucinations are perceptual experiences.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- P3Q3 -->
+<div class="question" id="p3q3">
+  <b>24. The family’s concern that clinicians will ‘ignore other explanations’ once Samuel receives a diagnosis most closely reflects the issue highlighted by:</b>
+  <div class="choice" onclick="selectChoice('p3q3', this, false)">A. The concept of la belle indifférence</div>
+  <div class="choice" onclick="selectChoice('p3q3', this, false)">B. Ego-dystonic symptoms in OCD</div>
+  <div class="choice" onclick="selectChoice('p3q3', this, false)">C. The social readjustment rating scale</div>
+  <div class="choice" onclick="selectChoice('p3q3', this, true)">D. Rosenhan’s pseudopatient study (effects of labeling)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Rosenhan showed that once labeled, normal behaviors can be interpreted as pathological and diagnoses can persist despite changing presentation.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This refers to surprising lack of concern about conversion symptoms.</li>
+<li><b>B:</b> Ego-dystonic refers to recognizing symptoms as unwanted; it is not a labeling/diagnostic bias concept.</li>
+<li><b>C:</b> This measures life change units for stress, unrelated to diagnostic labeling bias.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+
+</body>
+</html>

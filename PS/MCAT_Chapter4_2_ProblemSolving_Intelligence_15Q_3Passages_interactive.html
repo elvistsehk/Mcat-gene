@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Cognition Ch 4.2 — Problem Solving, Biases, Intelligence (15 + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .subhead{ font-size:14px; font-weight:normal; opacity:0.95; margin-top:6px; line-height:1.35; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+
+<body>
+  <div class="main-header">
+    🧩 MCAT Practice — Cognition (Chapter 4.2): Problem Solving, Biases, Heuristics, Intelligence
+    <div class="subhead">
+      Includes: functional fixedness & mental sets; trial-and-error, algorithms, deductive vs inductive reasoning; availability & representativeness heuristics + base rate fallacy;
+      disconfirmation principle, confirmation bias, overconfidence, hindsight bias, belief perseverance; intuition (recognition-primed decisions) and emotion in decisions;
+      theories of intelligence (Gardner, Sternberg, emotional intelligence), g factor, IQ basics, heredity vs environment and education.
+    </div>
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+  <div class="section-tag">15 Standalone MCAT-style Questions (Q1–Q15)</div>
+
+  <!-- ===================== STANDALONE QUESTIONS ===================== -->
+
+  <!-- Q1 Correct: A -->
+  <div class="question" id="q1">
+    <b>1. A student sees a multiple-choice question and immediately chooses an answer simply because that phrase appeared in the passage, even though it does not actually address what the question asks. This mistake best reflects the:</b>
+    <div class="choice" onclick="selectChoice('q1', this, true)">A. Availability heuristic</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. Representativeness heuristic</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Base rate fallacy</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Disconfirmation principle</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The <b>availability heuristic</b> uses “how easily something comes to mind” as a shortcut for likelihood or correctness. Here, the student chooses a familiar-sounding option because it is easy to recall from the passage.
+        <ul>
+          <li><b>B</b> representativeness is “fits a prototype/stereotype,” not “I remember seeing that sentence.”</li>
+          <li><b>C</b> base rate fallacy specifically involves ignoring numerical base rates (prevalence) in favor of stereotypical cues.</li>
+          <li><b>D</b> disconfirmation principle is the opposite move: discarding a solution when evidence shows it fails.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q2 Correct: B -->
+  <div class="question" id="q2">
+    <b>2. In Duncker’s candle problem, the key cognitive obstacle is that many people treat the matchbox only as a container rather than as a possible candle holder. This obstacle is called:</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. Mental set</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">B. Functional fixedness</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. Belief perseverance</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. Hindsight bias</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Functional fixedness</b> is the inability to use an object in a <b>nontraditional</b> way. Seeing the box only as “for matches” prevents using it as a holder for the candle.
+        <ul>
+          <li><b>A</b> mental set is a habitual strategy for solving similar problems, not a fixed view of an object’s use.</li>
+          <li><b>C</b> belief perseverance is clinging to a belief despite clear contradictory evidence.</li>
+          <li><b>D</b> hindsight bias is “I knew it all along” after an outcome is known.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q3 Correct: C -->
+  <div class="question" id="q3">
+    <b>3. A person always approaches “puzzle” questions by applying the same strategy that worked before, even when it is inefficient for the new problem. This tendency is best described as:</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. Functional fixedness</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. Trial-and-error problem solving</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">C. A mental set</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. Inductive reasoning</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        A <b>mental set</b> is a tendency to approach similar problems in the same way. It can speed decisions, but it can also trap you in an inefficient strategy when conditions change.
+        <ul>
+          <li><b>A</b> is about an object’s “fixed” use, not a repeated strategy.</li>
+          <li><b>B</b> is trying many solutions until one works, usually when there are few options.</li>
+          <li><b>D</b> is building a general rule from specific examples.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q4 Correct: D -->
+  <div class="question" id="q4">
+    <b>4. A physician uses a checklist that specifies exactly which lab values to obtain and how to interpret them for a suspected electrolyte disorder. This checklist is most like a(n):</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Trial-and-error approach</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. Availability heuristic</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. Inductive reasoning</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">D. Algorithm</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        An <b>algorithm</b> is a formula or procedure designed to systematically produce a solution for a class of problems.
+        <ul>
+          <li><b>A</b> is unsystematic “try until something works.”</li>
+          <li><b>B</b> is judging by what comes easily to mind, not by a stepwise protocol.</li>
+          <li><b>C</b> is generalizing from instances; a checklist is a pre-defined procedure, not a generalization.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q5 Correct: A -->
+  <div class="question" id="q5">
+    <b>5. A student tries three different ways to organize their study schedule and chooses the one that seems to work best, without using a formal rule or formula. This is most like:</b>
+    <div class="choice" onclick="selectChoice('q5', this, true)">A. Trial-and-error problem solving</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. Deductive reasoning</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Base rate fallacy</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. Overconfidence</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Trial-and-error</b> means trying multiple solutions until one seems to work, and it is most effective when there are relatively few options.
+        <ul>
+          <li><b>B</b> starts from general rules and reaches a conclusion that must be true.</li>
+          <li><b>C</b> is a numerical reasoning error (ignoring prevalence/base rates).</li>
+          <li><b>D</b> is unwarranted confidence in one’s beliefs or decisions, not a problem-solving style.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q6 Correct: B -->
+  <div class="question" id="q6">
+    <b>6. Which statement best captures the MCAT “must be true” idea behind deductive reasoning?</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. A deduction is plausible if it matches prior beliefs</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">B. A deduction is a conclusion that must be true based on the information given</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. A deduction is formed by generalizing from repeated observations</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. A deduction is a guess guided by emotion</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        In <b>deductive reasoning</b> (top-down), you start from general rules and logically reach a conclusion that <b>must be true</b> given the premises. MCAT answers that only “might be true” are not sufficient for a deduction question.
+        <ul>
+          <li><b>A</b> describes confirmation bias, not deduction.</li>
+          <li><b>C</b> is <b>inductive</b> reasoning (bottom-up generalization).</li>
+          <li><b>D</b> describes intuition/emotion-driven choice, not deduction.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q7 Correct: C -->
+  <div class="question" id="q7">
+    <b>7. A researcher notices that several different people with a certain viral illness develop the same rash pattern, and proposes a general rule that this virus causes that rash. This is an example of:</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. Deductive reasoning</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. An algorithm</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">C. Inductive reasoning</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. The disconfirmation principle</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Inductive reasoning</b> builds a broader rule or theory from specific instances (bottom-up). The researcher generalizes from multiple cases.
+        <ul>
+          <li><b>A</b> would start from a general rule and deduce a specific conclusion.</li>
+          <li><b>B</b> is a predefined procedure to solve a class of problems.</li>
+          <li><b>D</b> is the idea that failing evidence should cause you to discard a solution.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q8 Correct: D -->
+  <div class="question" id="q8">
+    <b>8. A clinician judges a patient to be at high risk for a rare disease because the patient “looks like” the classic case, even though the disease is uncommon in the population. This most directly illustrates:</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. The disconfirmation principle</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. Availability heuristic</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. Overconfidence bias</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. Base rate fallacy driven by representativeness</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The <b>representativeness heuristic</b> judges probability by similarity to a prototype. When it causes someone to ignore true prevalence (base rates), it becomes the <b>base rate fallacy</b>.
+        <ul>
+          <li><b>A</b> would mean discarding a diagnosis after evidence shows it fails.</li>
+          <li><b>B</b> is about how easily examples come to mind, not “fits the stereotype.”</li>
+          <li><b>C</b> is excessive certainty; the key issue here is ignoring prevalence.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q9 Correct: A -->
+  <div class="question" id="q9">
+    <b>9. After a hypothesis fails an experiment, a scientist should discard it and move on to alternative explanations. This describes the:</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. Disconfirmation principle</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Confirmation bias</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. Belief perseverance</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. Hindsight bias</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The <b>disconfirmation principle</b> says that when testing shows a solution does not work, it should be rejected.
+        <ul>
+          <li><b>B</b> is the tendency to focus on supporting evidence and dismiss contradictions.</li>
+          <li><b>C</b> is clinging to a belief despite clear contradictory evidence.</li>
+          <li><b>D</b> is “I knew it would happen” after the outcome is already known.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q10 Correct: B -->
+  <div class="question" id="q10">
+    <b>10. A manager selectively remembers only the employee comments that support their initial impression, and dismisses feedback that contradicts it. This is best described as:</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. The representativeness heuristic</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">B. Confirmation bias</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. Inductive reasoning</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Functional fixedness</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Confirmation bias</b> is prioritizing information that fits existing beliefs and rejecting information that contradicts them.
+        <ul>
+          <li><b>A</b> is stereotype/prototype matching.</li>
+          <li><b>C</b> is building a general theory from multiple cases.</li>
+          <li><b>D</b> is being unable to see an object’s nontraditional use.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q11 Correct: C -->
+  <div class="question" id="q11">
+    <b>11. After learning that a new policy failed, someone says, “That was obvious; I knew it would fail from the start.” This statement best illustrates:</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Overconfidence bias</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. Belief perseverance</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">C. Hindsight bias</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. The availability heuristic</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Hindsight bias</b> is overestimating one’s ability to predict an event after the outcome is known (“I knew it all along”).
+        <ul>
+          <li><b>A</b> is general excessive confidence in beliefs or decisions, but not specifically “after the fact.”</li>
+          <li><b>B</b> is refusing to abandon a belief despite strong contradictory evidence.</li>
+          <li><b>D</b> is judging by ease of recall, not by “after-the-fact certainty.”</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q12 Correct: D -->
+  <div class="question" id="q12">
+    <b>12. A researcher continues to defend a hypothesis even after multiple high-quality studies contradict it, claiming the studies “must be flawed” without evidence. This is best described as:</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Disconfirmation principle</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Deductive reasoning</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. Representativeness heuristic</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. Belief perseverance</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Belief perseverance</b> is the inability to reject a belief despite clear evidence to the contrary. The person “explains away” contradictions to preserve the belief.
+        <ul>
+          <li><b>A</b> is what they should do (discard the hypothesis) but are failing to do.</li>
+          <li><b>B</b> is logical reasoning from premises, not refusal to update beliefs.</li>
+          <li><b>C</b> is prototype-based probability judgment.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q13 Correct: A -->
+  <div class="question" id="q13">
+    <b>13. An experienced ER physician glances at a patient’s posture, breathing pattern, and skin color and immediately prioritizes a cardiac workup, even before formal test results arrive. This “intuition” is best explained by the:</b>
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. Recognition-primed decision model (pattern matching from experience)</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Base rate fallacy</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. Functional fixedness</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. Trial-and-error approach</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter describes intuition as often being experience-based pattern recognition: the brain matches the current situation to stored patterns and acts quickly (<b>recognition-primed decisions</b>).
+        <ul>
+          <li><b>B</b> would mean ignoring prevalence in favor of “looks like the classic case.”</li>
+          <li><b>C</b> is being stuck on an object’s typical use.</li>
+          <li><b>D</b> is trying different options until something works, not rapid expert pattern matching.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q14 Correct: B -->
+  <div class="question" id="q14">
+    <b>14. During a negotiation, a person feels angry and therefore chooses a riskier option than they usually would. This best reflects the idea that:</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Emotions only matter after the decision is made</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. Emotion can bias cognition and increase risky decision making</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. Deductive reasoning is driven primarily by mood</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Algorithms prevent emotional influence</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter notes that <b>emotion influences thought and decisions</b> and that anger can increase risk taking.
+        <ul>
+          <li><b>A</b> is wrong: emotions influence decision making in the moment and via expected emotions.</li>
+          <li><b>C</b> is wrong: deduction is logic from premises, not mood.</li>
+          <li><b>D</b> is too absolute: algorithms reduce ambiguity but do not guarantee emotions never affect behavior.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q15 Correct: C -->
+  <div class="question" id="q15">
+    <b>15. Which ability best fits Gardner’s definition of <i>interpersonal intelligence</i> rather than traditional IQ-test skills?</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Solving a multi-step algebra equation quickly</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Memorizing a long list of vocabulary words</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">C. Detecting and navigating others’ moods and motivations</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">D. Identifying the median and standard deviation of a dataset</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Gardner’s multiple intelligences include <b>interpersonal intelligence</b>: the ability to detect and navigate the moods and motivations of others (useful for therapists, sales, leadership).
+        <ul>
+          <li><b>A</b>, <b>B</b>, and <b>D</b> align more with traditional linguistic/logical-mathematical testing and standardized academic skills.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="section-tag">3 Passage Sets (Each passage has 3 questions) — Q16–Q24</div>
+
+  <!-- ===================== PASSAGE 1 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 1 — Framing, Mental Sets, and “Hidden” Tools</span>
+    <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A team of students is practicing rapid problem solving in a simulation lab. They are told: “Mount a small battery-powered light on the wall so it will shine downward onto a work surface, and make sure it does not fall during vibration.” On the table are a small light, a roll of tape, a box of paper clips, and a pushpin. The students begin by taping the light directly to the wall. In a quiet room the setup looks fine, but when the vibration platform starts, the tape slowly peels and the light slips.</p>
+    <p>Next, the group tries to pushpin the light itself. The pin punches into the plastic casing, cracking it so the light flickers and stops working. A student says, “The paper-clip box is just packaging; it won’t help,” and the group focuses only on tape and pins. Another student pauses and reframes the task aloud: “Our goal is not ‘attach the light directly.’ Our goal is a stable platform that survives vibration. The light can sit on something.” The student opens the box, pours out the clips, tapes the empty box firmly to the wall like a small shelf, and places the light inside the box. The light stays in place throughout repeated vibration cycles.</p>
+    <p>Later, the instructor gives the students a different puzzle. The group uses a strategy that worked for a similar challenge earlier in the week, but this time the environment is slightly modified. Even after the strategy begins to fail, several students insist on repeating the same approach because “it worked last time.” The instructor points out that getting stuck often reflects an inefficient framing of the problem, and that a correct MCAT-style deduction is something that must follow from evidence, not just something that sounds plausible.</p>
+  </div>
+
+  <div class="reasoning-box" id="p1-reason">
+    <b>How to reason (Passage 1):</b>
+    <ol>
+      <li><b>Match evidence to terms:</b> “The box is just packaging” signals <b>functional fixedness</b> (object-use constraint).</li>
+      <li><b>Look for reframing:</b> “stable platform” changes the problem representation—this is <b>framing</b> (step 1 of problem solving).</li>
+      <li><b>Spot strategy inertia:</b> “it worked last time” despite new conditions points to a <b>mental set</b> (habitual approach).</li>
+      <li><b>When asked for a deduction:</b> choose what <b>must</b> be true from the passage; reject answers that only <i>could</i> be true.</li>
+      <li><b>Eliminate unrelated terms:</b> heuristics/biases are about probability judgment or evidence filtering, not the physical use of an object.</li>
+    </ol>
+  </div>
+
+  <!-- Q16 Correct: D -->
+  <div class="question" id="q16">
+    <b>16. Which cognitive barrier best explains the student who says the paper-clip box is “just packaging” and cannot help?</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. Confirmation bias</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. Disconfirmation principle</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Overconfidence bias</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">D. Functional fixedness</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The student cannot consider a <b>nontraditional use</b> of the box (as a shelf). That is the definition of <b>functional fixedness</b>.
+        <ul>
+          <li><b>A</b> is selectively accepting evidence that fits a belief; the passage highlights a constraint about object use.</li>
+          <li><b>B</b> would mean discarding a failed solution after testing; the student is narrowing options before fully exploring them.</li>
+          <li><b>C</b> is inflated certainty; the best label here is the specific “object-use” barrier.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q17 Correct: A -->
+  <div class="question" id="q17">
+    <b>17. The student who says “we need a stable platform; the light does not have to be attached directly” is primarily improving which step of problem solving?</b>
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Framing the problem (creating a more useful mental model of the task)</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. Using the availability heuristic</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Using inductive reasoning to generalize a rule</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. Demonstrating hindsight bias</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The passage emphasizes that getting stuck often comes from inefficient <b>framing</b>. The student changes the goal representation from “attach the light” to “build a stable platform,” which unlocks a new solution.
+        <ul>
+          <li><b>B</b> is choosing what is easiest to recall, not restructuring the problem representation.</li>
+          <li><b>C</b> would be building a general rule from examples; here the student is redefining task constraints in the moment.</li>
+          <li><b>D</b> is “I knew it all along” after the fact; the student is actively generating a new frame, not reacting to an outcome.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q18 Correct: B -->
+  <div class="question" id="q18">
+    <b>18. The later scenario where students keep using the same approach because “it worked last time,” even after it begins to fail in the modified setup, most strongly reflects:</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. Functional fixedness</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">B. A mental set</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Base rate fallacy</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. Recognition-primed decision making</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        A <b>mental set</b> is a habitual strategy applied to “similar” problems. It can block better solutions when the problem is subtly different and the old strategy no longer fits.
+        <ul>
+          <li><b>A</b> is being stuck on an object’s typical use; here the barrier is strategy repetition.</li>
+          <li><b>C</b> requires ignoring numerical prevalence; not present.</li>
+          <li><b>D</b> describes expert pattern matching that can be adaptive; the passage highlights persistence even as evidence suggests the strategy is failing.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===================== PASSAGE 2 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 2 — Heuristics, Base Rates, and Biased Updating</span>
+    <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A public health course gives students a diagnostic reasoning exercise. In a city of one million people, Disease X affects 10 people per year. Disease Y affects 10,000 people per year. A screening clinic evaluates a patient with fatigue, mild weight loss, and night sweats. The instructor notes that these symptoms are “highly memorable” because the class recently watched a documentary about Disease X with dramatic interviews, vivid imagery, and a clear “classic story” of how the illness unfolds.</p>
+    <p>During discussion, Student A immediately argues that Disease X is the most likely diagnosis because the patient “fits the typical picture.” Student B argues that Disease Y is more likely because it is far more common, even though Disease Y can present with a wide range of symptoms and does not always look like one neat prototype. The group then orders a laboratory test designed specifically to detect Disease X. The result returns negative. Student A responds, “That test probably missed it,” and continues to interpret every new detail as supporting Disease X while dismissing alternative explanations. When asked how confident they are, Student A says, “I’m basically 100% sure; the pattern is too perfect.”</p>
+    <p>The instructor asks the class to identify which mental shortcuts and biases are present and which reasoning strategy would be most appropriate after an initial hypothesis is contradicted by evidence.</p>
+  </div>
+
+  <div class="reasoning-box" id="p2-reason">
+    <b>How to reason (Passage 2):</b>
+    <ol>
+      <li><b>Start with the numbers:</b> Disease Y is vastly more prevalent than Disease X (base rates matter).</li>
+      <li><b>Identify prototype language:</b> “fits the typical picture” points to <b>representativeness</b>.</li>
+      <li><b>Identify vivid recall:</b> “recent documentary” makes Disease X easy to recall, suggesting <b>availability</b>.</li>
+      <li><b>Apply evidence rules:</b> after a targeted test is negative, the <b>disconfirmation principle</b> says you should reduce or discard that hypothesis (unless you have a strong, evidence-based reason the test is unreliable).</li>
+      <li><b>Label biased reactions:</b> dismissing contradictions = <b>confirmation bias</b>; refusing to update = <b>belief perseverance</b>; inflated certainty = <b>overconfidence</b>.</li>
+    </ol>
+  </div>
+
+  <!-- Q19 Correct: C -->
+  <div class="question" id="q19">
+    <b>19. Student A’s claim that Disease X is most likely because the patient “fits the typical picture,” despite Disease X being extremely rare, best illustrates:</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Trial-and-error problem solving</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. Deductive reasoning</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">C. Base rate fallacy driven by the representativeness heuristic</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. The disconfirmation principle</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Student A uses <b>representativeness</b> (“fits the classic story”) while ignoring the huge prevalence difference. Ignoring base rates is the <b>base rate fallacy</b>.
+        <ul>
+          <li><b>A</b> is trying multiple solutions until one works, not probability judgment.</li>
+          <li><b>B</b> would require a conclusion that must be true from given rules; here it is a probabilistic error.</li>
+          <li><b>D</b> is what Student A should do after contradictory evidence, but is not doing.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q20 Correct: D -->
+  <div class="question" id="q20">
+    <b>20. After the Disease X test returns negative, Student A says “the test probably missed it” and continues interpreting new details as supporting Disease X. This response is most consistent with:</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. Inductive reasoning</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. Availability heuristic</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. The disconfirmation principle</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">D. Confirmation bias (and related belief perseverance)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Student A <b>rejects disconfirming evidence</b> and selectively searches for supportive interpretations—classic <b>confirmation bias</b>. Persisting despite strong contradiction also reflects <b>belief perseverance</b>.
+        <ul>
+          <li><b>A</b> would mean building a general rule from repeated cases.</li>
+          <li><b>B</b> may explain the initial focus on Disease X (the documentary makes it memorable), but the behavior described here is specifically <i>evidence filtering</i>.</li>
+          <li><b>C</b> is the opposite of what Student A does; disconfirmation would push them to lower Disease X as the leading explanation.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q21 Correct: A -->
+  <div class="question" id="q21">
+    <b>21. Student A’s statement “I’m basically 100% sure; the pattern is too perfect” is best labeled as:</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. Overconfidence bias</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Hindsight bias</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Functional fixedness</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. Trial-and-error</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Overconfidence</b> is a tendency to interpret one’s beliefs and judgments as infallible, inflating certainty beyond what evidence justifies.
+        <ul>
+          <li><b>B</b> requires the outcome already happened (“I knew it all along”).</li>
+          <li><b>C</b> is an object-use limitation in problem solving.</li>
+          <li><b>D</b> is a problem-solving strategy of trying multiple options; Student A is doing the opposite (not exploring alternatives).</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===================== PASSAGE 3 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 3 — Measuring Intelligence and Building Skills</span>
+    <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A school district evaluates two intervention programs. Program 1 provides additional reading instruction in early elementary school for children from low-enrichment environments. Program 2 provides no new instruction during the school year but offers optional online puzzles and trivia games during summer vacation. The district uses a standardized test that reports scores with mean 100 and standard deviation 15, and it emphasizes that the test mostly measures language and problem-solving skills similar to those used on traditional academic exams.</p>
+    <p>After one year, students in Program 1 show improved performance on tasks involving vocabulary and reading comprehension, and teachers report better classroom participation and fewer “shutdown” behaviors when difficult work appears. During the next summer, many students who do not practice academic skills show a small decline in test performance by the start of the following school year, even when their motivation and curiosity remain high. A subset of students is also assessed with a scenario-based measure that scores how well a student can recognize emotions in others, regulate their own frustration, and adapt communication during group conflict.</p>
+    <p>The district’s psychologist reminds the team that intelligence is influenced by both heredity and environment, that different theories emphasize different kinds of abilities, and that traditional IQ-style tests capture only a subset of what matters for real-world success. The psychologist argues that interpreting score changes requires attention to educational context rather than assuming scores purely reflect a fixed trait.</p>
+  </div>
+
+  <div class="reasoning-box" id="p3-reason">
+    <b>How to reason (Passage 3):</b>
+    <ol>
+      <li><b>Connect interventions to claims:</b> Early instruction in low-enrichment contexts aligns with “educational experiences and early intervention can improve measured ability.”</li>
+      <li><b>Use the summer clue:</b> A slight drop without structured schooling matches the idea that test performance can dip during summer breaks.</li>
+      <li><b>Map the scenario measure:</b> Emotion recognition + regulation + adapting communication aligns with <b>emotional intelligence</b>.</li>
+      <li><b>Interpret mean/SD:</b> SD is the unit for “how far from average”; one SD above mean is 100 + 15 = 115.</li>
+      <li><b>Reject extremes:</b> The passage explicitly rejects “purely fixed trait” interpretations and notes that IQ tests capture only a subset of abilities.</li>
+    </ol>
+  </div>
+
+  <!-- Q22 Correct: B -->
+  <div class="question" id="q22">
+    <b>22. Which conclusion is most strongly supported by the passage’s pattern of changes across the school year and summer?</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. Intelligence is determined solely by heredity because test scores can change over time</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">B. Educational experiences can influence measured cognitive performance, including early intervention benefits and small summer declines</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. Program 2 must be more effective than Program 1 because it uses online activities</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. IQ tests measure all meaningful forms of intelligence equally well</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The passage links schooling and early intervention to improved performance and notes small declines during summer without practice, supporting an <b>environmental/educational</b> influence on measured outcomes.
+        <ul>
+          <li><b>A</b> is internally inconsistent: score changes suggest environment/education matter, and the psychologist explicitly notes heredity <i>and</i> environment.</li>
+          <li><b>C</b> is not supported; Program 2 is optional and the passage does not show superior outcomes.</li>
+          <li><b>D</b> is contradicted by the statement that IQ-style tests capture only a subset of what matters.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q23 Correct: C -->
+  <div class="question" id="q23">
+    <b>23. The scenario-based measure that tests recognizing emotions in others, regulating frustration, and adapting communication strategies is most directly assessing:</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Spearman’s g factor</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Sternberg’s analytical intelligence</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">C. Emotional intelligence</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. Functional fixedness</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Emotional intelligence includes perceiving/expressing emotions, understanding them, regulating them, and recognizing how emotions shape thinking and decisions. The scenario measure maps directly to these components.
+        <ul>
+          <li><b>A</b> is a general intelligence factor inferred from correlations among cognitive tasks, typically assessed by standardized academic-style measures.</li>
+          <li><b>B</b> analytical intelligence emphasizes evaluating and reasoning; the described tasks are specifically emotion-based and interpersonal.</li>
+          <li><b>D</b> is an object-use limitation in problem solving and is unrelated to emotion regulation.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q24 Correct: D -->
+  <div class="question" id="q24">
+    <b>24. A student is told that the district’s standardized test has a mean of 100 and a standard deviation of 15. Which statement is most accurate?</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. A score of 130 is exactly 30% higher intelligence than average</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. A score of 85 must indicate a cognitive disability in all cases</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. Standard deviation tells you the most common score is always 115</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">D. A score of 115 is one standard deviation above the mean on this scale</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        If mean = 100 and SD = 15, then 100 + 15 = <b>115</b> is <b>one standard deviation above</b> the mean.
+        <ul>
+          <li><b>A</b> incorrectly treats the scale as a percentage measure; standardized scores are not “percent more intelligence.”</li>
+          <li><b>B</b> is too absolute; diagnosis requires context, multiple measures, and consideration of culture/education and measurement error.</li>
+          <li><b>C</b> misinterprets SD; in a typical distribution the most common score is near the mean, not automatically one SD above.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+</body>
+</html>

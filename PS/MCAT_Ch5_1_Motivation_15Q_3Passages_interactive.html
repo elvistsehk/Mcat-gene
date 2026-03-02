@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Chapter 5.1 Practice (Motivation)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+</head>
+<body>
+<div class="main-header">
+  <div class="header-left">
+    <div class="header-title">MCAT Behavioral Sciences — Chapter 5.1: Motivation</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-tag">Standalone Questions (Q1–Q15)</div>
+  <div class="question" id="q1">
+    <b>1. A toddler automatically grasps a caregiver’s finger when the palm is stroked. Which theory of motivation most directly frames this as an innate, fixed behavioral pattern?</b>
+    <div class="choice" onclick="selectChoice('q1', this, false)">A. Drive reduction theory</div>
+    <div class="choice" onclick="selectChoice('q1', this, true)">B. Instinct theory</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Incentive theory</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Expectancy–value theory</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Instinct theory</p>
+<p><b>Why:</b> Instinct theory explains certain behaviors as evolutionarily programmed, innate patterns that can appear early in life (e.g., primitive reflexes).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> (Correct)</li>
+<li><b>C.</b> Incentive theory emphasizes external rewards/punishments, not innate reflex patterns.</li>
+<li><b>D.</b> Expectancy–value concerns beliefs about success and value of goals, not newborn reflexes.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q2">
+    <b>2. A student drinks coffee before an exam because they feel under-stimulated and want to be more alert. Which theory best explains this behavior?</b>
+    <div class="choice" onclick="selectChoice('q2', this, true)">A. Arousal theory</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">B. Instinct theory</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. Maslow’s hierarchy</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. Opponent-process theory</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> Arousal theory</p>
+<p><b>Why:</b> Arousal theory proposes people act to maintain an optimal level of arousal—raising arousal when it is too low and lowering it when it is too high.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> Instinct theory focuses on innate, fixed patterns of behavior, not adjusting alertness levels.</li>
+<li><b>C.</b> Maslow describes prioritized needs; it does not specifically explain optimizing arousal states.</li>
+<li><b>D.</b> Opponent-process theory explains tolerance/withdrawal with repeated drug use, not simple arousal optimization.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q3">
+    <b>3. According to the Yerkes–Dodson law, performance is typically BEST when arousal is:</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. Very low</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">B. Moderate (intermediate)</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">C. Very high</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. Independent of arousal level</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Moderate (intermediate)</p>
+<p><b>Why:</b> Yerkes–Dodson describes a U-shaped relationship: extremely low or high arousal impairs performance, while an intermediate level is optimal.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>C.</b> Excessive arousal can produce anxiety/panic and impair performance.</li>
+<li><b>D.</b> The law explicitly ties performance to arousal level.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q4">
+    <b>4. Which arousal level is generally most optimal for a highly cognitive, complex task (e.g., reasoning through a difficult passage)?</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Higher arousal than for simple tasks</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">B. Lower arousal than for simple tasks</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. The highest possible arousal</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">D. Arousal level does not matter</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Lower arousal than for simple tasks</p>
+<p><b>Why:</b> For complex, highly cognitive tasks, too much arousal tends to disrupt performance; lower arousal is often optimal compared with simple tasks.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>C.</b> Extremely high arousal tends to impair complex cognition (test anxiety).</li>
+<li><b>D.</b> Yerkes–Dodson predicts arousal matters.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q5">
+    <b>5. Which statement best captures drive reduction theory?</b>
+    <div class="choice" onclick="selectChoice('q5', this, false)">A. Motivation is driven by the pursuit of external rewards.</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. Motivation is driven primarily by evolutionarily programmed instincts.</div>
+    <div class="choice" onclick="selectChoice('q5', this, true)">C. Motivation is driven by reducing internal tension and restoring homeostasis.</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. Motivation is determined by the expectation of success times the value of the goal.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> Motivation is driven by reducing internal tension and restoring homeostasis.</p>
+<p><b>Why:</b> Drive reduction theory treats drives as uncomfortable internal states that motivate behavior to reduce the tension and re-establish homeostasis.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> That describes instinct theory.</li>
+<li><b>D.</b> That describes expectancy–value theory.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q6">
+    <b>6. Which example best illustrates a PRIMARY drive rather than a secondary drive?</b>
+    <div class="choice" onclick="selectChoice('q6', this, true)">A. Feeling cold and seeking warmth</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">B. Studying to earn a high MCAT score</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. Desiring social status in a club</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. Wanting praise from a supervisor</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> Feeling cold and seeking warmth</p>
+<p><b>Why:</b> Primary drives support basic biological needs (food, water, warmth). Secondary drives are learned/emotional goals like achievement or status.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> Achievement toward school goals is a learned/secondary drive.</li>
+<li><b>C.</b> Status and belonging are secondary drives/needs, not basic physiological drives.</li>
+<li><b>D.</b> Praise is an external incentive and not a primary biological drive.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q7">
+    <b>7. Maslow’s hierarchy proposes that the MOST essential needs are:</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. Self-actualization</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. Self-esteem needs</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">C. Love and belonging needs</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">D. Physiological needs (e.g., food, water, sleep)</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Physiological needs (e.g., food, water, sleep)</p>
+<p><b>Why:</b> Maslow places physiological needs at the base of the pyramid as the most fundamental and urgent when unmet.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> Self-esteem is above physiological and safety needs.</li>
+<li><b>C.</b> Love/belonging is above physiological and safety needs.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q8">
+    <b>8. Which ordering (from MOST to LEAST essential) matches Maslow’s classic hierarchy?</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Physiological → Love/Belonging → Safety → Esteem → Self-actualization</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. Safety → Physiological → Esteem → Love/Belonging → Self-actualization</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">C. Physiological → Safety → Love/Belonging → Esteem → Self-actualization</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">D. Self-actualization → Esteem → Love/Belonging → Safety → Physiological</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> Physiological → Safety → Love/Belonging → Esteem → Self-actualization</p>
+<p><b>Why:</b> Maslow’s hierarchy typically progresses upward from physiological needs to safety, then belonging, then esteem, and finally self-actualization.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> Physiological needs are the base and precede safety.</li>
+<li><b>D.</b> This reverses the hierarchy.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q9">
+    <b>9. Self-determination theory (SDT) emphasizes which three universal needs?</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. Autonomy, competence, and relatedness</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Arousal, drive, and instinct</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. Safety, esteem, and self-actualization</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. Punishment avoidance, reward pursuit, and fear</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> Autonomy, competence, and relatedness</p>
+<p><b>Why:</b> SDT proposes that motivation and psychological growth depend strongly on autonomy (control), competence (effectiveness), and relatedness (connection).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> Those are broad categories of motivation theories, not SDT’s three needs.</li>
+<li><b>C.</b> Those are levels from Maslow, not SDT’s core needs.</li>
+<li><b>D.</b> That framing is closer to behaviorist incentive/punishment language than SDT.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q10">
+    <b>10. A student decides whether to apply to a competitive program by estimating their chance of acceptance and how important acceptance is to them. This best illustrates:</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Drive reduction theory</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">B. Instinct theory</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">C. Expectancy–value theory</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Arousal theory</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> Expectancy–value theory</p>
+<p><b>Why:</b> Expectancy–value theory states motivation reflects both expected likelihood of success and the value placed on the goal.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> Instinct theory is about innate patterns, not strategic goal estimation.</li>
+<li><b>D.</b> Arousal theory is about optimizing arousal level, not probabilistic goal pursuit.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q11">
+    <b>11. Incentive theory is MOST consistent with which statement?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Behavior is motivated by meeting autonomy, competence, and relatedness.</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. Behavior is motivated by restoring homeostasis.</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">C. Behavior is driven by fixed action patterns.</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">D. Behavior is motivated by pursuit of rewards and avoidance of punishments.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Behavior is motivated by pursuit of rewards and avoidance of punishments.</p>
+<p><b>Why:</b> Incentive theory emphasizes external stimuli—rewards and punishments—as the primary drivers of behavior.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> That is drive reduction/homeostasis logic.</li>
+<li><b>C.</b> That is instinct theory logic.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q12">
+    <b>12. A child who loved drawing begins drawing less after being promised prizes for every picture. This phenomenon is best described as:</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Drive reduction</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Opponent-process theory</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. Cognitive dissonance</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. Reduced intrinsic motivation due to external reward (overjustification)</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Reduced intrinsic motivation due to external reward (overjustification)</p>
+<p><b>Why:</b> Introducing external rewards can shift motivation from intrinsic to extrinsic, decreasing the inherent enjoyment and persistence (often called the overjustification effect).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> Opponent-process concerns repeated drug use leading to tolerance/withdrawal.</li>
+<li><b>C.</b> Cognitive dissonance involves discomfort from inconsistent beliefs/behaviors.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q13">
+    <b>13. Opponent-process theory predicts that repeated use of a depressant (e.g., alcohol) will most likely lead to withdrawal characterized by:</b>
+    <div class="choice" onclick="selectChoice('q13', this, false)">A. Deep sedation (same as the drug effect)</div>
+    <div class="choice" onclick="selectChoice('q13', this, true)">B. Anxiety and jitteriness (opposite the drug effect)</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. No physiological change after cessation</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. Improved coordination and attention</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Anxiety and jitteriness (opposite the drug effect)</p>
+<p><b>Why:</b> The body counters repeated drug effects; when the drug wears off, the compensatory response persists, producing withdrawal opposite to the drug’s acute effect.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>C.</b> Opponent-process predicts a compensatory response, not ‘no change.’</li>
+<li><b>D.</b> Withdrawal symptoms are typically unpleasant and opposite to the drug effect.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q14">
+    <b>14. Which concept is MOST directly explained by opponent-process theory?</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Autonomy as a universal need</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">B. Maslow’s hierarchy</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">C. Tolerance and withdrawal</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. The grasp reflex in infants</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> Tolerance and withdrawal</p>
+<p><b>Why:</b> Opponent-process theory describes how repeated drug use produces compensatory physiological changes that yield tolerance and an opposing withdrawal state.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> Maslow concerns prioritization of needs.</li>
+<li><b>D.</b> Infant reflexes are examples of instincts.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q15">
+    <b>15. A person repeatedly seeks extreme sports and is described as a ‘sensation seeker.’ The passage notes this can be associated with low monoamine oxidase (MAO). Low MAO would most directly be expected to:</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Eliminate all intrinsic motivation</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Decrease catecholamine levels by increasing breakdown</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">C. Prevent any arousal response from the autonomic nervous system</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">D. Increase catecholamine levels by reducing breakdown</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Increase catecholamine levels by reducing breakdown</p>
+<p><b>Why:</b> MAO breaks down catecholamines; lower MAO activity implies higher neurotransmitter levels, which can correlate with seeking high arousal.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> That reverses the enzyme’s role: lower MAO does not increase breakdown.</li>
+<li><b>C.</b> Autonomic arousal still occurs; MAO level is not an on/off switch for arousal.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<div class="section-tag">Passage-Based Questions (3 Passages × 3 Questions)</div>
+
+<!-- ===================== PASSAGE 1 ===================== -->
+<div class="passage-header">
+  <span>Passage 1: Rewards, Autonomy, and Task Engagement</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text"><p>A school tests ways to increase reading among 10-year-olds. Students are randomly assigned to one of three conditions for four weeks.</p>
+<p>Group R receives a prize each time they finish a book; Group F receives praise emphasizing effort and choice (e.g., ‘You chose a challenging book and stuck with it’); Group C receives no special feedback.</p>
+<p>After the program ends, prizes and praise stop. Over the next month, Group R’s voluntary reading time drops below Group C, while Group F’s voluntary reading time remains above Group C.</p>
+<p>Researchers also note that students in Group F report feeling more ‘in control’ of what they read and more confident they can handle difficult books.</p></div>
+</div>
+<div class="reasoning-box" id="p1-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li><b>Identify what changed after the intervention</b>: rewards/praise removed, but behavior persists differently across groups.</li>
+  <li><b>Map outcomes to motivation types</b>: a drop when rewards stop suggests extrinsic control; persistence suggests internalization/intrinsic motivation.</li>
+  <li><b>Link clues to SDT</b>: ‘in control’ → autonomy; ‘confident’ → competence; both support intrinsic motivation.</li>
+  <li><b>Choose answers that explain behavior AFTER rewards are removed</b> (the key diagnostic moment).</li>
+</ol>
+</div>
+  <div class="question" id="q16">
+    <b>16. Which interpretation best explains why Group R read LESS than controls after prizes were removed?</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. The students reduced physiological drives for sleep by reading less.</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. Instincts for reading extinguished with age.</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">C. External rewards undermined intrinsic motivation, so behavior declined when the incentive disappeared.</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">D. High arousal produced by prizes permanently improved reading performance.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> External rewards undermined intrinsic motivation, so behavior declined when the incentive disappeared.</p>
+<p><b>Why:</b> When behavior is driven mainly by external incentives, removing the incentive can reduce persistence; this is consistent with reduced intrinsic motivation (overjustification).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> Instinct theory does not explain a reward-dependent drop in reading after an intervention.</li>
+<li><b>D.</b> Yerkes–Dodson concerns performance vs arousal during tasks, not long-term persistence after incentives stop.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q17">
+    <b>17. The pattern in Group F is MOST consistent with which SDT needs being supported by the feedback?</b>
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Autonomy and competence</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. Safety and self-actualization</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Physiological needs and safety</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. Relatedness and withdrawal</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> Autonomy and competence</p>
+<p><b>Why:</b> Feedback emphasizing choice (‘in control’) supports autonomy, and emphasizing ability to handle difficult books supports competence—both strengthen intrinsic motivation.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> Those are Maslow terms and do not match the study’s explicit clues.</li>
+<li><b>C.</b> These are basic survival needs and are not implicated by reading-choice feedback.</li>
+<li><b>D.</b> ‘Withdrawal’ is opponent-process language, not SDT; relatedness isn’t the primary clue given.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q18">
+    <b>18. If the school wants reading to persist long-term without ongoing prizes, which strategy is most supported by the passage’s results?</b>
+    <div class="choice" onclick="selectChoice('q18', this, true)">A. Design activities that increase autonomy and competence rather than relying on tangible rewards.</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">B. Increase prize size to maximize extrinsic motivation.</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Add time pressure to raise arousal as high as possible.</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. Use punishment for not reading to strengthen intrinsic motivation.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> Design activities that increase autonomy and competence rather than relying on tangible rewards.</p>
+<p><b>Why:</b> Group F maintained higher voluntary reading even after feedback ended, implying internalization/intrinsic motivation supported by autonomy/competence cues.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> Bigger prizes may increase short-term reading but can still reduce persistence once removed.</li>
+<li><b>C.</b> Extremely high arousal can impair complex tasks and does not target intrinsic persistence.</li>
+<li><b>D.</b> Punishment can increase compliance but often undermines intrinsic motivation and can create avoidance.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<!-- ===================== PASSAGE 2 ===================== -->
+<div class="passage-header">
+  <span>Passage 2: Arousal, Task Complexity, and Performance</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text"><p>A lab measures performance on two tasks: Task S is simple (copy a short symbol pattern quickly), and Task C is complex (solve multi-step logic puzzles).</p>
+<p>Participants are assigned to one of three arousal conditions before testing: Low (quiet room), Moderate (mild time awareness), or High (loud countdown plus audience observation).</p>
+<p>Results show Task S accuracy peaks in the High-arousal condition, while Task C accuracy peaks in the Moderate-arousal condition; both tasks perform poorly in the Low-arousal condition.</p>
+<p>The lab asks students to explain how the same arousal manipulation can improve one task yet harm another.</p></div>
+</div>
+<div class="reasoning-box" id="p2-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li><b>Identify the theory</b>: a U-shaped arousal–performance relationship (Yerkes–Dodson).</li>
+  <li><b>Use task type as a modifier</b>: complex cognitive tasks peak at lower/moderate arousal; simpler tasks can tolerate or benefit from higher arousal.</li>
+  <li><b>Look for the ‘peak’ condition</b> for each task and match to the law’s prediction.</li>
+  <li><b>Avoid overgeneralizing</b>: ‘more arousal is always better’ is not what the data show.</li>
+</ol>
+</div>
+  <div class="question" id="q19">
+    <b>19. Which statement best explains why Task C performance decreased in the High-arousal condition?</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Complex tasks require the lowest possible arousal to be completed at all.</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">B. High arousal can push complex cognitive performance past the optimal point, impairing reasoning and attention.</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">C. High arousal eliminates all extrinsic motivation.</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. Performance on any task is independent of arousal once practice occurs.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> High arousal can push complex cognitive performance past the optimal point, impairing reasoning and attention.</p>
+<p><b>Why:</b> Yerkes–Dodson predicts complex tasks have an optimal arousal that is not too high; excessive arousal can produce anxiety and cognitive interference.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>C.</b> Arousal level is not equivalent to motivation type; extrinsic motivation is not the mechanism here.</li>
+<li><b>D.</b> The passage explicitly shows performance changes across arousal conditions.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q20">
+    <b>20. Which theoretical framework is MOST directly supported by the pattern that both tasks were poor at Low arousal but peaked at different intermediate levels?</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. Maslow’s hierarchy of needs</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. Drive reduction theory</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">C. Arousal theory with the Yerkes–Dodson law</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">D. Opponent-process theory</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> Arousal theory with the Yerkes–Dodson law</p>
+<p><b>Why:</b> A U-shaped arousal–performance curve (with task-dependent optimal arousal) is the hallmark of Yerkes–Dodson within arousal theory.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> No internal-tension/homeostasis variable is being reduced; arousal is manipulated externally.</li>
+<li><b>D.</b> Opponent-process is about repeated drug use and compensatory physiological changes.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q21">
+    <b>21. A participant reports they prefer the High-arousal condition and find it ‘fun,’ even when their Task C score drops. This preference is MOST consistent with:</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. A drive to seek higher arousal than average (sensation seeking)</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. A primary drive for warmth</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Self-actualization being unmet</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. Negative reinforcement reducing withdrawal</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> A drive to seek higher arousal than average (sensation seeking)</p>
+<p><b>Why:</b> Some individuals seek higher-than-average arousal and may be motivated by stimulation even if it does not optimize performance on complex tasks.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> Warmth is a basic physiological drive not relevant to preferring loud countdown/audience.</li>
+<li><b>C.</b> Self-actualization is a broad Maslow concept and is not the most direct explanation for ‘seeking stimulation.’</li>
+<li><b>D.</b> Negative reinforcement/withdrawal language applies to addiction contexts, not this lab manipulation.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<!-- ===================== PASSAGE 3 ===================== -->
+<div class="passage-header">
+  <span>Passage 3: Drug Use, Tolerance, and Withdrawal</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text"><p>A 22-year-old begins using a sedative recreationally to ‘feel relaxed.’ Initially, one dose produces calmness and sleepiness for several hours.</p>
+<p>After repeated use over months, the same dose produces much less calmness. When the person stops abruptly, they experience anxiety, jitteriness, and irritability that persist longer than the original calming effect used to last.</p>
+<p>They report taking the drug again mainly to stop the unpleasant feelings rather than to feel euphoric.</p>
+<p>A clinician asks which motivation theory best explains the pattern and what type of reinforcement is operating when the person uses the drug to end withdrawal symptoms.</p></div>
+</div>
+<div class="reasoning-box" id="p3-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li><b>Match the time-course</b>: reduced effect with repeated use → tolerance; opposite symptoms after stopping → withdrawal.</li>
+  <li><b>Identify the theory</b>: opponent-process explains compensatory responses that outlast the drug.</li>
+  <li><b>Classify reinforcement</b>: taking a drug to remove an aversive state is <i>negative reinforcement</i> (behavior increases because something bad is removed).</li>
+  <li><b>Separate ‘why they take it now’</b> (avoid withdrawal) from ‘why they first took it’ (positive effects).</li>
+</ol>
+</div>
+  <div class="question" id="q22">
+    <b>22. Which theory best explains both the decreased drug effect over time and the opposite withdrawal symptoms?</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. Instinct theory</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">B. Opponent-process theory</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. Maslow’s hierarchy</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. Expectancy–value theory</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Opponent-process theory</p>
+<p><b>Why:</b> Opponent-process theory predicts compensatory physiological changes with repeated use, producing tolerance and withdrawal opposite the drug’s acute effects.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>C.</b> Maslow is about needs prioritization, not pharmacologic adaptation.</li>
+<li><b>D.</b> Expectancy–value can influence decisions to use, but it does not explain the physiological opponent withdrawal pattern.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q23">
+    <b>23. When the person takes the drug primarily to stop the unpleasant withdrawal symptoms, this behavior is best classified as:</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Positive reinforcement</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Positive punishment</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">C. Negative punishment</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">D. Negative reinforcement</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Negative reinforcement</p>
+<p><b>Why:</b> The drug use increases because it removes an aversive internal state (withdrawal). Removing something unpleasant reinforces the behavior: negative reinforcement.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> Punishment decreases behavior; here the behavior (drug taking) is increasing.</li>
+<li><b>C.</b> Negative punishment is removing something desirable to reduce a behavior (e.g., taking away privileges).</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q24">
+    <b>24. Which change would MOST directly reduce the motivation to take the drug under the ‘withdrawal-relief’ pattern described?</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. Focusing only on self-actualization goals without addressing physiology</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. Increasing audience observation during daily activities</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. Raising arousal as high as possible to improve cognition</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">D. Reducing withdrawal severity during cessation so the aversive state is smaller</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Reducing withdrawal severity during cessation so the aversive state is smaller</p>
+<p><b>Why:</b> If drug-taking is maintained by negative reinforcement (relief), decreasing the aversive withdrawal state reduces the reinforcing ‘payoff’ of taking the drug.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This option does not best fit the theory or evidence described.</li>
+<li><b>B.</b> Audience observation is an arousal manipulation and does not target withdrawal reinforcement directly.</li>
+<li><b>C.</b> This misapplies Yerkes–Dodson and does not address the withdrawal mechanism driving behavior.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</body>
+</html>

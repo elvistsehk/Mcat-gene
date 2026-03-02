@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Behavioral Sci Ch 4.4–4.5 — Psychoactive Drugs & Attention (15 + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.10);
+  }
+  .subhead{ font-size:14px; font-weight:normal; opacity:0.95; margin-top:6px; line-height:1.4; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.72;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.10);
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.9;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const hidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = hidden ? "block" : "none";
+    btn.textContent = hidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+
+<body>
+  <div class="main-header">
+    🧠 MCAT Practice — Chapter 4.4–4.5: Psychoactive Drugs, Reward Pathway, Attention
+    <div class="subhead">
+      Drugs: depressants (alcohol, benzodiazepines, barbiturates) ↑GABA; stimulants (amphetamines, cocaine, MDMA) ↑DA/NE/5‑HT; opioids (endorphin agonists) → respiratory suppression in overdose; hallucinogens often linked to serotonin; marijuana (THC inhibits GABA, indirectly ↑dopamine). Addiction: mesolimbic reward pathway (VTA–MFB–NAc; dopamine). Attention: selective attention as a filter, cocktail party phenomenon, dichotic listening & shadowing, divided attention, controlled vs automatic processing.
+    </div>
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+  <div class="section-tag">15 Standalone MCAT-style Questions (Q1–Q15)</div>
+
+  <!-- Q1 Correct: C -->
+  <div class="question" id="q1">
+    <b>1. Alcohol’s calming effect at moderate doses is most directly explained by which cellular action?</b>
+    <div class="choice" onclick="selectChoice('q1', this, false)">A. Opening voltage-gated Na<sup>+</sup> channels to increase depolarization</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. Blocking Cl<sup>−</sup> channels to reduce inhibition</div>
+    <div class="choice" onclick="selectChoice('q1', this, true)">C. Increasing GABA receptor activity, promoting Cl<sup>−</sup> influx and membrane hyperpolarization</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Decreasing dopamine release in the nucleus accumbens</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Alcohol increases <b>GABA receptor</b> activity. The GABA receptor is a <b>chloride channel</b>; increasing Cl<sup>−</sup> conductance leads to <b>hyperpolarization</b>, reducing neuronal firing and arousal (a depressant effect).
+        <ul>
+          <li><b>A</b> would increase excitability, opposite a depressant effect.</li>
+          <li><b>B</b> would reduce inhibition, not increase it.</li>
+          <li><b>D</b> contradicts the chapter: alcohol tends to <b>increase dopamine</b> (mild euphoria), not decrease it.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q2 Correct: A -->
+  <div class="question" id="q2">
+    <b>2. “Disinhibition” after heavy drinking most directly results from:</b>
+    <div class="choice" onclick="selectChoice('q2', this, true)">A. Depressing brain centers that normally inhibit inappropriate behavior</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">B. Increased acetylcholine release that enhances executive control</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. Selective stimulation of the sympathetic nervous system</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. Increased serotonin reuptake that decreases mood</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter states disinhibition occurs because alcohol depresses the neural centers that <b>prevent inappropriate behavior</b>. When “the brakes” are reduced, risky behavior increases.
+        <ul>
+          <li><b>B</b> is opposite direction (executive control would be enhanced, not lost).</li>
+          <li><b>C</b> is not the core explanation; alcohol is primarily a CNS depressant.</li>
+          <li><b>D</b> is not how alcohol is framed here; and increasing reuptake would reduce synaptic serotonin.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q3 Correct: D -->
+  <div class="question" id="q3">
+    <b>3. Alcohol myopia is best described as:</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. Increased ability to detect distant visual cues</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. Anterograde amnesia due to hippocampal destruction</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">C. Paranoia and delusions of grandeur</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">D. A short-sighted inability to recognize consequences of actions</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Alcohol impairs logical reasoning; a key effect is reduced ability to recognize consequences, creating a “short‑sighted view” called <b>alcohol myopia</b>.
+        <ul>
+          <li><b>A</b> is literal eyesight; alcohol myopia is about judgment and consequences.</li>
+          <li><b>B</b> describes a different process (memory disorder), not the reasoning flaw defined here.</li>
+          <li><b>C</b> fits stimulant intoxication more than alcohol’s typical cognitive profile.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q4 Correct: B -->
+  <div class="question" id="q4">
+    <b>4. Which drug class increases GABA activity and is considered less prone to overdose than barbiturates?</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Amphetamines</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">B. Benzodiazepines</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. Hallucinogens</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">D. Opioids</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter notes that <b>benzodiazepines</b> replaced barbiturates for many uses because they are <b>less prone to overdose</b>, and both increase <b>GABA activity</b>.
+        <ul>
+          <li><b>A</b> is a stimulant class (monoamines), not GABA.</li>
+          <li><b>C</b> hallucinogens involve sensory distortions and serotonin interactions, not primary GABA enhancement.</li>
+          <li><b>D</b> opioids are endorphin agonists; overdose risk is respiratory suppression.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q5 Correct: A -->
+  <div class="question" id="q5">
+    <b>5. A patient takes a benzodiazepine and then drinks heavily. Which outcome is most concerning?</b>
+    <div class="choice" onclick="selectChoice('q5', this, true)">A. Synergistic CNS depression leading to coma or death</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. Improved divided attention due to reduced anxiety</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Increased REM sleep leading to lucid dreaming</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. Reduced addiction risk because GABA is inhibitory</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Alcohol and benzodiazepines both increase GABA‑mediated inhibition. Together they can produce dangerous additive/synergistic CNS depression and may cause <b>coma or death</b>.
+        <ul>
+          <li><b>B</b> is not supported; depressants generally impair attention and cognition.</li>
+          <li><b>C</b> misses the key safety issue (life‑threatening depression).</li>
+          <li><b>D</b> is incorrect: the chapter warns both classes can be <b>highly addictive</b>.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q6 Correct: C -->
+  <div class="question" id="q6">
+    <b>6. Amphetamines increase arousal primarily by which synaptic change?</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. Increasing GABA release and opening Cl<sup>−</sup> channels</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">B. Increasing dopamine breakdown by monoamine oxidase</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">C. Increasing release of dopamine, norepinephrine, and serotonin and decreasing their reuptake</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. Blocking opioid receptors in the brainstem</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter states amphetamines increase arousal by <b>increasing release</b> of DA/NE/5‑HT and <b>decreasing reuptake</b>, raising synaptic monoamines.
+        <ul>
+          <li><b>A</b> describes depressant-like action, not stimulant arousal.</li>
+          <li><b>B</b> would reduce dopamine, opposite of amphetamine effects.</li>
+          <li><b>D</b> opioid receptor blockade is not amphetamine’s mechanism.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q7 Correct: B -->
+  <div class="question" id="q7">
+    <b>7. Cocaine produces stimulant-like effects most directly by:</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. Increasing GABA receptor activity</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">B. Decreasing reuptake of dopamine, norepinephrine, and serotonin</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">C. Acting as an endorphin antagonist</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. Blocking cannabinoid receptors</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Cocaine acts on DA/NE/5‑HT synapses primarily by <b>decreasing neurotransmitter reuptake</b>, increasing synaptic monoamines and arousal.
+        <ul>
+          <li><b>A</b> is a depressant mechanism.</li>
+          <li><b>C</b> is not cocaine; opioids are endorphin agonists.</li>
+          <li><b>D</b> relates to marijuana/THC, not cocaine.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q8 Correct: D -->
+  <div class="question" id="q8">
+    <b>8. Which pairing is most accurate based on the chapter?</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Heroin → blocks opioid receptors</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. LSD → increases GABA activity as a primary effect</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. THC → increases GABA activity and decreases dopamine</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. Opioid overdose → respiratory suppression due to failure of brain signals to breathe</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter emphasizes that opioid overdose can cause death by <b>respiratory suppression</b>—the brain stops sending signals to breathe.
+        <ul>
+          <li><b>A</b> reverses the chapter: opioids are <b>endorphin agonists</b>.</li>
+          <li><b>B</b> hallucinogens are linked to distortions and complex serotonin interactions; “primary GABA increase” is not stated.</li>
+          <li><b>C</b> reverses THC’s description: THC <b>inhibits GABA</b> and indirectly <b>increases dopamine</b>.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q9 Correct: A -->
+  <div class="question" id="q9">
+    <b>9. Which set correctly lists the core components of the mesolimbic reward pathway described?</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. Ventral tegmental area, medial forebrain bundle, nucleus accumbens</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Amygdala, hippocampus, cerebellum</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. Thalamus, hypothalamus, corpus callosum</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. Prefrontal cortex, reticular formation, pons</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter defines the reward pathway as including the <b>VTA</b>, the <b>nucleus accumbens</b>, and the connecting tract, the <b>medial forebrain bundle</b>.
+        <ul>
+          <li><b>B</b> lists memory/emotion structures but not the reward triad.</li>
+          <li><b>C</b> lists general brain structures not specific to this pathway.</li>
+          <li><b>D</b> matches alertness/coma circuitry from the sleep chapter, not addiction reward circuitry.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q10 Correct: C -->
+  <div class="question" id="q10">
+    <b>10. THC’s “high” is described as involving which neurotransmitter pattern?</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Increased GABA activity and decreased dopamine</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">B. Increased acetylcholine and decreased serotonin</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">C. Inhibition of GABA activity with indirect increases in dopamine activity</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Direct blockade of dopamine receptors in the VTA</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter states THC <b>inhibits GABA activity</b> and <b>indirectly increases dopamine activity</b>, contributing to pleasure.
+        <ul>
+          <li><b>A</b> reverses both effects.</li>
+          <li><b>B</b> is not the described mechanism.</li>
+          <li><b>D</b> is not stated and would reduce dopamine signaling, opposite of the reward effect.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q11 Correct: B -->
+  <div class="question" id="q11">
+    <b>11. A user reports euphoria, hypervigilance, paranoia, and decreased need for sleep. Which drug category best fits?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Depressant</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">B. Stimulant (e.g., amphetamines)</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">C. Opioid</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. Parasomnia</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Stimulants increase arousal. The chapter lists amphetamine psychological effects as <b>euphoria, hypervigilance, anxiety, delusions of grandeur, and paranoia</b>, and decreased need for sleep.
+        <ul>
+          <li><b>A</b> would produce relaxation/drowsiness.</li>
+          <li><b>C</b> opioids produce analgesia/euphoria but are not defined by hypervigilance/paranoia here.</li>
+          <li><b>D</b> is a sleep disorder category, not a drug category.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q12 Correct: D -->
+  <div class="question" id="q12">
+    <b>12. A new stimulant increases synaptic dopamine but does <i>not</i> increase dopamine release. Which mechanism is most consistent with cocaine-like action?</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Enhancing GABA receptor opening</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Increasing dopamine vesicle packaging</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. Blocking opioid receptors in the nucleus accumbens</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. Decreasing reuptake (reuptake inhibition) at monoamine synapses</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Cocaine raises synaptic monoamines primarily by <b>decreasing reuptake</b>, rather than increasing release (amphetamine-like).
+        <ul>
+          <li><b>A</b> is depressant physiology, opposite of stimulant effects.</li>
+          <li><b>B</b> is not the chapter’s stated mechanism.</li>
+          <li><b>C</b> is unrelated to cocaine’s primary action.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q13 Correct: C -->
+  <div class="question" id="q13">
+    <b>13. Based on the chapter’s discussion, selective attention is best conceptualized as:</b>
+    <div class="choice" onclick="selectChoice('q13', this, false)">A. An all-or-nothing gate that prevents any unattended processing</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. The inability to shift attention between stimuli</div>
+    <div class="choice" onclick="selectChoice('q13', this, true)">C. A filter that prioritizes attended stimuli while allowing some background processing of unattended stimuli</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. A memory system housed exclusively in the cerebellum</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter contrasts an older “all-or-nothing” view with evidence that selective attention acts more like a <b>filter</b>: you focus on one stream, while other streams can still be processed at a low level in the background until they become salient.
+        <ul>
+          <li><b>A</b> reflects the older model the chapter says is not fully supported.</li>
+          <li><b>B</b> is not the definition; shifting attention is possible.</li>
+          <li><b>D</b> is anatomically and conceptually incorrect.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q14 Correct: C -->
+  <div class="question" id="q14">
+    <b>14. The cocktail party phenomenon most strongly supports which conclusion about attention?</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Unattended stimuli are never processed</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">B. Divided attention requires controlled processing</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">C. Some unattended information is processed sufficiently to capture attention when personally relevant</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Automatic processing cannot occur for familiar tasks</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Hearing your name while focused elsewhere suggests unattended inputs can be processed in the background and can “break through” when personally important or urgent.
+        <ul>
+          <li><b>A</b> is contradicted by the phenomenon.</li>
+          <li><b>B</b> is not the key implication; the example is about selective attention’s filter properties.</li>
+          <li><b>D</b> is opposite of the chapter: routine tasks often become automatic.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q15 Correct: B -->
+  <div class="question" id="q15">
+    <b>15. Which pairing correctly matches a concept with its description?</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Shadowing — ignoring the attended ear and repeating the unattended ear</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">B. Dichotic listening — different auditory inputs presented to each ear to test selective attention</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">C. Automatic processing — required for learning a brand-new complex task</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">D. Divided attention — impossible for any human under any condition</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        In <b>dichotic listening</b>, each ear receives different auditory input to probe selective attention. Repeating the attended stream aloud is <b>shadowing</b>.
+        <ul>
+          <li><b>A</b> reverses shadowing (it repeats the attended ear).</li>
+          <li><b>C</b> new/complex tasks require controlled processing, not automatic.</li>
+          <li><b>D</b> divided attention is possible, especially when tasks become routine/automatic.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="section-tag">3 Passage Sets (Each passage has 3 questions) — Q16–Q24</div>
+
+  <!-- PASSAGE 1 -->
+  <div class="passage-header">
+    <span>📘 Passage 1 — ED Triage: Similar “Sleepy” Patients, Different Mechanisms</span>
+    <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>An emergency department quality team reviews two admissions that occurred on the same weekend. Patient 1 arrived after a party and appeared severely drowsy, with slurred speech and slowed reaction time. Friends reported that the patient drank heavily and also “took something for anxiety” that was obtained from a roommate. Earlier in the evening, witnesses described the patient as unusually bold and impulsive, repeatedly making risky choices that seemed to ignore obvious consequences.</p>
+    <p>Patient 2 arrived an hour later. Paramedics reported that the patient was found unresponsive with drug paraphernalia nearby. In the ambulance, the patient had a dangerously low respiratory rate and shallow breathing. On arrival, the patient was difficult to arouse. The resident noted that the second case appeared immediately life‑threatening even though both patients “looked sleepy.”</p>
+    <p>During handoff, a junior clinician suggested that Patient 1’s alcohol and “anxiety medication” might converge on a shared inhibitory pathway in the brain, making the combined effect more dangerous than either substance alone. The attending asks which inference best fits the data and which physiologic parameter is most urgent to stabilize in each case.</p>
+  </div>
+
+  <div class="reasoning-box" id="p1-reason">
+    <b>How to reason (Passage 1):</b>
+    <ol>
+      <li><b>Cluster symptoms:</b> alcohol + “anxiety medication” + progressive drowsiness suggests <b>depressant synergy</b>; dangerously low respiratory rate suggests <b>opioid overdose</b>.</li>
+      <li><b>Use mechanism anchors:</b> alcohol/benzos/barbiturates → <b>↑GABA</b> → Cl<sup>−</sup> influx → hyperpolarization → CNS inhibition; opioids → endorphin agonism → <b>respiratory suppression</b>.</li>
+      <li><b>Interpret behavior clues:</b> “bold/impulsive, ignoring consequences” fits alcohol’s <b>disinhibition</b> and <b>alcohol myopia</b>.</li>
+      <li><b>Decide urgency:</b> in opioid overdose, stabilizing <b>breathing/ventilation</b> is immediately life‑saving.</li>
+    </ol>
+  </div>
+
+  <!-- Q16 Correct: A -->
+  <div class="question" id="q16">
+    <b>16. The most defensible inference about Patient 1’s “anxiety medication” is that it was likely a:</b>
+    <div class="choice" onclick="selectChoice('q16', this, true)">A. Benzodiazepine that increased GABA activity, compounding alcohol’s depressant effects</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. Cocaine that decreased monoamine reuptake, compounding alcohol’s euphoria</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Hallucinogen that primarily increased serotonin breakdown</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">D. Opioid antagonist that prevented respiratory suppression</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The passage points to a “shared inhibitory pathway.” Alcohol increases <b>GABA receptor activity</b>, and benzodiazepines also <b>increase GABA activity</b>, producing additive CNS depression when combined.
+        <ul>
+          <li><b>B</b> cocaine is a stimulant; it would not explain progressive drowsiness/slowed reflexes.</li>
+          <li><b>C</b> “serotonin breakdown” is not the chapter’s hallucinogen framing.</li>
+          <li><b>D</b> opioid antagonists are not presented as typical “anxiety medication” here.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q17 Correct: D -->
+  <div class="question" id="q17">
+    <b>17. Which finding most strongly supports opioid overdose (rather than sedative/alcohol intoxication) in Patient 2?</b>
+    <div class="choice" onclick="selectChoice('q17', this, false)">A. Risky behavior with reduced self-control earlier in the night</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. Mild euphoria reported by friends</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Alcohol myopia (ignoring consequences)</div>
+    <div class="choice" onclick="selectChoice('q17', this, true)">D. Markedly depressed respiratory rate with shallow breathing</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter’s lethal opioid risk is <b>respiratory suppression</b>. Very low respiratory rate and shallow breathing most strongly indicate opioid overdose physiology.
+        <ul>
+          <li><b>A</b> and <b>C</b> fit alcohol’s disinhibition/myopia more than opioid toxicity.</li>
+          <li><b>B</b> is nonspecific and can occur with multiple drug classes.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q18 Correct: B -->
+  <div class="question" id="q18">
+    <b>18. The “shared inhibitory pathway” idea for Patient 1 is best supported by which neurophysiologic explanation?</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. Both agents activate serotonin receptors to produce sensory distortion</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">B. Both agents increase GABA-mediated Cl<sup>−</sup> conductance, hyperpolarizing neurons and reducing firing</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Both agents decrease dopamine reuptake, raising synaptic dopamine</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. Both agents block opioid receptors, reducing pain perception</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Alcohol increases activity at the <b>GABA receptor</b> (a chloride channel), and sedatives like benzodiazepines/barbiturates also increase <b>GABA activity</b>. Increased Cl<sup>−</sup> influx → hyperpolarization → reduced neuronal firing → CNS depression.
+        <ul>
+          <li><b>A</b> is hallucinogen logic, not depressant synergy.</li>
+          <li><b>C</b> is stimulant (cocaine-like) logic, inconsistent with sedation.</li>
+          <li><b>D</b> opioid receptor blockade is unrelated to alcohol/benzos.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- PASSAGE 2 -->
+  <div class="passage-header">
+    <span>📘 Passage 2 — Reward Circuitry: Same Pathway, Different Reinforcers</span>
+    <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+
+
+
+
+  <div class="passage-box">
+    <p>A neuroscience laboratory compares how different reinforcers recruit a dopaminergic “reward” circuit while participants perform a monotonous reaction‑time task during brain imaging. In <b>Condition A</b>, participants earn small tokens after an <b>unpredictable</b> number of correct responses (sometimes after 2 correct trials, sometimes after 12). In <b>Condition B</b>, participants earn the <b>same total</b> number of tokens, but deliveries occur at <b>predictable</b> time points (for example, every 60 seconds).</p>
+    <p>In <b>Condition C</b>, participants see emotionally salient photos of a romantic partner during short breaks, but no tokens are delivered. In <b>Condition D</b>, participants complete the same task after inhaling a small, controlled dose of THC; the investigators predict that THC will reduce inhibitory tone on upstream neurons that normally restrain reward signaling, thereby increasing downstream “reward” activity. Across all conditions, the imaging team focuses on a pathway described as a midbrain dopamine source nucleus connected to a ventral striatal hub by a prominent fiber tract.</p>
+    <p>The researchers report strong activation across the source nucleus, tract, and hub in Conditions A, C, and D. Condition B produces weaker activation despite identical total token payout. They argue that <b>uncertainty</b> in reinforcement timing and <b>personal meaning</b> of cues can converge on the same circuitry, strengthening approach behavior and increasing the likelihood of repeating the behavior in the future.</p>
+  </div>
+
+  <div class="reasoning-box" id="p2-reason">
+    <b>How to reason (Passage 2):</b>
+    <ol>
+      <li><b>Name the pathway:</b> midbrain source + ventral striatum hub + connecting tract = <b>VTA → (MFB) → NAc</b>.</li>
+      <li><b>Use the transmitter label:</b> it is called <b>dopaminergic</b> → dopamine is primary.</li>
+      <li><b>Connect to the chapter claim:</b> the pathway can be activated by <b>substances</b> and also by experiences like <b>falling in love</b> (and gambling).</li>
+      <li><b>Apply THC mechanism:</b> THC <b>inhibits GABA</b> and indirectly <b>increases dopamine</b> → reward pathway activation.</li>
+    </ol>
+  </div>
+
+  <!-- Q19 Correct: C -->
+  <div class="question" id="q19">
+    <b>19. The “midbrain source nucleus” in the highlighted mesolimbic pathway is most likely the:</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Nucleus accumbens (NAc)</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. Medial forebrain bundle (MFB)</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">C. Ventral tegmental area (VTA)</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. Temporal cortex</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter defines the reward pathway as including the <b>VTA</b> (source), the <b>NAc</b> (downstream hub), and the <b>MFB</b> connecting them.
+        <ul>
+          <li><b>A</b> NAc is downstream, not the source nucleus.</li>
+          <li><b>B</b> MFB is a fiber tract, not a nucleus.</li>
+          <li><b>D</b> temporal cortex is not part of the chapter’s triad.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q20 Correct: A -->
+  <div class="question" id="q20">
+    <b>20. Which neurotransmitter most directly mediates signaling in the pathway highlighted by the researchers?</b>
+    <div class="choice" onclick="selectChoice('q20', this, true)">A. Dopamine</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. GABA</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. Acetylcholine</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">D. Histamine</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The mesolimbic reward pathway is explicitly described as a <b>dopaminergic pathway</b>. Therefore, dopamine is the primary neurotransmitter.
+        <ul>
+          <li><b>B</b> GABA is central for depressants and inhibition, but the reward pathway emphasized here is dopaminergic.</li>
+          <li><b>C</b> and <b>D</b> are not described as primary transmitters of this pathway in the chapter.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q21 Correct: D -->
+  <div class="question" id="q21">
+    <b>21. The robust activation in Condition C (romantic partner photos) most strongly supports which chapter claim?</b>
+    <div class="choice" onclick="selectChoice('q21', this, false)">A. Only drugs of abuse can produce psychological dependence</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Barbiturates are safer than benzodiazepines for anxiety</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Hallucinogens uniquely activate reward circuitry through serotonin</div>
+    <div class="choice" onclick="selectChoice('q21', this, true)">D. Non-drug experiences like falling in love can activate the mesolimbic reward pathway</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter explicitly notes that <b>gambling and falling in love</b> can activate the mesolimbic reward pathway. Romantic cues in Condition C fit that statement.
+        <ul>
+          <li><b>A</b> is contradicted by the chapter’s examples of non-drug activation.</li>
+          <li><b>B</b> reverses the chapter: benzodiazepines replaced barbiturates partly due to lower overdose risk.</li>
+          <li><b>C</b> is not stated as a unique serotonin → reward claim.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- PASSAGE 3 -->
+  <div class="passage-header">
+    <span>📘 Passage 3 — ICU Multitasking: When Practice Changes Attention</span>
+    <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A medical student begins an ICU rotation and struggles to monitor vital signs while also listening to the resident’s instructions. Early in the week, the student repeatedly misses steps because they lock onto one stream of information and lose track of the other. The resident explains that this is common when tasks are new and cognitively demanding.</p>
+    <p>After several days, the student becomes fluent at a set of routine actions—priming IV tubing, recording scheduled measurements, and navigating the electronic chart. Now the student can perform these tasks while also answering questions, noticing alarms, and tracking a conversation. During a crowded night shift, the student is speaking with a nurse when someone across the room says the student’s name and then mentions “code blue.” The student immediately stops and turns toward the sound.</p>
+    <p>Later, the resident runs a teaching demo: the student wears headphones and hears different lists of numbers in each ear. The student is instructed to repeat aloud only the left-ear stream. Afterward, the student can report the attended stream well but remembers almost nothing from the unattended ear—except that the unattended stream contained the word “blue,” which felt unusually salient.</p>
+  </div>
+
+  <div class="reasoning-box" id="p3-reason">
+    <b>How to reason (Passage 3):</b>
+    <ol>
+      <li><b>New vs routine:</b> new/complex tasks require <b>controlled processing</b> and reduce multitasking success; with practice, parts become <b>automatic</b>.</li>
+      <li><b>Divided attention:</b> once one task becomes automatic, attention can be split more effectively across tasks.</li>
+      <li><b>Cocktail party clue:</b> your <b>name</b> or urgent cue (“code blue”) breaking through implies some background processing.</li>
+      <li><b>Dichotic listening:</b> different inputs per ear; repeating attended ear = <b>shadowing</b>; limited recall from unattended ear reflects filtering.</li>
+    </ol>
+  </div>
+
+  <!-- Q22 Correct: B -->
+  <div class="question" id="q22">
+    <b>22. The student’s improvement over days (doing routine tasks while also listening) is best explained by:</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. Decreased need for selective attention because all stimuli are equally processed</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">B. Some aspects of the task shifting from controlled processing to automatic processing, enabling divided attention</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. Increased GABA activity leading to better focus</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. Hallucinogen-induced enhancement of sensory experience</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        New tasks demand <b>controlled processing</b>. With practice, routine components become <b>automatic</b>, freeing resources and enabling <b>divided attention</b>.
+        <ul>
+          <li><b>A</b> is incorrect: selective attention remains a filter.</li>
+          <li><b>C</b> is drug physiology, not skill learning.</li>
+          <li><b>D</b> is unrelated to the attention model described.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q23 Correct: D -->
+  <div class="question" id="q23">
+    <b>23. The student hearing their name and “code blue” while engaged in conversation best illustrates:</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Complete loss of unattended auditory information</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Opioid-induced narrowing of consciousness</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">C. The impossibility of divided attention in real settings</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">D. The cocktail party phenomenon, suggesting some background processing of unattended stimuli</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The cocktail party phenomenon is when a personally important stimulus (like your <b>name</b>) captures attention even when you are focused elsewhere, implying some unattended processing.
+        <ul>
+          <li><b>A</b> is contradicted by the phenomenon.</li>
+          <li><b>B</b> is unrelated: this is attention, not opioid physiology.</li>
+          <li><b>C</b> is too absolute; divided attention can occur when tasks become automatic.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q24 Correct: A -->
+  <div class="question" id="q24">
+    <b>24. In the headphone demo, the instruction to “repeat aloud only the left-ear stream” is best described as:</b>
+    <div class="choice" onclick="selectChoice('q24', this, true)">A. Shadowing of the attended ear to test selective attention</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. Priming of the unattended ear to enhance recall</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. An algorithm for problem solving</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">D. A method for inducing hypnosis through focused relaxation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Repeating the attended ear’s message in dichotic listening is <b>shadowing</b>, a classic selective attention test.
+        <ul>
+          <li><b>B</b> priming is a memory concept, not what this task measures.</li>
+          <li><b>C</b> is unrelated to attention testing.</li>
+          <li><b>D</b> is hypnosis, not dichotic listening.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Learning & Memory — 5 Passages (25Q)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.85;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+
+<body>
+  <div class="main-header">
+    🧪 MCAT Practice — Learning, Memory, Neurobiology (5 Passages × 5 Questions)
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+  <!-- ===================== PASSAGE 1 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 1 — Habituation, Dishabituation, and Predictability</span>
+    <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>Investigators study how repeated, low-stakes sensory input changes behavior. Healthy adults sit in a sound-attenuated room wearing headphones. Every 10 seconds, a 200 ms, 70 dB tone is presented. After each tone, participants press a key as quickly as possible when a small dot appears on a monitor (simple reaction-time task). Simultaneously, an eyelid EMG records startle magnitude. Participants also rate how “noticeable” the tone felt (1–7).</p>
+    <p>Across the first 30 tones, startle magnitude falls sharply and reaction time improves slightly. Participants report the tone as less noticeable over time. On trial 31, the tone is replaced with a single 95 dB tone of a different pitch. Immediately afterward, the original 70 dB tone returns for 10 more trials. On the first 2–3 post-loud trials, startle to the 70 dB tone increases compared with the end of the first block and reaction time briefly slows, then both measures return toward the earlier habituated levels.</p>
+    <p>In a second condition, a new group receives the same 70 dB tones, but the interval is unpredictable (randomly 4–18 seconds). In this condition, startle decreases more slowly and “noticeability” ratings remain higher. The researchers conclude that predictability accelerates tuning out and that a salient intervening stimulus can transiently restore responsiveness.</p>
+  </div>
+
+  <div class="reasoning-box" id="p1-reason">
+    <b>How to reason (Passage 1):</b>
+    <ol>
+      <li><b>Name the pattern:</b> decreasing response to repeated identical stimulus → <b>habituation</b> (not fatigue by default).</li>
+      <li><b>Spot the interrupt:</b> a new, salient stimulus that restores response to the old one → <b>dishabituation</b> (resensitization).</li>
+      <li><b>Use predictability:</b> fixed timing makes the stimulus easier to ignore; unpredictability keeps attention engaged, slowing habituation.</li>
+      <li><b>Link to performance:</b> brief reaction-time slowing after the loud tone suggests arousal/orienting temporarily competes with the task.</li>
+      <li><b>Eliminate distractors:</b> conditioning requires pairings or consequences; here the key manipulation is repetition and novelty.</li>
+    </ol>
+  </div>
+
+  <!-- Q1 Correct: A -->
+  <div class="question" id="q1">
+    <b>1. The most direct interpretation of the declining startle response across the first 30 trials is:</b>
+    <div class="choice" onclick="selectChoice('q1', this, true)">A. Habituation to a repeated stimulus</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. Classical conditioning of the startle response</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Positive reinforcement strengthening the startle reflex</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Retroactive interference disrupting retrieval of prior responses</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        A progressively <b>smaller response to the same stimulus</b> is the defining feature of <b>habituation</b>.
+        <ul>
+          <li><b>B</b> requires a neutral stimulus paired with an unconditioned stimulus; no pairing is described.</li>
+          <li><b>C</b> requires consequences contingent on behavior; none are present.</li>
+          <li><b>D</b> is a memory retrieval phenomenon; here we observe a reflex decreasing with repetition.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q2 Correct: B -->
+  <div class="question" id="q2">
+    <b>2. The rebound in startle to the original 70 dB tone after the single 95 dB tone is best explained by:</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. The spacing effect improving retention of the tone</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">B. Dishabituation triggered by a salient intervening stimulus</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. Variable-ratio reinforcement increasing responding</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. Confabulation filling missing details of the tone</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        After habituation, a <b>different, more intense stimulus</b> can temporarily restore responsiveness to the original stimulus. That is <b>dishabituation</b>.
+        <ul>
+          <li><b>A</b> concerns relearning over longer delays, not an immediate rebound after a novel stimulus.</li>
+          <li><b>C</b> is operant conditioning (consequence-based); no rewards occur.</li>
+          <li><b>D</b> is a fabricated-memory phenomenon (often in Korsakoff’s), irrelevant to reflex change.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q3 Correct: C -->
+  <div class="question" id="q3">
+    <b>3. Why does the unpredictable 4–18 s interval condition likely slow habituation relative to the fixed-interval condition?</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. The tone becomes a conditioned stimulus paired with shock</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. The tone becomes a punishment that suppresses responding</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">C. Reduced predictability maintains attention/arousal, keeping the stimulus more salient</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. Priming activates semantic-network nodes that improve recall</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Habituation is faster when stimuli are repetitive and <b>predictable</b>. Unpredictable timing keeps participants from fully “tuning out,” slowing the decline in responding.
+        <ul>
+          <li><b>A</b> requires CS–US pairing; none is present.</li>
+          <li><b>B</b> implies consequence-based learning; not described.</li>
+          <li><b>D</b> is about memory retrieval cues, not reflex adaptation to repetition.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q4 Correct: D -->
+  <div class="question" id="q4">
+    <b>4. Which finding would most strongly argue that the response decline reflects habituation rather than sensory receptor fatigue?</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Startle continues to decrease even when tones get louder</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. Participants report “boredom” while EMG stays constant</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. Electrode impedance drifts upward over time</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">D. After a long break with no tones, the startle response returns, then decreases again with repetition</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Spontaneous recovery</b> (response returning after rest) and then <b>re-habituation</b> is characteristic of habituation and is hard to explain by receptor “wearing out.”
+        <ul>
+          <li><b>A</b> is inconsistent with basic physiology (louder stimuli usually increase startle).</li>
+          <li><b>B</b> does not demonstrate recovery of the reflex.</li>
+          <li><b>C</b> suggests measurement artifact rather than a learning-like process.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q5 Correct: A -->
+  <div class="question" id="q5">
+    <b>5. The brief reaction-time slowing immediately after the 95 dB tone is most consistent with:</b>
+    <div class="choice" onclick="selectChoice('q5', this, true)">A. Increased orienting/arousal temporarily competing with task performance</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. A sudden increase in working-memory capacity above 7 ± 2</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Immediate consolidation into long-term memory via elaborative rehearsal</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. Echoic memory persisting for minutes and slowing responses</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        A loud, novel stimulus can trigger an <b>orienting response</b> and heightened arousal. That can momentarily divert attention from the dot task, slowing reaction time.
+        <ul>
+          <li><b>B</b> is a memory-capacity claim not supported by the passage.</li>
+          <li><b>C</b> describes a study strategy and long-term storage, not immediate reaction-time disruption.</li>
+          <li><b>D</b> echoic memory is very brief and does not explain the attentional competition effect described.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===================== PASSAGE 2 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 2 — Classical vs Operant Conditioning and Reinforcement Schedules</span>
+    <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A behavioral neuroscience lab trains rats in two phases. In Phase 1 (Pavlovian), a 2 kHz tone plays for 5 seconds and then a mild foot shock is delivered. The shock reliably elicits flinching and freezing. After several pairings, rats begin freezing during the tone before the shock occurs, indicating that the tone predicts an aversive event.</p>
+    <p>In Phase 2 (operant), the same rats are placed in a chamber with a lever and a food dispenser. Pressing the lever can deliver a pellet. Group FR is reinforced with one pellet for every 10 presses. Group VR is reinforced on average every 10 presses but unpredictably. Group FI is reinforced for the first press after each 30-second interval.</p>
+    <p>Over training days, Group VR presses fastest and continues pressing longest when pellets are later withheld (extinction). During extinction, the experimenter occasionally plays the tone (no shock is delivered). Immediately after tone presentations, some rats freeze and lever pressing temporarily decreases, then gradually resumes.</p>
+  </div>
+
+  <div class="reasoning-box" id="p2-reason">
+    <b>How to reason (Passage 2):</b>
+    <ol>
+      <li><b>Identify learning type:</b> tone → shock = <b>classical conditioning</b>; lever press → pellet = <b>operant conditioning</b>.</li>
+      <li><b>Classify schedules:</b> ratio = number of responses; interval = time. Fixed = predictable; variable = unpredictable.</li>
+      <li><b>Predict extinction:</b> variable-ratio is typically most resistant to extinction.</li>
+      <li><b>Explain suppression:</b> a conditioned fear response (freezing) can suppress operant responding without “erasing” the operant memory.</li>
+      <li><b>Rule out memory-list distractors:</b> proactive/retroactive interference are about competing information sets, not pellets and levers.</li>
+    </ol>
+  </div>
+
+  <!-- Q6 Correct: B -->
+  <div class="question" id="q6">
+    <b>6. After Phase 1 training, the tone is best classified as a(n):</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. Unconditioned stimulus</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">B. Conditioned stimulus</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. Unconditioned response</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. Negative reinforcement</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The tone starts neutral but, after pairing with shock, it predicts the aversive event and elicits freezing. That makes it a <b>conditioned stimulus</b>.
+        <ul>
+          <li><b>A</b> is the shock (US), which naturally elicits fear responses.</li>
+          <li><b>C</b> is a response; freezing becomes the conditioned response (CR).</li>
+          <li><b>D</b> is an operant concept (removing something unpleasant to increase behavior), not a stimulus label.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q7 Correct: C -->
+  <div class="question" id="q7">
+    <b>7. The schedule most consistent with Group VR’s high response rate and strong resistance to extinction is:</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. Fixed-interval</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. Fixed-ratio</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">C. Variable-ratio</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. Variable-interval</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Variable-ratio reinforcement (unpredictable reward after a varying number of responses) typically produces <b>high, steady responding</b> and is <b>hardest to extinguish</b>.
+        <ul>
+          <li><b>A</b> fixed-interval often yields “scalloped” responding near the end of each interval.</li>
+          <li><b>B</b> fixed-ratio can be high but usually extinguishes more readily than variable-ratio.</li>
+          <li><b>D</b> variable-interval is time-based; Group VR is response-count based.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q8 Correct: D -->
+  <div class="question" id="q8">
+    <b>8. The tone presentations during extinction reduce lever pressing primarily because they:</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Deliver positive punishment for pressing</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. Cause retroactive interference that erases lever-press learning</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. Create a spacing effect that strengthens pressing</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. Elicit a conditioned freezing response that competes with operant behavior</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The tone is a conditioned fear cue. When it plays, rats freeze. Freezing is incompatible with lever pressing, so pressing drops even if the operant association still exists.
+        <ul>
+          <li><b>A</b> would require the tone to add an aversive consequence contingent on pressing; not described.</li>
+          <li><b>B</b> misuses a memory-list concept; this is behavior competition, not “erasure.”</li>
+          <li><b>C</b> spacing refers to study/relearning timing, not fear-cue suppression of behavior.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q9 Correct: A -->
+  <div class="question" id="q9">
+    <b>9. Which result would best indicate that Group FI’s behavior is controlled by time cues (interval timing) rather than “counting” lever presses?</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. Pressing increases as the 30-second interval elapses, even when previous press counts vary widely</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Pressing occurs only after exactly 10 presses are completed</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. Pressing spikes only immediately after a pellet is delivered, regardless of time</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. Pressing becomes fastest on variable-ratio schedules</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Fixed-interval schedules are controlled by <b>time since last reinforcement</b>. If pressing rises as the interval progresses even when response counts are inconsistent, that supports time-based control.
+        <ul>
+          <li><b>B</b> describes fixed-ratio control, not fixed-interval.</li>
+          <li><b>C</b> describes post-reinforcement bursts without timing sensitivity; not the classic fixed-interval signature.</li>
+          <li><b>D</b> is a general statement about ratio schedules, not evidence of interval control in Group FI.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q10 Correct: B -->
+  <div class="question" id="q10">
+    <b>10. If a researcher wants rapid acquisition of lever pressing but relatively faster extinction than VR, which schedule is most suitable?</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Variable-ratio</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">B. Fixed-ratio</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. Fixed-interval</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Variable-interval</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Fixed-ratio schedules can produce high responding and clear contingency, but behaviors learned on variable-ratio are typically most resistant to extinction. So fixed-ratio better matches “learn quickly but extinguish sooner than VR.”
+        <ul>
+          <li><b>A</b> would produce the greatest persistence during extinction (opposite of the goal).</li>
+          <li><b>C</b> and <b>D</b> are time-based and often produce steadier but lower rates than ratio schedules.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===================== PASSAGE 3 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 3 — Encoding Depth, Context, and Retrieval Strategy</span>
+    <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>An MCAT course tests two encoding strategies for learning psychology terms. On Day 1, students learn 24 terms (Set A). The <i>Maintenance</i> group repeats each definition aloud and copies it three times. The <i>Elaborative</i> group writes a one-sentence clinical mini-case for each term and adds a personal connection (e.g., “how this could matter for my future patient interactions”).</p>
+    <p>On Day 2, all students learn a second set of 24 highly similar terms (Set B) using only repetition. On Day 3, students take a mixed exam containing: (i) free-response items requiring recall of Set A definitions, and (ii) multiple-choice items requiring recognition of Set B. Half the students test in the same classroom used on Day 1; half test in a different room with different lighting, odor, and background noise.</p>
+    <p>Results: Elaborative learners outperform Maintenance learners on Set A recall, even in the different room. Across groups, Set B recognition exceeds Set A recall. A frequent error is answering Set A questions with Set B definitions, especially when both sets share a distinctive keyword (e.g., “cue,” “reinforcement,” or “context”).</p>
+  </div>
+
+  <div class="reasoning-box" id="p3-reason">
+    <b>How to reason (Passage 3):</b>
+    <ol>
+      <li><b>Map strategies to terms:</b> repetition/copying → <b>maintenance rehearsal</b>; cases + personal links → <b>elaborative rehearsal</b> and <b>semantic encoding</b> (self-reference).</li>
+      <li><b>Use task format:</b> free-response = recall (harder); multiple choice = recognition (easier due to cues).</li>
+      <li><b>Use context manipulation:</b> same environment can help via <b>context effect</b>; deep encoding reduces reliance on that cue.</li>
+      <li><b>Diagnose confusion errors:</b> Set B intruding when recalling Set A → <b>retroactive interference</b>.</li>
+      <li><b>Leverage “keyword overlap”:</b> shared cues activate multiple nodes in a <b>semantic network</b>, increasing competition.</li>
+    </ol>
+  </div>
+
+  <!-- Q11 Correct: C -->
+  <div class="question" id="q11">
+    <b>11. Which statement best explains why the Elaborative group shows stronger Set A recall than the Maintenance group?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Elaborative rehearsal increases sensory memory duration</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. Elaborative rehearsal prevents all interference from Set B</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">C. Deep semantic/self-referential encoding creates more retrieval cues than repetition alone</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. Elaborative rehearsal converts explicit memory into procedural memory</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Writing clinical cases and personal links is <b>elaborative rehearsal</b> and <b>semantic encoding</b>, often aided by the <b>self-reference effect</b>. That builds a richer network of associations, improving recall.
+        <ul>
+          <li><b>A</b> is wrong: sensory memory lasts under a second and is unrelated to Day 3 recall.</li>
+          <li><b>B</b> is too absolute; deep encoding can reduce reliance on weak cues but does not eliminate all interference.</li>
+          <li><b>D</b> is incorrect: studying definitions targets explicit (declarative) memory, not procedural skills.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q12 Correct: D -->
+  <div class="question" id="q12">
+    <b>12. The finding that Set B multiple-choice performance exceeds Set A free-response performance most strongly reflects that:</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Recall is easier than recognition because it uses priming</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Recognition requires more working-memory manipulation than recall</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. Recall depends primarily on echoic memory traces</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. Recognition provides retrieval cues, reducing the need to generate information from scratch</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter emphasizes that <b>recognition</b> is generally easier than <b>recall</b> because the environment supplies cues (answer options) that help you identify the correct information.
+        <ul>
+          <li><b>A</b> reverses the relationship; recognition is typically easier.</li>
+          <li><b>B</b> is not generally true; recall often demands more active search/generation.</li>
+          <li><b>C</b> echoic memory is extremely brief and cannot explain Day 3 performance.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q13 Correct: A -->
+  <div class="question" id="q13">
+    <b>13. Answering Set A questions with Set B definitions is best classified as:</b>
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. Retroactive interference</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Proactive interference</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. The misinformation effect</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. The primacy effect</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Retroactive interference</b> occurs when <b>newer information</b> (Set B) disrupts retrieval of <b>older information</b> (Set A). That is exactly what the error pattern shows.
+        <ul>
+          <li><b>B</b> is old interfering with new (opposite direction).</li>
+          <li><b>C</b> involves outside misleading info injected after an event; here it’s competing study material.</li>
+          <li><b>D</b> is a serial-position effect about list order, not cross-list confusion.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q14 Correct: B -->
+  <div class="question" id="q14">
+    <b>14. Why does “keyword overlap” between Set A and Set B increase the interference errors?</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Overlap lowers short-term capacity below 7 ± 2</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. Shared cues activate competing nodes in a semantic network, increasing retrieval competition</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. Overlap converts episodic memories into implicit memories</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Overlap strengthens eidetic memory for the newer set</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        In a <b>semantic network</b>, related concepts are linked. If a keyword cue is shared, it can activate multiple related definitions, making the “wrong but similar” answer more accessible.
+        <ul>
+          <li><b>A</b> is about short-term storage capacity, not long-term retrieval errors.</li>
+          <li><b>C</b> misstates memory system conversion; explicit study remains explicit memory.</li>
+          <li><b>D</b> is not supported; eidetic memory is rare and unrelated here.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q15 Correct: C -->
+  <div class="question" id="q15">
+    <b>15. If the Maintenance group shows a larger “same-room advantage” than the Elaborative group, the best explanation is that Maintenance learners:</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Store knowledge mainly as procedural memory</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Are protected from context effects because repetition becomes automatic processing</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">C. Have fewer meaning-based retrieval routes, so external context cues contribute more to recall</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">D. Experience confabulation when testing in a new room</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Maintenance rehearsal is relatively shallow. If memories have fewer internal semantic links, recall benefits more from external retrieval cues such as the original environment (<b>context effect</b>).
+        <ul>
+          <li><b>A</b> confuses explicit definition knowledge with skills/habits.</li>
+          <li><b>B</b> is incorrect; repetition does not remove context dependence.</li>
+          <li><b>D</b> is a pathological fabrication phenomenon not implied by the passage.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===================== PASSAGE 4 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 4 — Reconstruction, Misinformation, and Source Monitoring</span>
+    <button class="reason-btn" id="p4-btn" onclick="toggleReasoning('p4')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>In a study of memory reconstruction, participants watch a 45-second video of a minor traffic incident. The video clearly shows a car stopping at a <b>yield</b> sign before turning. After a 10-minute filler task, participants read a written “summary” of the event. For half of participants, the summary is accurate. For the other half, the summary subtly changes one detail: it states the car stopped at a <b>stop</b> sign.</p>
+    <p>Participants are then interviewed. Some are asked neutrally, “How fast were the cars moving when they <i>collided</i>?” Others are asked with more intense wording, “How fast were the cars moving when they <i>crashed</i>?” Finally, participants complete two tests: (1) a forced-choice recognition test (yield vs stop), and (2) a source monitoring task asking whether each detail came from the video or the written summary.</p>
+    <p>Results: participants exposed to the misleading summary are more likely to choose “stop sign” on recognition. The “crashed” wording also increases estimated speed and increases confidence, even when estimates are inaccurate. Many participants correctly recall the sign’s appearance but misattribute the source of their memory, claiming they “saw” the stop sign in the video.</p>
+  </div>
+
+  <div class="reasoning-box" id="p4-reason">
+    <b>How to reason (Passage 4):</b>
+    <ol>
+      <li><b>Identify outside information:</b> the written summary injects a new detail → test for <b>misinformation effect</b>.</li>
+      <li><b>Separate memory content vs source:</b> “I remember the detail but not where it came from” → <b>source-monitoring error</b>.</li>
+      <li><b>Use wording manipulation:</b> leading language changes recall judgments → reconstruction at retrieval, not pure storage.</li>
+      <li><b>Watch for confidence traps:</b> higher confidence does not guarantee accuracy.</li>
+      <li><b>Choose the mechanism with direct evidence:</b> misled group shifts toward the false detail → misinformation effect is strongly supported.</li>
+    </ol>
+  </div>
+
+  <!-- Q16 Correct: D -->
+  <div class="question" id="q16">
+    <b>16. The shift toward “stop sign” responses after reading the misleading summary is best explained by the:</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. Spacing effect</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. Proactive interference</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Decay of sensory memory</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">D. Misinformation effect</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The misinformation effect occurs when <b>outside information</b> introduced after an event becomes incorporated into memory, reducing accuracy. The misleading summary injects “stop sign,” and later responses shift toward it.
+        <ul>
+          <li><b>A</b> concerns distributed practice across time; not relevant.</li>
+          <li><b>B</b> is old information interfering with new; here a new narrative changes recall of the older event.</li>
+          <li><b>C</b> sensory memory is far too brief to matter after 10 minutes.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q17 Correct: A -->
+  <div class="question" id="q17">
+    <b>17. Participants who “remember” a stop sign but report that they saw it in the video (instead of reading it) are showing a:</b>
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Source-monitoring error</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. Primacy effect</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Procedural memory deficit</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. Habituation response</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Source monitoring</b> is determining where a memory came from (video vs summary). Confusing the origin of a remembered detail is a <b>source-monitoring error</b>.
+        <ul>
+          <li><b>B</b> is list-position recall bias; irrelevant to source confusion.</li>
+          <li><b>C</b> procedural memory refers to skills/habits, not event details.</li>
+          <li><b>D</b> is tuning out repeated stimuli, not memory attribution.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q18 Correct: B -->
+  <div class="question" id="q18">
+    <b>18. The “crashed” wording increases estimated speed and confidence primarily because it:</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. Improves semantic encoding at the time of the video</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">B. Acts as a leading cue at retrieval, biasing reconstructive memory</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Eliminates interference by narrowing the semantic network</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. Converts episodic memory into implicit memory</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        More intense wording (“crashed”) is a <b>leading cue</b> that can shift reconstruction at recall, inflating perceived severity and confidence even without better accuracy.
+        <ul>
+          <li><b>A</b> would require manipulation during encoding (video), but the wording occurs during questioning.</li>
+          <li><b>C</b> is not supported; leading language does not “remove interference,” it biases recall.</li>
+          <li><b>D</b> is incorrect; episodic details remain explicit, not converted into implicit skills.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q19 Correct: C -->
+  <div class="question" id="q19">
+    <b>19. The passage best supports which broader conclusion about memory?</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Most long-term memories are reproductive and video-like</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. Recognition is always more accurate than recall under all conditions</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">C. Recall can be reconstructed and influenced by post-event information and mood/cues at retrieval</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. Explicit memory is unaffected by outside information once stored</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The study shows post-event misinformation and leading language bias later responses, supporting <b>reconstructive memory</b> rather than a perfect “recording.”
+        <ul>
+          <li><b>A</b> contradicts the passage’s emphasis on reconstruction.</li>
+          <li><b>B</b> is too absolute; recognition can still be biased by misinformation.</li>
+          <li><b>D</b> is false; explicit memories are shown to be influenced by outside information.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q20 Correct: D -->
+  <div class="question" id="q20">
+    <b>20. Which additional design change would most directly test whether confidence inflation is driven by wording rather than by actual memory strength?</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. Remove the filler task so participants answer immediately</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. Replace the video with still images</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. Test participants in the same room where the video was watched</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">D. Keep the event identical but vary only the interrogator’s wording, then compare accuracy vs confidence across wording conditions</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        To isolate wording as the cause, hold the event constant and manipulate only the <b>leading language</b>, then compare <b>confidence</b> and <b>accuracy</b>. If confidence rises without accuracy, wording drives inflation.
+        <ul>
+          <li><b>A</b> changes delay and could alter memory strength directly.</li>
+          <li><b>B</b> changes stimulus modality, adding a confound.</li>
+          <li><b>C</b> adds a context cue, not a direct test of wording-driven confidence.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===================== PASSAGE 5 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 5 — Neuroplasticity and Long-Term Potentiation Across Age</span>
+    <button class="reason-btn" id="p5-btn" onclick="toggleReasoning('p5')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>To study the neurobiology of learning, researchers record synaptic responses in hippocampal slices. In young adult rats, a brief high-frequency “tetanic” stimulation of an input pathway is delivered. After tetanus, the same low-frequency test pulses evoke larger postsynaptic potentials for several hours.</p>
+    <p>In a second condition, slices are pretreated with Drug X, which decreases presynaptic neurotransmitter release probability. After tetanus, potentiation is smaller and returns toward baseline within 20 minutes. In a third condition, slices are exposed to Compound Y, which increases the availability of postsynaptic receptor sites involved in excitatory transmission. After tetanus, potentiation is larger and longer-lasting than in untreated slices.</p>
+    <p>Finally, the researchers repeat the untreated protocol in older rats. The initial potentiation appears, but it is smaller and decays faster than in young adults. The authors argue that this physiological finding helps explain why forming durable new memories can become more difficult with aging, even when basic sensation and motor function remain intact.</p>
+  </div>
+
+  <div class="reasoning-box" id="p5-reason">
+    <b>How to reason (Passage 5):</b>
+    <ol>
+      <li><b>Identify the signature:</b> lasting increased synaptic response after tetanus = <b>long-term potentiation (LTP)</b>.</li>
+      <li><b>Match drugs to mechanism:</b> lower presynaptic release → weaker LTP; more postsynaptic receptors → stronger LTP.</li>
+      <li><b>Bridge to cognition:</b> LTP supports consolidation by strengthening connectivity; reduced LTP implies reduced <b>neuroplasticity</b>.</li>
+      <li><b>Use the aging comparison:</b> smaller/shorter LTP aligns with age-related decline in plasticity.</li>
+      <li><b>Ignore cognitive-distractor terms:</b> interference/misinformation describe errors in recall, not synaptic physiology.</li>
+    </ol>
+  </div>
+
+  <!-- Q21 Correct: A -->
+  <div class="question" id="q21">
+    <b>21. The hours-long increase in postsynaptic response after tetanic stimulation is best described as:</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. Long-term potentiation strengthening synaptic connections</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Habituation to repeated neural stimulation</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Echoic memory storage</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. A misinformation effect at retrieval</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        LTP is a <b>lasting strengthening</b> of synaptic transmission after strong stimulation and is linked to converting short-term changes into long-term memory traces.
+        <ul>
+          <li><b>B</b> is a decrease in responding with repetition (opposite direction).</li>
+          <li><b>C</b> is a brief auditory sensory store, not synaptic potentiation.</li>
+          <li><b>D</b> is a cognitive distortion phenomenon, not slice physiology.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q22 Correct: B -->
+  <div class="question" id="q22">
+    <b>22. Drug X most likely weakens LTP because it:</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. Increases postsynaptic receptor insertion beyond baseline</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">B. Reduces presynaptic neurotransmitter release, lowering postsynaptic activation needed for strengthening</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. Enhances semantic encoding of the stimulation pattern</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. Eliminates proactive interference in the hippocampus</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        If less neurotransmitter is released presynaptically, the postsynaptic neuron is less strongly driven, making the biochemical cascade that stabilizes LTP harder to initiate and maintain.
+        <ul>
+          <li><b>A</b> would strengthen rather than weaken LTP.</li>
+          <li><b>C</b> is a cognitive concept; slices do not “encode semantically.”</li>
+          <li><b>D</b> misapplies an information-interference concept to synaptic physiology.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q23 Correct: C -->
+  <div class="question" id="q23">
+    <b>23. Compound Y increases LTP magnitude most directly by:</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Decreasing firing probability in presynaptic neurons</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Reducing glutamate availability at the synapse</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">C. Increasing postsynaptic receptor availability, amplifying responsiveness to neurotransmitter release</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. Shifting memories from hippocampus to cortex within minutes</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        More postsynaptic receptor sites means the same presynaptic release produces a larger postsynaptic response and can stabilize stronger potentiation—consistent with LTP mechanisms.
+        <ul>
+          <li><b>A</b> and <b>B</b> would reduce postsynaptic activation, weakening LTP.</li>
+          <li><b>D</b> is about systems consolidation over long time scales, not minutes in slices.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q24 Correct: D -->
+  <div class="question" id="q24">
+    <b>24. The smaller, faster-decaying potentiation in older rats most directly supports the chapter claim that:</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. Older adults have stronger recognition than young adults because of increased LTP</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. Aging improves neuroplasticity through increased receptor turnover</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. Aging primarily causes source-monitoring errors</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">D. Neuroplasticity decreases with age, limiting durable synaptic strengthening</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Reduced magnitude and stability of LTP in older slices indicates reduced capacity for long-lasting synaptic change, aligning with <b>declining neuroplasticity</b> with age.
+        <ul>
+          <li><b>A</b> adds an unsupported causal claim; recognition can remain strong for many reasons and is not “because of increased LTP” here.</li>
+          <li><b>B</b> contradicts the observed decline in potentiation.</li>
+          <li><b>C</b> is a cognitive error concept; the passage measures synaptic physiology.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q25 Correct: A -->
+  <div class="question" id="q25">
+    <b>25. Which pairing best connects a cognitive process to the synaptic phenomenon in this passage?</b>
+    <div class="choice" onclick="selectChoice('q25', this, true)">A. Converting short-term to long-term memory ↔ strengthening connectivity via LTP (increased release and receptor-site changes)</div>
+    <div class="choice" onclick="selectChoice('q25', this, false)">B. Iconic memory ↔ hours-long postsynaptic potentiation</div>
+    <div class="choice" onclick="selectChoice('q25', this, false)">C. Proactive interference ↔ increased postsynaptic receptor availability</div>
+    <div class="choice" onclick="selectChoice('q25', this, false)">D. Habituation ↔ receptor insertion after tetanic stimulation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter summary links <b>LTP</b> to strengthening neuronal connections that supports consolidation into long-term memory, matching the presynaptic and postsynaptic mechanisms described here.
+        <ul>
+          <li><b>B</b> is a seconds-long visual sensory store, not an hours-long synaptic change.</li>
+          <li><b>C</b> is a retrieval competition phenomenon between information sets, not receptor availability.</li>
+          <li><b>D</b> habituation is decreased responding with repetition, not receptor insertion after tetanus.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+</body>
+</html>

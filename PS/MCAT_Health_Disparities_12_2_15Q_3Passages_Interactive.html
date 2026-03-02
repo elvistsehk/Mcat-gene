@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Health Disparities &amp; Healthcare (Ch. 12.2) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Health Disparities &amp; Healthcare (Ch. 12.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. In a town of 10,000 adults, 200 people were newly diagnosed with type 2 diabetes in 2025. At the end of 2025, 1,100 adults in the town were living with type 2 diabetes (including the new cases). Which pair of measures is correctly matched to the data?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Incidence = 1,100/10,000 in 2025; Prevalence = 200/10,000 in 2025</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Incidence = 200/1,100 in 2025; Prevalence = 1,100/200 in 2025</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Incidence = 200/10,000 in 2025; Prevalence = 1,100/10,000 in 2025</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Incidence = 200/(10,000−1,100) in 2025; Prevalence = 1,100/(10,000−200) in 2025</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Incidence counts <b>new cases</b> per population at risk over a time interval; prevalence counts <b>total existing cases</b> (new + preexisting) per total population over that same interval. Here, 200 are new in 2025, and 1,100 total have diabetes by year end.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This swaps incidence and prevalence: <b>1,100</b> is the total burden (prevalence), not new cases.</li>
+<li><b>B:</b> These ratios do not use the relevant population denominators and invert the meaning of the measures.</li>
+<li><b>D:</b> You are not given the number at risk at the start of 2025, so subtracting cases from the denominator creates an unjustified calculation; MCAT-style interpretation uses the provided total population.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A report states: “Community X has a high <i>burden of illness</i> from chronic respiratory disease, but deaths from the disease are relatively uncommon.” Which interpretation best matches this statement?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Chronic respiratory disease has high <b>morbidity</b> but relatively low <b>mortality</b> in Community X</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. The disease has high mortality but low morbidity in Community X</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. The statement is about prevalence only; morbidity and mortality cannot be inferred</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. The disease has low incidence because deaths are uncommon</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Morbidity refers to the <b>degree/burden of illness</b>, while mortality refers to <b>deaths</b> caused by the disease. A condition can be disabling and common without being a leading cause of death.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> This reverses the terms: the passage describes lots of illness burden but few deaths.</li>
+<li><b>C:</b> The statement explicitly contrasts illness burden (morbidity) with deaths (mortality), not just case counts.</li>
+<li><b>D:</b> Low deaths do not imply low incidence; you can have many new cases with effective treatment or nonfatal disease courses.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. Which research question is most aligned with <b>social epidemiology</b>?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. What is the mechanism by which insulin binds its receptor on hepatocytes?</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Which antibiotic regimen most effectively eradicates <i>H. pylori</i> in vitro?</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">C. How do neighborhood-level poverty and social cohesion predict rates of hypertension over 10 years?</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. How does a mutation in CFTR alter chloride transport in airway epithelium?</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Social epidemiology examines how <b>social advantages and disadvantages</b> (e.g., SES, segregation, social capital) relate to population patterns of health and disease.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This is a cellular/molecular physiology question, not a social determinants-of-health question.</li>
+<li><b>B:</b> This focuses on pharmacologic efficacy in a lab setting rather than social patterning of disease.</li>
+<li><b>D:</b> This is a genetic/physiologic mechanism question rather than a social-structural question.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. A public health team observes that as household income rises, average life expectancy rises in roughly stepwise fashion across each income bracket (not just the poorest vs everyone else). This pattern is best described as:</b>
+  <div class="choice" onclick="selectChoice('q4', this, true)">A. A <b>socioeconomic gradient</b> in health and development</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. An example of the ecological fallacy</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Evidence that achieved status fully determines health outcomes</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. A demonstration of genetic determinism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> A socioeconomic gradient means health outcomes improve <b>proportionally</b> as SES increases—across the whole distribution, not only between extremes.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Ecological fallacy is drawing individual-level conclusions from group-level data; the description is a population gradient pattern.</li>
+<li><b>C:</b> The gradient pattern does not show that merit/achieved status is the only determinant—social and structural factors can drive it.</li>
+<li><b>D:</b> A stepwise SES-health relationship is not evidence that genes alone determine health.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. Howard Waitzkin’s “second sickness” is best captured by which scenario?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. An infectious outbreak spreads because a new pathogen mutates to become more virulent</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Despite medical advances, preventable disease worsens in a marginalized group because social injustice limits access to resources and care</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. A patient experiences side effects from a medication that was incorrectly dosed</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. A city’s average life expectancy increases after sanitation infrastructure improves</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Waitzkin’s “second sickness” describes the <b>exacerbation of health outcomes</b> that results from <b>social injustice</b>—for example, unequal access, discrimination, and poverty producing avoidable morbidity/mortality even when effective medicine exists.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This is a biological/epidemiologic mechanism (pathogen virulence), not an injustice-driven amplification of outcomes.</li>
+<li><b>C:</b> A dosing error is an iatrogenic event, not a population-level injustice mechanism.</li>
+<li><b>D:</b> This is an example of socioeconomic improvement improving health, the opposite direction of “second sickness.”</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. A student wants to replicate John Snow’s reasoning during the 1854 cholera outbreak. Which approach most directly mirrors Snow’s key methodological move?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Randomly assign households to different water sources to establish causality</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">B. Map cases by location to identify a spatial cluster and then link the cluster to a shared environmental exposure</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Sequence bacterial genomes to show transmission chains between households</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Survey residents about stress levels and correlate stress with diarrhea</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Snow used <b>spatial mapping</b> to identify clustering and inferred a common source exposure (a contaminated pump), demonstrating how geography can reveal disease transmission pathways.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Randomized assignment is not what Snow did; it is often unethical/impossible during outbreaks.</li>
+<li><b>C:</b> Genomic sequencing can help today, but it is not the classic spatial-epidemiologic approach Snow used.</li>
+<li><b>D:</b> Stress surveys do not test the waterborne exposure hypothesis driving cholera transmission.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. The Black Report (1980) is commonly cited in sociology of health because it showed that:</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Class differences in health persisted even in a modern welfare state, with professionals living longer than working-class groups</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Universal health insurance completely eliminated health disparities within one generation</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Health outcomes are unrelated to socioeconomic status once a country is industrialized</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Genetic differences between classes explain most variation in life expectancy</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The Black Report highlighted persistent <b>health inequalities by class</b> despite welfare-state ambitions, suggesting that social structure continues to shape health.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> This contradicts the report’s key finding—inequalities persisted.</li>
+<li><b>C:</b> Industrialization does not erase SES-health links; disparities can remain or widen.</li>
+<li><b>D:</b> The report focuses on social/structural determinants, not genetic explanations for class gradients.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. A neighborhood has low social capital, high interpersonal violence, and low social trust. Based on the chapter’s framework, which downstream effect is most expected?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Lower exposure to chronic stress because strong social bonds buffer hardship</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. More equitable access to preventive care because communities coordinate resources effectively</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Increased herd immunity because social networks increase vaccination uptake</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Reduced protection against disease and widening class gradients in health outcomes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Low social capital/trust and degraded environments tend to erode social support and access pathways, increasing stressors and barriers to care—which can worsen morbidity/mortality and widen SES-related gradients.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Low social capital implies weaker buffering ties, not stronger.</li>
+<li><b>B:</b> Coordination and resource-sharing are features of higher social cohesion, not low trust/violence.</li>
+<li><b>C:</b> Social network effects can increase uptake when trust is high; low trust often reduces cooperation and engagement with institutions.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. Which pairing best matches the typical gender pattern described in this chapter?</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Men: higher mortality from major causes and injuries; Women: higher morbidity for many non–life-threatening conditions</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Men: higher morbidity across most conditions; Women: higher mortality across major causes</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Men and women have identical morbidity and mortality profiles once access to care is equalized</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Women: lower morbidity because they seek medical care more often; Men: lower mortality because they avoid clinics</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Women generally live longer (lower mortality) but report/experience higher burden of many acute/chronic conditions (higher morbidity). Men show higher death rates from heart disease, cancers, accidents, suicide, and homicide.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> This reverses the observed pattern.</li>
+<li><b>C:</b> Equal access can reduce gaps, but biological and sociological factors still produce systematic differences in many populations.</li>
+<li><b>D:</b> Healthcare utilization does not automatically lower morbidity; and avoidance of care is associated with worse, not better, mortality.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. A clinician notices that some male patients delay seeking care and are less likely to follow treatment plans, often emphasizing that they should “tough it out.” Which sociological factor best captures this pattern?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Anomie, because social norms are completely absent in their community</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Social reproduction, because they inherited the same job from their parents</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">C. Norms of <b>hypermasculinity</b> that reward risk-taking and discourage help-seeking</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Primary deviance, because they have been labeled as sick</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> The chapter links men’s lower healthcare utilization and adherence partly to sociocultural expectations (e.g., “toughness”), which can increase risk-taking and delay care.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Anomie refers to breakdown of norms; here, there are strong norms—just ones that discourage help-seeking.</li>
+<li><b>B:</b> Social reproduction concerns intergenerational transmission of status/poverty, not gendered help-seeking norms.</li>
+<li><b>D:</b> Labeling/primary deviance doesn’t explain “tough it out” norms or care avoidance as described.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. Which option correctly matches a U.S. public insurance program to the population it primarily covers?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Medicare: low-income families only; Medicaid: adults ≥65 only</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Medicare: uninsured children only; Medicaid: veterans only</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Medicare: all citizens regardless of income; Medicaid: only those with private insurance gaps</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">D. Medicare: adults ≥65 and certain serious conditions; Medicaid: individuals with significant financial need</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Medicare is primarily age-based (≥65) with specific eligibility expansions (e.g., ESRD, ALS), whereas Medicaid is means-tested for individuals/families with financial need.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This swaps the programs’ eligibility logic.</li>
+<li><b>B:</b> Neither program is limited to those categories.</li>
+<li><b>C:</b> Medicare is not universal for all citizens, and Medicaid is not for people who already have adequate private insurance.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. In policy terms, the Affordable Care Act (ACA) of 2010 was primarily intended to:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Replace all private insurance with a single government payer</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Eliminate Medicare and Medicaid by shifting all coverage to employers</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. Increase insurance coverage/affordability and reduce overall healthcare costs</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Restrict coverage to those with preexisting conditions to stabilize premiums</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> The ACA aimed to expand access to insurance (coverage and affordability) while also targeting cost control mechanisms within the U.S. system.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> That describes a single-payer overhaul, not the ACA’s structure.</li>
+<li><b>B:</b> The ACA did not eliminate Medicare/Medicaid; it interacted with and, in some contexts, expanded coverage pathways.</li>
+<li><b>D:</b> The ACA reduced (not increased) barriers for people with preexisting conditions.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A hospital is piloting an intervention to improve communication and trust for patients who report feeling unheard in clinical visits. Which change most directly increases the chance of a <b>race-concordant</b> patient–physician interaction?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Translate all discharge instructions into a higher reading level to encourage self-reliance</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. Recruit and retain physicians from the same racial group as the patient population served by the clinic</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Assign patients to physicians based only on appointment availability regardless of background</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Ask clinicians to avoid discussing cultural beliefs because it could bias diagnosis</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Race-concordant relationships occur when patient and physician share the same race; increasing representation in the clinician workforce increases the probability of concordance in settings serving specific populations.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Raising reading level can worsen comprehension; it does not address concordance.</li>
+<li><b>C:</b> Availability-only matching does not increase concordance probability (it may reduce it).</li>
+<li><b>D:</b> Ignoring culture can reduce understanding and trust; it is not a concordance strategy.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. A patient with obesity reports that multiple clinicians immediately attribute every symptom to weight, leading to delayed diagnosis of anemia. According to the chapter, which downstream consequence is most likely?</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Erosion of trust and continuity of care, increasing doctor switching and reducing preventive screening uptake</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Improved diagnostic accuracy because weight is the most reliable single cause of symptoms</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Reduced disparities because obesity stigma only affects low-income patients</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Lower morbidity because patients avoid healthcare visits and therefore avoid iatrogenic harms</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Weight bias can lead to misdiagnosis and perceived disrespect, which undermines the doctor–patient relationship, increases physician switching, and reduces consistent preventive care and screenings.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Over-attributing symptoms to weight can <b>decrease</b> diagnostic accuracy.</li>
+<li><b>C:</b> The chapter notes bias can apply across SES, even if obesity prevalence is higher in low-income groups.</li>
+<li><b>D:</b> Avoiding care generally worsens outcomes by delaying diagnosis and treatment.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. A researcher compares healthcare quality across U.S. regions and finds one region consistently in the top quartile and another in the bottom quartile. Which pairing matches the chapter’s regional pattern?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. South: top quartile; New England/Mid-Atlantic: bottom quartile</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. New England/Mid-Atlantic: top quartile; South: bottom quartile</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Midwest: uniformly top quartile; West Coast: uniformly bottom quartile</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. All regions show identical quality once insurance status is controlled</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The chapter notes regional variation, with New England and the Mid-Atlantic tending to rank higher in healthcare quality than many Southern states.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This reverses the pattern described.</li>
+<li><b>C:</b> The chapter does not claim a uniform Midwest-vs-West split.</li>
+<li><b>D:</b> Insurance matters, but regional variation in quality persists due to system, workforce, and infrastructure differences.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Two Neighborhoods, One City</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Riverbend is a midsize city with two adjacent neighborhoods: <b>Harborview</b> and <b>East Junction</b>. Harborview has stable housing, low violent crime, and many community organizations that regularly coordinate neighborhood events. East Junction has higher residential turnover, more interpersonal violence, and residents report low trust in local institutions.</p>
+  <p>In 2025, public health workers tracked <i>new</i> diagnoses of uncontrolled hypertension (HTN) and also counted how many residents were living with HTN by the end of the year. Harborview has 8,000 adults; 160 adults received a new diagnosis of uncontrolled HTN in 2025, and 960 adults were living with uncontrolled HTN by year end. East Junction has 8,000 adults; 240 adults received a new diagnosis in 2025, and 1,040 adults were living with uncontrolled HTN by year end.</p>
+  <p>A city council member argues that because both neighborhoods have clinics within a 3‑mile radius, the remaining difference must be “mostly personal choices.” A community advocate counters that clinic proximity does not guarantee access, and that chronic stressors and distrust change whether people seek care early or adhere to treatment.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Underline the <b>numbers</b> that represent <i>new cases</i> vs <i>total cases</i>.</li>
+    <li>Translate those into the formulas: <b>incidence</b> (new/at‑risk/time) and <b>prevalence</b> (total/total pop/time).</li>
+    <li>Then connect the social details (trust, violence, organizations) to <b>social capital</b>, barriers to care, and the idea of a “second sickness.”</li>
+    <li>Pick the answer that explains the pattern using <b>both</b> the data and the social context—not just one.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. Based on the data, which statement is most accurate about uncontrolled HTN in 2025?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Harborview has a higher incidence but a lower prevalence than East Junction</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">B. East Junction has both a higher <b>incidence</b> and a higher <b>prevalence</b> of uncontrolled HTN than Harborview</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Both neighborhoods have identical incidence because the population sizes are the same</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. East Junction has higher prevalence, but Harborview has higher incidence</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Incidence compares <b>new diagnoses</b>: 240/8000 > 160/8000. Prevalence compares <b>total cases</b>: 1,040/8000 > 960/8000. Both measures are higher in East Junction for 2025.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Harborview has fewer new cases and fewer total cases given equal denominators.</li>
+<li><b>C:</b> Same denominators do not imply identical incidence; the numerators (new cases) differ.</li>
+<li><b>D:</b> This reverses the incidence comparison; East Junction has more new diagnoses.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Suppose Riverbend introduces a citywide guideline that standardizes hypertension treatment protocols across clinics, yet East Junction’s mortality from stroke remains higher over the next decade. Which interpretation best reflects Waitzkin’s “second sickness” in this context?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. The guideline proves that biology is the primary cause of stroke disparities in East Junction</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Because treatment protocols are standardized, prevalence must fall to zero in both neighborhoods</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. East Junction residents must have higher incidence only because they ignore physician advice, independent of social environment</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Medical improvements alone did not remove injustice-linked barriers (e.g., distrust, chronic stress, access constraints), so inequities in outcomes persisted or worsened</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> “Second sickness” emphasizes that <b>social injustice</b> can keep outcomes worse for marginalized groups even when effective medicine exists—through mechanisms like unequal access, discrimination, stress exposure, and reduced adherence shaped by structural conditions.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The pattern is not proof of biology as the primary driver; it is consistent with persistent social barriers.</li>
+<li><b>B:</b> Standardization does not eliminate disease; prevalence cannot be assumed to drop to zero.</li>
+<li><b>C:</b> This ignores how environment and trust shape help-seeking, adherence, and exposure to risk factors.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. Which intervention would most directly increase <b>social capital</b> in East Junction in a way that could plausibly reduce the HTN disparity over time?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Close the Harborview clinics to equalize care availability between neighborhoods</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Fund neighborhood-led organizations that build both strong ties (support groups) and weak ties (job/clinic referral networks) to increase trust and resource flow</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Replace community programs with a media campaign telling residents to exercise more</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Measure blood pressure more often without changing follow-up access or social supports</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Social capital grows when people invest in networks and reciprocity that create access to information, resources, and support. Building organizations and networks can improve early care-seeking, adherence, and navigation of services.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Reducing services elsewhere does not build resources or networks in East Junction and would worsen overall health.</li>
+<li><b>C:</b> Individual messaging alone does not address network-based access, trust, or structural barriers.</li>
+<li><b>D:</b> More measurement without improved linkage to care/social supports may detect problems without improving outcomes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Gender, Morbidity, and Help-Seeking</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A primary care network reviews 50,000 patient records over five years. Women in the network schedule more annual checkups and receive more preventive services per visit. Men in the same age range are less likely to come in for routine care, but they account for a disproportionate share of emergency visits after accidents.</p>
+  <p>When the analysts stratify by diagnosis, women show higher rates of reported chronic pain syndromes and inflammatory bowel disease, while men show higher death rates from heart disease and suicide. A subgroup analysis suggests that men who endorse statements like “real men don’t need doctors” are the least likely to follow up after abnormal lab results.</p>
+  <p>A clinician proposes that increasing clinic hours alone will close the gender gap. Another argues that norms about risk and toughness must be addressed alongside access.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate <b>morbidity</b> (burden of illness) from <b>mortality</b> (deaths).</li>
+    <li>Use the vignette’s behaviors (routine checkups vs accidents, “tough it out”) to infer <b>sociological mechanisms</b>.</li>
+    <li>Ask: does the answer explain <b>why men die more</b> but <b>women report more illness</b> in many conditions?</li>
+    <li>Eliminate choices that confuse access (clinic hours) with <b>help‑seeking and adherence norms</b>.</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. Which conclusion is most consistent with the network’s findings?</b>
+  <div class="choice" onclick="selectChoice('q19', this, true)">A. The pattern fits higher male <b>mortality</b> alongside higher female <b>morbidity</b>, influenced by both biological and sociological factors</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. The findings show women have lower morbidity because they use more preventive services</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. The findings imply incidence and prevalence are interchangeable measures</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. The findings demonstrate that gender differences disappear once clinics offer longer hours</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Women’s greater service use and higher rates of many nonfatal conditions align with higher morbidity, while men’s higher deaths from major causes and higher accident-related emergencies align with higher mortality. The “tough it out” norm supports a sociological mechanism affecting help-seeking and adherence.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> More preventive services does not mean lower morbidity; the data explicitly reports higher rates of several conditions among women.</li>
+<li><b>C:</b> Incidence/prevalence are different measures and are not the focus of these gender findings.</li>
+<li><b>D:</b> Longer hours may help access, but the vignette highlights norms and behaviors that also drive the disparity.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. The subgroup of men endorsing “real men don’t need doctors” is most likely to experience worse outcomes primarily because:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. They have a genetically fixed higher prevalence of all chronic diseases</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. They receive more preventive screenings than women, increasing overdiagnosis bias</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. They are protected from morbidity by avoiding medical labeling</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. They delay care and show lower adherence/follow-up, increasing the chance that treatable conditions progress to life-threatening disease</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Delaying care and failing to follow up can convert manageable problems into severe disease, raising mortality risk. The statement reflects hypermasculinity norms that discourage help-seeking.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The vignette points to behavioral/sociological mechanisms, not genetic fixation of all conditions.</li>
+<li><b>B:</b> The data show men receive <i>less</i> routine care, not more; overdiagnosis is not the key mechanism here.</li>
+<li><b>C:</b> Avoiding “labeling” may reduce diagnoses on paper, but it does not protect physiology; delayed detection generally worsens outcomes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. If the network wants to reduce male deaths from accidents and violence-related injuries, which strategy best targets the sociological risk factor emphasized in the passage?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Focus only on increasing women’s clinic utilization to match men’s lower visit rates</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Remove all preventive services so fewer people receive diagnoses</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Assume the gap is purely biological and prioritize genetic screening over behavior change</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">D. Implement community and clinic messaging that reframes help-seeking and safety behaviors as compatible with masculinity, paired with easy pathways to care</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> The passage links male mortality partly to risk-taking norms and reduced help-seeking. Interventions that change norms while also lowering friction to care are most aligned with that mechanism.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This would worsen women’s access and does not address male risk-taking or injury patterns.</li>
+<li><b>B:</b> Reducing preventive services would increase late detection and likely worsen outcomes.</li>
+<li><b>C:</b> Biology matters, but the passage explicitly highlights sociological risk-taking and “tough it out” norms.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Access, Bias, and Continuity of Care</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A community health center serves a low-income, racially diverse population. Many patients are covered by Medicaid, and some are uninsured. The center refers patients to nearby specialists, but several specialty practices do not accept Medicaid panels or have long waitlists for new Medicaid patients.</p>
+  <p>A quality audit finds that patients with obesity are less likely to receive recommended colorectal cancer screening, and chart notes frequently attribute fatigue or shortness of breath to weight without documenting alternative workups. Patients who report feeling dismissed are more likely to switch providers, leading to gaps in records and fragmented follow-up.</p>
+  <p>The center pilots two changes: (1) a navigation team to schedule referrals and arrange transportation, and (2) clinician training focused on bias reduction and culturally responsive communication. Six months later, the audit shows improved screening rates and fewer missed follow-up appointments.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify the <b>barriers</b>: insurance acceptance, waitlists, transportation, trust, and provider bias.</li>
+    <li>Ask whether the question is about <b>access</b> (can you get care?) vs <b>quality</b> (what happens when you do?).</li>
+    <li>Use the pilot results to infer what mechanism was operating (navigation → access; training → quality/trust).</li>
+    <li>Choose the option that explains the observed changes without overclaiming causality.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. Which factor in the passage is the clearest example of a <b>structural</b> barrier to care for low-income patients?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Patients feeling frustrated after being dismissed in a visit</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Clinicians documenting symptoms as “due to weight” without full workups</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Specialty practices’ limited acceptance of Medicaid, creating access bottlenecks despite coverage</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Individuals switching providers after negative experiences</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Structural barriers are embedded in institutional arrangements (e.g., insurance acceptance policies, provider distribution, waitlists) that limit access independent of an individual’s motivation.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Frustration is an interpersonal experience; it may affect utilization but is not itself an institutional access gate.</li>
+<li><b>B:</b> This is a quality-of-care/bias issue within clinical encounters, not the access gate described by structural policy.</li>
+<li><b>D:</b> Switching providers is a behavioral response to mistrust; it is downstream of access/quality problems.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. The audit finding that obesity is repeatedly treated as the default explanation for multiple symptoms most directly predicts which downstream pattern?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Higher diagnostic accuracy because a single cause is more parsimonious</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Elimination of race and class disparities because obesity bias overrides all other biases</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. Lower trust and continuity, leading to reduced preventive screening and more fragmented chronic disease management</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Lower morbidity because fewer tests are ordered, reducing patient anxiety</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Weight bias can cause missed alternative diagnoses, damage the therapeutic alliance, and increase doctor switching—undermining continuity of care and preventive services.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Over-attribution to weight can miss other etiologies and reduce accuracy.</li>
+<li><b>B:</b> Biases can compound; obesity stigma does not erase race/class inequities.</li>
+<li><b>D:</b> Fewer tests does not reduce disease burden; delayed workups can increase morbidity.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. Which interpretation best explains why the center’s two-part pilot (navigation + bias-focused training) improved screening and follow-up?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. The pilot worked only because it selected healthier patients, so screening rates would rise regardless of the intervention</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. The results show that insurance status no longer matters once a clinic offers any services</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Training alone must have caused all changes; navigation cannot influence health behavior</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Navigation reduced logistical/access barriers, while training improved encounter quality and trust—together increasing utilization and adherence</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Two mechanisms addressed two bottlenecks: <b>access</b> (referrals, transportation, scheduling) and <b>quality/trust</b> (bias reduction, communication). Improving both can raise preventive care uptake and reduce missed follow-ups.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Selection could matter in some studies, but the passage frames a system change affecting the served population; this is not the best-supported interpretation.</li>
+<li><b>B:</b> Insurance and structural acceptance still matter; navigation helps patients navigate those constraints rather than eliminating them.</li>
+<li><b>C:</b> Navigation can strongly influence follow-through by reducing friction and logistical barriers.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

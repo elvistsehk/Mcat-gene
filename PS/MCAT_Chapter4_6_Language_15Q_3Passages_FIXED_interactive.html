@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Behavioral Sciences Ch 4.6 — Language (15 + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.10);
+  }
+  .subhead{ font-size:14px; font-weight:normal; opacity:0.95; margin-top:6px; line-height:1.4; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.72;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.10);
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.9;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const hidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = hidden ? "block" : "none";
+    btn.textContent = hidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+
+<body>
+  <div class="main-header">
+    🗣️ MCAT Practice — Chapter 4.6: Language, Development Theories, Aphasia
+    <div class="subhead">
+      Components: phonology (sounds/phonemes), morphology (morphemes), semantics (meaning), syntax (word order), pragmatics (context/prosody).<br/>
+      Milestones: babbling (9–12 mo), ~1 word/month (12–18 mo), naming explosion + overextension + word combining (18–20 mo), longer sentences + overregularization errors (2–3 yr), rules largely mastered (~5 yr).<br/>
+      Theories: nativist (Chomsky; LAD; sensitive/critical period before puberty), behaviorist (Skinner; operant conditioning + reinforcement), social interactionist (bio + social interaction; circuits reinforced/pruned).<br/>
+      Cognition link: Whorfian/linguistic relativity (language can shape perception to some degree).<br/>
+      Brain: Broca (inferior frontal gyrus; production), Wernicke (superior temporal gyrus; comprehension), arcuate fasciculus (connection); aphasias: Broca (nonfluent, comprehension intact), Wernicke (fluent but nonsensical, comprehension impaired), conduction (can speak + understand, cannot repeat).
+    </div>
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+  <div class="section-tag">15 Standalone MCAT-style Questions (Q1–Q15)</div>
+
+  <!-- ===================== STANDALONE QUESTIONS ===================== -->
+
+  <!-- Q1 Correct: A -->
+  <div class="question" id="q1">
+    <b>1. A toddler says “doggy!” for every animal (cats, horses, squirrels). Which language component is most directly implicated?</b>
+    <div class="choice" onclick="selectChoice('q1', this, true)">A. Semantics</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. Phonology</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Syntax</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Pragmatics</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Calling all animals “doggy” reflects how a child is mapping <b>meaning</b> to a word (category vs. specific member). That is a semantic issue: the child associates one label with an overly broad category.
+        <ul>
+          <li><b>B</b> phonology = sound/phonemes (how it’s pronounced), not meaning.</li>
+          <li><b>C</b> syntax = word order in sentences, not word meaning.</li>
+          <li><b>D</b> pragmatics = context/relationship-dependent language use.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q2 Correct: D -->
+  <div class="question" id="q2">
+    <b>2. A child correctly distinguishes “ba” vs “pa” because that small sound difference changes meaning in their household language. This ability is best described as:</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. Prosody</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">B. Overextension</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. Whorfian hypothesis</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">D. Categorical perception</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Categorical perception</b> is learning to treat subtle phoneme differences as distinct categories when they signal different meanings in a given language.
+        <ul>
+          <li><b>A</b> prosody = rhythm/inflection, more pragmatic.</li>
+          <li><b>B</b> overextension = applying a word too broadly to similar objects.</li>
+          <li><b>C</b> Whorf = language shaping thought/perception, not phoneme discrimination.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q3 Correct: B -->
+  <div class="question" id="q3">
+    <b>3. The word <i>redesigned</i> can be decomposed into re- + design + -ed. This example most directly illustrates:</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. Pragmatics</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">B. Morphology</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">C. Phonology</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. Conduction aphasia</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Morphology</b> concerns word structure and <b>morphemes</b> (meaningful building blocks like prefixes/suffixes).
+        <ul>
+          <li><b>A</b> pragmatics is context-dependent use.</li>
+          <li><b>C</b> phonology is speech sounds, not word parts.</li>
+          <li><b>D</b> is a brain-connection aphasia, unrelated to morphemes.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q4 Correct: C -->
+  <div class="question" id="q4">
+    <b>4. “Only Nathan has three pieces of candy” vs “Nathan has only three pieces of candy” differ primarily due to:</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Semantics</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. Phonology</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">C. Syntax</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">D. Babbling</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The change in meaning comes from <b>word order</b>, which is <b>syntax</b>.
+        <ul>
+          <li><b>A</b> semantics is meaning of words; here the same words are used.</li>
+          <li><b>B</b> phonology is sound.</li>
+          <li><b>D</b> is an early developmental vocal stage, not a sentence-level rule.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q5 Correct: D -->
+  <div class="question" id="q5">
+    <b>5. A commuter says “Pardon me, do you mind if I share this seat?” to a stranger but “Move over!” to a friend. Which component of language is highlighted?</b>
+    <div class="choice" onclick="selectChoice('q5', this, false)">A. Morphology</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. Phonology</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Syntax</div>
+    <div class="choice" onclick="selectChoice('q5', this, true)">D. Pragmatics</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Pragmatics</b> is context- and relationship-dependent language use, including politeness level and prosody. The same goal is expressed differently depending on the audience.
+        <ul>
+          <li><b>A</b> morphology is word structure.</li>
+          <li><b>B</b> phonology is sound production/recognition.</li>
+          <li><b>C</b> syntax is word order and sentence structure.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q6 Correct: B -->
+  <div class="question" id="q6">
+    <b>6. Which developmental profile is most consistent with typical language milestones?</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. 3 months: naming explosion; 9 months: two-word phrases</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">B. 9–12 months: babbling; 18–20 months: word combining; age 5: rules largely mastered</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. 12–18 months: three-word sentences; 2 years: no babbling</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. 18 months: grammar fully mastered; 5 years: first words begin</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter’s timeline: <b>babbling (9–12 mo)</b>, <b>naming explosion + combining words (18–20 mo)</b>, longer sentences (2–3 yr), and language rules largely mastered by about <b>5 years</b>.
+        <ul>
+          <li><b>A, C, D</b> scramble the sequence and/or place advanced abilities unrealistically early or late.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q7 Correct: C -->
+  <div class="question" id="q7">
+    <b>7. A child points to a kiwi and asks “Apple?” during rapid vocabulary growth. This best exemplifies:</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. Underextension</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. Prosody</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">C. Overextension during the naming explosion</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. Conduction aphasia</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Overextension</b> is applying a term too broadly to objects with superficial similarity (kiwi treated as “apple”), common during the <b>naming explosion</b>.
+        <ul>
+          <li><b>A</b> underextension is using a word too narrowly (not described here).</li>
+          <li><b>B</b> prosody is vocal rhythm/inflection.</li>
+          <li><b>D</b> is a repetition deficit from arcuate fasciculus damage, not child development.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q8 Correct: D -->
+  <div class="question" id="q8">
+    <b>8. A 2.5-year-old says “runned” instead of “ran.” Which explanation best matches the chapter?</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. The child lacks categorical perception of phonemes</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. The child is producing a fluent but meaningless “word salad”</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. The child’s caregivers corrected grammar too frequently</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. Errors increase as children internalize rules and overapply morphemes (overregularization)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter notes that around ages <b>2–3</b>, longer sentences and vocabulary growth are accompanied by increased grammatical errors as children internalize rules; they may apply a rule where it doesn’t belong (e.g., adding <b>-ed</b> → “runned”).
+        <ul>
+          <li><b>A</b> is about sound-category discrimination, not grammar.</li>
+          <li><b>B</b> describes Wernicke-type fluent nonsense in aphasia.</li>
+          <li><b>C</b> is the opposite of the chapter’s observation: caregivers are <i>less</i> likely to correct grammar than word choice.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q9 Correct: A -->
+  <div class="question" id="q9">
+    <b>9. Which claim best reflects the behaviorist (Skinner) explanation of language development?</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. Caregivers reinforce speech-like sounds, shaping phoneme preferences via operant conditioning</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Children must have an innate device to perform syntactic transformations</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. Language is acquired only during a strict critical period; after puberty it is impossible</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. Language primarily emerges from semantic networks in the hippocampus</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Behaviorist theory links language learning to <b>operant conditioning</b>: caregivers selectively reinforce sounds approximating the household language, shaping what the infant continues to produce.
+        <ul>
+          <li><b>B</b> is nativist (Chomsky; LAD).</li>
+          <li><b>C</b> is too absolute and aligns more with a strict critical-period framing; the chapter notes the “sensitive period” nuance.</li>
+          <li><b>D</b> is not how the chapter frames language acquisition.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q10 Correct: B -->
+  <div class="question" id="q10">
+    <b>10. Which observation most strongly challenges a <i>pure</i> behaviorist account of early language development?</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Infants initially can discriminate phonemes across human languages</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">B. Rapid “naming explosion” in which children learn dozens of words quickly</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. Caregivers respond warmly when infants produce speech-like sounds</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Children adjust formality based on audience</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter explicitly notes psycholinguists argue reinforcement alone cannot fully explain the <b>explosion in vocabulary</b> during early childhood (learning dozens of words rapidly).
+        <ul>
+          <li><b>A</b> can fit multiple theories (including shaping of preference later).</li>
+          <li><b>C</b> actually supports reinforcement shaping.</li>
+          <li><b>D</b> is pragmatics development; it doesn't directly refute reinforcement as a contributor.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q11 Correct: C -->
+  <div class="question" id="q11">
+    <b>11. A researcher argues children’s ability to form syntactic transformations (active ↔ passive) “effortlessly” implies an innate capacity. This aligns most with:</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Operant conditioning</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. Whorfian hypothesis</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">C. Nativist theory (Chomsky; LAD)</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. Conduction aphasia</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Chomsky emphasized children’s mastery of <b>transformational grammar</b> and argued it suggests an innate mechanism (the <b>language acquisition device</b>, LAD).
+        <ul>
+          <li><b>A</b> is Skinner/behaviorist.</li>
+          <li><b>B</b> is language influencing cognition, not acquisition mechanisms.</li>
+          <li><b>D</b> is a neuro lesion syndrome affecting repetition.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q12 Correct: D -->
+  <div class="question" id="q12">
+    <b>12. Which statement best captures the social interactionist view?</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Language emerges without social input as long as LAD is intact</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Language is entirely learned through reinforcement schedules</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. Language determines reality completely, so acquisition depends on vocabulary size</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. Biological maturation enables learning, while social desire to communicate strengthens some circuits and prunes others</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Social interactionism integrates biology and social context: as brain foundations develop and children interact, some circuits are <b>reinforced</b> while others are de-emphasized/atrophy. Communication motives matter.
+        <ul>
+          <li><b>A</b> is overly nativist and dismisses social shaping.</li>
+          <li><b>B</b> is pure behaviorism.</li>
+          <li><b>C</b> is an extreme Whorfian claim; the chapter notes controversy and “to some degree.”</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q13 Correct: A -->
+  <div class="question" id="q13">
+    <b>13. Which claim is most consistent with the Whorfian (linguistic relativity) hypothesis as described?</b>
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. The categories available in a language can influence how speakers discriminate and attend to features of reality</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Language acquisition is impossible after age five</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. Grammar errors in toddlers reflect damage to Broca’s area</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. Caregiver reinforcement is the only driver of vocabulary growth</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter frames Whorf as: language can shape perception/thought <b>to some degree</b>; having many labels for distinctions can improve discrimination of those distinctions.
+        <ul>
+          <li><b>B</b> confuses milestones with acquisition limits.</li>
+          <li><b>C</b> overregularization is typical development, not focal brain damage.</li>
+          <li><b>D</b> is too extreme and contradicted by “naming explosion” concerns.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q14 Correct: B -->
+  <div class="question" id="q14">
+    <b>14. A patient understands questions but can only produce short, effortful phrases; they appear frustrated. The most likely diagnosis is:</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Wernicke’s (receptive) aphasia</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. Broca’s (expressive) aphasia</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. Conduction aphasia</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Global aphasia due to cerebellar lesion</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Broca’s aphasia</b>: comprehension intact but speech production is reduced/nonfluent; frustration is common (“tip of the tongue” feeling).
+        <ul>
+          <li><b>A</b> would have impaired comprehension with fluent but nonsensical speech.</li>
+          <li><b>C</b> typically has intact comprehension and fluency but impaired repetition.</li>
+          <li><b>D</b> is not the chapter’s framework and mislocalizes language to the cerebellum.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q15 Correct: D -->
+  <div class="question" id="q15">
+    <b>15. A patient speaks fluently but produces nonsensical phrases and seems unaware that others cannot understand them. This is most consistent with damage to:</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Inferior frontal gyrus (Broca’s area)</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Arcuate fasciculus</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">C. Motor cortex controlling laryngeal muscles</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">D. Superior temporal gyrus (Wernicke’s area)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Wernicke’s aphasia</b> features fluent speech with poor comprehension, producing nonsensical or inappropriate word combinations; patients may believe they are communicating normally.
+        <ul>
+          <li><b>A</b> would impair production/fluency but preserve comprehension.</li>
+          <li><b>B</b> arcuate fasciculus lesion classically impairs repetition while comprehension/production remain relatively intact.</li>
+          <li><b>C</b> pure motor impairment is not the key syndrome described; Wernicke is comprehension.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="section-tag">5 Passage Sets (Each passage has 3 questions) — Q16–Q30</div>
+
+  <!-- ===================== PASSAGE 1 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 1 — Clinic Screening: A “Late Talker” With Uneven Skills</span>
+    <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>On a hospital stroke unit, a clinician performs a rapid bedside language exam on three patients. Patient A answers yes/no questions appropriately and follows commands like “close your eyes,” but speaks in short, effortful phrases with long pauses. The patient appears visibly frustrated and frequently gestures as if the “right word” is just out of reach.</p>
+<p>Patient B speaks fluently with normal rhythm and intonation but frequently produces incorrect word combinations that do not convey clear meaning. When asked to point to common objects named by the clinician, the patient often selects the wrong item and insists the task is being done correctly. Patient B also struggles to follow spoken instructions and seems surprised when the clinician repeats directions more slowly.</p>
+<p>Patient C converses normally and follows complex commands. However, when the clinician says a simple sentence and asks the patient to repeat it exactly, Patient C repeatedly fails—substituting words, reordering phrases, or stopping mid-sentence. Patient C becomes annoyed because they can explain what the sentence meant but cannot reproduce it verbatim, even after several attempts.</p>
+  </div>
+
+  </div>
+
+  <div class="reasoning-box" id="p1-reason">
+    <b>How to reason (Passage 3):</b>
+    <ol>
+      <li><b>Use the 3-part aphasia screen:</b> (1) comprehension, (2) fluency/production, (3) repetition.</li>
+      <li><b>Patient A:</b> comprehension intact + nonfluent/frustrated production → <b>Broca’s (expressive) aphasia</b> (inferior frontal gyrus).</li>
+      <li><b>Patient B:</b> fluent but meaningless + poor comprehension/insight → <b>Wernicke’s (receptive) aphasia</b> (superior temporal gyrus).</li>
+      <li><b>Patient C:</b> comprehension + fluency intact but repetition impaired → <b>Conduction aphasia</b> (arcuate fasciculus connection).</li>
+    </ol>
+  </div>
+
+  <!-- Q22 Correct: B -->
+  <div class="question" id="q16">
+    <b>16. Patient A’s presentation is most consistent with damage to which brain region?</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. Superior temporal gyrus (Wernicke’s area)</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">B. Inferior frontal gyrus (Broca’s area)</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Arcuate fasciculus</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">D. Primary visual cortex</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Patient A has intact comprehension but <b>effortful, reduced speech production</b> and frustration—classic <b>Broca’s aphasia</b>, localized to the <b>inferior frontal gyrus</b> in the dominant hemisphere.
+        <ul>
+          <li><b>A</b> would produce fluent speech with poor comprehension.</li>
+          <li><b>C</b> would primarily impair repetition with relatively intact production/comprehension.</li>
+          <li><b>D</b> is not a language center.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q23 Correct: A -->
+  <div class="question" id="q17">
+    <b>17. Patient B’s pattern most strongly indicates which diagnosis?</b>
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Wernicke’s (receptive) aphasia</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. Broca’s (expressive) aphasia</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Conduction aphasia</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. Typical toddler overextension during naming explosion</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Patient B is <b>fluent</b> but produces nonsensical combinations and shows impaired comprehension with poor insight—hallmarks of <b>Wernicke’s aphasia</b>.
+        <ul>
+          <li><b>B</b> would show nonfluent production with intact comprehension.</li>
+          <li><b>C</b> would show intact comprehension and fluent production but impaired repetition.</li>
+          <li><b>D</b> is a normal developmental phenomenon, not an adult stroke syndrome.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q24 Correct: D -->
+  <div class="question" id="q18">
+    <b>18. Patient C most likely has a lesion affecting which structure?</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. Primary motor cortex</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">B. Pineal gland</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Hippocampus</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">D. Arcuate fasciculus</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Patient C has intact comprehension and fluent speech but cannot <b>repeat</b> verbatim. The chapter attributes this to loss of the connection between Broca’s and Wernicke’s areas: the <b>arcuate fasciculus</b> → <b>conduction aphasia</b>.
+        <ul>
+          <li><b>A</b> would create motor speech weakness but doesn’t match “can converse normally.”</li>
+          <li><b>B</b> is unrelated to language repetition.</li>
+          <li><b>C</b> is central for memory, not the specific repetition deficit described.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+
+  <!-- ===================== PASSAGE 4 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 2 — Bilingual Input: Phoneme Boundaries, Context, and Labels</span>
+    <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>At a bilingual daycare, researchers track how infants’ speech perception changes across the first year. At 6 months of age, infants from both monolingual and bilingual homes can discriminate several consonant contrasts that are not used in the local community language. By 10 months, many monolingual infants show a drop in sensitivity to non-native contrasts, but infants with daily exposure to two languages maintain discrimination for a wider set of contrasts.</p>
+<p>To better understand why, the team observes adult–child interactions. Caregivers in both settings respond more strongly to vocalizations that resemble words used in their own speech, but the bilingual caregivers alternate which sound patterns are emphasized depending on who is speaking to the child and which activity is occurring (storybook time vs snack time). As the children become toddlers, teachers notice that the same child may phrase a request differently depending on whether they are speaking to an unfamiliar adult visitor, a familiar teacher, or a close playmate, even when the goal of the request is identical.</p>
+<p>In a follow-up test at age 4, the team gives children a fine-grained color sorting task. Some children use a single familiar label for multiple shades, whereas others spontaneously use distinct labels they have learned at home, and those children tend to draw sharper boundaries between the shades on the task.</p>
+  </div>
+
+  <div class="reasoning-box" id="p2-reason">
+    <b>How to reason (Passage 2):</b>
+    <ol>
+      <li><b>Identify what changes with age:</b> the passage contrasts 6-month vs 10-month performance, implying a developmental shift rather than a one-time deficit.</li>
+      <li><b>Link the shift to exposure:</b> monolinguals lose sensitivity to non-native contrasts; bilingual exposure preserves it → suggests experience-dependent tuning of phoneme categories.</li>
+      <li><b>Separate “sound” vs “social use”:</b> discrimination of consonant contrasts is <b>phonology/categorical perception</b>, while changing request style with audience is <b>pragmatics</b>.</li>
+      <li><b>Use labels as evidence:</b> children who know more distinct words for shades draw sharper boundaries → consistent with linguistic relativity (language can shape perception <i>to some degree</i>).</li>
+    </ol>
+  </div>
+
+  <!-- Q25 Correct: C -->
+  <div class="question" id="q19">
+    <b>19. Which interpretation best explains why bilingual infants maintain discrimination of a wider set of consonant contrasts at 10 months?</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. The infants must have acquired full grammar rules before 10 months</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. Their arcuate fasciculus is more developed because they hear two languages</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">C. Continued exposure keeps phoneme categories “open,” preventing pruning of non-native contrasts (experience-dependent tuning)</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. The effect must be caused by semantic overextension during naming explosion</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The passage suggests infants start broadly sensitive to speech sounds, then become tuned to the sounds that matter in their environment. Bilingual infants receive regular input from two systems, so their phoneme categories remain broader and less “narrowed,” preserving discrimination of contrasts that monolingual infants stop prioritizing.
+        <ul>
+          <li><b>A</b> grammar mastery is far later; this is a speech-sound (phonology) finding.</li>
+          <li><b>B</b> arcuate fasciculus relates to repetition (conduction aphasia), not infant phoneme discrimination.</li>
+          <li><b>D</b> overextension is about word meaning/category labeling in toddlers, not 10-month phoneme tuning.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q26 Correct: C -->
+  <div class="question" id="q20">
+    <b>20. The toddlers’ tendency to phrase identical requests differently for a visitor vs a close friend most directly reflects development of:</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. Morphology</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. Syntax</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">C. Pragmatics</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">D. Conduction aphasia</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Pragmatics</b> is the context- and relationship-dependent use of language (including politeness level and prosody). The passage shows the child tailoring the same communicative goal to different audiences.
+        <ul>
+          <li><b>A</b> morphology is word parts (prefix/suffix) and tense markers.</li>
+          <li><b>B</b> syntax is word order and sentence structure.</li>
+          <li><b>D</b> is a neurological repetition deficit, not a typical social language skill.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q27 Correct: A -->
+  <div class="question" id="q21">
+    <b>21. Which inference best connects the color-label findings to a Whorfian (linguistic relativity) influence?</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. Having distinct words for shades can sharpen attention to differences, leading to more precise sorting boundaries</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Color perception is entirely fixed biologically and cannot be influenced by language input</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Children who learn more words must have Broca’s area damage because they talk more</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. The only explanation is reinforcement for naming colors correctly</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The passage notes that children who use more specific labels draw sharper category boundaries in sorting. This aligns with linguistic relativity: language can shape how we attend to and categorize features of reality (here, subtle color distinctions).
+        <ul>
+          <li><b>B</b> is an absolute claim; the chapter describes Whorf as controversial but plausible “to some degree.”</li>
+          <li><b>C</b> misapplies aphasia: Broca’s damage reduces production; it doesn’t cause “more words.”</li>
+          <li><b>D</b> reinforcement may contribute, but the key inference is that labels themselves can alter categorization.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===================== PASSAGE 5 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 3 — Late Exposure and Lesions: Limits, Pathways, and Practice</span>
+    <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A community clinic receives a referral for a teenager who experienced prolonged social isolation in early childhood and had minimal meaningful language exposure until early adolescence. After two years of intensive intervention, the teen can learn a substantial vocabulary and can often understand simple spoken instructions, but struggles with many “rule-like” aspects of grammar. For example, the teen can communicate basic needs (“eat,” “water,” “go home”) but has persistent difficulty applying consistent tense marking and producing complex sentence structures. Therapists note that progress is strongest when sessions involve real conversational back-and-forth with a supportive partner, rather than rote repetition drills.</p>
+<p>In a separate case discussed at the same clinic, an adult patient is evaluated after a stroke. The patient speaks fluently and follows complex commands, and they can explain the meaning of a sentence they just heard. However, when asked to repeat the sentence exactly, they repeatedly fail—substituting words or rearranging phrases—despite clearly understanding what was said. The clinician explains that language comprehension and speech production can be intact while the pathway connecting them is disrupted.</p>
+<p>The clinic team debates how to interpret the teen’s long-term limitations: whether to treat language as primarily learned through reinforcement, as an innate system with time-limited plasticity, or as a skill that depends on both biological maturation and social use that continually strengthens some circuits and lets others fade.</p>
+  </div>
+
+  <div class="reasoning-box" id="p3-reason">
+    <b>How to reason (Passage 3):</b>
+    <ol>
+      <li><b>Match each case to a mechanism:</b> the teen case is about <b>timing of exposure</b> and how that affects later mastery of rules; the stroke case is about <b>which pathway is disrupted</b>.</li>
+      <li><b>Use the nativist time-window idea carefully:</b> the chapter discusses a critical/sensitive period before puberty; late exposure can allow some learning but leaves persistent rule deficits.</li>
+      <li><b>For the stroke patient, use the repetition triad:</b> comprehension intact + fluent speech + repetition impaired → <b>conduction aphasia</b> → <b>arcuate fasciculus</b>.</li>
+      <li><b>Decide which theory fits best:</b> improvement with real conversation (not rote drills) supports models that emphasize social use and interaction (and not only reinforcement of isolated outputs).</li>
+    </ol>
+  </div>
+
+  <!-- Q28 Correct: C -->
+  <div class="question" id="q22">
+    <b>22. The teen’s ability to learn vocabulary but persistent difficulty mastering many grammar rules after very late exposure is most consistent with:</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. Overextension during the naming explosion at 18–20 months</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">B. Wernicke’s aphasia due to superior temporal gyrus stroke</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">C. A sensitive/critical period concept: late exposure reduces the ease of acquiring rule-like aspects of language</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. Perfectly typical development because grammar is mastered at puberty</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter describes nativist ideas about a <b>critical period</b> (and the “sensitive period” nuance) for language before puberty. The passage mirrors that: late exposure allows some learning (vocabulary, simple comprehension) but leaves persistent difficulty with many grammar rules.
+        <ul>
+          <li><b>A</b> is a toddler phenomenon tied to early vocabulary expansion, not adolescence.</li>
+          <li><b>B</b> would present as fluent but comprehension-impaired speech after a focal lesion; the teen case is developmental history.</li>
+          <li><b>D</b> is incorrect: the chapter says rules are largely mastered by ~5 years in typical development, not “at puberty.”</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q29 Correct: B -->
+  <div class="question" id="q23">
+    <b>23. The adult stroke patient who understands speech and speaks fluently but cannot repeat sentences verbatim most likely has damage to the:</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Inferior frontal gyrus (Broca’s area)</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">B. Arcuate fasciculus</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">C. Superior temporal gyrus (Wernicke’s area)</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. Cerebellar vermis</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Intact comprehension + intact fluency + impaired repetition is the classic pattern of <b>conduction aphasia</b>, caused by disruption of the connection between Broca’s and Wernicke’s areas: the <b>arcuate fasciculus</b>.
+        <ul>
+          <li><b>A</b> would reduce fluency/production (Broca’s aphasia).</li>
+          <li><b>C</b> would impair comprehension and produce fluent but meaningless speech (Wernicke’s aphasia).</li>
+          <li><b>D</b> is not the key pathway described for language repetition.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q30 Correct: C -->
+  <div class="question" id="q24">
+    <b>24. The clinic’s observation that the teen improves most during real conversational turn-taking (vs rote repetition drills) most strongly supports:</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. A purely reinforcement-based model in which social interaction is unnecessary</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. A purely nativist model in which practice type does not matter once the window has passed</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">C. Social interactionist theory emphasizing communication-driven learning and strengthening of circuits through use</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">D. A phonology-only deficit that cannot be changed by environment</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Social interactionist theory highlights the child’s <b>desire to communicate</b> and the role of back-and-forth interaction in reinforcing useful language circuits. The passage directly reports that natural dialogue drives the best gains, fitting this framework better than rote drills alone.
+        <ul>
+          <li><b>A</b> contradicts the passage: the <i>type</i> of practice (interactive vs rote) clearly matters.</li>
+          <li><b>B</b> is inconsistent with observed improvement—environmental input is still helping.</li>
+          <li><b>D</b> is too narrow; the described issue includes grammar and broader language use, not only speech sounds.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+</body>
+</html>

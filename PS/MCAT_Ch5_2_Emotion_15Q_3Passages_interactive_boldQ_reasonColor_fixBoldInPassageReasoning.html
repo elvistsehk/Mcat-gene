@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MCAT Behavioral Sciences — Chapter 5.2: Emotion — 15Q + 3 Passages</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+
+.q-title{font-weight:700;}
+
+/* --- How to reason: highlight (night light) --- */
+.reasoning-body strong,
+.reasoning-body b{
+  color: #1f6fb2; /* blue emphasis like template */
+  font-weight: 800;
+  text-shadow: 0 0 0.5px rgba(31,111,178,0.35);
+}
+.reasoning-title{
+  color: #1f6fb2;
+  font-weight: 800;
+}
+</style>
+</head>
+<body>
+<div class="main-header">
+  <div class="header-left">
+    <div class="header-title">MCAT Behavioral Sciences — Chapter 5.2: Emotion</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="container">
+  <div class="section-tag">Standalone Questions (Q1–Q15)</div>
+
+<div class="question" id="q1">
+  <div class="q-title">Q1. A student feels their heart racing, notices their hands are shaking, and only then thinks, “I must be anxious about this exam.” Which element of emotion is being used to label the feeling?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q1', this, true)">A. Cognitive response (subjective interpretation of arousal).</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. Behavioral response (facial expression/body language).</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Universal emotion expression (facial muscle pattern shared across cultures).</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Physiological response (autonomic arousal itself).</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The **cognitive response** is the *interpretation/label* you apply to what you’re experiencing. Here, the student observes arousal and then **labels** it as anxiety.</p><p>- **Physiological response** is the heart racing and shaking (the body changes), not the labeling.<br>- **Behavioral response** would be observable actions/expressions (posture, face, gestures).<br>- **Universal emotion expression** refers to cross-cultural facial expressions (Ekman/Darwin), not internal labeling.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q2">
+  <div class="q-title">Q2. Which option best matches one commonly taught set of seven universal facially expressed emotions in the passage?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. Happiness, pride, shame, guilt, surprise, fear, and anger.</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">B. Happiness, sadness, contempt, surprise, fear, disgust, and anger.</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. Happiness, sadness, anxiety, jealousy, fear, disgust, and anger.</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. Joy, trust, anticipation, surprise, fear, disgust, and sadness.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The passage lists **seven universal facially expressed emotions** as: happiness, sadness, contempt, surprise, fear, disgust, and anger.</p><p>- **Pride/shame/guilt** are often considered *social emotions* and are not in this basic facial-expression set.<br>- **Trust/anticipation** appear in some other emotion taxonomies, not the Ekman-style list here.<br>- **Anxiety/jealousy** are not in the classic universal facial-expression list.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q3">
+  <div class="q-title">Q3. A researcher finds that severing peripheral sensory feedback from the body does NOT eliminate the conscious experience of fear in an animal model. Which theory does this finding most directly support?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. James–Lange theory.</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">B. Cannon–Bard theory.</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">C. Instinct theory of motivation.</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. Schachter–Singer (two-factor) theory.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>**Cannon–Bard** proposes that **physiological arousal and conscious emotion occur simultaneously**, so removing peripheral feedback should not abolish emotion.</p><p>- **James–Lange** predicts emotion depends on *peripheral feedback* (arousal first → label), so this finding challenges it.<br>- **Schachter–Singer** requires arousal + cognitive appraisal; it is not mainly a claim about peripheral feedback being necessary for emotion.<br>- **Instinct theory** is a motivation framework, not a mechanistic sequencing model for emotion.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q4">
+  <div class="q-title">Q4. Which sequence best describes the James–Lange theory of emotion?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Stimulus → conscious emotion → physiological arousal → action.</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. Stimulus → physiological arousal + cognitive appraisal → conscious emotion.</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">C. Stimulus → physiological arousal → conscious experience/label of emotion.</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">D. Stimulus → simultaneous arousal and conscious emotion → action.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>In **James–Lange**, the body responds first (autonomic arousal), and the brain then **labels** that bodily state as an emotion.</p><p>- “Stimulus → emotion → arousal” reverses the James–Lange order.<br>- “Arousal + cognitive appraisal” is **Schachter–Singer**.<br>- “Simultaneous arousal and conscious emotion” is **Cannon–Bard**.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q5">
+  <div class="q-title">Q5. In the Cannon–Bard framework described, which brain structure is emphasized as sending sensory information simultaneously to the cortex and to the sympathetic nervous system?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q5', this, false)">A. Hippocampus.</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. Amygdala.</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Ventromedial prefrontal cortex.</div>
+    <div class="choice" onclick="selectChoice('q5', this, true)">D. Thalamus.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The Cannon–Bard description highlights the **thalamus** as a relay that sends sensory information to both **cortex** and **sympathetic nervous system** at the same time.</p><p>- **Amygdala** is strongly tied to fear/attention and emotional learning, but it is not the primary relay described here.<br>- **Hippocampus** supports explicit memory/context.<br>- **Ventromedial prefrontal cortex** helps regulate emotional responses and decision-making.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q6">
+  <div class="q-title">Q6. A participant experiences unexplained physiological arousal and then adopts the emotion displayed by people around them. Which theory best explains this pattern?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. James–Lange theory.</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">B. Schachter–Singer (two-factor) theory.</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. Drive reduction theory.</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. Cannon–Bard theory.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>**Schachter–Singer** requires **physiological arousal + a cognitive label** derived from environmental cues. If arousal is unexplained, people may attribute it to the situation and adopt the displayed emotion.</p><p>- **James–Lange** emphasizes labeling arousal but does not center **context-driven appraisal/misattribution** as the defining feature.<br>- **Cannon–Bard** does not require cognitive labeling from context.<br>- **Drive reduction** is a motivation theory about relieving internal tension.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q7">
+  <div class="q-title">Q7. A subject shows a wrinkled nose and raised upper lip while viewing spoiled food. Which universal emotion and cue pairing is most consistent with the table?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. Contempt — one corner of the mouth pulled upward.</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">B. Disgust — nose wrinkling and/or raising of the upper lip.</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">C. Surprise — jaw opens with widened eyes.</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. Fear — lips pulled toward the ears.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The described cue (nose wrinkling/upper lip raise) is classic for **disgust**.</p><p>- **Fear** often includes widened eyes and lips pulled back, but the nose-wrinkle is more disgust.<br>- **Surprise** includes widened eyes and open jaw.<br>- **Contempt** is typically a unilateral mouth-corner raise.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q8">
+  <div class="q-title">Q8. After bilateral amygdala damage, a person shows intact episodic memory for a traumatic event but fails to develop autonomic fear conditioning to similar cues later. This pattern most strongly implicates the amygdala in:</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Primary formation of long-term explicit memories.</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. Generating physiological arousal via the adrenal medulla.</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. Routing all sensory input to the cortex.</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. Implicit emotional learning (fear conditioning) rather than explicit episodic recall.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The passage notes that amygdala damage impairs **fear conditioning**—a form of **implicit emotional memory/learning**—while explicit “story-like” memory is more hippocampal.</p><p>- **Explicit long-term memory formation** is primarily hippocampus/medial temporal lobe.<br>- **Sensory routing to cortex** is largely thalamic.<br>- **Adrenal medulla** helps generate sympathetic output; the amygdala can trigger responses but is not the peripheral effector.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q9">
+  <div class="q-title">Q9. Which deficit would most specifically follow selective hippocampal damage, based on the passage’s description of explicit vs implicit emotional memory?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q9', this, false)">A. Complete inability to feel fear in response to threats.</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Loss of the ability to produce facial expressions of basic emotions.</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. An inability to mount any autonomic arousal during emotion.</div>
+    <div class="choice" onclick="selectChoice('q9', this, true)">D. Difficulty forming new explicit (episodic) memories about emotional events and their context.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The **hippocampus** supports **explicit memory** and contextualizing events, including memories *about* emotions.</p><p>- Basic facial expressions are not hippocampus-specific.<br>- Fear responses are strongly tied to the **amygdala**.<br>- Autonomic arousal is mediated by ANS/endocrine systems.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q10">
+  <div class="q-title">Q10. Which limbic structure is most directly linked in the passage to homeostatic control and to modulating emotional states by regulating neurotransmitters affecting mood and arousal?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q10', this, true)">A. Hypothalamus.</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">B. Hippocampus.</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. Thalamus.</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Septal nuclei.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The passage highlights the **hypothalamus** as homeostatic and as influencing emotion by controlling neurotransmitters affecting mood/arousal.</p><p>- **Thalamus** is a sensory relay/preliminary processing hub.<br>- **Hippocampus** is memory/context.<br>- **Septal nuclei** are part of limbic circuitry but are not emphasized here for homeostatic control.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q11">
+  <div class="q-title">Q11. A lab uses galvanic skin response (skin conductance) to index sympathetic activation. Based on the passage, the best interpretation is that skin conductance:</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Directly measures cognitive appraisal of the stimulus.</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. Specifically distinguishes fear from anger with high accuracy.</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">C. Is primarily controlled by parasympathetic activation.</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">D. Tracks sympathetic arousal intensity but cannot uniquely identify which emotion is present.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Skin conductance correlates with **sympathetic arousal**, but multiple emotions can share arousal patterns; it is **not emotion-specific**.</p><p>- Fear vs anger can both raise sympathetic tone; conductance alone can’t reliably separate them.<br>- Cognitive appraisal is a mental process; not what conductance measures.<br>- Conductance is not primarily parasympathetic-driven.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q12">
+  <div class="q-title">Q12. A neuroimaging study finds increased right prefrontal activation while participants view distressing images, and increased left prefrontal activation during pleasant imagery. This aligns best with which claim in the passage?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Amygdala exclusively generates positive emotions, hippocampus negative emotions.</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Only the ventromedial prefrontal cortex shows any emotion-related activity.</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">C. Left prefrontal cortex is associated with positive emotions; right prefrontal cortex with negative emotions.</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">D. Thalamus lateralization determines emotional valence.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The passage states a common lateralization: **left PFC → more positive**, **right PFC → more negative** emotional processing.</p><p>- Amygdala/hippocampus aren’t cleanly split by valence that way.<br>- Thalamus is primarily a relay.<br>- Many prefrontal subregions participate; not only vmPFC.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q13">
+  <div class="q-title">Q13. Which emotion is described as producing the greatest increase in diastolic blood pressure, relative to the others listed?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. Anger.</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Relaxation.</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. Sadness.</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. Happiness.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The passage notes **diastolic blood pressure increases most with anger**, followed by fear, sadness, and happiness.</p><p>- Sadness and happiness produce smaller increases than anger.<br>- Relaxation is generally associated with lower sympathetic activation.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q14">
+  <div class="q-title">Q14. The passage notes that emotions are universally experienced yet can differ across cultures. Which example best captures this cultural modulation?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. All people show identical facial musculature because culture determines facial anatomy.</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">B. Universal facial expressions imply that culture cannot influence emotion at all.</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">C. Two cultures interpret and display grief differently after a funeral, even if the underlying sadness is similar.</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Only one culture is capable of experiencing fear because fear is learned socially.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Culture can influence **display rules**, interpretations, and behavioral responses even when basic emotions are broadly shared.</p><p>- Culture doesn’t determine facial anatomy.<br>- Fear is not limited to one culture.<br>- Universality of some expressions does not eliminate cultural influence.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q15">
+  <div class="q-title">Q15. In PTSD, the &#x27;story&#x27; of the trauma (what happened, where, who) versus the sudden bodily panic in a similar setting reflects a split between:</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Parasympathetic memory and sympathetic memory.</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Broca’s language memory and Wernicke’s comprehension memory.</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">C. Explicit episodic memory (hippocampus) and implicit emotional memory (amygdala).</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">D. Thalamic relay memory and cerebellar procedural memory.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The passage distinguishes **explicit memory** (hippocampal, conscious narrative) from **implicit emotional memory** (amygdala-linked, conditioned feelings).</p><p>- Thalamus/cerebellum are not the key contrast.<br>- Broca/Wernicke are language areas.<br>- Autonomic branches are not memory systems.</p>
+    </div>
+  </details>
+</div>
+
+  <div class="section-tag">Passage 1</div>
+  <div class="passage-box">
+    <div class="passage-header">
+      <div class="passage-title">Passage 1: Misattributed Arousal in a Waiting Room</div>
+      <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+    </div>
+    <div class="passage-body">
+      <p>A behavioral lab recruits volunteers for a “vitamin and attention” study. Participants receive an injection that is either saline or epinephrine. Half of the participants are accurately told that the injection may cause a racing heart and sweaty palms; the other half are told the injection has no side effects. While waiting, each participant sits with a confederate who behaves either extremely cheerful (telling jokes, laughing) or visibly irritated (complaining, slamming a clipboard). Researchers later ask participants to rate how happy or angry they felt during the wait and record heart rate throughout.</p>
+      <div class="reasoning" id="p1-reason" style="display:none;">
+        <div class="reasoning-title">Reasoning guide</div>
+        <div class="reasoning-body">1) Identify the key evidence: **physiological arousal** (epinephrine → ↑HR) plus **environmental cues** (cheerful vs irritated confederate).<br>2) Ask which theory requires *both* arousal and a *cognitive label from context*.<br>3) Predict the strongest emotional report when arousal is **present but unexplained**, making misattribution to context more likely.<br>4) Map group patterns to theory (two-factor vs James–Lange vs Cannon–Bard).</div>
+      </div>
+    </div>
+  </div>
+
+<div class="question" id="q16">
+  <div class="q-title">Q16. (Passage 1) Which group should report the most intense emotion that matches the confederate’s mood (highest happiness with cheerful confederate, highest anger with irritated confederate)?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. Saline + informed, because expectation of arousal creates the strongest emotions.</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">B. Epinephrine + uninformed about side effects (told “no side effects”), because arousal is unexplained and gets labeled from context.</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Saline + uninformed, because there is no arousal to misattribute.</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">D. Epinephrine + informed, because knowing the cause of arousal increases emotion labeling from context.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Two-factor (Schachter–Singer) predicts strongest emotion when **arousal is high** and the person lacks a clear explanation, so they **attribute** it to the environment. Thus, **epinephrine + uninformed** should show the biggest context-dependent ratings.</p><p>- Saline groups have less arousal, so less to misattribute.<br>- Informed epinephrine participants can attribute arousal to the injection, reducing context-driven emotion ratings.<br>- Expectation without arousal (saline informed) does not create strong emotion in the same way.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q17">
+  <div class="q-title">Q17. (Passage 1) The overall pattern described is most consistent with which theory of emotion?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Schachter–Singer (two-factor) theory.</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. James–Lange theory.</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Opponent-process theory.</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. Cannon–Bard theory.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The design tests whether **physiological arousal** plus **cognitive appraisal of the environment** determines the emotion reported—this is classic **Schachter–Singer**.</p><p>- James–Lange emphasizes arousal-first labeling but not the defining misattribution mechanism.<br>- Cannon–Bard does not require cognitive labeling from context.<br>- Opponent-process addresses tolerance/withdrawal from repeated drug use.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q18">
+  <div class="q-title">Q18. (Passage 1) Which added manipulation would most cleanly test whether participants are using environmental cues to label arousal (rather than merely reacting to the confederate)?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. Replace heart-rate measurement with a multiple-choice quiz about emotion theory.</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">B. Include an epinephrine group that waits alone (no confederate), then compare emotion ratings to those with a confederate.</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Use only saline injections so arousal is eliminated.</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. Tell everyone the injection causes intense nausea to increase placebo effects.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>To isolate **contextual labeling**, keep arousal present but **remove the emotional cue** (no confederate). If ratings become more neutral, that supports labeling from context.</p><p>- Saline removes the key arousal variable.<br>- Nausea expectations confound appraisal.<br>- A quiz tests knowledge, not mechanism.</p>
+    </div>
+  </details>
+</div>
+
+  <div class="section-tag">Passage 2</div>
+  <div class="passage-box">
+    <div class="passage-header">
+      <div class="passage-title">Passage 2: Afferent Feedback and Emotional Experience</div>
+      <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+    </div>
+    <div class="passage-body">
+      <p>A clinician evaluates two patients after different neurological injuries. Patient A has a spinal cord injury that markedly reduces bodily feedback from below the neck, but vision and hearing are intact. Patient B has no spinal injury but shows abnormal thalamic processing on imaging.
+In a lab, both patients watch a virtual-reality snake rapidly approach. Heart rate, facial expression, and self-reported fear are measured. Patient A shows a fearful facial expression and reports strong fear despite a blunted autonomic response. Patient B shows normal autonomic arousal but reports a muted conscious fear experience.</p>
+      <div class="reasoning" id="p2-reason" style="display:none;">
+        <div class="reasoning-title">Reasoning guide</div>
+        <div class="reasoning-body">1) Separate the three elements: **physiology** (HR/ANS), **behavior** (face), **cognition** (reported fear).<br>2) Ask what each theory predicts when **peripheral feedback is reduced** (James–Lange would expect reduced emotion).<br>3) Use the thalamus role in Cannon–Bard: it helps send sensory info to cortex and ANS.<br>4) Match each patient’s pattern to the theory’s bottleneck (peripheral vs central).</div>
+      </div>
+    </div>
+  </div>
+
+<div class="question" id="q19">
+  <div class="q-title">Q19. (Passage 2) Patient A’s strong reported fear despite blunted autonomic feedback most directly challenges which theory?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Need-based theories of motivation.</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. Schachter–Singer theory.</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">C. Cannon–Bard theory.</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">D. James–Lange theory.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>James–Lange predicts that **peripheral arousal precedes and enables** the conscious emotion label. If bodily feedback is reduced, James–Lange would expect **less** emotion. Patient A still reports strong fear, challenging that prediction.</p><p>- Cannon–Bard allows emotion without requiring peripheral feedback.<br>- Schachter–Singer can still yield emotion via appraisal even if arousal is altered.<br>- Need-based theories address motivation, not emotion sequencing.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q20">
+  <div class="q-title">Q20. (Passage 2) Patient B’s normal autonomic arousal but muted conscious fear most strongly implicates disruption in which processing step emphasized in the passage’s emotion theories?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q20', this, true)">A. Central routing of sensory information to conscious emotional experience (thalamic relay to cortex).</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. The patient’s facial muscles cannot express fear.</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. Peripheral organs generating sympathetic arousal (adrenal medulla) are failing.</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">D. The hippocampus cannot store implicit emotional memories.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Patient B has abnormal **thalamic processing** and shows arousal but reduced *conscious* fear. That points to disruption in **central processing/relay to cortex**.</p><p>- Autonomic arousal is intact, so peripheral generation is not failing.<br>- Facial impairment is not described.<br>- Implicit emotional memory is more amygdala-linked than hippocampal.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q21">
+  <div class="q-title">Q21. (Passage 2) Which theory best predicts that conscious fear and autonomic arousal can occur simultaneously, such that altering peripheral feedback alone need not eliminate fear?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q21', this, false)">A. James–Lange theory.</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Instinct theory of motivation.</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Schachter–Singer theory (requires misattribution).</div>
+    <div class="choice" onclick="selectChoice('q21', this, true)">D. Cannon–Bard theory.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>**Cannon–Bard**: stimulus → **simultaneous** arousal and conscious emotion (via central pathways), then action. Peripheral feedback removal does not necessarily abolish the emotion.</p><p>- James–Lange relies on arousal-first sequencing.<br>- Schachter–Singer is defined by arousal + appraisal, not simultaneity as the core claim.<br>- Instinct theory is not a sequencing model for emotion processing.</p>
+    </div>
+  </details>
+</div>
+
+  <div class="section-tag">Passage 3</div>
+  <div class="passage-box">
+    <div class="passage-header">
+      <div class="passage-title">Passage 3: Emotion, Memory, and Regulation in PTSD</div>
+      <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+    </div>
+    <div class="passage-body">
+      <p>A PTSD clinic uses fMRI while patients view neutral scenes and then scenes that resemble their trauma context (same street layout and sounds). Compared with controls, PTSD patients show heightened amygdala activity during trauma-like scenes, reduced hippocampal engagement during narrative recall of the event, and reduced ventromedial prefrontal cortex (vmPFC) activity during attempts to calm down. In a separate task, they are slower and less accurate at recognizing subtle facial expressions, especially when faces are presented briefly in the left visual field.</p>
+      <div class="reasoning" id="p3-reason" style="display:none;">
+        <div class="reasoning-title">Reasoning guide</div>
+        <div class="reasoning-body">1) Map structures to functions: **amygdala → fear/emotional learning**, **hippocampus → explicit context/story**, **vmPFC → regulating amygdala-driven responses**.<br>2) PTSD logic: strong implicit emotional responses can coexist with fragmented explicit narrative.<br>3) Facial-expression task: left visual field projects to **right hemisphere**, and the passage notes right hemisphere dominance for facial processing.<br>4) Predict behavior from the imaging findings.</div>
+      </div>
+    </div>
+  </div>
+
+<div class="question" id="q22">
+  <div class="q-title">Q22. (Passage 3) The combination of heightened amygdala activity and reduced hippocampal engagement best predicts which clinical profile?</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q22', this, true)">A. Strong conditioned emotional reactions to cues with a fragmented or less coherent explicit narrative of the trauma.</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">B. Complete loss of all emotional experience with preserved autonomic arousal.</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. Normal fear responses but perfect detailed episodic recall of the trauma.</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. Improved facial-expression recognition with reduced emotional reactivity.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Amygdala hyperactivity suggests strong **implicit emotional memory/conditioning**, while reduced hippocampal engagement suggests weaker **explicit contextual narrative**. That combination fits intense cue-triggered reactions plus a less coherent “story.”</p><p>- The other options contradict the structure–function mapping described.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q23">
+  <div class="q-title">Q23. (Passage 3) Reduced vmPFC activity during attempts to calm down most directly suggests impairment in:</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Generation of sympathetic arousal by peripheral organs.</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Primary sensory relay from the retina to the cortex.</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">C. Top-down regulation of emotional responses generated by limbic structures like the amygdala.</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. Long-term storage of episodic memories.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>The passage notes **vmPFC** helps control/shape emotional responses from the **amygdala**. Reduced vmPFC activity would impair **regulation** (top-down control).</p><p>- Sensory relay is thalamic/visual pathways.<br>- Episodic memory storage is hippocampal.<br>- Peripheral sympathetic arousal is ANS/endocrine.</p>
+    </div>
+  </details>
+</div>
+<div class="question" id="q24">
+  <div class="q-title">Q24. (Passage 3) Patients are especially impaired when faces are presented in the left visual field. Based on the passage, the most likely explanation is:</div>
+  <div class="choices">
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. Facial-expression recognition depends primarily on the cerebellum, which is damaged in PTSD.</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. The left hemisphere is specialized for negative emotions only, so it blocks facial processing.</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">C. Left visual field inputs project to the right hemisphere, which is more active in discerning facial expressions.</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">D. Left visual field inputs bypass the thalamus and go directly to the amygdala.</div>
+  </div>
+  <div class="feedback"></div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p>Information from the **left visual field** projects to the **right hemisphere**, and the passage states the right hemisphere is more active for **facial-expression discrimination**. Therefore, a right-hemisphere-linked deficit would show up strongly for left-field presentations.</p><p>- Inputs do not bypass the thalamus.<br>- The hemisphere specialization described is not “left blocks faces.”<br>- Cerebellum is not the primary facial-expression interpretation center here.</p>
+    </div>
+  </details>
+</div>
+
+</div>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+
+
+/* --- Convert markdown-style **bold** inside reasoning boxes into real <strong> --- */
+(function(){
+  function escapeHtml(s){
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+  function convertBoldMarkdown(el){
+    // Work on text content while preserving <br> and existing tags by operating on innerHTML carefully.
+    // Step 1: temporarily protect <br> tags
+    let h = el.innerHTML.replace(/<br\s*\/?>/gi, "___BR___");
+    // Step 2: remove tags to plain text? Instead, we assume only text + ___BR___ present in reasoning-body in this file.
+    // Convert **text** to <strong>text</strong>
+    h = h.replace(/\*\*(.+?)\*\*/g, function(_, p1){
+      return "<strong>" + escapeHtml(p1) + "</strong>";
+    });
+    // Step 3: escape any remaining raw text that may include < or >
+    // Because we introduced <strong>, we must not escape the whole string. We'll only escape segments that are not tags.
+    // A simple approach: split by tags and escape non-tags.
+    h = h.split(/(<[^>]+>)/g).map(function(part){
+      if(part.startsWith("<") && part.endsWith(">")) return part;
+      return escapeHtml(part);
+    }).join("");
+    // Restore line breaks
+    h = h.replace(/___BR___/g, "<br>");
+    el.innerHTML = h;
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    document.querySelectorAll(".reasoning-body").forEach(convertBoldMarkdown);
+  });
+})();
+
+</script>
+
+</body>
+</html>

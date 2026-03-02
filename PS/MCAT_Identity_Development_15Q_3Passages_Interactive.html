@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Self-Concept, Identity &amp; Development (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Self-Concept, Identity &amp; Development (Ch. 6.1–6.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A student describes herself as “curious and competitive,” and also says she is “a member of the Muslim community and a first‑generation college student.” According to social scientists, which part most directly reflects identity (as distinct from self‑concept)?</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. Her group-based components (e.g., religion, first‑generation status)</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Her personality traits like curiosity and competitiveness</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Her overall answer to “Who am I?” across time</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Her appraisal of who she used to be and will become</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Identity refers to the <b>group-related components</b> of the self-concept (roles/memberships) that guide behavior in a given context.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Traits can be part of self-schema/self-concept, but identity is specifically tied to group memberships and roles.</li>
+<li><b>C:</b> That broad, unified answer corresponds to <b>self-concept</b> (one overarching self-concept).</li>
+<li><b>D:</b> Past/future self-appraisals are included in self-concept, not the definition of identity.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A person scores high on both masculinity and femininity scales. Which term best describes this gender identity profile?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Undifferentiated</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Gender dysphoria</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">C. Androgynous</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Binary-typical</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> <b>Androgyny</b> is defined as simultaneously scoring very high on both masculinity and femininity dimensions (not opposite ends of one continuum).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Undifferentiated refers to <b>low</b> scores on both masculinity and femininity scales.</li>
+<li><b>B:</b> Gender dysphoria is a diagnosis involving clinically significant distress related to gender identity, not a scale profile.</li>
+<li><b>D:</b> “Binary-typical” isn’t the concept tested here; the key distinction is two dimensions vs one continuum.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. Which scenario best illustrates &lt;b&gt;national&lt;/b&gt; identity (rather than ethnic identity)?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Feeling connected to ancestors through a shared language and cultural heritage</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Preferring an in-group doll in a study of racial self-concept</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Identifying strongly with a racial group that shares common ancestry</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. Feeling pride when seeing a country’s flag and recalling shared history and national symbols</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> National identity is grounded in <b>political borders</b> and shared history/media/cuisine/symbols (e.g., flags), and it need not match ethnicity or legal citizenship.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Shared ancestry, language, and heritage are classic features of <b>ethnic</b> identity.</li>
+<li><b>B:</b> That describes racial attitudes/self-concept in a historical methodology, not national identity.</li>
+<li><b>C:</b> Again, common ancestry and racial/ethnic membership indicate <b>ethnic</b> identity.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. A researcher finds that college students mention gender less when describing themselves in same-gender groups than in mixed-gender groups. Which concept best explains this pattern?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Self-discrepancy theory</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Hierarchy of salience (situationally activated identities)</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Learned helplessness</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Drive reduction theory</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Identities are organized in a <b>salience hierarchy</b>; the social context makes certain identities (like gender in mixed-gender groups) more prominent and likely to be enacted.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Self-discrepancy concerns gaps between actual/ideal/ought selves causing negative affect.</li>
+<li><b>C:</b> Learned helplessness involves perceived lack of control after repeated uncontrollable outcomes.</li>
+<li><b>D:</b> Drive reduction is a motivational theory, not about context-dependent identity activation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. A student says, “I am not the kind of person my parents think I should be,” and feels chronic guilt and anxiety. Which framework most directly accounts for these emotions?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Internal locus of control</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Reference group effects</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Androgyny vs undifferentiated gender identity</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">D. Self-discrepancy theory (actual vs ideal vs ought selves)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> <b>Self-discrepancy theory</b> proposes three selves: actual, ideal, and ought. Perceived gaps—especially between actual and ought—are linked to negative feelings like guilt/anxiety.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Locus of control is about attributing outcomes to internal vs external causes, not three-self comparisons.</li>
+<li><b>B:</b> Reference groups shift self-evaluation via comparison targets, but don’t specify actual/ideal/ought gaps.</li>
+<li><b>C:</b> Gender identity dimensions don’t explain guilt from mismatched expectations.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. Which pairing is most accurate?</b>
+  <div class="choice" onclick="selectChoice('q6', this, true)">A. Self-esteem = how you feel about yourself; self-efficacy = belief in your ability to succeed at a task</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Self-esteem = belief in your ability to succeed; self-efficacy = how you feel about yourself</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Self-esteem = internal locus of control; self-efficacy = external locus of control</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Self-esteem = ideal self; self-efficacy = ought self</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> <b>Self-esteem</b> is self-worth (feelings about the self), whereas <b>self-efficacy</b> is confidence in one’s ability to perform successfully (often domain-specific).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> This reverses the definitions.</li>
+<li><b>C:</b> Locus of control is a separate construct about what causes outcomes.</li>
+<li><b>D:</b> Ideal/ought selves are components in self-discrepancy theory, not definitions of self-esteem/effectiveness.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. After repeated failures on practice tests that the student believes are “unavoidable no matter what I do,” the student stops studying and becomes depressed. Which concept best describes this pattern?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Approach–approach conflict</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Learned helplessness</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Conformity (Kohlberg stage 3)</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Fixation (Freud)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> <b>Learned helplessness</b> is a perceived lack of control over outcomes after repeated uncontrollable events, strongly linked to depressive symptoms and reduced motivation.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Approach–approach conflict is choosing between two desirable options.</li>
+<li><b>C:</b> Kohlberg stage 3 concerns moral reasoning based on approval/nice-person orientation.</li>
+<li><b>D:</b> Fixation is Freud’s concept of being stuck in a psychosexual stage due to over/under-indulgence.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. A runner loses a race and says, “The track was wet and my shoes slipped—anyone would have lost.” This explanation reflects:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Internal locus of control</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. High self-efficacy</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. External locus of control</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Self-discrepancy (actual vs ideal)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Attributing outcomes primarily to <b>outside factors</b> (luck, environment, other people) indicates an <b>external locus of control</b>.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Internal locus would emphasize personal controllable factors (e.g., training effort).</li>
+<li><b>B:</b> Self-efficacy is belief in ability, not attribution style.</li>
+<li><b>D:</b> Self-discrepancy involves comparing actual/ideal/ought selves, not causal attributions.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. A teenager adjusts their clothing and speech after noticing classmates’ reactions, because they imagine how others see them. Which concept is most directly involved?</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Looking-glass self</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Drive reduction theory</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Universal human ethics (Kohlberg stage 6)</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Undifferentiated gender identity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The <b>looking-glass self</b> is the self-concept that forms through imagining how others perceive and judge us, then reacting (modifying, accentuating, downplaying) accordingly.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Drive reduction concerns motivation to reduce internal tension (e.g., hunger).</li>
+<li><b>C:</b> Kohlberg stage 6 is abstract moral reasoning; this scenario is social self-perception.</li>
+<li><b>D:</b> Undifferentiated is low masculinity and low femininity on gender scales.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. Most physicians earn far above the national median income, yet many do not consider themselves “rich.” The best explanation is:</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Primary appraisal labels the salary as stressful</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. They have low self-efficacy for finances</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. They are undifferentiated in gender identity</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">D. Their reference group consists of other high earners, shifting comparison standards</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> A <b>reference group</b> is the comparison standard used to evaluate the self. Comparing to other physicians (not the general population) can make an objectively high income feel average.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Primary appraisal is stress evaluation, not social comparison.</li>
+<li><b>B:</b> Self-efficacy is task confidence; it doesn’t explain the comparative judgment.</li>
+<li><b>C:</b> Gender identity is unrelated to income comparisons.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. Which ability is most central to &lt;b&gt;theory of mind&lt;/b&gt;?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Automatically imitating a caregiver’s behavior</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Resolving moral dilemmas using abstract principles</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Inferring what another person is thinking or feeling in a given situation</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Comparing oneself to a reference group</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> <b>Theory of mind</b> is the capacity to attribute mental states to others—understanding that others have beliefs, desires, and interpretations that may differ from one’s own.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> That is observational learning/mimicry, not mind-reading.</li>
+<li><b>B:</b> That aligns more with advanced Kohlberg reasoning, not theory of mind per se.</li>
+<li><b>D:</b> That describes reference group comparison.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. A child is most likely to imitate a behavior after watching which model, according to observational learning principles discussed in this chapter?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Any adult, regardless of similarity</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. A same-gender older sibling performing the behavior</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. A stranger who never interacts with the child</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. A peer who is consistently punished for the behavior</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Children are more likely to imitate models who are <b>similar</b> to them (e.g., same-gender siblings) and whose behaviors appear viable/rewarded.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Similarity and perceived relevance of the model matter.</li>
+<li><b>C:</b> A non-salient, non-interactive model is less influential than familiar/similar models.</li>
+<li><b>D:</b> Consistent punishment tends to reduce imitation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A child can almost solve a puzzle alone but succeeds when an adult provides hints and scaffolding. Vygotsky would describe the task as being in the child’s:</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Zone of proximal development</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Genital stage</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Industry vs inferiority crisis</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Obedience stage of moral reasoning</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The <b>zone of proximal development (ZPD)</b> includes skills not yet fully developed but achievable with guidance from a <b>more knowledgeable other</b> (scaffolding).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Genital stage is Freud’s puberty/adulthood stage.</li>
+<li><b>C:</b> Industry vs inferiority is Erikson’s 6–12 year conflict about competence.</li>
+<li><b>D:</b> Obedience is Kohlberg stage 1 focusing on punishment avoidance.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. An adult who becomes excessively dependent on others and seeks constant reassurance is most consistent with fixation at which Freud stage?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Anal stage</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Phallic stage</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">C. Oral stage</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Latency stage</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Freud linked <b>oral fixation</b> (0–1 year; mouth-centered gratification) with adult traits like <b>excessive dependency</b>.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Anal fixation is associated with excessive orderliness (retentive) or messiness (expulsive).</li>
+<li><b>B:</b> Phallic stage centers on Oedipal/Electra conflicts and identification.</li>
+<li><b>D:</b> Latency involves libido sublimation, not classic dependency fixation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. According to Erikson, which psychosocial conflict is most central during adolescence (roughly 12–20 years)?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Intimacy vs isolation</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Identity vs role confusion</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Autonomy vs shame and doubt</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Integrity vs despair</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Erikson’s adolescent stage is <b>identity vs role confusion</b>, where individuals explore independence and form a coherent identity; a favorable outcome is <b>fidelity</b>.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Intimacy vs isolation is young adulthood (20–40).</li>
+<li><b>C:</b> Autonomy vs shame and doubt is toddlerhood (1–3).</li>
+<li><b>D:</b> Integrity vs despair is late adulthood (65+).</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions each)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Identity Salience on Clinical Rotation</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Mina starts her first hospital rotation. During morning rounds with residents she introduces herself as “a future physician” and speaks formally, even though she is usually playful with friends. Later at lunch, she sits with a mixed‑gender group of students; she suddenly becomes self‑conscious about whether she sounds “too bossy” and notices she mentions gender when describing herself. That evening, her family calls to discuss a cultural holiday, and Mina feels especially connected to her ethnic community. After receiving feedback from an attending that she seemed “detached,” Mina replays the comment repeatedly and changes her behavior the next day by asking more empathic questions. Over the next week, Mina feels less confident when comparing her performance to a group of top‑ranked classmates, despite being rated above average by supervisors.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>List the <b>possible identities</b> in the scene (student, future physician, gender identity, ethnic identity, family member).</li>
+    <li>Ask what the <b>context</b> makes most salient (mixed‑gender group → gender; family/cultural discussion → ethnic identity; hospital rounds → professional identity).</li>
+    <li>Use the rule: the more salient the identity, the more a person <b>conforms to role expectations</b> of that identity.</li>
+    <li>For self‑evaluation questions, decide whether the passage points to <b>looking‑glass self</b> (reacting to others’ judgments) or <b>reference group</b> (who she compares to).</li>
+    <li>Choose the option that requires an <b>inference from behavior</b>, not a direct quote.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. Which statement best predicts Mina’s behavior &lt;i&gt;during rounds&lt;/i&gt; based on the concept of identity salience?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. She will behave the same way with residents as with close friends because self-concept is singular</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. She will prioritize ethnic identity because nationality always overrides other identities</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. She will avoid any role expectations because multiple identities create paralysis</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. She will conform to professional role expectations (formal speech, task focus) because the clinical context makes that identity most salient</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> The hospital-rounds context makes the <b>professional/physician-in-training identity</b> most salient, increasing conformity to its role expectations (formal, task-oriented behavior).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Self-concept is one overarching construct, but people can enact <b>different identities</b> across contexts.</li>
+<li><b>B:</b> Ethnic identity can become salient in some contexts, but the passage cues professional salience during rounds.</li>
+<li><b>C:</b> Multiple identities do not imply paralysis; the model predicts context-dependent enactment.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Mina repeatedly replays the attending’s comment and changes how she interacts the next day. This response is most consistent with which mechanism shaping self-concept?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Looking-glass self (reacting to perceived external judgments)</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Zone of proximal development (skill not yet developed but guided by an adult)</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Oral fixation (dependency formed in infancy)</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. External locus of control (attributing outcomes to luck)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> She is imagining how she is seen by others and <b>modifying her behavior</b> based on that perceived evaluation—classic <b>looking‑glass self</b> dynamics.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> ZPD concerns learning skills with scaffolding, not self-evaluation from social feedback.</li>
+<li><b>C:</b> Fixation is Freud’s construct and doesn’t fit the social-feedback pattern.</li>
+<li><b>D:</b> External locus would be blaming luck/outside forces rather than adjusting one’s social presentation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. Despite above-average supervisor ratings, Mina feels less confident when comparing herself to top‑ranked classmates. Which concept best explains this drop in confidence?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Primary appraisal labeling the situation as benign–positive</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. Universal human ethics (postconventional morality)</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. Reference group effects shifting her comparison standard</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Learned helplessness after uncontrollable outcomes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Her self-evaluation is anchored to a <b>reference group</b> of exceptionally high-performing peers, making her own performance feel insufficient despite objective success.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Primary appraisal is a stress framework, not the social comparison mechanism described.</li>
+<li><b>B:</b> Moral reasoning is irrelevant here.</li>
+<li><b>D:</b> Nothing indicates repeated uncontrollable failure leading to giving up.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Early Development, Modeling, and Scaffolding</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Noah is 2 years old and is learning to use the toilet. When accidents happen, his caregiver scolds him harshly and prevents him from trying again. Noah begins to avoid new tasks and often says “I can’t.” At preschool, he watches an older same‑gender sibling receive praise for calmly sharing toys, and Noah starts copying that sharing behavior. Later, Noah tries to ride a bicycle; alone he can balance briefly but cannot pedal and steer at the same time. With an adult holding the seat and giving short prompts, he succeeds and gradually needs less help.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>For Erikson questions, match the child’s <b>age</b> to the stage (1–3 years → autonomy vs shame and doubt).</li>
+    <li>Look for caregiver style: harsh control/criticism → <b>shame/doubt</b> and a more external sense of control.</li>
+    <li>For observational learning, identify the <b>model</b> (similarity, reinforcement/praise) and the imitated behavior.</li>
+    <li>For Vygotsky, ask: can the child almost do it alone but needs guidance? If yes → <b>ZPD + more knowledgeable other</b>.</li>
+    <li>Choose answers that integrate <b>multiple cues</b> (age + behavior + social context).</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. Noah’s avoidance of new tasks following harsh scolding during toilet training most directly reflects an unfavorable resolution of which Erikson crisis?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Trust vs mistrust</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">B. Autonomy vs shame and doubt</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Industry vs inferiority</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Integrity vs despair</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> At ages 1–3, Erikson’s key conflict is <b>autonomy vs shame and doubt</b>. Excessive control/criticism tends to produce shame/doubt and reduced initiative to act independently.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Trust vs mistrust is infancy (0–1).</li>
+<li><b>C:</b> Industry vs inferiority is 6–12 and centers on competence in school-age tasks.</li>
+<li><b>D:</b> Integrity vs despair is late adulthood.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. Noah’s bicycle progress—brief success alone but reliable success with adult prompts—best demonstrates:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Anal fixation due to toilet training</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Stage 2 self-interest moral reasoning</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Looking-glass self based on imagined judgments</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Zone of proximal development with scaffolding by a more knowledgeable other</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> He can nearly perform the skill but needs guidance—this is the <b>ZPD</b>. The adult serves as the <b>more knowledgeable other</b> providing scaffolding until independence increases.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Fixation is a Freud construct and does not capture skill acquisition via guidance.</li>
+<li><b>B:</b> That is Kohlberg’s preconventional moral stage, unrelated to motor learning.</li>
+<li><b>C:</b> Looking-glass self concerns self-concept shaped by perceived social evaluation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. Noah copies the praised sharing behavior of an older same‑gender sibling. The best explanation is:</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Observational learning with higher imitation of similar models</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Ought self dominating the actual self</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. External locus of control</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Universal human ethics reasoning</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Bandura’s framework predicts imitation of behaviors observed in <b>similar</b> models (same-gender sibling), especially when the behavior is <b>reinforced</b> (praised).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Self-discrepancy is about gaps between actual/ideal/ought selves, not modeled behavior acquisition.</li>
+<li><b>C:</b> Locus of control is about attributing outcomes to internal vs external causes.</li>
+<li><b>D:</b> Universal ethics is Kohlberg stage 6 moral reasoning, not imitation learning.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Reasoning Through a Moral Dilemma</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A community clinic has a policy that an expensive medication can only be dispensed after a long approval process. A volunteer discovers that a patient will likely die if treatment is delayed. The volunteer considers taking a dose without permission. In interviews, Participant X argues: “Rules exist to keep the clinic functioning; if everyone broke policy when they felt like it, the system would collapse.” Participant Y argues: “Policies are important, but they’re agreements meant to protect people’s rights—when a rule threatens someone’s life, we should revise it.” A researcher notes that the interview sample came only from one country and mostly included men.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Ignore whether the act is “right” or “wrong.” Kohlberg focuses on <b>why</b> the person justifies it.</li>
+    <li>Map statements to stages: <b>law/order</b> emphasizes social order; <b>social contract</b> emphasizes rights and revisable rules; <b>universal ethics</b> emphasizes abstract principles.</li>
+    <li>Use the passage wording as evidence: “system would collapse” → law/order; “agreements meant to protect rights” → social contract.</li>
+    <li>For critique questions, look for <b>sampling/cultural bias</b> (individualistic vs collectivist) and <b>gender-biased sampling</b>.</li>
+    <li>Choose the answer that matches the <b>reasoning structure</b>, not the action.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. Participant Y’s justification is most consistent with which Kohlberg stage?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Stage 1: Obedience (avoid punishment)</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Stage 3: Conformity (seek approval)</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">C. Stage 5: Social contract (rules as revisable conventions protecting rights)</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Stage 2: Self-interest (maximize personal reward)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Stage 5 <b>social contract</b> treats laws/rules as conventions designed for the greater good and individual rights—and therefore potentially <b>revisable</b> when they conflict with fundamental rights.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Stage 1 focuses on punishment avoidance, not rights-based reasoning.</li>
+<li><b>B:</b> Stage 3 focuses on being seen as “nice” or approved by others.</li>
+<li><b>D:</b> Stage 2 focuses on personal gain/reciprocity, not societal contracts.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. Participant X’s reasoning best aligns with which Kohlberg stage?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Stage 6: Universal human ethics</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. Stage 4: Law and order</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Stage 2: Instrumental self-interest</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Stage 5: Social contract</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Stage 4 <b>law and order</b> prioritizes maintaining the social system and respecting authority/rules to preserve order (“the system would collapse”).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Stage 6 invokes abstract ethical principles that can override laws.</li>
+<li><b>C:</b> Stage 2 is reward/reciprocity focused, not system stability.</li>
+<li><b>D:</b> Stage 5 treats rules as revisable contracts emphasizing rights; X argues for strict order.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. Which critique of the researcher’s conclusions is best supported by the passage information?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. The findings must be invalid because Kohlberg rejected stage progressions</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. The study is flawed because identity salience cannot be measured in interviews</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. The results prove that postconventional morality is impossible to reach</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. The sample may bias results because it is culturally narrow and male-skewed, aligning with known critiques of Kohlberg</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Kohlberg has been criticized for <b>cultural bias</b> (postconventional reasoning may reflect individualistic societies) and for sampling mostly <b>male participants</b>. The passage explicitly notes both issues.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Kohlberg proposed stage progression; he did not reject it.</li>
+<li><b>B:</b> That critique targets identity research, not moral reasoning research.</li>
+<li><b>C:</b> Observing limitations does not imply postconventional morality is impossible—only that measurement/generalization may be biased.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

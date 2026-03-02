@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Personality Theories (Ch. 6.3) (15Q + 3 Passages)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+<body>
+<div clas
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Personality Theories (Ch. 6.3)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 -->
+<div class="question" id="q1">
+  <b>1. A researcher argues that an employee’s consistent tendency to feel tense during deadlines reflects a stable disposition that can be summarized along a few broad dimensions. Which perspective is this researcher most directly using?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Behaviorist perspective</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. Trait perspective</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Humanistic perspective</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Psychoanalytic perspective</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Trait theorists describe personality as relatively <b>enduring patterns</b> of behavior and emotion that can be summarized with broad dimensions (e.g., PEN or the Big Five).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Behaviorists emphasize learned behaviors shaped by reinforcement, not stable trait dimensions.</li>
+<li><b>C:</b> Humanistic approaches emphasize conscious experience, growth, and self-realization rather than factor-derived trait dimensions.</li>
+<li><b>D:</b> Psychoanalytic theories focus on unconscious drives/conflicts (id/ego/superego), not trait dimensions.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 -->
+<div class="question" id="q2">
+  <b>2. A student feels an urge to yell at a classmate (&quot;I want to snap right now&quot;), but instead stays quiet because she knows it would damage her reputation and could lead to consequences. Which structure is primarily enforcing the delay of gratification?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Id</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Superego</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Conscience</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. Ego</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> The <b>ego</b> operates on the <b>reality principle</b>: it delays immediate gratification from the id to match objective constraints and consequences.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The id seeks immediate gratification (pleasure principle) and would drive the urge to yell.</li>
+<li><b>B:</b> The superego is the perfectionist moral judge; it can create guilt/pride but is not the main &quot;reality-testing&quot; mediator.</li>
+<li><b>C:</b> The conscience is a component of the superego (punished behaviors), not the main mediator with external reality.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 -->
+<div class="question" id="q3">
+  <b>3. After a traumatic car accident, a patient reports having no memory of the crash details, despite having been awake at the scene. Which defense mechanism best explains this pattern?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. Repression</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Suppression</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. Reaction formation</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Rationalization</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> <b>Repression</b> is an <b>unconscious</b> process that removes distressing thoughts or memories from conscious awareness, often described after trauma.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Suppression is &lt;b&gt;conscious&lt;/b&gt; choosing not to think about something (&quot;I’m not going to think about that now&quot;).</li>
+<li><b>C:</b> Reaction formation converts an impulse into its opposite (e.g., acting overly kind toward someone you dislike).</li>
+<li><b>D:</b> Rationalization is giving socially acceptable reasons for behavior rather than the true motive.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 -->
+<div class="question" id="q4">
+  <b>4. A resident who feels insecure about her clinical skills becomes convinced that the attending &quot;doesn’t like me&quot; and &quot;wants me to fail,&quot; despite neutral feedback. Which defense mechanism is most consistent with this description?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Displacement</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Sublimation</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. Projection</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Regression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> <b>Projection</b> attributes one’s own unacceptable feelings (e.g., insecurity/hostility) to someone else ("They dislike me").</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Displacement redirects emotion to a safer target (e.g., angry at attending → snaps at roommate).</li>
+<li><b>B:</b> Sublimation channels unacceptable urges into socially acceptable behavior (e.g., aggression → competitive sports).</li>
+<li><b>D:</b> Regression is reverting to earlier developmental behaviors under stress (e.g., tantrums, clinginess).</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 -->
+<div class="question" id="q5">
+  <b>5. In Jung’s framework, the set of qualities a person displays at a job interview—polished, agreeable, and carefully controlled—would be best described as the:</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Persona</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Shadow</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Anima/animus</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Collective unconscious</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Jung’s <b>persona</b> is the "mask" presented to the public—an adaptive social face that emphasizes socially valued traits.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> The shadow contains socially unacceptable or repressed thoughts/impulses.</li>
+<li><b>C:</b> Anima/animus refers to gender-atypical qualities (as Jung framed them), not the public role-mask.</li>
+<li><b>D:</b> The collective unconscious is a shared reservoir of archetypes; it is not the outward performance in a specific situation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 -->
+<div class="question" id="q6">
+  <b>6. A therapist avoids giving direct advice and instead reflects a client’s feelings, aiming to help the client reconcile a gap between the real self and ideal self. This approach is most consistent with:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Psychoanalytic therapy emphasizing free association</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Behaviorist therapy emphasizing token economies</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Trait theory emphasizing OCEAN scoring</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. Rogers’s person-centered therapy</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Rogers’s <b>person-centered (nondirective)</b> therapy uses empathy and <b>unconditional positive regard</b> to reduce incongruence between real and ideal selves.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Freudian therapy emphasizes unconscious conflict and techniques like free association/interpretation.</li>
+<li><b>B:</b> Behaviorist approaches target observable behaviors via reinforcement schedules and skill training.</li>
+<li><b>C:</b> Trait theory describes personality dimensions but is not a therapeutic method focused on congruence.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 -->
+<div class="question" id="q7">
+  <b>7. Maslow suggested that some self-actualized individuals have rare, deeply meaningful episodes that can produce lasting shifts in perspective and well-being. These episodes are called:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Functional autonomies</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Peak experiences</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Primary processes</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Instrumental relativism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Maslow used the term <b>peak experiences</b> for profound, transformative moments often reported by self-actualizers.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Functional autonomy (Allport) is when a behavior continues even after the original drive is satisfied.</li>
+<li><b>C:</b> Primary process is the id’s immediate, pleasure-principle-driven responding.</li>
+<li><b>D:</b> Instrumental relativism is Kohlberg’s stage 2 (self-interest) reasoning.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 -->
+<div class="question" id="q8">
+  <b>8. Lewin’s force field theory would be most directly applied by analyzing a student’s current motivation as a balance of forces that:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Operate unconsciously as archetypes</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Reflect fixed trait levels across the lifespan</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. Push toward goals and block goal attainment in the present</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. Result from reinforcement histories only</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Lewin emphasized the person’s <b>current field</b>: opposing forces in the present that either facilitate or hinder goal pursuit.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Archetypes and the collective unconscious are Jungian concepts.</li>
+<li><b>B:</b> Fixed trait levels describe trait perspectives, not Lewin’s situational &quot;field&quot; focus.</li>
+<li><b>D:</b> Reinforcement history is central to behaviorism but Lewin is not limited to reinforcement contingencies.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 -->
+<div class="question" id="q9">
+  <b>9. Which claim best matches the modern critique of early “somatotype” personality theories (e.g., linking body shape to temperament)?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. They are supported by strong genetic evidence</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. They explain personality by reinforcement schedules</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. They are validated by factor analysis across cultures</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">D. They are largely discredited and rely on stereotypes rather than robust evidence</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Somatotype theories (e.g., Sheldon) are considered <b>largely discredited</b>, relying on broad stereotypes instead of reproducible, rigorous evidence.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> There is not strong genetic evidence that specific body types determine temperament.</li>
+<li><b>B:</b> That describes behaviorism, not somatotypes.</li>
+<li><b>C:</b> Factor analysis is associated with trait theories (e.g., Eysenck), not body-type typologies.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 -->
+<div class="question" id="q10">
+  <b>10. In Eysenck’s PEN model, high scores on Psychoticism would most directly reflect a tendency toward:</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. Nonconformity and social deviance</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. High empathy and cooperation</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Low emotional reactivity under stress</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Openness to new experiences</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> In PEN, <b>Psychoticism</b> indexes <b>nonconformity/social deviance</b> (whereas Extraversion and Neuroticism capture social stimulation and emotional reactivity).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> High empathy/cooperation aligns more with Big Five agreeableness.</li>
+<li><b>C:</b> Low emotional reactivity would imply &lt;b&gt;low&lt;/b&gt; neuroticism, not psychoticism.</li>
+<li><b>D:</b> Openness is a Big Five trait, not part of PEN.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 -->
+<div class="question" id="q11">
+  <b>11. A classmate is organized, reliable, and strongly prefers planning over spontaneity. In the Big Five model, this description most strongly indicates high:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Neuroticism</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Agreeableness</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Conscientiousness</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Openness</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> <b>Conscientiousness</b> reflects organization, impulse control, and reliability—often contrasted with spontaneity.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Neuroticism reflects negative emotionality/stress reactivity.</li>
+<li><b>B:</b> Agreeableness emphasizes harmony, cooperation, and concern for others.</li>
+<li><b>D:</b> Openness reflects curiosity and willingness to engage with new experiences/abstraction.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 -->
+<div class="question" id="q12">
+  <b>12. A biography describes a physician whose entire life is organized around service to the poor; nearly every major decision is explained by this single, dominant theme. According to Allport, this is best described as a:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Secondary trait</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">B. Cardinal trait</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Central trait</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Neurotic need</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> <b>Cardinal traits</b> are rare but powerful dispositions that can dominate a person’s life and organize behavior across contexts.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Secondary traits are context-limited preferences that appear in specific settings.</li>
+<li><b>C:</b> Central traits are major, common characteristics (e.g., honest) but do not necessarily dominate the entire life narrative.</li>
+<li><b>D:</b> Neurotic needs are Horney’s concept within psychodynamic theory, not Allport’s trait taxonomy.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 -->
+<div class="question" id="q13">
+  <b>13. A runner initially trains to reduce anxiety about failing a race. Years later, even after the anxiety is gone, she continues training because she enjoys the process and identity of training itself. This pattern best illustrates:</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Functional autonomy</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Reaction formation</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Learned helplessness</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Primary appraisal</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> <b>Functional autonomy</b> (Allport) occurs when a behavior persists even after the original motive is satisfied—the behavior becomes rewarding in itself.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Reaction formation transforms an impulse into its opposite.</li>
+<li><b>C:</b> Learned helplessness is a perceived lack of control linked to depression, not persistence due to intrinsic enjoyment.</li>
+<li><b>D:</b> Primary appraisal is the initial evaluation of a stressor (stress chapter), not a trait-theory concept.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 -->
+<div class="question" id="q14">
+  <b>14. According to McClelland’s need for achievement (N-Ach), a person high in N-Ach is most likely to choose tasks that are:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Extremely high-risk to maximize potential reward</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Very low-risk because success is guaranteed</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">C. Moderately challenging with realistic goals</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Entirely determined by external rewards and punishments</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> High N-Ach individuals prefer <b>moderate risk</b>: tasks that are challenging enough to be meaningful but still realistically attainable.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Very high risk increases the chance of failure, which high N-Ach tends to avoid.</li>
+<li><b>B:</b> Very low risk is &quot;too easy&quot; and provides little sense of achievement.</li>
+<li><b>D:</b> That framing is closer to strict behaviorism; N-Ach emphasizes internal achievement motivation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 -->
+<div class="question" id="q15">
+  <b>15. Bandura’s reciprocal determinism predicts that a person’s behavior in a new lab setting will depend on:</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Only genetic expression in the brain</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">B. Interactions among thoughts, behaviors, and environment</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. Unconscious conflicts between id and superego</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. A fixed hierarchy of archetypes shared by all humans</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> <b>Reciprocal determinism</b> states that cognition/affect, behavior, and environment <b>mutually influence</b> one another.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> That is the biological perspective taken alone; reciprocal determinism is not genetic-only.</li>
+<li><b>C:</b> Id–superego conflict is psychoanalytic, not Bandura’s social cognitive approach.</li>
+<li><b>D:</b> Archetypes/collective unconscious are Jungian concepts.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: Perfectionism, Guilt, and Therapy Style</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Elena, a 24-year-old research assistant, is described by her peers as relentlessly productive. When she takes a day off, she reports a surge of guilt and a harsh inner voice insisting she is &quot;lazy&quot; and &quot;worthless.&quot; At work, Elena repeatedly tells coworkers she &quot;can’t stand&quot; a new colleague, yet she checks that colleague’s messages first and feels unusually nervous before meetings with them. After receiving mild feedback from her supervisor, Elena spends hours replaying the conversation and then stays late to &quot;make up for&quot; any perceived mistake. In therapy, Dr. Patel does not give direct advice; instead, she reflects Elena’s feelings, validates her experience, and emphasizes acceptance while Elena explores why perfection feels necessary. Elena mentions vivid daydreams in which she is praised for flawless performance, and she notes that imagining this praise briefly relieves her tension, but the guilt returns when she looks at her actual schedule.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify <b>which theory</b> the question is pointing to (Freud’s structure/defenses vs humanistic therapy).</li>
+    <li>For defense mechanisms, map behavior to the <b>pattern</b>: opposite expression (reaction formation), attributing to others (projection), redirecting target (displacement), etc.</li>
+    <li>For Freud’s structure, link emotions: <b>guilt → superego</b>, reality-testing/delay → ego, immediate urges → id.</li>
+    <li>For therapy style, look for key cues: <b>nondirective reflection + acceptance → Rogers</b> (person-centered).</li>
+    <li>Choose the answer that requires an <b>inference from behaviors</b>, not a direct quote.</li>
+  </ol>
+</div>
+
+<!-- Q16 -->
+<div class="question" id="q16">
+  <b>16. In Passage 1, Elena repeatedly tells coworkers she &quot;can’t stand&quot; a colleague whose opinion she secretly craves and whom she finds attractive. Which defense mechanism best explains this pattern?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Displacement</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Projection</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Suppression</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Reaction formation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> <b>Reaction formation</b> involves unconsciously converting an unacceptable impulse (attraction/admiration) into its <b>opposite</b> (expressed dislike).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Displacement redirects emotion to a safer target (e.g., angry at boss → yells at sibling).</li>
+<li><b>B:</b> Projection attributes one’s own feelings to others (&quot;She hates me&quot;), rather than flipping the impulse into its opposite.</li>
+<li><b>C:</b> Suppression is a conscious choice to set a thought aside; this scenario highlights an unconscious behavioral &quot;opposite&quot;.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 -->
+<div class="question" id="q17">
+  <b>17. Which therapeutic approach is most consistent with Dr. Patel’s strategy of avoiding advice-giving, reflecting Elena’s feelings, and emphasizing acceptance to reduce Elena’s distress about not being &quot;perfect&quot;?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Skinnerian behavior therapy using reinforcement schedules</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">B. Rogers’s person-centered therapy</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Freudian psychoanalysis focusing on dream interpretation as primary tool</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Eysenckian trait assessment to reclassify Elena’s PEN profile</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The description matches <b>person-centered (nondirective)</b> therapy: empathy and <b>unconditional positive regard</b> help reduce incongruence and defensiveness.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Behavior therapy targets observable behavior via reinforcement; the passage highlights acceptance/reflection rather than contingencies.</li>
+<li><b>C:</b> Psychoanalysis can include interpretation, but the key features here are nondirective reflection and acceptance (Rogers).</li>
+<li><b>D:</b> Trait assessment describes personality; it is not a therapeutic method focused on acceptance and congruence.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 -->
+<div class="question" id="q18">
+  <b>18. A psychoanalytic interpretation would most strongly predict that Elena’s intense guilt after taking a day off arises from:</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Low openness to experience producing rigidity</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. A reinforcement history that punished rest behavior</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">C. A harsh superego pressuring the ego toward an ideal self</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. High psychoticism leading to nonconformity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> In Freud’s structural model, guilt is classically linked to the <b>superego</b> (ego-ideal/conscience) criticizing the ego for failing to meet an internalized standard.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Openness relates to curiosity/novelty-seeking; it does not specifically generate guilt.</li>
+<li><b>B:</b> Reinforcement can shape behavior, but &quot;guilt&quot; is framed in Freud’s model as a superego-driven moral emotion.</li>
+<li><b>D:</b> Psychoticism in PEN refers to nonconformity/social deviance, not heightened guilt.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Personality at Work—Traits, Types, and Context</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A consulting firm evaluates employees using multiple personality frameworks to predict long-term well-being and performance. One team member, Marcus, is described as calm during tense client calls, rarely anxious, and quick to recover after criticism. Another employee, Dana, is intensely time-urgent, becomes irritated when meetings run long, and treats even minor delays as personal failures. During an annual review period, the firm also administers a PEN-based questionnaire and finds that a subset of employees shows strong physiological arousal and emotional reactivity when discussing mistakes, even when the consequences are minimal. The firm debates whether Dana’s style is best viewed as a stable personality pattern or as a product of the firm’s competitive culture, which publicly ranks employees each week. Notably, when rankings are temporarily removed, Dana’s irritability decreases somewhat but does not disappear.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate descriptions into <b>trait labels</b>: calm/resilient → low neuroticism; time-urgent/competitive → Type A pattern.</li>
+    <li>If a question references PEN, pick among <b>P (deviance), E (social stimulation), N (stress reactivity)</b>.</li>
+    <li>If a question references Big Five, map to OCEAN; emotional stability is the <b>opposite of neuroticism</b>.</li>
+    <li>For type theory, recall: <b>Type A → competitive/time-urgent → higher heart disease risk</b>.</li>
+    <li>When culture changes reduce—but do not erase—behavior, infer an <b>interaction</b> between disposition and situation rather than a single cause.</li>
+  </ol>
+</div>
+
+<!-- Q19 -->
+<div class="question" id="q19">
+  <b>19. In Passage 2, Marcus is described as calm under pressure, rarely anxious, and not easily rattled by criticism. In the Big Five, this most directly implies Marcus is low in:</b>
+  <div class="choice" onclick="selectChoice('q19', this, true)">A. Neuroticism</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Agreeableness</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Extraversion</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. Conscientiousness</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> <b>Neuroticism</b> captures negative emotionality and stress reactivity; calm, resilient responses suggest <b>low neuroticism</b>.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Agreeableness concerns cooperation/harmony, not emotional stability.</li>
+<li><b>C:</b> Extraversion concerns sociability/positive affect, not anxiety reactivity.</li>
+<li><b>D:</b> Conscientiousness concerns organization/impulse control, not calmness per se.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 -->
+<div class="question" id="q20">
+  <b>20. A psychologist classifies employees using Eysenck’s PEN model and notes that one subgroup shows high emotional arousal during stressful performance reviews. Which PEN dimension is most directly elevated in that subgroup?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Psychoticism</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Extraversion</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Openness</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Neuroticism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> In PEN, <b>Neuroticism</b> reflects <b>emotional arousal/reactivity</b> in stressful situations.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Psychoticism reflects nonconformity/social deviance, not stress reactivity.</li>
+<li><b>B:</b> Extraversion reflects tolerance for stimulation and sociability, not emotional arousal under stress.</li>
+<li><b>C:</b> Openness is a Big Five trait, not part of PEN.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 -->
+<div class="question" id="q21">
+  <b>21. Based on the type theory described in the text, which employee profile in Passage 2 would be most associated with increased cardiovascular risk over time?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. An employee who is reflective, values-driven, and seeks meaning in work</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">B. An employee who is time-urgent, highly competitive, and easily frustrated</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. An employee who is curious and enjoys novel tasks even when they are ambiguous</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. An employee who is quiet, prefers solitary work, and avoids overstimulation</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Type theory (Type A vs. Type B) links <b>Type A</b> behavior—competitive, time-urgent, compulsive—to a higher risk of <b>heart disease</b> than Type B patterns.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This sounds closer to humanistic themes (meaning/self-realization) rather than Type A cardiovascular risk.</li>
+<li><b>C:</b> Curiosity/novelty aligns more with high openness, not Type A pattern.</li>
+<li><b>D:</b> Reserved/solitary aligns with introversion, not the Type A profile described.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Behavior Change in a Clinic Program</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>An inpatient clinic designs a program to improve daily functioning in adolescents with school avoidance. Staff award points for specific behaviors (arriving on time, completing assignments, participating in group sessions), and points can be exchanged for privileges such as extra recreation time. At first, Jordan participates only when prompted, but after earning privileges, Jordan begins initiating tasks earlier in the day. Jordan also starts choosing quieter rooms to study in, reporting that this setting helps concentration; over time, Jordan studies more and earns more points, which further reinforces the choice of environment. Another patient, Sam, watches older peers receive praise for calm conflict resolution and begins imitating their phrasing during disagreements. When Sam has a setback, Sam says, &quot;Nothing I do matters—my mood is controlled by brain chemistry and bad luck,&quot; and disengages from the program for a day.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>If a system uses points exchanged for rewards, identify <b>token economy → operant conditioning → behaviorism</b>.</li>
+    <li>To test reciprocal determinism, look for a <b>feedback loop</b>: person chooses environment → thoughts/feelings change → behavior changes → environment selection increases.</li>
+    <li>Observational learning cues: imitation of models, especially socially rewarded behavior (Bandura).</li>
+    <li>For locus of control, listen for attribution language: <b>"nothing I do matters"/luck → external locus</b> vs effort/strategy → internal locus.</li>
+    <li>Pick answers that use the passage evidence to make a <b>prediction</b> or classify a mechanism, not merely restate a sentence.</li>
+  </ol>
+</div>
+
+<!-- Q22 -->
+<div class="question" id="q22">
+  <b>22. In Passage 3, a clinic uses points that can be exchanged for privileges to increase patients’ completion of daily routines. Which perspective most directly explains the mechanism of change?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Humanistic perspective</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Psychoanalytic perspective</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Jungian type theory</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. Behaviorist perspective</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> A point-based reward system is a <b>token economy</b>, grounded in <b>operant conditioning</b>: behaviors increase when reinforced.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Humanism focuses on conscious growth and self-realization, not reinforcement contingencies.</li>
+<li><b>B:</b> Psychoanalysis focuses on unconscious conflict and defense mechanisms, not token reinforcement.</li>
+<li><b>C:</b> Jungian type theory concerns archetypes and personality preferences, not operant conditioning.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 -->
+<div class="question" id="q23">
+  <b>23. Which observation from Passage 3 would provide the strongest evidence for Bandura’s reciprocal determinism rather than a purely situational (environment-only) account?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Both patients improve when token rewards are increased</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Staff remove distractions from the dayroom and patients’ behavior improves immediately</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. A patient begins choosing quieter study spaces, feels more focused there, and then studies more—further reinforcing that choice</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Patients’ routines improve only when staff deliver reinforcement on a fixed schedule</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Reciprocal determinism requires <b>two-way interactions</b>: the person <b>selects/changes the environment</b>, which changes thoughts/feelings, which then changes behavior (and feeds back).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> That is consistent with environment → behavior via reinforcement but does not show person/environment mutual influence.</li>
+<li><b>B:</b> Environment-only manipulation producing change is situational, not reciprocal.</li>
+<li><b>D:</b> Fixed schedules are operant conditioning details but still largely environment → behavior.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 -->
+<div class="question" id="q24">
+  <b>24. In Passage 3, a patient explains a relapse by saying, &quot;Nothing I do matters—my mood is controlled by my brain chemistry and bad luck.&quot; This explanation best reflects:</b>
+  <div class="choice" onclick="selectChoice('q24', this, true)">A. An external locus of control</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. An internal locus of control</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. High conscientiousness</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. A cardinal trait</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> An <b>external locus of control</b> attributes outcomes to forces outside the self (luck, uncontrollable external influences) rather than one’s own actions.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Internal locus credits outcomes to one’s own behavior/effort (&quot;I can change this by... &quot;).</li>
+<li><b>C:</b> Conscientiousness is organization/impulse control; it is not an attribution style.</li>
+<li><b>D:</b> Cardinal traits dominate a life narrative (Allport) and are not specifically about perceived control over outcomes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+html>

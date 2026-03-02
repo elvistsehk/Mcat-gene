@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Behavioral Sci Ch 4.3 — Consciousness, Sleep, EEG, Circadian Rhythms (15 + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .subhead{ font-size:14px; font-weight:normal; opacity:0.95; margin-top:6px; line-height:1.35; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+
+<body>
+  <div class="main-header">
+    😴 MCAT Practice — Chapter 4.3: Consciousness, Sleep, EEG, Circadian Rhythms
+    <div class="subhead">
+      Covers: alertness circuits (prefrontal cortex ↔ reticular formation), coma; EEG waves (beta, alpha, theta, delta) + REM features; NREM stages (spindles/K-complexes, slow-wave sleep);
+      circadian rhythms (melatonin & cortisol, light cues, HPA axis); dreaming theories; dyssomnias vs parasomnias (insomnia, narcolepsy, sleep apnea, night terrors, sleepwalking);
+      REM rebound; hypnosis and false memory risk; meditation EEG patterns.
+    </div>
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+  <div class="section-tag">15 Standalone MCAT-style Questions (Q1–Q15)</div>
+
+  <!-- ===================== STANDALONE QUESTIONS ===================== -->
+
+  <!-- Q1 Correct: A -->
+  <div class="question" id="q1">
+    <b>1. A patient suffers brainstem damage that disrupts communication between the prefrontal cortex and a key arousal structure. Which outcome is most directly predicted?</b>
+    <div class="choice" onclick="selectChoice('q1', this, true)">A. Coma due to failure to maintain cortical alertness</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. Increased REM sleep with vivid dreaming</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Improved attention due to reduced sensory input</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Cataplexy triggered by emotion</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Alertness is maintained by circuits in the <b>prefrontal cortex</b> that communicate with the <b>reticular formation (reticular activating system)</b> in the brainstem. If these connections are disrupted, the cortex cannot be kept awake → <b>coma</b>.
+        <ul>
+          <li><b>B</b> REM is a sleep-stage pattern; the stem description is about losing wakefulness, not shifting sleep architecture.</li>
+          <li><b>C</b> loss of arousal circuits does not “improve attention”; it reduces consciousness.</li>
+          <li><b>D</b> cataplexy is a narcolepsy symptom (sudden loss of muscle control + REM intrusion), not the primary prediction of damaged arousal circuitry.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q2 Correct: B -->
+  <div class="question" id="q2">
+    <b>2. During which state would an EEG most likely show high-frequency activity associated with concentration on a demanding mental task?</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. Relaxed wakefulness with eyes closed</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">B. Alert wakefulness while attending to a task</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. Stage 1 (NREM1) sleep</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. Slow-wave sleep (NREM3)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Beta waves</b> are high frequency and are seen when a person is <b>alert</b> or <b>attending to a mental task requiring concentration</b>.
+        <ul>
+          <li><b>A</b> corresponds to <b>alpha</b> waves (eyes closed, relaxed) which are slower than beta.</li>
+          <li><b>C</b> NREM1 shows <b>theta</b> waves.</li>
+          <li><b>D</b> NREM3 (slow-wave sleep) shows <b>delta</b> waves (very low frequency, high amplitude).</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q3 Correct: C -->
+  <div class="question" id="q3">
+    <b>3. A sleep study shows theta waves plus bursts of high-frequency activity and occasional single high-amplitude spikes. Which sleep stage is most consistent with this pattern?</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. REM sleep</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. Stage 1 (NREM1)</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">C. Stage 2 (NREM2)</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. Stage 3 (NREM3)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Stage 2 (NREM2) is characterized by <b>theta waves</b> plus <b>sleep spindles</b> (bursts of high-frequency waves) and <b>K complexes</b> (single high-amplitude waves).
+        <ul>
+          <li><b>A</b> REM has EEG resembling wakefulness and is marked by muscle atonia and rapid eye movements, not spindles/K-complexes.</li>
+          <li><b>B</b> NREM1 has theta but lacks spindles and K complexes.</li>
+          <li><b>D</b> NREM3 shows delta waves (slow-wave sleep), not theta spindles/K-complexes.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q4 Correct: D -->
+  <div class="question" id="q4">
+    <b>4. Which stage is most strongly associated with delta waves, difficulty being awakened, and increased growth hormone release?</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Stage 1 (NREM1)</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. Stage 2 (NREM2)</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. REM sleep</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">D. Stage 3 (NREM3; slow-wave sleep)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>NREM3</b> (slow-wave sleep) shows <b>delta waves</b> and is where rousing someone becomes exceptionally difficult. It is associated with <b>cognitive recovery, memory consolidation, and increased growth hormone release</b>.
+        <ul>
+          <li><b>A</b> NREM1: theta waves, light sleep.</li>
+          <li><b>B</b> NREM2: theta + spindles/K-complexes.</li>
+          <li><b>C</b> REM: paradoxical sleep with dreaming and muscle paralysis; delta is not the hallmark.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q5 Correct: A -->
+  <div class="question" id="q5">
+    <b>5. In which state are arousal levels near wakefulness on EEG, but voluntary muscles are largely paralyzed?</b>
+    <div class="choice" onclick="selectChoice('q5', this, true)">A. REM sleep (paradoxical sleep)</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. Stage 2 (NREM2)</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Stage 3 (NREM3)</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. Relaxed wakefulness (alpha)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>REM sleep</b> is called <b>paradoxical sleep</b> because heart rate, breathing, and EEG resemble wakefulness, yet the person is asleep and <b>muscles are paralyzed</b> (muscle atonia).
+        <ul>
+          <li><b>B</b> NREM2 does not feature global muscle paralysis.</li>
+          <li><b>C</b> NREM3 is deep sleep with delta waves and high arousal threshold, not wake-like EEG.</li>
+          <li><b>D</b> alpha is an awake state (eyes closed, relaxed), not sleep and not associated with muscle atonia.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q6 Correct: B -->
+  <div class="question" id="q6">
+    <b>6. Which hormone is a serotonin-derived signal from the pineal gland that increases as light decreases, promoting sleepiness?</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. Cortisol</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">B. Melatonin</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. ACTH</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. Growth hormone</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Melatonin</b> is a <b>serotonin-derived hormone</b> released from the <b>pineal gland</b>. Decreasing light (via retina → hypothalamus signaling) promotes melatonin release and sleepiness.
+        <ul>
+          <li><b>A</b> cortisol is a steroid hormone that contributes to wakefulness.</li>
+          <li><b>C</b> ACTH is released by the anterior pituitary to stimulate cortisol release; it is not the pineal hormone for sleepiness.</li>
+          <li><b>D</b> growth hormone is associated with slow-wave sleep but is not the circadian “darkness” signal from pineal gland.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q7 Correct: C -->
+  <div class="question" id="q7">
+    <b>7. Morning light helps increase wakefulness by triggering hypothalamic release of CRF → pituitary ACTH → adrenal release of which hormone?</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. Melatonin</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. Serotonin</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">C. Cortisol</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. Oxytocin</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The described pathway is the <b>HPA axis</b>: hypothalamus releases <b>CRF</b>, which causes anterior pituitary release of <b>ACTH</b>, which stimulates the adrenal cortex to release <b>cortisol</b>. Cortisol contributes to wakefulness.
+        <ul>
+          <li><b>A</b> melatonin is pineal and increases with darkness, not morning light via HPA.</li>
+          <li><b>B</b> serotonin is a neurotransmitter and precursor for melatonin, but not the HPA end hormone.</li>
+          <li><b>D</b> oxytocin is involved in bonding/uterine contraction; unrelated to the sleep–wake axis described.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q8 Correct: D -->
+  <div class="question" id="q8">
+    <b>8. A person reports vivid, narrative dreams that are most likely to occur during the part of the night when which stage predominates?</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. NREM3 predominating late in the night</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. NREM2 predominating late in the night</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. NREM1 predominating late in the night</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. REM predominating later in the night</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Approximately 75% of dreaming occurs in <b>REM</b>, and <b>REM sleep predominates later in the night</b> (while slow-wave sleep predominates earlier).
+        <ul>
+          <li><b>A</b> is reversed: SWS (NREM3) predominates earlier, not later.</li>
+          <li><b>B</b> and <b>C</b> are lighter NREM stages; dreaming can occur but most vivid dreaming is in REM, especially late night.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q9 Correct: A -->
+  <div class="question" id="q9">
+    <b>9. A theory proposes that dreams result from random neural activation and the cortex tries to “stitch” the fragments into a story. This is best described as:</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. Activation–synthesis theory</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Problem-solving dream theory</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. Cognitive-process dream theory</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. Representativeness heuristic</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Activation–synthesis</b> states that dreams come from widespread, random activation of neural circuitry, and the cortex assembles these elements into a coherent narrative.
+        <ul>
+          <li><b>B</b> problem-solving theory says dreams help solve problems during sleep.</li>
+          <li><b>C</b> cognitive-process theory frames dreams as the sleep version of stream-of-consciousness thought.</li>
+          <li><b>D</b> is a decision heuristic and has nothing to do with dream generation.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q10 Correct: B -->
+  <div class="question" id="q10">
+    <b>10. Which option is a <i>dyssomnia</i> rather than a parasomnia?</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Sleepwalking</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">B. Narcolepsy</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. Night terrors</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Acting out behavior during slow-wave sleep</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Dyssomnias</b> are disorders of falling asleep, staying asleep, or avoiding sleep. <b>Narcolepsy</b> is a dyssomnia (lack of voluntary control over sleep onset).
+        <ul>
+          <li><b>A</b> and <b>C</b> are parasomnias (abnormal behaviors during sleep), typically during NREM/SWS.</li>
+          <li><b>D</b> also describes parasomnia-like abnormal behavior in NREM, not a dyssomnia.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q11 Correct: C -->
+  <div class="question" id="q11">
+    <b>11. A person experiences sudden episodes of muscle weakness triggered by laughter, alongside daytime sleep attacks. Which diagnosis is most consistent?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Obstructive sleep apnea</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. Insomnia</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">C. Narcolepsy with cataplexy</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. Night terrors</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Cataplexy</b> is a loss of muscle control with sudden intrusion of REM-like features during waking hours, usually triggered by emotion. Combined with uncontrolled sleep onset → <b>narcolepsy</b>.
+        <ul>
+          <li><b>A</b> sleep apnea is breathing interruption during sleep, not emotion-triggered muscle weakness.</li>
+          <li><b>B</b> insomnia is difficulty falling or staying asleep, not sudden daytime REM-like symptoms.</li>
+          <li><b>D</b> night terrors occur in slow-wave sleep and are most common in children, with little recall afterward.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q12 Correct: D -->
+  <div class="question" id="q12">
+    <b>12. A sleep disorder involves repeated awakenings because airflow is blocked by a physical obstruction in the pharynx or trachea. This is best described as:</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Central sleep apnea</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Narcolepsy</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. Hypnopompic hallucinations</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. Obstructive sleep apnea</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Obstructive sleep apnea</b> occurs when a <b>physical blockage</b> prevents airflow. Patients may awaken frequently to breathe.
+        <ul>
+          <li><b>A</b> central sleep apnea is failure of the brain to signal the diaphragm to breathe (no physical blockage).</li>
+          <li><b>B</b> narcolepsy is uncontrolled sleep onset with symptoms like cataplexy, sleep paralysis, and hypnagogic/hypnopompic hallucinations.</li>
+          <li><b>C</b> hypnopompic hallucinations occur while awakening, but are not the core mechanism of apnea.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q13 Correct: A -->
+  <div class="question" id="q13">
+    <b>13. After several nights of limited sleep, a student performs poorly on a practice exam but insists they did “about the same as usual.” Which statement best explains this mismatch?</b>
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. Sleep deprivation can impair performance while reducing awareness of the impairment</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Sleep deprivation selectively improves reaction time</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. REM rebound prevents cognitive decline during deprivation</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. Delta waves increase during alertness to compensate</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The passage notes that sleep deprivation causes diminished cognitive performance, and that the sleep-deprived person is often <b>unlikely to recognize</b> how subpar their performance is.
+        <ul>
+          <li><b>B</b> is wrong: reaction time typically slows, not improves.</li>
+          <li><b>C</b> REM rebound occurs after deprivation when normal sleep resumes; it does not “protect” performance during deprivation.</li>
+          <li><b>D</b> delta waves are a deep-sleep marker (NREM3), not a wakeful compensation pattern.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q14 Correct: B -->
+  <div class="question" id="q14">
+    <b>14. Following a period of sleep deprivation, a person is allowed to sleep normally and shows earlier onset and longer duration of REM sleep. This phenomenon is called:</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Sleep spindle saturation</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. REM rebound</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. Cataplexy</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Circadian entrainment failure</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>REM rebound</b> is an earlier onset and increased duration of REM after sleep deprivation when normal sleep is permitted again.
+        <ul>
+          <li><b>A</b> is not a standard sleep-cycle concept in this chapter.</li>
+          <li><b>C</b> cataplexy is sudden muscle weakness triggered by emotion in narcolepsy.</li>
+          <li><b>D</b> circadian entrainment failure refers to misalignment with external cues; it does not specifically describe post-deprivation REM increase.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q15 Correct: C -->
+  <div class="question" id="q15">
+    <b>15. Which statement best distinguishes hypnosis from the sensationalized media portrayal?</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Hypnosis is identical to REM sleep and is defined by theta waves</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Hypnosis forces unwilling people to behave bizarrely against their values</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">C. Hypnosis involves heightened suggestibility and is most effective with a willing, non-skeptical subject</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">D. Hypnosis prevents false memories, making it ideal for courtroom testimony</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Hypnosis is a state where a person appears in control of normal functions but is <b>highly suggestible</b>. The chapter also notes that effective hypnosis requires a <b>willing personality</b> and <b>lack of skepticism</b>.
+        <ul>
+          <li><b>A</b> is wrong: hypnosis is not defined as REM sleep; meditation resembles Stage 1 on EEG, and hypnosis is defined by suggestibility.</li>
+          <li><b>B</b> is the “media myth”; real hypnosis is not a snap-fingers mind-control caricature.</li>
+          <li><b>D</b> is opposite: hypnosis can <b>increase vulnerability to false memories</b>; recovered memories under hypnosis are not admissible in court.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="section-tag">3 Passage Sets (Each passage has 3 questions) — Q16–Q24</div>
+
+  <!-- ===================== PASSAGE 1 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 1 — Sleep Lab Night: EEG, Behavior, and Memory</span>
+    <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A research group studies how disrupted sleep architecture affects next-day learning. Volunteers arrive at 10:00 p.m. and are fitted with EEG electrodes. One participant, Kai, falls asleep quickly. In the first hour, Kai’s EEG transitions from relaxed wakefulness (eyes closed) into sleep and shows a light-sleep pattern. Shortly afterward, the EEG continues to show the same basic rhythm but now includes repeated bursts of high-frequency activity lasting about 0.5–1 second, as well as occasional isolated high-amplitude waves. In the early part of the night, Kai is very hard to awaken during some periods; when awakened during those periods, Kai reports feeling “deeply groggy” and the EEG at those times shows very slow, high-voltage waves.</p>
+    <p>At 4:30 a.m., the lab briefly wakes Kai to perform a motor-sequence task (tapping a repeating finger pattern). After returning to bed, the remaining sleep shows long periods where the EEG resembles wakefulness and eye movements are rapid, but muscle tone recorded by EMG is low. The next morning, Kai shows improved finger-tapping speed and fewer errors compared to the pre-sleep baseline, but Kai has relatively weak recall of a list of factual statements learned before bed.</p>
+    <p>The research team wants to interpret which sleep stages were present and how those stages map to different types of memory consolidation.</p>
+  </div>
+
+  <div class="reasoning-box" id="p1-reason">
+    <b>How to reason (Passage 1):</b>
+    <ol>
+      <li><b>Decode EEG features:</b> theta + spindles + K complexes → <b>NREM2</b>; very slow high-voltage waves → <b>delta in NREM3 (SWS)</b>.</li>
+      <li><b>Use behavior clues:</b> “hard to awaken” strongly suggests <b>slow-wave sleep</b>.</li>
+      <li><b>Recognize REM signatures:</b> wake-like EEG + rapid eye movements + low muscle tone → <b>REM (paradoxical sleep)</b>.</li>
+      <li><b>Match memory type:</b> improved motor sequence points to <b>procedural</b> consolidation; weak fact-list recall suggests less support for <b>declarative</b> consolidation.</li>
+      <li><b>Eliminate distractors:</b> circadian hormones explain sleepiness timing, not spindles/K-complexes or muscle atonia patterns.</li>
+    </ol>
+  </div>
+
+  <!-- Q16 Correct: A -->
+  <div class="question" id="q16">
+    <b>16. The EEG period described as “theta rhythm with repeated bursts of high-frequency activity and occasional isolated high-amplitude waves” most strongly indicates which stage?</b>
+    <div class="choice" onclick="selectChoice('q16', this, true)">A. NREM2 (theta + sleep spindles + K complexes)</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. NREM3 (delta waves)</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. REM sleep</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">D. Alert wakefulness (beta)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        NREM2 is defined by <b>theta waves</b> plus <b>sleep spindles</b> (brief high-frequency bursts) and <b>K complexes</b> (single high-amplitude waves).
+        <ul>
+          <li><b>B</b> NREM3 would show delta (slow, high-voltage) waves and is highlighted by very high arousal threshold.</li>
+          <li><b>C</b> REM is wake-like EEG with rapid eye movements and muscle atonia; spindles/K complexes are not the hallmark.</li>
+          <li><b>D</b> beta waves occur during alertness and concentration, not sleep stage 2 features.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q17 Correct: B -->
+  <div class="question" id="q17">
+    <b>17. Which inference best explains why Kai is “very hard to awaken” during periods with very slow, high-voltage waves?</b>
+    <div class="choice" onclick="selectChoice('q17', this, false)">A. Those periods are REM sleep, which prevents awakening</div>
+    <div class="choice" onclick="selectChoice('q17', this, true)">B. Those periods are slow-wave sleep (NREM3), which has the highest arousal threshold</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Those periods represent alpha waves, which occur when eyes are closed</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. Those periods reflect increased cortisol, which deepens sleep</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Very slow, high-voltage waves are <b>delta waves</b> of <b>NREM3 (slow-wave sleep)</b>. The chapter emphasizes that rousing someone from SWS is exceptionally difficult.
+        <ul>
+          <li><b>A</b> REM has wake-like EEG and muscle atonia, but REM is not typically described as the “hardest to awaken” phase compared with SWS.</li>
+          <li><b>C</b> alpha is an awake-but-relaxed state (eyes closed), not deep sleep.</li>
+          <li><b>D</b> cortisol is associated with wakefulness (morning rise), not deepening sleep.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q18 Correct: D -->
+  <div class="question" id="q18">
+    <b>18. Kai shows improved finger-tapping skill the next morning but weak recall of factual statements. Which interpretation best matches the passage’s memory-consolidation association?</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. REM primarily consolidates declarative memory, so fact recall should be strongest</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">B. SWS primarily consolidates procedural memory, so motor skill should be weakest</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. NREM2 primarily consolidates declarative memory, so facts should be strongest</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">D. REM is more associated with procedural consolidation, while SWS is more associated with declarative consolidation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter notes that <b>recent studies</b> associate <b>REM</b> more with <b>procedural memory consolidation</b> (skills) and <b>SWS</b> more with <b>declarative memory consolidation</b> (facts). Kai’s pattern (skill improves, factual recall weaker) fits that mapping.
+        <ul>
+          <li><b>A</b> reverses the association given in the chapter.</li>
+          <li><b>B</b> also reverses the association (SWS is linked to declarative, not procedural, in the chapter).</li>
+          <li><b>C</b> is not supported; NREM2 is defined by spindles and K complexes, but the chapter’s consolidation comparison highlights REM vs SWS.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===================== PASSAGE 2 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 2 — Shift Work, Light Cues, and Circadian Signals</span>
+    <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A hospital compares two groups of new nurses during a month of training. Group Day works 7:00 a.m.–3:00 p.m. and sleeps at night. Group Night works 11:00 p.m.–7:00 a.m. and attempts to sleep during the day. Both groups are given identical lectures at the start of their shift and are tested 12 hours later. After the first week, Group Night reports feeling sleepy during the middle of their shift and struggling to fall asleep when they get home in the morning, despite being exhausted. The research team measures two circulating hormones at multiple time points: one that rises with darkness and contributes to sleepiness, and another that rises in early morning in response to increasing light via a hypothalamus → pituitary → adrenal pathway.</p>
+    <p>The hospital tries an intervention for Group Night: nurses wear bright-light glasses for the first half of the night shift and then wear strong blue-light–blocking goggles while commuting home and preparing to sleep. Two weeks later, Group Night reports improved ability to stay awake on shift and improved daytime sleep duration. Their 12-hour test performance improves, especially on tasks requiring rapid decision making and careful attention.</p>
+    <p>The research team wants to explain the mechanism using circadian rhythm principles and endocrine signaling.</p>
+  </div>
+
+  <div class="reasoning-box" id="p2-reason">
+    <b>How to reason (Passage 2):</b>
+    <ol>
+      <li><b>Identify the hormones:</b> “rises with darkness” → <b>melatonin</b> (pineal); “morning light via hypothalamus → pituitary → adrenal” → <b>cortisol</b> (HPA axis).</li>
+      <li><b>Connect light to brain:</b> retina signals hypothalamus, which controls pineal output; light suppresses melatonin.</li>
+      <li><b>Use the intervention logic:</b> bright light on shift mimics “daytime,” promoting wakefulness; blocking light after shift reduces cues that would push cortisol upward and helps melatonin rise appropriately for sleep.</li>
+      <li><b>Predict cognitive outcomes:</b> better sleep architecture and less circadian misalignment → improved attention and decision making.</li>
+      <li><b>Eliminate distractors:</b> EEG stage features explain sleep depth, but the passage’s key manipulation is <b>light</b> and <b>hormone timing</b>.</li>
+    </ol>
+  </div>
+
+  <!-- Q19 Correct: C -->
+  <div class="question" id="q19">
+    <b>19. In the passage’s hormone measurements, the hormone that “rises with darkness and contributes to sleepiness” is most likely:</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. ACTH</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. CRF</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">C. Melatonin</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. Cortisol</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Melatonin is a serotonin-derived hormone from the <b>pineal gland</b>. Decreasing light promotes melatonin release and sleepiness.
+        <ul>
+          <li><b>A</b> ACTH is a pituitary hormone that stimulates cortisol release, not the darkness sleepiness signal.</li>
+          <li><b>B</b> CRF is hypothalamic and upstream of ACTH/cortisol; it is not the pineal darkness hormone.</li>
+          <li><b>D</b> cortisol contributes to wakefulness and rises toward morning with increasing light (via HPA axis).</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q20 Correct: A -->
+  <div class="question" id="q20">
+    <b>20. Which explanation best accounts for why blue-light–blocking goggles after the night shift might help Group Night fall asleep?</b>
+    <div class="choice" onclick="selectChoice('q20', this, true)">A. Reduced light input to retina decreases hypothalamic signaling that would otherwise suppress melatonin</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. Blocking light increases cortisol release, which promotes deeper sleep</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. Blocking light directly generates delta waves in the occipital lobe</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">D. Reduced light prevents K complexes, which can disrupt sleep onset</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter states that the <b>retina connects to the hypothalamus</b>, which controls the pineal gland; decreasing light supports <b>melatonin release</b>. Blocking light after shift reduces “daytime” cues, allowing melatonin to rise to promote sleepiness.
+        <ul>
+          <li><b>B</b> is wrong: cortisol is tied to wakefulness and morning light cues, not deeper sleep.</li>
+          <li><b>C</b> confuses endocrine entrainment with EEG stage generation; delta waves are a feature of NREM3, not a direct effect of light on the occipital lobe.</li>
+          <li><b>D</b> K complexes are a normal NREM2 feature; the passage mechanism is about circadian signaling, not preventing normal stage-2 events.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q21 Correct: D -->
+  <div class="question" id="q21">
+    <b>21. Suppose a nurse experiences a gradual morning rise in the “wakefulness” hormone even after working nights. Which upstream signal would most directly initiate that rise according to the passage’s endocrine pathway?</b>
+    <div class="choice" onclick="selectChoice('q21', this, false)">A. Melatonin release from the pineal gland</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Dopamine release from the ventral tegmental area</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Growth hormone release during slow-wave sleep</div>
+    <div class="choice" onclick="selectChoice('q21', this, true)">D. CRF release from the hypothalamus</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter links increasing morning light to <b>hypothalamic CRF</b> release → anterior pituitary <b>ACTH</b> → adrenal cortex <b>cortisol</b> (wakefulness). Therefore, the upstream trigger in that chain is <b>CRF from the hypothalamus</b>.
+        <ul>
+          <li><b>A</b> melatonin promotes sleepiness and rises with darkness; it does not initiate cortisol rise.</li>
+          <li><b>B</b> dopamine is not the described circadian endocrine pathway here.</li>
+          <li><b>C</b> growth hormone is associated with SWS, but it is not the signal that triggers the cortisol morning rise.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===================== PASSAGE 3 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 3 — Nighttime Events: Sleepwalking, Night Terrors, and Narcolepsy Clues</span>
+    <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A pediatric clinic receives two families concerned about unusual nighttime events. Family A reports that their 7-year-old sometimes sits up in bed about 90 minutes after falling asleep, screams, thrashes, and breathes rapidly. The child’s heart rate is high and the child seems terrified. Attempts to wake the child are difficult, and the next morning the child recalls nothing. Family B reports that their 12-year-old has gotten out of bed and walked into the kitchen, talked incoherently, and even tried to open the front door; when guided back to bed, the child returns to sleep and later has no recollection.</p>
+    <p>A third patient, a 19-year-old college student, reports daytime sleep attacks and episodes where they feel awake but cannot move for several seconds after waking. They also describe vivid hallucinations as they are falling asleep. During one episode, the student laughs at a joke and suddenly collapses, describing their legs “giving out” while they remain conscious.</p>
+    <p>The clinician wants to classify each condition and identify the most likely sleep stage(s) implicated.</p>
+  </div>
+
+  <div class="reasoning-box" id="p3-reason">
+    <b>How to reason (Passage 3):</b>
+    <ol>
+      <li><b>Differentiate dyssomnia vs parasomnia:</b> parasomnias are abnormal behaviors during sleep; dyssomnias are problems with sleep onset/maintenance/control.</li>
+      <li><b>Use stage clues:</b> night terrors and sleepwalking usually occur during <b>slow-wave sleep (NREM3)</b>, often early in the night, and the person is hard to wake and has little recall.</li>
+      <li><b>Spot narcolepsy cluster:</b> daytime sleep attacks + <b>sleep paralysis</b> + hypnagogic hallucinations + <b>cataplexy</b> → narcolepsy with REM intrusion into wakefulness.</li>
+      <li><b>Choose the best label:</b> match the hallmark features rather than any single symptom.</li>
+      <li><b>Eliminate distractors:</b> REM dreaming is vivid but does not explain SWS parasomnias that have minimal recall and high arousal threshold.</li>
+    </ol>
+  </div>
+
+  <!-- Q22 Correct: B -->
+  <div class="question" id="q22">
+    <b>22. Family A’s episode (screaming, thrashing, high sympathetic arousal, difficult to wake, no recall) is most consistent with:</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. Insomnia (dyssomnia)</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">B. Night terrors (parasomnia during slow-wave sleep)</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. REM rebound</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. Central sleep apnea</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Night terrors are periods of intense anxiety most common in children, typically during <b>slow-wave sleep</b>. The child is difficult to wake and usually does not remember the event the next morning.
+        <ul>
+          <li><b>A</b> insomnia is difficulty falling asleep or staying asleep, not acute terror episodes with amnesia.</li>
+          <li><b>C</b> REM rebound is a post-deprivation increase in REM, not discrete terror events.</li>
+          <li><b>D</b> central sleep apnea involves failure of brain signaling to breathe, causing awakenings to breathe, not terror behaviors.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q23 Correct: C -->
+  <div class="question" id="q23">
+    <b>23. Family B’s description (walking and complex behavior during sleep with no recollection) most strongly indicates which classification and stage association?</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Dyssomnia during REM sleep</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Dyssomnia during NREM2 (spindles)</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">C. Parasomnia that usually occurs during slow-wave sleep (NREM3)</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. Hypnosis-like state characterized by increased suggestibility</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Sleepwalking (somnambulism) is a <b>parasomnia</b> and usually occurs during <b>slow-wave sleep (NREM3)</b>, with little or no recollection afterward.
+        <ul>
+          <li><b>A</b> dyssomnias are problems with sleep onset/maintenance/control (e.g., insomnia, narcolepsy, sleep apnea), not abnormal behaviors like walking.</li>
+          <li><b>B</b> NREM2 has spindles/K complexes but the chapter specifically notes sleepwalking usually occurs during SWS.</li>
+          <li><b>D</b> hypnosis is suggestibility while apparently awake; it does not describe sleepwalking episodes.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q24 Correct: D -->
+  <div class="question" id="q24">
+    <b>24. The 19-year-old’s daytime sleep attacks plus sleep paralysis, hypnagogic hallucinations, and emotion-triggered collapse most strongly suggests:</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. Obstructive sleep apnea with REM rebound</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. Night terrors with post-event amnesia</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. Delirium due to medical causes</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">D. Narcolepsy with REM intrusion (cataplexy, sleep paralysis, hypnagogic hallucinations)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The cluster is classic for <b>narcolepsy</b>: uncontrolled sleep onset plus <b>cataplexy</b> (emotion-triggered loss of muscle control), <b>sleep paralysis</b> (awake but unable to move), and <b>hypnagogic hallucinations</b> (hallucinations when going to sleep). These reflect REM-like features intruding into wakefulness.
+        <ul>
+          <li><b>A</b> sleep apnea causes breathing-related awakenings; it does not explain cataplexy or hypnagogic hallucinations.</li>
+          <li><b>B</b> night terrors are NREM3 parasomnias in children with difficulty awakening and poor recall, not daytime REM-intrusion symptoms.</li>
+          <li><b>C</b> delirium is rapid fluctuating cognition from medical causes; this presentation is sleep-stage intrusion symptoms.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+</body>
+</html>

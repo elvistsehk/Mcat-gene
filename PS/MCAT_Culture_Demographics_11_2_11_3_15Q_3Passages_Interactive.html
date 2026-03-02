@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MCAT Behavioral Sciences — Culture & Demographics (Ch. 11.2–11.3)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+</head>
+<body>
+
+<div class="main-header">
+  <div class="main-title">MCAT Behavioral Sciences — Culture & Demographics (Ch. 11.2–11.3)</div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 Correct: C -->
+<div class="question" id="q1">
+  <b>1. A museum curator studies how a nation’s flag is used at parades, in classrooms, and on government buildings to reinforce shared identity and loyalty. In this analysis, the flag is best treated as:</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. a norm that defines acceptable behavior in public spaces</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. a ritual that must follow a prescribed order of events</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. an artifact of material culture that embodies symbolic culture</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. evidence of cultural relativism applied to national identity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p><p><b>Why:</b> A flag is a <b>tangible object</b> (material culture) that carries <b>shared meaning</b> (symbolic culture such as patriotism and belonging). Material culture often serves as the physical embodiment of nonmaterial ideas.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Norms are rules/expectations for behavior; the flag itself is an object, not a rule.</li>
+  <li><b>B:</b> Rituals are formalized ceremonies (e.g., a pledge ceremony); the flag can be used in rituals but is not itself the ritual.</li>
+  <li><b>D:</b> Cultural relativism is a method for evaluating cultures on their own terms; it isn’t a category for classifying a cultural object.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 Correct: A -->
+<div class="question" id="q2">
+  <b>2. A student moves to a new country and learns that refusing a host’s second serving of food is considered rude. The student’s initial confusion is best explained by differences in:</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. norms that define the boundaries of acceptable behavior</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. values, because values are formalized ceremonies</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. beliefs, because beliefs are the physical objects of a culture</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. rituals, because rituals are always informal and spontaneous</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p><p><b>Why:</b> The “you should accept a second serving” rule is a <b>norm</b>—an informal expectation for appropriate behavior that provides social control.</p><p><b>Other choices:</b></p><ul>
+  <li><b>B:</b> Values are what is deemed important (e.g., hospitality), but the specific behavioral rule is a norm.</li>
+  <li><b>C:</b> Beliefs are accepted truths/assumptions; they’re not physical objects.</li>
+  <li><b>D:</b> Rituals are formalized ceremonies with a prescribed order; this is everyday etiquette.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 Correct: D -->
+<div class="question" id="q3">
+  <b>3. A researcher notes that smartphones rapidly changed how people share photos, but social expectations about privacy changed much more slowly, creating conflict about what “should” be posted online. This pattern is best described as:</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. symbolic ethnicity</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. cultural relativism</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. ethnography</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. culture lag</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p><p><b>Why:</b> <b>Culture lag</b> occurs when <b>material culture</b> (technology, artifacts) changes faster than <b>symbolic/nonmaterial culture</b> (values, norms, beliefs), producing tension and adjustment problems.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Symbolic ethnicity is selective, occasional expression of ethnic identity (e.g., one holiday).</li>
+  <li><b>B:</b> Cultural relativism is studying a culture on its own terms instead of judging it by one’s own.</li>
+  <li><b>C:</b> Ethnography is a method for studying cultures; it doesn’t name the mismatch between tech change and value change.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 Correct: B -->
+<div class="question" id="q4">
+  <b>4. A hospital adds multilingual signage and trained interpreters after repeated misunderstandings about consent procedures among recent immigrants. These misunderstandings are best categorized as:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. gender stratification</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. cultural barriers</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. symbolic ethnicity</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. ageism</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p><p><b>Why:</b> A <b>cultural barrier</b> occurs when differences in beliefs, values, or language impede effective interaction—here, communication about consent and autonomy.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Gender stratification is unequal access to resources based on gender.</li>
+  <li><b>C:</b> Symbolic ethnicity is intermittent celebration of heritage.</li>
+  <li><b>D:</b> Ageism is prejudice or discrimination based on age.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 Correct: B -->
+<div class="question" id="q5">
+  <b>5. Which scenario best illustrates a <i>ritual</i> rather than a norm?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Standing quietly in an elevator and facing the doors</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. Following a prescribed sequence of symbolic actions during a graduation ceremony</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Believing that patient autonomy should guide medical decisions</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Valuing hard work and independence as moral ideals</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p><p><b>Why:</b> A <b>ritual</b> is a <b>formalized ceremony</b> with symbolic objects and a <b>prescribed order</b> (processional → speeches → diploma conferral, etc.).</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Elevator etiquette is a norm (informal behavioral rule).</li>
+  <li><b>C:</b> This is a belief (accepted principle) about healthcare decision-making.</li>
+  <li><b>D:</b> These are values (what is considered important/good).</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 Correct: D -->
+<div class="question" id="q6">
+  <b>6. A team of sociologists lives in a remote community for months, participating in daily routines while documenting customs and meanings from the group’s perspective. This work is most accurately described as:</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. demographic transition</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. social movement organization</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Malthusian catastrophe analysis</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">D. ethnography</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p><p><b>Why:</b> <b>Ethnography</b> is the in-depth study of cultures and customs, often using immersive observation and participation to understand a group’s lived experience.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Demographic transition explains shifts in birth/death rates during economic development.</li>
+  <li><b>B:</b> Social movement organization focuses on coordinated activism to promote or resist social change.</li>
+  <li><b>C:</b> Malthusian catastrophe concerns population growth outpacing food supply.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 Correct: A -->
+<div class="question" id="q7">
+  <b>7. A clinician learns that a patient’s family expects to make end-of-life decisions collectively, while the clinician’s training emphasizes individual patient autonomy. Which cultural element is most directly in conflict?</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. beliefs about who should hold decision-making authority</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. rituals, because autonomy is a formal ceremony</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. material culture, because families are artifacts</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. norms, because beliefs cannot influence healthcare</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p><p><b>Why:</b> The disagreement is between <b>belief systems</b> (accepted assumptions) about authority and responsibility in healthcare decisions.</p><p><b>Other choices:</b></p><ul>
+  <li><b>B:</b> Rituals are ceremonies (e.g., a religious service), not the underlying decision rule.</li>
+  <li><b>C:</b> Material culture refers to physical objects (tools, clothing, artifacts).</li>
+  <li><b>D:</b> Beliefs strongly influence norms and expectations, including in healthcare.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 Correct: C -->
+<div class="question" id="q8">
+  <b>8. In evolutionary terms, the persistence of adult lactose digestion in certain populations is best explained as:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. a purely symbolic change in values about dairy</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. evidence that language determines genetic mutation rates</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">C. a genetic trait favored because cultural practices created a nutritional advantage</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">D. proof that all racial categories reflect distinct genetic lineages</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p><p><b>Why:</b> If a culture relies heavily on cattle farming and milk consumption, a mutation allowing <b>lactase persistence</b> can improve nutrition and survival, increasing reproductive success and being selected for.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Values alone don’t change digestion; selection acts on heritable physiological traits.</li>
+  <li><b>B:</b> Language transmits culture but does not determine mutation rates in a directed way.</li>
+  <li><b>D:</b> Race is socially constructed and does not cleanly map onto discrete genetic lineages.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 Correct: D -->
+<div class="question" id="q9">
+  <b>9. A country experiences a sharp decrease in death rates due to improved sanitation and vaccination, while birth rates remain high for a time. According to demographic transition theory, this country is most likely in:</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Stage 1 (preindustrial): high birth and high death</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Stage 4 (industrialized): low birth and low death</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Stage 3: dropping birth rates after contraception and women’s rights expand</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">D. Stage 2: dropping death rates with continued high birth rates</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p><p><b>Why:</b> In <b>Stage 2</b>, death rates drop first (health, nutrition, sanitation improve) while birth rates remain high, producing rapid population growth.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Stage 1 keeps both rates high and the population relatively stable.</li>
+  <li><b>B:</b> Stage 4 has both rates low and population relatively constant.</li>
+  <li><b>C:</b> Stage 3 is when birth rates begin to fall substantially.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 Correct: A -->
+<div class="question" id="q10">
+  <b>10. Which definition correctly matches the demographic statistic to its unit?</b>
+  <div class="choice" onclick="selectChoice('q10', this, true)">A. Fertility rate = average children per woman over a lifetime</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">B. Birth rate = deaths per 1000 people per year</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Mortality rate = children per woman per lifetime</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Migration rate = births minus deaths per year</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p><p><b>Why:</b> <b>Fertility rate</b> is children per woman per lifetime. Birth and mortality rates are commonly per 1000 people per year. Migration is immigration minus emigration.</p><p><b>Other choices:</b></p><ul>
+  <li><b>B:</b> That unit describes mortality rate, not birth rate.</li>
+  <li><b>C:</b> Mortality rate is deaths per 1000 people per year.</li>
+  <li><b>D:</b> That is natural population change; migration is immigration − emigration.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 Correct: B -->
+<div class="question" id="q11">
+  <b>11. A population has a very large proportion of people under age 15 relative to the working-age group (15–65). Which outcome is most directly predicted by a high dependency ratio in this scenario?</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Lower need for education spending because the population is younger</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">B. Greater economic burden on the working-age population to support dependents</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Immediate transition to Stage 4 demographic transition</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. A decrease in culture lag due to rapid symbolic change</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p><p><b>Why:</b> The <b>dependency ratio</b> estimates how many dependents (youth + elderly) the working-age population must support—raising economic strain when many people are outside the workforce.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> More youth typically increases education demand, not decreases it.</li>
+  <li><b>C:</b> Age structure doesn’t instantly determine transition stage; it often reflects earlier stages.</li>
+  <li><b>D:</b> Culture lag concerns material vs symbolic cultural change, not age structure.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 Correct: C -->
+<div class="question" id="q12">
+  <b>12. A society maintains separate bathrooms for men and women. This practice is best described as:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. gender stratification, because separation always implies unequal resources</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. a master status, because bathroom use defines identity</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. gender segregation, which may or may not involve inequality</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. symbolic ethnicity, because it reinforces gender heritage</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p><p><b>Why:</b> <b>Gender segregation</b> is separation based on perceived gender (bathrooms, sports teams). It does not necessarily imply unequal resource allocation (that would be stratification).</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Stratification is specifically unequal access to resources based on gender.</li>
+  <li><b>B:</b> Master status is the status that dominates identity; not relevant here.</li>
+  <li><b>D:</b> Symbolic ethnicity concerns ethnic identity, not gender.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 Correct: B -->
+<div class="question" id="q13">
+  <b>13. A patient’s chart lists them as “Black” in the local census-based racial categories, but they self-identify as Jamaican and speak patois at home. This example best illustrates that:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. race is a biological classification that determines language</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. race and ethnicity are distinct social constructs</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. ethnicity is fixed across societies, while race is universal</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. symbolic culture changes faster than material culture</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p><p><b>Why:</b> <b>Race</b> is a socially constructed label often based on perceived phenotypic traits; <b>ethnicity</b> is based on shared culture/language/national origin. Different ethnicities can share a racial label.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Race does not biologically determine language or culture.</li>
+  <li><b>C:</b> Both race and ethnicity vary by society and can change over time.</li>
+  <li><b>D:</b> That describes culture lag, not race/ethnicity.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 Correct: D -->
+<div class="question" id="q14">
+  <b>14. An adult who rarely engages with their ancestral culture nonetheless attends an annual folk festival, wears traditional clothing that day, and feels pride in that heritage. This pattern is best termed:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. cultural relativism</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. ethnocentrism</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. institutional discrimination</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">D. symbolic ethnicity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p><p><b>Why:</b> <b>Symbolic ethnicity</b> is a selective, occasional connection to ethnic identity (festivals, holidays, symbols) even when ethnicity is not central in everyday life.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Cultural relativism is studying cultures without judging them by one’s own norms.</li>
+  <li><b>B:</b> Ethnocentrism is judging other cultures using one’s own cultural standards.</li>
+  <li><b>C:</b> Institutional discrimination is discrimination embedded in structures and systems.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 Correct: A -->
+<div class="question" id="q15">
+  <b>15. A coalition organizes to expand voting access and reduce barriers to healthcare for marginalized groups, arguing their community has lost representation and resources compared with the rest of society. This coalition is best described as:</b>
+  <div class="choice" onclick="selectChoice('q15', this, true)">A. a proactive social movement motivated by perceived relative deprivation</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. a reactive social movement aimed at preserving the status quo</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">C. a demographic transition stage</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. an example of culture lag driven by material artifacts</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p><p><b>Why:</b> Movements that <b>promote social change</b> are <b>proactive</b>. A common motivation is <b>relative deprivation</b>—perceiving reduced resources/representation/agency compared to others or compared to the past.</p><p><b>Other choices:</b></p><ul>
+  <li><b>B:</b> Reactive movements resist or roll back social change.</li>
+  <li><b>C:</b> Demographic transition refers to shifts in birth/death rates during development.</li>
+  <li><b>D:</b> Culture lag is a mismatch between material and symbolic culture change.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passage-Based Questions (Q16–Q24)</div>
+
+<!-- Passage 1: Culture, Technology, and Healthcare Communication -->
+<div class="passage-header">
+  <span>Passage 1: Culture, Technology, and Healthcare Communication</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>At Riverside Medical Center, a new wearable device automatically translates spoken language into subtitles visible to staff through augmented-reality glasses. Administrators hope the device will reduce misunderstandings during informed consent conversations, especially when family members translate for patients.</p>
+  <p>After deployment, some clinicians enthusiastically record brief clips of the subtitles to “prove” what was said during difficult encounters. Patients and families react negatively, arguing that recording—even without audio—violates privacy and trust. The hospital’s older staff members also express discomfort, insisting that sensitive conversations should happen “face-to-face, without devices.”</p>
+  <p>In response, the hospital bans recording and creates a new ceremony for admission: a short scripted introduction where staff explain how translation works, what will and will not be stored, and how patients can opt out.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify which details describe <b>new technology or artifacts</b> (material culture) vs <b>values/norms about privacy and interaction</b> (symbolic culture).</li>
+    <li>If the technology changes faster than expectations about privacy or “proper” interaction, consider <b>culture lag</b>.</li>
+    <li>Decide whether the scenario is about an <b>informal rule</b> (norm) or a <b>formalized, ordered ceremony</b> (ritual).</li>
+    <li>For healthcare decision dilemmas, look for <b>belief/value conflicts</b> (e.g., autonomy, privacy, family decision-making) that create a <b>cultural barrier</b>.</li>
+  </ol>
+</div>
+
+<!-- Q16 Correct: C -->
+<div class="question" id="q16">
+  <b>16. Which interpretation best explains why the translation glasses triggered conflict even though they improved communication?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. The glasses increased ethnocentrism by forcing staff to judge other cultures more harshly</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. The glasses reduced symbolic culture by eliminating the need for language</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">C. Material culture changed quickly while privacy and interaction norms changed slowly, producing culture lag</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. The conflict occurred because rituals always change faster than technology</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p><p><b>Why:</b> The device is a <b>material innovation</b>. Discomfort and backlash centered on <b>symbolic culture</b>—privacy expectations and norms for sensitive conversations. When material change outpaces symbolic adjustment, <b>culture lag</b> creates conflict.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Ethnocentrism is judging other cultures by one’s own standards; the conflict here is mainly about privacy/recording and interaction norms.</li>
+  <li><b>B:</b> Language remains central; translation tools don’t remove symbolic culture.</li>
+  <li><b>D:</b> Rituals are usually slower-moving symbolic practices; the issue is tech vs norms, not rituals outpacing tech.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 Correct: B -->
+<div class="question" id="q17">
+  <b>17. The hospital’s policy that clinicians should not record subtitle clips during consent discussions is best classified as a:</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. value, because it reflects what the hospital deems important in life</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">B. norm, because it sets a boundary for acceptable behavior</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. belief, because it is a truth statement about recording technology</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. ritual, because it requires a prescribed order of events</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p><p><b>Why:</b> A <b>norm</b> is a rule/expectation that regulates behavior and defines what is acceptable. “Do not record” is a behavioral boundary.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> The value might be privacy/trust, but the concrete rule is a norm.</li>
+  <li><b>C:</b> A belief is an accepted truth (e.g., “recordings harm trust”); the policy itself is a behavioral rule.</li>
+  <li><b>D:</b> A ritual is a formalized ceremony with ordered steps.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 Correct: A -->
+<div class="question" id="q18">
+  <b>18. The new scripted admission ceremony is most accurately described as:</b>
+  <div class="choice" onclick="selectChoice('q18', this, true)">A. a ritual that formalizes expectations and communicates shared meaning</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">B. a norm because it is informal and varies across individuals</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. material culture because scripts are always physical artifacts</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. symbolic ethnicity because it expresses an occasional ethnic identity</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p><p><b>Why:</b> The hospital created a <b>formalized, ordered ceremony</b> (scripted steps) to convey meaning about privacy, storage, and choice—this is a <b>ritual</b>.</p><p><b>Other choices:</b></p><ul>
+  <li><b>B:</b> The key feature is formalization and prescribed order, which fits ritual, not an informal norm.</li>
+  <li><b>C:</b> The script is an artifact, but the question asks about the <i>ceremony</i>; rituals use artifacts and symbolism.</li>
+  <li><b>D:</b> Symbolic ethnicity is about ethnic identity expression, unrelated here.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2: Demographic Transition and Age Structure -->
+<div class="passage-header">
+  <span>Passage 2: Demographic Transition and Age Structure</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>In the country of Karuma, a public health campaign rapidly expands access to clean water and vaccines. Over a decade, the annual mortality rate drops substantially, while the birth rate remains high. The population pyramid begins to widen at the base as more children survive into adolescence.</p>
+  <p>Ten years later, contraception becomes more accessible and more girls remain in school through secondary education. Families increasingly report that raising children is more expensive because young people require longer education before becoming economically productive. The birth rate begins to fall.</p>
+  <p>Meanwhile, Karuma’s leaders debate whether to invest first in elementary schools, job creation, or elder-care infrastructure.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Translate story details into <b>birth-rate vs death-rate</b> changes over time.</li>
+    <li>Match the pattern to <b>demographic transition stages</b>: death rate drops first (Stage 2), then birth rate drops (Stage 3), and eventually both are low (Stage 4).</li>
+    <li>Use the population pyramid and age structure to infer the <b>dependency ratio</b> and which public resources are under strain.</li>
+    <li>Keep units straight: <b>fertility rate</b> is children per woman per lifetime; <b>birth/mortality rates</b> are per 1000 people per year.</li>
+  </ol>
+</div>
+
+<!-- Q19 Correct: D -->
+<div class="question" id="q19">
+  <b>19. Karuma’s first decade (mortality drops while birth rate stays high) most strongly indicates which stage of demographic transition?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Stage 1, because both birth and death rates are high</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Stage 4, because both birth and death rates are low</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Stage 3, because birth rates are already falling</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. Stage 2, because death rates decline before birth rates</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p><p><b>Why:</b> Stage 2 is defined by <b>falling death rates</b> from improvements in healthcare/sanitation while <b>birth rates remain high</b>, causing population growth.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Stage 1 keeps death rates high.</li>
+  <li><b>B:</b> Stage 4 requires low birth rates as well.</li>
+  <li><b>C:</b> Stage 3 is characterized by declining birth rates, which occurs later in Karuma.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 Correct: C -->
+<div class="question" id="q20">
+  <b>20. During the first decade, Karuma’s widening population pyramid base most directly predicts which short-term societal challenge?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. A surge in the elderly dependency ratio requiring immediate expansion of nursing homes</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. A stable population with little change in resource demand</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. A higher youth dependency ratio that increases demand for schools and pediatric services</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. A rapid drop in immigration because mortality fell</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p><p><b>Why:</b> A wide base means many children. That increases the <b>youth dependency ratio</b> and creates immediate demand for education, childcare, and pediatric healthcare.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Elder dependency rises when many people are over 65; that is not implied by a wide base.</li>
+  <li><b>B:</b> Stage 2 typically creates rapid growth, not stability.</li>
+  <li><b>D:</b> Immigration is not determined by mortality alone and isn’t implied by the pyramid base.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 Correct: A -->
+<div class="question" id="q21">
+  <b>21. A report states: “In Karuma, the fertility rate is 4.2.” Which statement best interprets this number?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. On average, a woman in Karuma is expected to have about 4.2 children over her lifetime</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Karuma has 4.2 births per 1000 people per year</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Karuma has 4.2 deaths per 1000 people per year</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Karuma has net immigration of 4.2 people per 1000 per year</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p><p><b>Why:</b> <b>Fertility rate</b> is measured as <b>children per woman per lifetime</b>.</p><p><b>Other choices:</b></p><ul>
+  <li><b>B:</b> That unit describes the <b>birth rate</b> (births per 1000 people per year).</li>
+  <li><b>C:</b> That unit describes the <b>mortality rate</b> (deaths per 1000 people per year).</li>
+  <li><b>D:</b> Net migration is immigration − emigration, typically per 1000 people per year.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3: Race, Ethnicity, and Social Movements -->
+<div class="passage-header">
+  <span>Passage 3: Race, Ethnicity, and Social Movements</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>In a large coastal city, a clinic launches an outreach program for newly arrived immigrants. The program hires clinicians who speak Spanish and partners with community leaders to increase screening for chronic diseases. Some staff initially describe the target population as a single “Hispanic race,” assuming the group shares the same customs, language preferences, and health beliefs.</p>
+  <p>During an intake interview, one patient explains: “I’m Guatemalan; my first language is K’iche’. I also speak Spanish, but I prefer medical information in my indigenous language when possible.” Another patient says she feels deeply Irish on St. Patrick’s Day, but otherwise rarely thinks about her ancestry.</p>
+  <p>At the same time, a local organization holds rallies opposing immigration and calling for stricter border policies, arguing that newcomers are changing the city too quickly.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Separate <b>race</b> (social labels based on perceived phenotypic traits) from <b>ethnicity</b> (shared culture/language/national origin).</li>
+    <li>Look for clues about <b>symbolic ethnicity</b>: intermittent, selective expression of heritage via symbols/holidays.</li>
+    <li>For social movements, ask: does the movement <b>promote change</b> (proactive) or <b>resist change</b> (reactive)? Then connect motivations to perceived threats or relative deprivation.</li>
+    <li>In healthcare examples, consider how simplifying labels can create <b>cultural barriers</b> and reduce effective communication.</li>
+  </ol>
+</div>
+
+<!-- Q22 Correct: B -->
+<div class="question" id="q22">
+  <b>22. The staff’s assumption that all “Hispanic” patients share the same language preferences most directly confuses which pair of concepts?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Material culture and symbolic culture</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Race and ethnicity</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Norms and rituals</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Gender segregation and gender stratification</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p><p><b>Why:</b> The assumption treats a broad category as if it implies shared language and cultural practices. <b>Ethnicity</b> concerns shared language/culture/national origin, while <b>race</b> is a socially constructed label often based on perceived phenotypic traits; the two do not map one-to-one.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> The error is not about objects vs ideas, but about social group labels.</li>
+  <li><b>C:</b> Not about behavior rules vs ceremonies.</li>
+  <li><b>D:</b> Not about gender-related resource allocation or separation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 Correct: C -->
+<div class="question" id="q23">
+  <b>23. The patient who feels “deeply Irish” on St. Patrick’s Day but rarely thinks about ancestry otherwise is best demonstrating:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. ethnocentrism</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. culture lag</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. symbolic ethnicity</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. institutional discrimination</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p><p><b>Why:</b> <b>Symbolic ethnicity</b> is a selective, occasional connection to ethnic identity through symbols or holidays, even when ethnicity is not central in daily life.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Ethnocentrism is judging other cultures using one’s own standards.</li>
+  <li><b>B:</b> Culture lag is material culture changing faster than symbolic culture.</li>
+  <li><b>D:</b> Institutional discrimination is discrimination embedded in social structures.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 Correct: D -->
+<div class="question" id="q24">
+  <b>24. The organization rallying against immigration is best categorized as a:</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. proactive social movement because it seeks broad social change</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. demographic transition because it responds to shifts in fertility</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. cultural relativist movement because it studies cultures on their own terms</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. reactive social movement resisting perceived social change</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p><p><b>Why:</b> Movements that <b>resist</b> social change are <b>reactive</b>. Here, the group’s goal is to slow or reverse immigration-driven change rather than expand rights or reforms.</p><p><b>Other choices:</b></p><ul>
+  <li><b>A:</b> Proactive movements promote change (e.g., civil rights), not resist it.</li>
+  <li><b>B:</b> Demographic transition is a population-level pattern in birth/death rates, not a movement category.</li>
+  <li><b>C:</b> Cultural relativism is an analytical stance, not what the rallies are doing.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+
+</body>
+</html>

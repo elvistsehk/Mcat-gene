@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Communication & Impression Management (Ch. 9.2)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Communication & Impression Management (Ch. 9.2)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+<!-- Q1 Correct: C -->
+<div class="question" id="q1">
+  <b>1. A researcher argues that once an emotion is experienced, the body has biologically prepared expressions (e.g., facial muscle patterns), but that an individual’s interpretation of the situation helps determine <i>which</i> emotion is experienced in the first place. This view is most consistent with the:</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Social construction model</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Purely behavioral model with no cognition</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">C. Appraisal model</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Claim that emotional expression has no biological component</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The <b>appraisal model</b> accepts <b>biologically prepared expressions</b> once an emotion occurs, but adds a <b>cognitive antecedent</b> (appraisal/interpretation) that shapes emotional experience and expression.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/D:</b> The social construction model denies a biological basis; the stem explicitly includes biology.</li>
+        <li><b>B:</b> The stem explicitly includes cognition (interpretation/appraisal), so a no-cognition model does not fit.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q2 Correct: A -->
+<div class="question" id="q2">
+  <b>2. A student in a new culture learns that showing frustration in public is considered disrespectful and begins suppressing anger during group meetings. These culturally learned expectations are best described as:</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Display rules</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. Network norms</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. The generalized other</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Role exit</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> <b>Display rules</b> are cultural expectations about <b>which emotions</b> can be expressed and <b>to what degree</b> in a given setting.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> “Network norms” is not the key term here; the stem is about emotion expression rules.</li>
+        <li><b>C:</b> Generalized other is Mead’s concept for imagining society’s expectations, not specifically cultural emotion rules.</li>
+        <li><b>D:</b> Role exit is changing identities (dropping one role for another).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q3 Correct: D -->
+<div class="question" id="q3">
+  <b>3. In Goffman’s dramaturgical perspective, which behavior best illustrates the <i>back-stage self</i>?</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. A cashier smiling and using scripted greetings with customers</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. A student carefully choosing professional clothing before an interview</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. A candidate rehearsing “polished” answers while waiting in the lobby</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">D. The same candidate relaxing at home and speaking candidly with close friends, unconcerned with image</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The <b>back stage self</b> appears when one is <b>hidden from the audience</b> and no longer feels pressure to maintain a public performance.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B/C:</b> These are <b>front-stage</b> behaviors—scripted, audience-facing, and image-managed.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q4 Correct: B -->
+<div class="question" id="q4">
+  <b>4. A person says, “I’m a premedical student,” primarily to establish how they should be seen by someone they just met. This is the impression management strategy of:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Ingratiation</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">B. Self-disclosure</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Aligning actions</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. Alter-casting</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Self-disclosure</b> involves giving information about oneself to <b>establish an identity</b>.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Ingratiation uses flattery or conforming to win someone over.</li>
+        <li><b>C:</b> Aligning actions involves making questionable behavior acceptable through excuses/justifications.</li>
+        <li><b>D:</b> Alter-casting imposes an identity onto <i>someone else</i>.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q5 Correct: A -->
+<div class="question" id="q5">
+  <b>5. Which behavior is the clearest example of <i>managing appearances</i> as an impression management strategy?</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Wearing a white coat during a clinic tour to appear competent and professional</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Saying, “As a good MCAT student, you should practice every day,” to assign a role to someone</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Complimenting a friend before asking them for a favor</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Explaining a missed deadline by blaming a noisy neighbor</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> <b>Managing appearances</b> uses props, grooming, emotional control, or associations to create a desired image.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> That is <b>alter-casting</b> (assigning an identity to another person).</li>
+        <li><b>C:</b> That is <b>ingratiation</b> (flattery to win someone over).</li>
+        <li><b>D:</b> That is <b>aligning actions</b> (excuses/justifications for questionable behavior).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q6 Correct: C -->
+<div class="question" id="q6">
+  <b>6. Which of the following is considered <i>verbal communication</i> rather than nonverbal communication?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Prosody (tone of voice) and pauses during a conversation</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Eye contact and interpersonal distance</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Formal signs in a sign language (e.g., ASL)</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Facial expressions and posture</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Formal signs in an established sign language function like words and grammar, so they are classified as <b>verbal</b> communication.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B/D:</b> These are classic examples of <b>nonverbal</b> cues (tone, eye contact, body language).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q7 Correct: B -->
+<div class="question" id="q7">
+  <b>7. A student missed an important meeting and says, “I didn’t show up because my phone battery died and I never saw the reminders.” This is best categorized as which impression management strategy?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Ingratiation</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">B. Aligning actions</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Self-disclosure</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Managing appearances</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Aligning actions</b> makes questionable behavior acceptable via <b>excuses or justifications</b> (“It wasn’t really my fault”).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Ingratiation is flattery/conforming.</li>
+        <li><b>C:</b> Self-disclosure is identity information (e.g., “I’m premed”).</li>
+        <li><b>D:</b> Managing appearances is props/emotional control/associations.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q8 Correct: D -->
+<div class="question" id="q8">
+  <b>8. A test-prep book says, “As a responsible future physician, you should start studying today.” In impression management terms, this is best described as:</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Self-disclosure</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Managing appearances</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Ingratiation</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Alter-casting</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Alter-casting</b> assigns an identity/role to someone else (“you are the responsible future physician”), nudging them to act consistently with that imposed role.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Self-disclosure is information about oneself, not labeling others.</li>
+        <li><b>B:</b> Managing appearances is props/behavior to look good.</li>
+        <li><b>C:</b> Ingratiation is flattery to win someone over (not the main mechanism here).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q9 Correct: C -->
+<div class="question" id="q9">
+  <b>9. A person feels furious but deliberately maintains a neutral facial expression and steady voice while speaking to a supervisor. This is best described as emotional management by:</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Simulating an emotion they do not feel</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Amplifying the felt emotion to match the situation</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. Neutralizing emotional expression</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Masking the emotion with a different emotion (e.g., smiling)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> <b>Neutralizing</b> means displaying <b>no emotional expression</b> despite having an internal emotional state.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Simulating means displaying an emotion you are not feeling.</li>
+        <li><b>B:</b> Amplifying increases the visible intensity of the emotion.</li>
+        <li><b>D:</b> Masking would show a different emotion (e.g., smiling to cover anger).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q10 Correct: B -->
+<div class="question" id="q10">
+  <b>10. Which statement best distinguishes <i>nonverbal</i> from <i>verbal</i> communication as described in this chapter?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Nonverbal communication occurs only in face-to-face interactions, while verbal communication occurs only in writing</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Nonverbal communication can occur without words and may be unintentional, whereas verbal communication relies on words (spoken, written, or signed)</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Nonverbal communication is always conscious, whereas verbal communication is always unconscious</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Nonverbal communication cannot convey emotion or attitudes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> Verbal communication uses <b>words</b> (spoken, written, signed). Nonverbal communication conveys information <b>without words</b> (facial expression, posture, tone, eye contact) and can be intentional or unintentional.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Both can occur in many formats; phone calls include nonverbal tone and pauses.</li>
+        <li><b>C:</b> Either type can be conscious or unconscious.</li>
+        <li><b>D:</b> Nonverbal cues often communicate emotions, attitudes, and personality.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q11 Correct: A -->
+<div class="question" id="q11">
+  <b>11. A researcher claims that emotions have <i>no biological basis</i> and that what people feel and display depends entirely on social context and learned norms. This is most consistent with the:</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. Social construction model</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Basic model of emotional expression</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. Darwinian universality claim</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. View that facial expressions are universal across species due to conserved musculature</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The <b>social construction model</b> explicitly argues emotions are shaped by <b>experience and context</b>, not biology.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B/C/D:</b> These all assume some biological universality (Darwin/basic model) rather than “no biology.”</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q12 Correct: D -->
+<div class="question" id="q12">
+  <b>12. A student wants to know how society expects them to behave during a formal ceremony and mentally adopts the perspective of “people in general” to guide their actions. In Mead’s terms, the student is using the:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. I</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Authentic self</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Tactical self</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Generalized other (contributing to the Me)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Mead’s <b>generalized other</b> is a person’s internalized sense of society’s expectations. Considering it helps develop the <b>Me</b> (the socially shaped self).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The <b>I</b> is the impulse-driven self.</li>
+        <li><b>B/C:</b> Authentic/tactical selves come from impression management language, not Mead’s “Me/I” framework.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q13 Correct: B -->
+<div class="question" id="q13">
+  <b>13. An individual laughs at a supervisor’s joke and agrees with their opinion primarily to be liked and avoid tension, even though the individual privately disagrees. This is the impression management strategy of:</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Self-disclosure</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">B. Ingratiation</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Alter-casting</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Neutralizing emotional expression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> <b>Ingratiation</b> involves using <b>flattery</b> or conforming to expectations to win approval.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Self-disclosure is identity information about oneself.</li>
+        <li><b>C:</b> Alter-casting assigns a role to someone else.</li>
+        <li><b>D:</b> Neutralizing is showing no emotion; here the person is performing emotion (laughing) to please.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q14 Correct: A -->
+<div class="question" id="q14">
+  <b>14. In Goffman’s dramaturgical approach, a person’s attempt to control how others perceive them by adjusting “scene,” “costume,” and “script” is best described as:</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Impression management</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">B. Interaction process analysis (SYMLOG)</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Network analysis</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Role exit</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Goffman frames social interaction as performance; regulating information and presentation to shape others’ perceptions is <b>impression management</b> (often called self-presentation).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> SYMLOG is a method to classify group interactions, not self-presentation.</li>
+        <li><b>C:</b> Network analysis maps relationships among people/groups.</li>
+        <li><b>D:</b> Role exit is dropping one identity for another.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q15 Correct: C -->
+<div class="question" id="q15">
+  <b>15. Which animal communication example best fits the category of <i>visual display</i> rather than scent or vocalization?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. A skunk releasing a defensive odor when threatened</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Prairie dogs producing distinct alarm calls for different predators</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Bees performing a waggle dance that signals the location of food</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Pheromones released to attract a mate</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The <b>waggle dance</b> is a movement-based <b>visual display</b> that conveys information about resources.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/D:</b> These are <b>scent/chemical</b> signals.</li>
+        <li><b>B:</b> Alarm calls are <b>vocalizations</b>.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+<!-- Passage 1 -->
+<div class="passage-header">
+  <span>Passage 1: The Interview “Performance”</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Leah is applying for a research internship. The day of the interview, she wears a conservative suit, checks her posture in the mirror, and practices a calm tone of voice even though she feels anxious. In the lobby, she repeats a few “safe” stories that highlight teamwork and perseverance. During the interview, she notices the interviewer casually mentions a famous scientist and Leah quickly says, “I’ve always admired that lab’s work,” although she has only skimmed one of their papers.</p>
+  <p>After the interview, Leah meets a close friend for coffee and admits she felt overwhelmed and uncertain. She jokes about how “scripted” her answers sounded and says she would never talk that way in her everyday life.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Mark which behaviors are <b>audience-facing</b> (front stage) versus <b>private</b> (back stage).</li>
+    <li>When you see props/clothing/controlled tone, think <b>managing appearances</b>. When you see flattery/agreement to be liked, think <b>ingratiation</b>.</li>
+    <li>Map “selves”: <b>authentic</b> (who she is), <b>ideal</b> (who she wants to be), <b>tactical</b> (who she markets herself to be to meet expectations).</li>
+    <li>Choose answers that combine at least <b>two passage cues</b> (what she did + why/when she did it), not just a single quoted phrase.</li>
+  </ol>
+</div>
+
+<!-- Q16 Correct: D -->
+<div class="question" id="q16">
+  <b>16. Leah saying “I’ve always admired that lab’s work” after only skimming one paper is best interpreted as which impression management strategy?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Self-disclosure (establishing identity)</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. Aligning actions (excusing questionable behavior)</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. Alter-casting (assigning an identity to the interviewer)</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. Ingratiation (agreeing/flattering to win favor)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> Leah strategically <b>aligns herself</b> with the interviewer’s interest to be liked and appear compatible—classic <b>ingratiation</b> (flattery/conforming to expectations).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Self-disclosure is sharing identity facts (e.g., “I’m premed”), not flattering the interviewer.</li>
+        <li><b>B:</b> Aligning actions is making a questionable act acceptable via excuses (not happening here).</li>
+        <li><b>C:</b> Alter-casting assigns a role to the other person (e.g., “As a responsible mentor, you…”).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q17 Correct: A -->
+<div class="question" id="q17">
+  <b>17. Which detail most strongly supports that Leah’s conversation with her friend reflects the <i>back-stage self</i>?</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. She admits uncertainty and jokes about how scripted she sounded, without concern for audience approval</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. She maintains a calm tone of voice during the interview</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. She chooses conservative clothing the morning of the interview</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. She repeats “safe” stories about teamwork in the lobby</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> Back stage involves being <b>hidden from the formal audience</b>, allowing more candid behavior that may contradict the public performance.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B/C/D:</b> These are front-stage behaviors designed to influence the interviewer’s perceptions (tone, costume, scripted stories).</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q18 Correct: B -->
+<div class="question" id="q18">
+  <b>18. Leah’s “safe” stories and controlled tone most directly reflect which of the three selves used in impression management language?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Authentic self</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Tactical self</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Ideal self</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. The I (impulse-driven self)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The <b>tactical self</b> is who Leah <b>markets herself to be</b> to meet others’ expectations (polished stories, controlled tone) during evaluation.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Authentic self includes the full “real” person (including anxiety and uncertainty).</li>
+        <li><b>C:</b> Ideal self is who she wants to be under optimal circumstances; tactical self is who she presents to satisfy expectations right now.</li>
+        <li><b>D:</b> Mead’s “I” is not the “three selves” framing used in impression management here.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 2 -->
+<div class="passage-header">
+  <span>Passage 2: Emotion Rules Across Contexts</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>Two medical students, Hana and Miguel, rotate through clinics in two different cultural contexts. In Clinic X, staff strongly discourage public displays of anger; supervisors describe anger as “disruptive” and rarely express it themselves. When Hana feels irritated after a patient repeatedly interrupts, she keeps a neutral expression and speaks softly. Later she admits she “felt angry but tried to show nothing.”</p>
+  <p>In Clinic Y, staff treat open frustration as acceptable when used to emphasize safety concerns. During rounds, Miguel raises his voice, gestures emphatically, and frowns while arguing that a medication order is unsafe. Afterward, he says he was “more upset than I looked,” because he intentionally toned down his reaction to remain professional.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify what the passage is really contrasting: not “who is angry,” but <b>how culture/context shapes expression</b> (display rules).</li>
+    <li>Classify emotion management: <b>neutralizing</b> (show nothing), <b>deamplifying</b> (show less), <b>amplifying</b> (show more), <b>masking</b> (show a different emotion).</li>
+    <li>When asked to choose a model, ask whether the passage supports a <b>strong biological universality</b> or emphasizes <b>situational/cultural learning</b>.</li>
+    <li>Use the passage’s evidence (neutral face, toned-down reaction, norms described by staff) to justify your inference.</li>
+  </ol>
+</div>
+
+<!-- Q19 Correct: C -->
+<div class="question" id="q19">
+  <b>19. Which inference best fits the passage’s contrast between Clinic X and Clinic Y?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Anger cannot be experienced in Clinic X because it is not displayed publicly</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Facial expressions of anger are never influenced by cultural expectations</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">C. Cultural context can shape how emotions are expressed, even when the internal emotion is similar</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. The passage proves that emotions have no internal component</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> Both students report feeling anger/irritation, but they modulate expression differently due to local norms—evidence that <b>culture shapes display</b> (display rules) without denying internal experience.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> The passage explicitly says Hana <b>felt angry</b> but showed nothing.</li>
+        <li><b>B:</b> The passage suggests the opposite: expression varies by setting.</li>
+        <li><b>D:</b> The passage does not eliminate internal emotion; it shows regulation of expression.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q20 Correct: D -->
+<div class="question" id="q20">
+  <b>20. Miguel saying he was “more upset than I looked” because he toned down his reaction is best classified as:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Masking anger with happiness</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Neutralizing emotional expression</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Amplifying emotional expression</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Deamplifying emotional expression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> <b>Deamplifying</b> means showing the emotion <b>less intensely</b> than it is felt internally (“more upset than I looked”).</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Masking would show a different emotion (e.g., smiling).</li>
+        <li><b>B:</b> Neutralizing would show <b>no</b> emotion at all, which fits Hana more than Miguel.</li>
+        <li><b>C:</b> Amplifying would make the expression stronger than the internal emotion.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q21 Correct: B -->
+<div class="question" id="q21">
+  <b>21. If an investigator concluded from these clinic observations that emotional expression is primarily learned from social norms and context rather than biologically fixed, which model would the investigator be endorsing?</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Basic Darwinian model as the sole explanation</div>
+  <div class="choice" onclick="selectChoice('q21', this, true)">B. Social construction model</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Claim that facial expressions are universally recognized and therefore never regulated</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. A model in which culture only affects physiology, not expression</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: B.</b></p>
+      <p><b>Why:</b> The <b>social construction model</b> emphasizes that emotions and their display are grounded in <b>social encounters and cultural norms</b>, not biology.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Darwin’s model emphasizes biological consistency across cultures.</li>
+        <li><b>C:</b> Universality does not imply “never regulated”; the passage shows regulation.</li>
+        <li><b>D:</b> The chapter emphasizes culture affecting expression and meaning, not only physiology.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Passage 3 -->
+<div class="passage-header">
+  <span>Passage 3: Signals Without Words</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <p>A behavioral ecology team observes communication in multiple species. They record a colony of bees and note that returning foragers perform patterned movements near the hive entrance. The researchers also study prairie dogs and find that alarm calls differ depending on whether a hawk, coyote, or unfamiliar object is nearby. In a nearby wetland, male birds display brightly colored plumage during mating season and perform short dances toward females.</p>
+  <p>To compare chemical signaling, the team documents that skunks release a strong odor when threatened and that ants follow scent trails to food sources. Finally, in a lab setting, a primate uses a standardized set of hand signs to request food and name objects while interacting with a trainer.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Classify each signal type: <b>movement/visual display</b> (dance, plumage), <b>scent</b> (odor trails, pheromones), <b>vocalization</b> (alarm calls).</li>
+    <li>For the primate using standardized hand signs, ask whether the system functions like <b>words with agreed meaning</b> → verbal classification in this chapter.</li>
+    <li>When asked “which is nonverbal,” remember: verbal = words (spoken/written/signed); nonverbal = posture, facial expression, prosody, scent, etc.</li>
+    <li>Prefer answers that map <b>the passage evidence</b> to <b>the correct communication category</b>.</li>
+  </ol>
+</div>
+
+<!-- Q22 Correct: A -->
+<div class="question" id="q22">
+  <b>22. Which observation from the passage is the clearest example of <i>scent-based</i> communication?</b>
+  <div class="choice" onclick="selectChoice('q22', this, true)">A. Ants following scent trails to reach food sources</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Prairie dogs producing distinct alarm calls for different threats</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Male birds displaying colorful plumage and dancing</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Bees performing patterned movements near the hive entrance</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: A.</b></p>
+      <p><b>Why:</b> The ant trail is explicitly a <b>chemical/scent</b> signal that guides behavior.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>B:</b> Alarm calls are <b>vocalizations</b>.</li>
+        <li><b>C/D:</b> Plumage/dancing and bee movement are <b>visual display / movement</b> signals.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q23 Correct: D -->
+<div class="question" id="q23">
+  <b>23. Based on the chapter’s definitions, the primate’s standardized hand signs to request food are best classified as:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Nonverbal communication because they use hands rather than speech</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. A purely emotional facial display</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. Scent-based communication</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">D. Verbal communication because formal signs function as words</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: D.</b></p>
+      <p><b>Why:</b> The chapter notes that <b>formal sign languages</b> are classified as <b>verbal communication</b> because they use standardized signs with word-like meaning and structure.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A:</b> Hand movement is not automatically “nonverbal” if it is part of a formal sign language.</li>
+        <li><b>B:</b> No facial-expression claim is made here.</li>
+        <li><b>C:</b> This is not chemical signaling.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Q24 Correct: C -->
+<div class="question" id="q24">
+  <b>24. Suppose a researcher wants to predict which communication channel is most likely to vary across human cultures according to the chapter’s discussion. Which choice is most defensible?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. The existence of vocal cords in humans</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Whether humans can hear sound waves</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. The meaning of eye contact and how much direct eye contact is considered appropriate</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Whether humans have facial muscles</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      <p><b>Correct Answer: C.</b></p>
+      <p><b>Why:</b> The chapter explicitly emphasizes that <b>nonverbal cues are often dictated by culture</b>—for example, direct eye contact can signal honesty in one culture but disrespect in another.</p>
+      <p><b>Other choices:</b></p>
+      <ul>
+        <li><b>A/B/D:</b> These are biological capacities shared broadly; the question asks for a channel whose <b>interpretation/use</b> changes across cultures.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>

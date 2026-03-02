@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Cognition (Ch 4.1) — 15 Standalone + 3 Passages</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .subhead{ font-size:14px; font-weight:normal; opacity:0.95; margin-top:6px; line-height:1.35; }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+
+<body>
+  <div class="main-header">
+    🧠 MCAT Practice — Cognition (Chapter 4.1): Information Processing, Development, Aging
+    <div class="subhead">
+      Includes: information-processing model (encoding/storage/retrieval), dual-coding, Piaget (4 stages + schema/assimilation/accommodation),
+      Vygotsky/culture, fluid vs crystallized intelligence, dementia vs delirium, heredity/environment effects.
+    </div>
+    <div class="controls">
+      <button class="ctrl-btn" id="resetAll">Reset all</button>
+    </div>
+  </div>
+
+  <div class="section-tag">15 Standalone MCAT-style Questions (Q1–Q15)</div>
+
+  <!-- ===================== STANDALONE QUESTIONS ===================== -->
+
+  <!-- Q1 Correct: A -->
+  <div class="question" id="q1">
+    <b>1. A student remembers the steps of glycolysis after weeks of studying, but during the exam they “blank” even though they can recognize the right answer when they see it later. The most likely breakdown during the exam is in:</b>
+    <div class="choice" onclick="selectChoice('q1', this, true)">A. Retrieval of stored information</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. Sensory memory formation</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Object permanence</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Primary circular reactions</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The information-processing model emphasizes <b>encoding → storage → retrieval</b>. If the student can recognize the answer later, the knowledge was likely <b>stored</b>, but <b>couldn’t be accessed on demand</b> during the exam—this is a <b>retrieval</b> problem.
+        <ul>
+          <li><b>B</b> sensory memory lasts seconds or less and is not the bottleneck for learned biochemical steps.</li>
+          <li><b>C</b> object permanence is an infant milestone (sensorimotor stage).</li>
+          <li><b>D</b> primary circular reactions are repetitive infant behaviors, not exam performance.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q2 Correct: B -->
+  <div class="question" id="q2">
+    <b>2. A lecturer provides both a diagram of cardiac blood flow and a spoken explanation. According to Paivio’s dual-coding theory, the main advantage is that:</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. Visual encoding always replaces verbal encoding</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">B. Two representational codes create redundancy, improving later access with different cues</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. Short-term memory capacity increases beyond 7 ± 2</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. Retrieval becomes automatic and emotion-free</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Dual-coding proposes that <b>verbal associations + visual images</b> can store similar content, creating <b>redundancy</b>. If one cue fails (words), another cue (image) may still trigger retrieval.
+        <ul>
+          <li><b>A</b> is incorrect: dual-coding uses both, not replacement.</li>
+          <li><b>C</b> confuses coding strategy with STM capacity limits.</li>
+          <li><b>D</b> memory is influenced by context/emotion; dual-coding doesn’t remove that.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q3 Correct: C -->
+  <div class="question" id="q3">
+    <b>3. A clinician applies a successful communication strategy from one patient encounter to a new patient but modifies it for different cultural expectations. This best reflects:</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. Centration</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. Egocentrism</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">C. Situational modification (extrapolating and adjusting prior decisions)</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. Primary circular reactions</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The model highlights that decisions can be <b>extrapolated and adjusted to solve new problems</b>—this is <b>situational modification</b>. The clinician transfers a strategy but adapts it to context.
+        <ul>
+          <li><b>A</b> centration is a preoperational limitation (focus on one feature only).</li>
+          <li><b>B</b> egocentrism is inability to take others’ perspectives (also preoperational).</li>
+          <li><b>D</b> is an infant sensorimotor pattern, unrelated to adult problem solving.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q4 Correct: D -->
+  <div class="question" id="q4">
+    <b>4. A 4-year-old insists that a tall, thin glass has “more juice” than a short, wide glass even after watching the same juice be poured between them. Piaget would attribute this error primarily to:</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Object permanence</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. Hypothetical reasoning</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. Conservation mastery</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">D. Centration during the preoperational stage</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Preoperational children often fail <b>conservation</b> because of <b>centration</b>—they focus on one salient feature (height) and ignore width/volume.
+        <ul>
+          <li><b>A</b> object permanence is sensorimotor (0–2 years).</li>
+          <li><b>B</b> hypothetical reasoning is formal operational (≈11+ years).</li>
+          <li><b>C</b> is the ability for concrete operational kids, but the child shows the opposite (no conservation).</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q5 Correct: A -->
+  <div class="question" id="q5">
+    <b>5. A child repeatedly throws a spoon from a high chair and smiles when a parent picks it up, then immediately throws it again. Piaget would classify this pattern as:</b>
+    <div class="choice" onclick="selectChoice('q5', this, true)">A. A secondary circular reaction in the sensorimotor stage</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. Egocentrism in the preoperational stage</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Hypothetical reasoning in the formal operational stage</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. Crystallized intelligence in late adulthood</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Secondary circular reactions</b> are repetitive behaviors focused on the <b>external environment</b> (dropping/throwing objects) because the action produces an interesting response.
+        <ul>
+          <li><b>B</b> is a preoperational limitation about perspective-taking, not repetitive sensorimotor exploration.</li>
+          <li><b>C</b> refers to systematic variable control, far beyond infancy.</li>
+          <li><b>D</b> is an aging/intelligence concept, not early development.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q6 Correct: B -->
+  <div class="question" id="q6">
+    <b>6. A toddler laughs when an adult “disappears” behind hands during peek-a-boo. The developmental concept most directly involved is:</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. Conservation</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">B. Object permanence (a sensorimotor milestone)</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. Centration</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. Delirium tremens</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Peek-a-boo is fun for very young infants because they may not yet fully grasp <b>object permanence</b>—the idea that objects/people continue to exist when out of view.
+        <ul>
+          <li><b>A</b> conservation is mastered in concrete operational (≈7–11 years).</li>
+          <li><b>C</b> centration is a preoperational error (≈2–7 years).</li>
+          <li><b>D</b> is a severe alcohol-withdrawal delirium, unrelated to infants.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q7 Correct: C -->
+  <div class="question" id="q7">
+    <b>7. A child calls every four-legged animal “dog.” After seeing a cat, the child updates their categories so that “dog” and “cat” are separate. This update is best described as:</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. Assimilation of the cat into the existing “dog” schema</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. Egocentrism</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">C. Accommodation (modifying schemata to fit new information)</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. Fluid intelligence crystallizing into procedural memory</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Accommodation</b> occurs when existing schemata are <b>modified</b> to incorporate information that doesn’t fit neatly (splitting “dog” into dog vs cat).
+        <ul>
+          <li><b>A</b> would be labeling the cat as a dog (fitting new info into the old schema without changing it).</li>
+          <li><b>B</b> is a perspective-taking limitation, not category restructuring.</li>
+          <li><b>D</b> mixes unrelated concepts; Piaget’s terms are about schemata, not intelligence types.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q8 Correct: D -->
+  <div class="question" id="q8">
+    <b>8. A 9-year-old can solve “If you have 12 apples and give away 5, how many remain?” but struggles with “What is justice?” Piaget would say the child is most likely in the:</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Sensorimotor stage</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. Preoperational stage</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. Formal operational stage</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. Concrete operational stage</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Concrete operational children (≈7–11) can reason logically about <b>concrete, directly manipulable</b> information but have limited <b>abstract</b> reasoning.
+        <ul>
+          <li><b>A</b> is infancy (0–2) with object permanence development.</li>
+          <li><b>B</b> is 2–7 with egocentrism and conservation failures.</li>
+          <li><b>C</b> (≈11+) supports abstract, hypothetical reasoning (e.g., “justice”).</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q9 Correct: A -->
+  <div class="question" id="q9">
+    <b>9. In Piaget’s pendulum task, adolescents test one variable at a time while holding others constant. This ability most directly reflects:</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. Hypothetical reasoning characteristic of formal operational thought</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Egocentrism due to centration</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. Primary circular reactions</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. Delirium-driven cognitive fluctuation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Formal operational thinking allows systematic testing of hypotheses—<b>holding variables constant</b> and changing one factor at a time (a core scientific-reasoning skill).
+        <ul>
+          <li><b>B</b> describes preoperational limitations, not advanced experimental logic.</li>
+          <li><b>C</b> is infancy behavior repetition.</li>
+          <li><b>D</b> is acute medical confusion, not normal adolescent cognition.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q10 Correct: B -->
+  <div class="question" id="q10">
+    <b>10. Vygotsky’s view is best summarized by the claim that cognitive development is driven primarily by:</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Object permanence emerging from circular reactions</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">B. Internalization of culture, including language, symbols, and social rules</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. A fixed, universal stage sequence independent of social context</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Rapid, reversible fluctuations caused by medical illness</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Vygotsky emphasizes the child’s <b>internalization of culture</b> (rules, symbols, language) and learning through social interaction and guidance.
+        <ul>
+          <li><b>A</b> is Piaget sensorimotor theory.</li>
+          <li><b>C</b> fits Piaget’s stronger emphasis on universal stages; Vygotsky stresses social/cultural context.</li>
+          <li><b>D</b> describes delirium, not development theory.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q11 Correct: C -->
+  <div class="question" id="q11">
+    <b>11. A 72-year-old learns a brand-new smartphone interface more slowly than a 25-year-old but performs well on crossword puzzles that rely on vocabulary and learned facts. This pattern is most consistent with:</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Improved fluid intelligence with age</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. Declining crystallized intelligence with age</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">C. Declining fluid intelligence with relatively stable crystallized intelligence</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. Sudden delirium with rapid fluctuation</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Fluid intelligence</b> (solving novel problems) tends to peak earlier and decline with age, while <b>crystallized intelligence</b> (acquired knowledge, vocabulary) peaks later and stays relatively stable.
+        <ul>
+          <li><b>A</b> contradicts the typical aging trend described.</li>
+          <li><b>B</b> contradicts the “vocabulary/facts remain strong” clue.</li>
+          <li><b>D</b> would present as acute confusion and fluctuating attention, not a stable pattern.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q12 Correct: D -->
+  <div class="question" id="q12">
+    <b>12. Which cognitive ability is specifically noted to decline with age while being distinct from general memory loss?</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Object permanence</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Conservation</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. Egocentrism</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. Time-based prospective memory (remembering to do a task at a specific time)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The chapter notes that <b>time-based prospective memory</b> (remembering to do something at a specific time) tends to decline with age.
+        <ul>
+          <li><b>A</b>, <b>B</b>, and <b>C</b> are primarily childhood developmental milestones/limitations rather than late-adulthood changes.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q13 Correct: A -->
+  <div class="question" id="q13">
+    <b>13. Compared with dementia, delirium is best characterized as:</b>
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. Rapidly fluctuating cognition that is typically reversible and medically caused</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Slowly progressive decline that is always irreversible and purely psychological</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. A normal developmental stage after formal operations</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. A method for increasing redundancy during encoding</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Delirium</b> is a <b>rapid fluctuation in cognitive function</b> that is <b>reversible</b> and caused by <b>medical (nonpsychological) factors</b> (e.g., infection, metabolic issues, drug reactions, withdrawal).
+        <ul>
+          <li><b>B</b> better describes many dementias (gradual, progressive), but delirium is acute and often reversible.</li>
+          <li><b>C</b> is not a recognized Piaget stage.</li>
+          <li><b>D</b> describes dual-coding, not delirium.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q14 Correct: B -->
+  <div class="question" id="q14">
+    <b>14. Which environmental factor is most directly described as protective against age-related intellectual decline?</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Increased egocentrism through centration</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. Higher education and frequent engagement in intellectually stimulating activities</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. Reduced oxygen delivery to the brain during birth</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Alcohol withdrawal leading to delirium tremens</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The text notes that <b>higher education</b>, <b>frequent intellectual activity</b>, socializing, and a stimulating environment can be protective.
+        <ul>
+          <li><b>A</b> is a childhood cognitive limitation, not a protective factor.</li>
+          <li><b>C</b> is a risk factor for developmental cognitive issues, not protective.</li>
+          <li><b>D</b> is an acute dangerous condition, not protective.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q15 Correct: C -->
+  <div class="question" id="q15">
+    <b>15. A researcher wants to explain why parenting practices can influence cognitive development “by reward, punishment, or indifference.” In learning terms, this best connects to:</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Classical conditioning with UCS → UCR</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Habituation to repeated stimuli</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">C. Operant conditioning in which consequences shape behavior and skill use</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">D. Eidetic memory persisting for minutes</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Reward and punishment are core to <b>operant conditioning</b>: behaviors (including practicing a new skill) become more or less likely depending on consequences.
+        <ul>
+          <li><b>A</b> is stimulus–stimulus pairing producing reflexes (classical), not consequence-shaped behavior.</li>
+          <li><b>B</b> is decreasing response with repetition, not parental feedback shaping actions.</li>
+          <li><b>D</b> is a rare memory phenomenon and unrelated to reinforcement.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="section-tag">3 Passage Sets (Each passage has 3 questions) — Q16–Q24</div>
+
+  <!-- ===================== PASSAGE 1 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 1 — Dual Coding, Context, and Aging</span>
+    <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A medical school designs a training module to teach 30 unfamiliar clinical symbols (icons used on a hospital dashboard). Students are randomly assigned to one of two encoding conditions. In the <b>Verbal-only</b> condition, each symbol is paired with a spoken definition and a written label. In the <b>Dual-code</b> condition, the same verbal information is provided, but students also see a vivid image-based story that visually links the icon to its meaning (for example, an icon resembling a droplet is paired with a short image-story of a “drip” filling an IV bag).</p>
+    <p>Two days later, students complete two tests. Test 1 is a free-response task: for each icon, students must write its meaning (<b>recall</b>). Test 2 is multiple-choice: students choose the correct meaning from four options (<b>recognition</b>). Half of each encoding group takes the test in the same classroom used for studying, while the other half tests in a different room with different lighting, background noise, and seating.</p>
+    <p>The study includes two age cohorts: a younger cohort (ages 22–26) and an older cohort (ages 65–72). Across cohorts, Dual-code students outperform Verbal-only students on the free-response test. The room change slightly reduces free-response performance for Verbal-only students, but produces minimal change for Dual-code students. On the multiple-choice test, the performance difference between groups is smaller than on free-response. In addition, older adults show a larger gap between learning brand-new icons and applying well-practiced clinical routines that they have used for years.</p>
+  </div>
+
+  <div class="reasoning-box" id="p1-reason">
+    <b>How to reason (Passage 1):</b>
+    <ol>
+      <li><b>Identify the theory:</b> “verbal + image-based story” points to <b>dual-coding</b> → redundancy in retrieval routes.</li>
+      <li><b>Use test format:</b> free-response = <b>recall</b> (harder); multiple-choice = <b>recognition</b> (easier because cues are provided).</li>
+      <li><b>Use context manipulation:</b> same vs different room tests the <b>context effect</b>. Richer encoding can reduce reliance on external context cues.</li>
+      <li><b>Interpret aging pattern:</b> difficulty with novel learning suggests <b>fluid intelligence</b> declines more than <b>crystallized intelligence</b>.</li>
+      <li><b>Eliminate distractors:</b> Piaget stages/circular reactions are childhood development labels, not adult encoding experiments.</li>
+    </ol>
+  </div>
+
+  <!-- Q16 Correct: D -->
+  <div class="question" id="q16">
+    <b>16. The finding that Dual-code students outperform Verbal-only students on free-response is best explained by:</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. Dual coding prevents all interference by eliminating competing memories</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. Dual coding increases sensory memory duration from seconds to days</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Dual coding converts explicit knowledge into procedural memory</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">D. Dual coding creates redundant retrieval paths (verbal + visual), increasing access during recall</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Dual-coding theory proposes that using both <b>verbal</b> and <b>visual</b> codes increases the chance that some cue will successfully activate the stored meaning—especially important for <b>recall</b>, which requires generating the answer without options.
+        <ul>
+          <li><b>A</b> is too absolute: dual coding can help but does not eliminate interference.</li>
+          <li><b>B</b> confuses short-lived sensory stores with long-term learning.</li>
+          <li><b>C</b> is wrong: meanings of icons are <b>declarative/explicit</b>, not a motor skill habit.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q17 Correct: A -->
+  <div class="question" id="q17">
+    <b>17. The smaller performance drop from changing rooms in Dual-code students most strongly suggests that their recall is:</b>
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Less dependent on context cues because the memory has richer internal associations</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. Stronger only because older adults have superior object permanence</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Driven by centration on a single feature of each icon</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. An example of delirium-related fluctuation in cognition</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        A <b>context effect</b> means recall improves when the retrieval environment matches encoding. If dual-coding builds stronger <b>internal links</b>, recall relies less on external context cues—so changing rooms hurts less.
+        <ul>
+          <li><b>B</b> object permanence is an infant milestone, irrelevant to adult testing rooms.</li>
+          <li><b>C</b> centration is a preoperational limitation, not a mechanism for improved adult recall.</li>
+          <li><b>D</b> delirium is acute medical confusion; nothing suggests that here.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q18 Correct: B -->
+  <div class="question" id="q18">
+    <b>18. The passage notes that older adults show a larger gap between learning new icons and applying previously learned clinical routines. This pattern most directly reflects age-related differences between:</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. Assimilation and accommodation</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">B. Fluid intelligence (novel learning) and crystallized intelligence (acquired procedures)</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Primary and secondary circular reactions</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. Iconic and echoic memory</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Learning novel icons is a <b>new problem</b> (fluid intelligence), while applying familiar routines relies on <b>acquired knowledge</b> (crystallized). The chapter describes fluid as declining earlier, with crystallized remaining more stable.
+        <ul>
+          <li><b>A</b> are Piaget schema processes, not late-adulthood intelligence trends.</li>
+          <li><b>C</b> are infant sensorimotor behaviors.</li>
+          <li><b>D</b> are sensory memory stores lasting seconds, not multi-day learning and task performance.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===================== PASSAGE 2 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 2 — Schemata, Conservation, and Hypothesis Testing</span>
+    <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>A developmental psychologist evaluates children’s reasoning using two tasks. Task A is a liquid conservation task: two identical cups contain equal amounts of colored water. The child agrees the amounts are the same. The researcher then pours the water from one cup into a taller, narrower cylinder and asks which container has more water and why.</p>
+    <p>Task B is a “mini pendulum” task: children can change (i) string length, (ii) weight, and (iii) how hard they push. They are told to find what determines how fast the pendulum swings. The researcher observes whether children hold variables constant and test one factor at a time.</p>
+    <p>Child X (age 5) says the tall cylinder has more water because it is “higher.” In Task B, Child X changes multiple variables at once and concludes, “Heavier weights always swing faster,” even when their own trials do not consistently show this. Child Y (age 10) says the water is the same amount and explains, “It’s just spread out differently.” In Task B, Child Y is more systematic but still occasionally changes two variables together when impatient.</p>
+    <p>After the tasks, the researcher shows Child X a cat for the first time. Child X calls it a “dog.” The researcher points out differences (meow, whiskers, and ear shape), and Child X begins using the word “cat” for cats while still calling dogs “dog.”</p>
+  </div>
+
+  <div class="reasoning-box" id="p2-reason">
+    <b>How to reason (Passage 2):</b>
+    <ol>
+      <li><b>Use hallmark errors:</b> conservation failure + “height” reasoning suggests <b>preoperational</b> centration (≈2–7).</li>
+      <li><b>Conservation success:</b> “same amount, spread differently” suggests <b>concrete operational</b> (≈7–11).</li>
+      <li><b>Pendulum logic:</b> one-variable testing is <b>formal operational</b> (≈11+); partial systematic behavior at age 10 fits late concrete ops.</li>
+      <li><b>Schema update:</b> calling a cat “dog” is <b>assimilation</b>; splitting cat vs dog after feedback is <b>accommodation</b>.</li>
+      <li><b>Pick evidence-based options:</b> match the choice to what the child actually says/does.</li>
+    </ol>
+  </div>
+
+  <!-- Q19 Correct: C -->
+  <div class="question" id="q19">
+    <b>19. Child X’s reasoning that the tall cylinder “has more because it is higher” most strongly supports that Child X is in the:</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Sensorimotor stage (lack of object permanence)</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. Concrete operational stage (mastery of conservation)</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">C. Preoperational stage (centration leading to conservation failure)</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. Formal operational stage (hypothetical reasoning)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Child X focuses on a single salient dimension (height) and ignores width/volume—classic <b>centration</b> in the <b>preoperational</b> stage, producing <b>conservation failure</b>.
+        <ul>
+          <li><b>A</b> sensorimotor is 0–2 with object permanence issues, not conservation tasks.</li>
+          <li><b>B</b> would predict the child says the amounts are the same.</li>
+          <li><b>D</b> would predict systematic one-variable hypothesis testing, not random changes plus biased conclusions.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q20 Correct: D -->
+  <div class="question" id="q20">
+    <b>20. In Task B, Child X changes multiple variables at once and draws conclusions that fit a prior belief. This pattern best indicates an absence of:</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. Working memory capacity (7 ± 2) in short-term storage</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. Dual coding during encoding</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. Object permanence in representational thought</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">D. Formal operational hypothetical reasoning (systematic variable control)</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Piaget’s pendulum example highlights that formal operational thinkers can <b>hold variables constant</b> and test one factor at a time. Child X’s random manipulation and biased conclusions show this ability is not present.
+        <ul>
+          <li><b>A</b> is not the main issue; the task failure is about experimental logic, not item capacity.</li>
+          <li><b>B</b> concerns verbal+visual encoding redundancy, not hypothesis testing.</li>
+          <li><b>C</b> is a much earlier milestone (sensorimotor) unrelated to systematic experimentation.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q21 Correct: A -->
+  <div class="question" id="q21">
+    <b>21. When Child X first calls the cat a “dog,” then later creates a separate “cat” category after feedback, the initial labeling and later updating are best described as:</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. Assimilation followed by accommodation</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Accommodation followed by assimilation</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Primacy followed by recency effects</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. Delirium followed by dementia</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Calling the cat “dog” fits new information into an existing schema—<b>assimilation</b>. Updating the schema to separate cat from dog is <b>accommodation</b>.
+        <ul>
+          <li><b>B</b> reverses the order.</li>
+          <li><b>C</b> is a list-memory phenomenon, not category learning.</li>
+          <li><b>D</b> are clinical syndromes unrelated to normal child learning.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- ===================== PASSAGE 3 ===================== -->
+  <div class="passage-header">
+    <span>📘 Passage 3 — Rapid Confusion vs Progressive Decline</span>
+    <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+
+  <div class="passage-box">
+    <p>An emergency department evaluates two older patients who arrive with family members. Patient A’s family reports that over the last 18 months the patient has gradually become more forgetful, has difficulty managing finances, and sometimes gets lost while driving familiar routes. The family also notes subtle personality changes and increasing need for help with activities of daily living. Today, the patient seems “about the same as last week.”</p>
+    <p>Patient B’s family reports the patient was functioning independently yesterday morning. By yesterday evening, the patient became disoriented, could not maintain attention during conversation, and alternated between agitation and drowsiness. On exam today, the patient’s level of alertness fluctuates from minute to minute. Vital signs show fever, and labs reveal an elevated white blood cell count. The family notes the patient has had poor oral intake for two days and recently started a new medication.</p>
+    <p>The clinician must decide which pattern is likely reversible, which broad category of causes is most likely, and which cognitive steps are most disrupted when attention cannot be sustained. The clinician also recalls that some cognitive skills remain strong with age, especially those based on long-practiced knowledge and routines.</p>
+  </div>
+
+  <div class="reasoning-box" id="p3-reason">
+    <b>How to reason (Passage 3):</b>
+    <ol>
+      <li><b>Time course is everything:</b> months/years progressive decline suggests <b>dementia</b>; hours–days with fluctuation suggests <b>delirium</b>.</li>
+      <li><b>Look for medical triggers:</b> fever, high WBC, dehydration, new meds point to <b>medical causes</b> (infection/metabolic/drug reaction).</li>
+      <li><b>Map to information processing:</b> inability to sustain attention commonly disrupts <b>encoding</b> (new info can’t be reliably “put into memory”).</li>
+      <li><b>Reversibility:</b> delirium is often reversible if the cause is treated; dementia is generally progressive.</li>
+      <li><b>Age + skills:</b> preserved well-learned routines relate to <b>crystallized intelligence</b>.</li>
+    </ol>
+  </div>
+
+  <!-- Q22 Correct: B -->
+  <div class="question" id="q22">
+    <b>22. Which statement best distinguishes Patient B’s condition from Patient A’s condition?</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. Patient B shows a gradual decline over years with stable attention</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">B. Patient B shows rapid, fluctuating cognition likely linked to medical causes and often reversible</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. Patient B is best explained by preoperational centration</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. Patient B is best explained by object permanence failure</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        Patient B’s <b>acute onset</b>, <b>fluctuating alertness</b>, and medical signs (fever, high WBC, dehydration, new meds) match <b>delirium</b>, which is often <b>reversible</b> when the medical cause is treated. Patient A’s gradual course fits dementia.
+        <ul>
+          <li><b>A</b> describes dementia more than delirium.</li>
+          <li><b>C</b> and <b>D</b> are child development concepts unrelated to acute medical confusion.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q23 Correct: C -->
+  <div class="question" id="q23">
+    <b>23. Patient B’s inability to maintain attention most directly disrupts which information-processing step, making new learning unreliable?</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Object permanence</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Conservation</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">C. Encoding of incoming information</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. Secondary circular reactions</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        The information-processing model requires attention to <b>encode</b> stimuli into meaningful neural signals. If attention fluctuates, new information is inconsistently encoded, so later memory appears “lost” even if storage systems are intact.
+        <ul>
+          <li><b>A</b> and <b>B</b> are developmental milestones, not information-processing steps.</li>
+          <li><b>D</b> is an infant behavior pattern, not an information-processing stage.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q24 Correct: D -->
+  <div class="question" id="q24">
+    <b>24. The clinician notes that some cognitive skills remain strong with age when they rely on long-practiced knowledge and routines. This preserved strength is most consistent with:</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. Increasing fluid intelligence in late adulthood</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. The sensorimotor stage persisting into late adulthood</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. Rapid cognitive fluctuation due to delirium tremens</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">D. Relatively stable crystallized intelligence compared with fluid intelligence</div>
+    <div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+    <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain">
+      <summary>Explanation (click to expand/collapse)</summary>
+      <div class="explain-body">
+        <b>Crystallized intelligence</b> involves using <b>acquired knowledge</b> and well-learned procedures. The chapter describes it as peaking later and remaining relatively stable with age, even when fluid problem solving declines.
+        <ul>
+          <li><b>A</b> is opposite of the typical trend.</li>
+          <li><b>B</b> is a childhood stage, not an adult phenomenon.</li>
+          <li><b>C</b> is a severe withdrawal delirium, not “preserved skills.”</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+</body>
+</html>
