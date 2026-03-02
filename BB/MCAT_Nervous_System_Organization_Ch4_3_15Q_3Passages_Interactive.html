@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Biology — Nervous System Organization (Ch. 4.3) (15Q + 3 Passages)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</head>
+
+<body>
+  <div class="main-header">
+    <div>MCAT Biology — Nervous System Organization</div>
+    <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+  </div>
+
+  <div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+  <!-- Q1 -->
+  <div class="question" id="q1">
+    <b>1. Which structure is part of the central nervous system (CNS)?</b>
+    <div class="choice" onclick="selectChoice('q1', this, true)">A. Spinal cord</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. Sciatic nerve</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Dorsal root ganglion</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Sympathetic chain ganglion</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: A.</b></p>
+        <p><b>Why:</b> The CNS consists of the brain and spinal cord. All peripheral nerves and ganglia lie outside the CNS.</p>
+        <p><b>Other choices:</b></p>
+        <ul>
+          <li><b>B:</b> Sciatic nerve is a PNS nerve bundle.</li>
+          <li><b>C:</b> Dorsal root ganglia contain sensory neuron cell bodies in the PNS.</li>
+          <li><b>D:</b> Autonomic ganglia are in the PNS.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question" id="q2">
+    <b>2. A clinician lightly touches a patient’s cornea, and sensory information travels toward the spinal cord/brain. Which term best describes the neuron carrying this information?</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. Efferent neuron</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">B. Motor neuron</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">C. Afferent neuron</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. Preganglionic neuron</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: C.</b></p>
+        <p><b>Why:</b> Afferent (sensory) neurons carry information toward the CNS. “Afferent ascends.”</p>
+        <p><b>Other choices:</b></p>
+        <ul>
+          <li><b>A/B:</b> Efferent/motor neurons carry commands away from the CNS to effectors.</li>
+          <li><b>D:</b> Preganglionic neurons are autonomic efferents, not general sensory input.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question" id="q3">
+    <b>3. A lesion selectively damages the dorsal roots entering a segment of the spinal cord. Which deficit is most directly expected at that segment?</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. Loss of motor output to skeletal muscle (ventral horn)</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. Increased sympathetic output to the heart</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">C. Loss of descending cortical input only</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">D. Loss of sensory input from the periphery</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: D.</b></p>
+        <p><b>Why:</b> Sensory (afferent) fibers enter the spinal cord via the dorsal roots. Damaging them blocks incoming sensory signals.</p>
+        <p><b>Other choices:</b></p>
+        <ul>
+          <li><b>A:</b> Motor output exits through ventral roots, not dorsal roots.</li>
+          <li><b>B:</b> Dorsal roots are sensory; sympathetic output is efferent.</li>
+          <li><b>C:</b> Descending pathways are in cord tracts; dorsal root damage is not selective for “descending only.”</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question" id="q4">
+    <b>4. Which statement correctly compares white and gray matter distribution in the brain versus the spinal cord?</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. In both brain and spinal cord, white matter lies superficial to gray matter</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">B. Brain: white matter lies deeper than gray; spinal cord: white matter lies outside gray</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. Brain: gray matter lies deeper than white; spinal cord: gray matter lies outside white</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">D. White matter is composed primarily of dendrites; gray matter is composed of myelinated axons</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: B.</b></p>
+        <p><b>Why:</b> In the brain, cortical gray matter is more superficial with white matter deeper. In the spinal cord, white matter surrounds deeper gray matter.</p>
+        <p><b>Other choices:</b></p>
+        <ul>
+          <li><b>A/C:</b> These reverse or overgeneralize the distributions.</li>
+          <li><b>D:</b> White matter is mostly myelinated axons; gray matter is mainly cell bodies and dendrites.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question" id="q5">
+    <b>5. Most cranial nerves are part of the peripheral nervous system, but two are considered outgrowths of the CNS. Which pair is it?</b>
+    <div class="choice" onclick="selectChoice('q5', this, true)">A. Olfactory (I) and optic (II)</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. Oculomotor (III) and trochlear (IV)</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Trigeminal (V) and facial (VII)</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. Vagus (X) and hypoglossal (XII)</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: A.</b></p>
+        <p><b>Why:</b> The olfactory and optic nerves are considered CNS outgrowths (developmentally distinct from typical PNS nerves).</p>
+        <p><b>Other choices:</b> The remaining cranial nerves listed are classified as PNS components.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question" id="q6">
+    <b>6. Which statement best captures a key organizational difference between somatic and autonomic motor pathways?</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. Somatic pathways use two neurons in series; autonomic pathways use one neuron</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">B. Somatic pathways control glands only; autonomic pathways control skeletal muscle only</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. Autonomic pathways bypass the spinal cord entirely</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">D. Autonomic pathways typically use a preganglionic and a postganglionic neuron; somatic motor uses a single neuron to skeletal muscle</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: D.</b></p>
+        <p><b>Why:</b> The ANS uses a two-neuron chain (preganglionic → ganglion → postganglionic). The somatic motor system uses one motor neuron from CNS to skeletal muscle.</p>
+        <p><b>Other choices:</b></p>
+        <ul>
+          <li><b>A:</b> Reversed.</li>
+          <li><b>B:</b> Reversed and incorrect (somatic controls skeletal muscle; autonomic controls smooth/cardiac muscle and glands).</li>
+          <li><b>C:</b> Autonomic output originates from the CNS and travels via peripheral ganglia.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question" id="q7">
+    <b>7. A student is startled by a sudden loud noise. Which physiological change is most consistent with sympathetic nervous system activation?</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. Increased gastric peristalsis and salivation</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. Decreased heart rate and bronchoconstriction</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">C. Bronchodilation with increased heart rate and increased blood glucose availability</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. Pupillary constriction to reduce light intake</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: C.</b></p>
+        <p><b>Why:</b> Sympathetic “fight-or-flight” responses include increased heart rate, bronchodilation, and mobilizing fuel (raising blood glucose).</p>
+        <p><b>Other choices:</b> A, B, and D reflect parasympathetic-leaning or opposite effects.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question" id="q8">
+    <b>8. Which neurotransmitter is classically associated with parasympathetic activity at both the preganglionic-to-ganglion synapse and the postganglionic-to-organ synapse?</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Norepinephrine only</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">B. Acetylcholine</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. Dopamine</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">D. Serotonin</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: B.</b></p>
+        <p><b>Why:</b> Parasympathetic preganglionic neurons release ACh, and parasympathetic postganglionic neurons also release ACh onto target organs.</p>
+        <p><b>Other choices:</b> Norepinephrine is most associated with sympathetic postganglionic signaling; dopamine/serotonin are not classic parasympathetic efferent transmitters.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question" id="q9">
+    <b>9. Which pairing is most accurate for typical sympathetic neurotransmission?</b>
+    <div class="choice" onclick="selectChoice('q9', this, false)">A. Preganglionic: norepinephrine; postganglionic: acetylcholine</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Preganglionic: dopamine; postganglionic: serotonin</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. Preganglionic: GABA; postganglionic: glutamate</div>
+    <div class="choice" onclick="selectChoice('q9', this, true)">D. Preganglionic: acetylcholine; postganglionic: norepinephrine (most targets)</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: D.</b></p>
+        <p><b>Why:</b> Sympathetic preganglionic neurons release ACh onto ganglia, while most sympathetic postganglionic neurons release norepinephrine onto organs.</p>
+        <p><b>Other choices:</b> The other pairings do not match classic autonomic physiology tested on the MCAT.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question" id="q10">
+    <b>10. Which structure provides much of the parasympathetic innervation to thoracic and abdominal organs?</b>
+    <div class="choice" onclick="selectChoice('q10', this, true)">A. Vagus nerve (cranial nerve X)</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">B. Phrenic nerve</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. Sciatic nerve</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Sympathetic chain ganglia</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: A.</b></p>
+        <p><b>Why:</b> The vagus nerve carries major parasympathetic outflow to heart, lungs, and GI organs.</p>
+        <p><b>Other choices:</b> Phrenic nerve innervates the diaphragm; sciatic is somatic to the leg; sympathetic chain ganglia are sympathetic.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q11 -->
+  <div class="question" id="q11">
+    <b>11. Which description best defines a preganglionic neuron in the autonomic nervous system?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Its soma lies in a peripheral ganglion and its axon innervates the organ directly</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">B. Its soma lies in the CNS and its axon synapses in a peripheral ganglion</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">C. It is a sensory neuron whose soma lies in the dorsal root ganglion</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. It is an interneuron located entirely within the spinal cord</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: B.</b></p>
+        <p><b>Why:</b> Preganglionic neurons originate in the CNS and synapse in an autonomic ganglion on a postganglionic neuron.</p>
+        <p><b>Other choices:</b> A describes postganglionic; C describes afferent sensory; D is not the defining ANS efferent role.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q12 -->
+  <div class="question" id="q12">
+    <b>12. Which reflex arc necessarily includes an interneuron between the sensory and motor neurons?</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Knee-jerk (patellar) stretch reflex</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Any reflex that uses a single synapse</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">C. Withdrawal reflex after stepping on a sharp object</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">D. A monosynaptic reflex by definition</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: C.</b></p>
+        <p><b>Why:</b> Withdrawal reflexes are polysynaptic and use interneurons to coordinate flexion of the injured limb and often extension of the opposite limb.</p>
+        <p><b>Other choices:</b> The patellar reflex is monosynaptic; monosynaptic reflexes do not require interneurons.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q13 -->
+  <div class="question" id="q13">
+    <b>13. A person intentionally holds their hand still while a clinician taps the patellar tendon, preventing a noticeable knee kick. Which concept best explains how this is possible?</b>
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. Supraspinal circuits can modulate spinal reflex output</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Reflexes require the cerebral cortex to begin</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. Motor output enters the spinal cord through dorsal roots</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. Afferent neurons exit the spinal cord ventrally</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: A.</b></p>
+        <p><b>Why:</b> Reflex arcs can occur at the spinal level, but the brain can modulate spinal output via supraspinal inputs (inhibitory or excitatory control).</p>
+        <p><b>Other choices:</b> B is false (reflexes do not require cortex); C/D reverse dorsal vs ventral orientation.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q14 -->
+  <div class="question" id="q14">
+    <b>14. After stepping on a nail with the right foot, a person rapidly flexes the right leg and simultaneously extends the left leg to maintain balance. Which spinal pathway feature best accounts for the left-leg extension?</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. A single synapse between sensory and motor neurons on the contralateral side</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. Interneurons that connect sensory input to contralateral motor neurons (crossed-extensor component)</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. Parasympathetic postganglionic fibers innervating quadriceps</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Somatic motor pathways that must pass through an autonomic ganglion first</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: B.</b></p>
+        <p><b>Why:</b> The balance-preserving response is produced by polysynaptic spinal circuits with interneurons that activate contralateral extensors while ipsilateral flexors withdraw the injured limb.</p>
+        <p><b>Other choices:</b> A is too simple; C is autonomic; D is incorrect because somatic motor neurons go directly to skeletal muscle.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q15 -->
+  <div class="question" id="q15">
+    <b>15. A drug blocks nicotinic acetylcholine receptors in autonomic ganglia. Which outcome is most likely?</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Only parasympathetic signaling is blocked, while sympathetic signaling is unaffected</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Only somatic motor signaling to skeletal muscle is blocked</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">C. Only postganglionic sympathetic neurotransmission to organs is blocked</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">D. Both sympathetic and parasympathetic outflow are reduced because both use acetylcholine at the ganglion synapse</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: D.</b></p>
+        <p><b>Why:</b> Both sympathetic and parasympathetic preganglionic neurons release acetylcholine onto nicotinic receptors in autonomic ganglia. Blocking these receptors disrupts both branches.</p>
+        <p><b>Other choices:</b> A is false because sympathetic ganglia also use ACh; B targets somatic NMJ rather than autonomic ganglia; C ignores the upstream ganglionic block.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="section-label">Passages (3 passages × 3 questions)</div>
+
+  <!-- Passage 1 -->
+  <div class="passage-header">
+    <span>Passage 1: A Spinal-Level Problem</span>
+    <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+  </div>
+  <div class="passage-box">
+    <p>A 32-year-old patient presents after a cycling accident with a complaint: “My right leg feels numb, and I don’t notice light touch on that side unless I look.” On exam, the clinician notes that vibration and pain sensation from the right foot are reduced. However, the patient can still voluntarily extend the knee and plantarflex the ankle with near-normal strength. When the clinician taps the patellar tendon, the patient’s right knee shows a much smaller reflex response than the left.</p>
+    <p>MRI suggests damage to structures entering the spinal cord from the posterior (back) side at a specific lumbar level. The clinician explains that some circuits in the spinal cord can generate a response without waiting for a command from the brain, but those circuits still depend on incoming sensory information to trigger them.</p>
+  </div>
+  <div class="reasoning-box" id="p1-reason">
+    <p><b>How to reason:</b></p>
+    <ol>
+      <li>Separate sensation vs motor: numbness implies afferent loss; preserved strength implies efferent somatic motor pathways are mostly intact.</li>
+      <li>Use anatomy rules: sensory fibers enter dorsally; motor fibers exit ventrally; sensory cell bodies sit in dorsal root ganglia.</li>
+      <li>Reflexes require an afferent trigger and an efferent output; a weak reflex with intact voluntary movement suggests the trigger is impaired.</li>
+      <li>Pick the answer that explains all findings with one lesion location.</li>
+    </ol>
+  </div>
+
+  <!-- Q16 -->
+  <div class="question" id="q16">
+    <b>16. Which damaged structure best explains the sensory loss with relatively preserved voluntary motor strength described in Passage 1?</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. Ventral root fibers at the affected level</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. Motor neuron cell bodies in the ventral horn</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">C. Dorsal root fibers entering the spinal cord</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">D. Postganglionic sympathetic fibers to the leg</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: C.</b></p>
+        <p><b>Why:</b> Dorsal roots carry afferent sensory information into the spinal cord. Damaging them produces sensory deficits while leaving ventral (motor) outflow relatively intact.</p>
+        <p><b>Other choices:</b> A/B would cause prominent motor weakness; D does not explain loss of pain/vibration or a reduced patellar reflex trigger.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q17 -->
+  <div class="question" id="q17">
+    <b>17. If the clinician wanted to localize the cell bodies of the affected sensory neurons, which location would be most consistent with Passage 1?</b>
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Dorsal root ganglion at the affected lumbar level</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. Ventral horn of the spinal cord at the affected level</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Sympathetic chain ganglion near the vertebral column</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. Cerebellar nuclei</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: A.</b></p>
+        <p><b>Why:</b> Sensory neuron cell bodies are located in the dorsal root ganglia, just outside the spinal cord.</p>
+        <p><b>Other choices:</b> Ventral horn is motor; sympathetic chain is autonomic; cerebellar nuclei are not sensory neuron cell bodies.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q18 -->
+  <div class="question" id="q18">
+    <b>18. Passage 1 reports a reduced patellar tendon reflex on the injured side. Which inference best explains this finding?</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. Reflexes require the cerebral cortex to initiate movement</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">B. The sensory (afferent) limb needed to trigger the spinal reflex arc is impaired</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Parasympathetic tone to the quadriceps is increased</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. Only the postganglionic autonomic neuron is damaged</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: B.</b></p>
+        <p><b>Why:</b> A reflex needs an afferent trigger (stretch receptor → sensory neuron). If dorsal input is reduced, the reflex is blunted even if motor output can still work voluntarily.</p>
+        <p><b>Other choices:</b> A is false; C/D involve autonomic concepts not responsible for skeletal muscle reflex arcs.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Passage 2 -->
+  <div class="passage-header">
+    <span>Passage 2: Two Branches, One Body</span>
+    <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+  </div>
+  <div class="passage-box">
+    <p>During an overnight call shift, a medical trainee is paged to a rapid response. While running down the hallway, the trainee notices a pounding heartbeat, rapid breathing, and a dry mouth sensation. After the event resolves, the trainee sits in a quiet room, eats a meal, and gradually feels the heart rate slow while abdominal sounds become noticeable. The trainee jokes that the body must have a built-in “gas pedal and brake.”</p>
+    <p>A pharmacology instructor adds a twist: the instructor administers a drug that blocks neurotransmitter release from most postganglionic sympathetic neurons. The trainee’s heart rate still increases modestly with exertion, but the magnitude of the response is reduced compared with baseline. The instructor asks the trainee to connect these observations to the organization of autonomic pathways.</p>
+  </div>
+  <div class="reasoning-box" id="p2-reason">
+    <p><b>How to reason:</b></p>
+    <ol>
+      <li>Map symptoms to branch: fight-or-flight (sympathetic) vs rest-and-digest (parasympathetic).</li>
+      <li>Remember the two-neuron chain: preganglionic (CNS → ganglion) then postganglionic (ganglion → organ).</li>
+      <li>If a drug blocks postganglionic sympathetic transmission, predict which sympathetic organ effects should drop the most.</li>
+      <li>Choose the option that fits both the before/after drug pattern and basic physiology.</li>
+    </ol>
+  </div>
+
+  <!-- Q19 -->
+  <div class="question" id="q19">
+    <b>19. Which post-event change described in Passage 2 is most directly mediated by the parasympathetic nervous system?</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Increased blood glucose availability during the sprint</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. Bronchodilation to increase airflow</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">C. Redistribution of blood toward skeletal muscle</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">D. Increased digestive activity after the trainee sits and eats</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: D.</b></p>
+        <p><b>Why:</b> Parasympathetic activity increases peristalsis and exocrine secretions, supporting digestion after stress resolves.</p>
+        <p><b>Other choices:</b> A–C are sympathetic responses.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q20 -->
+  <div class="question" id="q20">
+    <b>20. The drug in Passage 2 blocks neurotransmitter release from most postganglionic sympathetic neurons. Which immediate physiological effect would most directly decrease because of this blockade?</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. Acetylcholine release from preganglionic neurons in autonomic ganglia</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. Sensory (afferent) transmission from muscle spindles to the spinal cord</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">C. Norepinephrine signaling at many sympathetic target organs</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">D. Action potential conduction along somatic motor neurons</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: C.</b></p>
+        <p><b>Why:</b> Most sympathetic postganglionic neurons release norepinephrine onto organs. Blocking their transmitter release reduces NE-driven effects.</p>
+        <p><b>Other choices:</b> A is upstream; B and D are somatic processes, not postganglionic sympathetic transmission.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q21 -->
+  <div class="question" id="q21">
+    <b>21. The trainee’s heart rate still increases modestly with exertion despite the postganglionic sympathetic blockade. Which explanation best supports this observation?</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. Additional regulatory inputs (including reduced parasympathetic tone) can still raise heart rate even if one pathway is weakened</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Heart rate is controlled exclusively by somatic motor neurons</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. The vagus nerve is the primary sympathetic nerve to the heart</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. Postganglionic sympathetic neurons normally release acetylcholine to the heart, so blocking norepinephrine has no effect</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: A.</b></p>
+        <p><b>Why:</b> Heart rate is influenced by multiple mechanisms. If sympathetic postganglionic output is reduced, HR can still rise via reduced parasympathetic braking and other controls, but the response is smaller.</p>
+        <p><b>Other choices:</b> B is false; C mislabels vagus (parasympathetic); D misstates typical sympathetic transmitter (mostly norepinephrine).</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Passage 3 -->
+  <div class="passage-header">
+    <span>Passage 3: Reflexes and Real-World Movement</span>
+    <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+  </div>
+  <div class="passage-box">
+    <p>A physical therapist evaluates two patients during rehab. Patient A receives a quick tap to the patellar tendon and shows a rapid knee extension with minimal delay. Patient B steps on a sharp tack during a balance drill; within a moment, Patient B flexes the injured ankle and knee while the opposite leg stiffens to prevent a fall. The therapist notes that both reactions can occur before the patients could consciously decide to move.</p>
+    <p>Later, the therapist asks Patient A to try to suppress the knee movement by focusing attention and tensing certain muscles. Patient A can reduce the size of the response but cannot completely eliminate it. The therapist explains that spinal processing is sufficient to produce some behaviors, but higher brain centers can still influence how strongly those behaviors appear.</p>
+  </div>
+  <div class="reasoning-box" id="p3-reason">
+    <p><b>How to reason:</b></p>
+    <ol>
+      <li>Classify each response: knee-jerk is typically monosynaptic; withdrawal/balance is polysynaptic.</li>
+      <li>Ask what extra features require interneurons (contralateral extension, coordination across joints).</li>
+      <li>Separate initiation (spinal) from modulation (supraspinal influence).</li>
+      <li>Choose the answer that fits timing, circuit complexity, and anatomy.</li>
+    </ol>
+  </div>
+
+  <!-- Q22 -->
+  <div class="question" id="q22">
+    <b>22. Which statement best distinguishes the knee-jerk response from the tack-stepping response described in Passage 3?</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. The knee-jerk reflex requires multiple interneurons; the tack-stepping response is monosynaptic</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">B. Both responses require cortical processing before any muscle activation can occur</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. The tack-stepping response cannot involve the spinal cord because it uses both legs</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">D. The knee-jerk reflex is classically monosynaptic; the tack-stepping withdrawal/balance response is polysynaptic</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: D.</b></p>
+        <p><b>Why:</b> The patellar reflex is the classic monosynaptic reflex, while withdrawal plus contralateral support requires interneurons and is polysynaptic.</p>
+        <p><b>Other choices:</b> A–C contradict basic reflex organization.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q23 -->
+  <div class="question" id="q23">
+    <b>23. Which feature in the tack-stepping response most strongly implies that interneurons must be involved?</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. The injured limb flexes at the ankle</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">B. The opposite limb stiffens/extends to support balance while the injured limb withdraws</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">C. Sensory receptors detect pain in the foot</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. The response occurs quickly</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: B.</b></p>
+        <p><b>Why:</b> Coordinating the contralateral limb alongside ipsilateral withdrawal requires additional spinal connections—classically via interneurons in a polysynaptic circuit.</p>
+        <p><b>Other choices:</b> A/C can occur without proving interneurons; D speed alone doesn’t distinguish circuit complexity.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q24 -->
+  <div class="question" id="q24">
+    <b>24. Patient A can reduce but not fully eliminate the knee-jerk response when trying to suppress it. Which interpretation best accounts for this outcome?</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. The reflex is produced only by the brainstem and cannot be influenced by the cortex</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. The response is autonomic rather than somatic, so it bypasses the spinal cord</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">C. The spinal reflex arc can initiate the response, but supraspinal inputs can modulate its magnitude</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">D. All reflexes are voluntary behaviors if the person concentrates hard enough</div>
+    <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+    <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+    <details class="explain"><summary>Show explanation</summary>
+      <div class="explain-body">
+        <p><b>Correct Answer: C.</b></p>
+        <p><b>Why:</b> The patellar reflex can be generated at the spinal level, but descending pathways from the brain can increase or decrease how strongly it appears—so partial suppression is possible without total elimination.</p>
+        <p><b>Other choices:</b> A and B misclassify where the reflex is generated; D misunderstands voluntary control.</p>
+      </div>
+    </details>
+  </div>
+
+</body>
+</html>

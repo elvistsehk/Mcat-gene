@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Behavioral Sciences — Neurons, Glia, Action Potentials, and Synapses (Ch. 4.1–4.2)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>MCAT Behavioral Sciences — Neurons, Glia, Action Potentials, and Synapses </div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+<div class="question" id="q1">
+  <b>1. Myelin is produced by which cells in the central nervous system and peripheral nervous system, respectively?</b>
+  <div class="choice" onclick="selectChoice('q1', this, false)">A. Schwann cells; oligodendrocytes</div>
+  <div class="choice" onclick="selectChoice('q1', this, true)">B. oligodendrocytes; Schwann cells</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. astrocytes; microglia</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. ependymal cells; astrocytes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Oligodendrocytes produce myelin in the CNS, while Schwann cells produce myelin in the PNS.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This reverses CNS vs PNS.</li><li><b>C:</b> Astrocytes support and form BBB; microglia are phagocytes, not myelin producers.</li><li><b>D:</b> Ependymal cells produce CSF; astrocytes do not myelinate.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q2">
+  <b>2. Which glial cell type is primarily responsible for phagocytosis of waste and pathogens in the CNS?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. astrocytes</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">B. ependymal cells</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. oligodendrocytes</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">D. microglia</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Microglia are the resident immune/phagocytic cells of the CNS.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Astrocytes nourish neurons and contribute to the blood–brain barrier.</li><li><b>B:</b> Ependymal cells line ventricles and produce CSF.</li><li><b>C:</b> Oligodendrocytes myelinate CNS axons.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q3">
+  <b>3. Which structure of the neuron most directly integrates excitatory and inhibitory inputs to determine whether threshold is reached?</b>
+  <div class="choice" onclick="selectChoice('q3', this, true)">A. axon hillock</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. dendrite</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">C. synaptic cleft</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. node of Ranvier</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The axon hillock sums excitatory and inhibitory postsynaptic potentials; if the net depolarization reaches threshold, an action potential is initiated.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Dendrites receive input but integration is classically at the axon hillock.</li><li><b>C:</b> The synaptic cleft is the gap between neurons.</li><li><b>D:</b> Nodes of Ranvier enable saltatory conduction but do not decide threshold.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q4">
+  <b>4. Which statement best describes the resting membrane potential of a typical neuron?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. It is usually about +70 mV because the inside is positive relative to the outside</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. It is set entirely by Na+/K+ ATPase without contributions from leak channels</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">C. It is about −70 mV, closer to potassium’s equilibrium potential because the membrane is more permeable to K+</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">D. It equals potassium’s equilibrium potential (about −90 mV) because K+ reaches full equilibrium</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Resting Vm is ~−70 mV and is closer to Ek (~−90 mV) because the membrane has higher permeability to K+ than to Na+. Leak channels plus Na+/K+ ATPase maintain gradients.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> The inside is negative relative to outside at rest.</li><li><b>B:</b> Leak channels contribute substantially; ATPase maintains gradients but does not alone set Vm.</li><li><b>D:</b> Neither ion reaches full equilibrium because both leak simultaneously.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q5">
+  <b>5. At rest, which ion has the greatest tendency to move out of the neuron due to its concentration gradient?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Na+</div>
+  <div class="choice" onclick="selectChoice('q5', this, true)">B. K+</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Ca2+</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Cl−</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> K+ is high inside and low outside, so its concentration gradient favors efflux through K+ leak channels.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Na+ is high outside and tends to move into the neuron.</li><li><b>C:</b> Ca2+ tends to move into cells when channels open but is not the main resting driver here.</li><li><b>D:</b> Cl− is not emphasized as the dominant driver of the resting potential in this excerpt.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q6">
+  <b>6. When a neuron reaches threshold, which event occurs first in the classic action potential sequence described?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Voltage-gated K+ channels open and K+ exits, causing rapid depolarization</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">B. Na+/K+ ATPase turns off, allowing ions to equilibrate</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">C. Voltage-gated Na+ channels open, allowing Na+ influx and rapid depolarization</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Voltage-gated Ca2+ channels open at the axon hillock to trigger neurotransmitter release</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> At threshold, voltage-gated Na+ channels open, Na+ rushes in, and the membrane rapidly depolarizes.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> K+ channel opening mainly contributes to repolarization/hyperpolarization after Na+ influx.</li><li><b>B:</b> ATPase does not simply turn off; it helps restore gradients over time.</li><li><b>D:</b> Voltage-gated Ca2+ channels open at the nerve terminal to trigger release.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q7">
+  <b>7. Which description best matches the behavior of voltage-gated Na+ channels during an action potential?</b>
+  <div class="choice" onclick="selectChoice('q7', this, true)">A. Closed at rest, open from threshold to about +35 mV, then inactivated until Vm returns near resting</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Open at rest, then close at threshold and remain closed during depolarization</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">C. Open only during hyperpolarization and inactivate at −70 mV</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. They are not affected by voltage changes and remain open as long as Na+ is outside the cell</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Voltage-gated Na+ channels have three states: closed, open during depolarization, and inactivated until Vm returns near resting to deinactivate.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> This reverses the gating behavior.</li><li><b>C:</b> Na+ channels open in response to depolarization, not hyperpolarization.</li><li><b>D:</b> They are voltage-sensitive and undergo inactivation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q8">
+  <b>8. What is the immediate cause of repolarization during an action potential?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Opening of ligand-gated Cl− channels at dendrites</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Ca2+ influx into the axon terminal</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Activation of microglia leading to membrane repair</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Opening of voltage-gated K+ channels causing K+ efflux</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> After Na+ channels inactivate, voltage-gated K+ channels open; K+ efflux returns Vm toward negative values (repolarization).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Ligand-gated channels contribute to synaptic potentials, not AP repolarization.</li><li><b>B:</b> Ca2+ influx triggers neurotransmitter release, not axonal repolarization.</li><li><b>C:</b> Microglia are immune cells, not AP repolarization mediators.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q9">
+  <b>9. Why does hyperpolarization contribute to the relative refractory period?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Because Na+ channels are fully deinactivated, making firing easier</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. Because K+ equilibrium potential becomes positive</div>
+  <div class="choice" onclick="selectChoice('q9', this, true)">C. Because the membrane potential is more negative than rest, requiring a larger depolarization to reach threshold</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. Because neurotransmitter vesicles are depleted, preventing further action potentials</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> During hyperpolarization, Vm is below resting level, so a stronger-than-usual stimulus is required to reach threshold (relative refractory period).</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Na+ channels are recovering; firing is not easier.</li><li><b>B:</b> Ek remains negative.</li><li><b>D:</b> Vesicle depletion affects synaptic output, not axonal ability to fire another AP.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q10">
+  <b>10. Which best distinguishes temporal summation from spatial summation?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Temporal summation depends on number/location of synapses; spatial depends on rapid timing</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. Temporal summation integrates multiple signals over a short time; spatial summation integrates signals from different locations/inputs</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. Temporal summation occurs only in inhibitory synapses; spatial only in excitatory synapses</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. Temporal summation requires myelin; spatial summation occurs only at nodes of Ranvier</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Temporal summation adds inputs arriving close together in time; spatial summation adds inputs coming from multiple locations/synapses on the neuron.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> This reverses the definitions.</li><li><b>C:</b> Both can involve excitatory and inhibitory inputs.</li><li><b>D:</b> Summation is not dependent on myelin or nodes of Ranvier.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q11">
+  <b>11. What is the primary advantage of myelin for impulse propagation in axons?</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. It increases conduction speed by restricting ion flow to nodes of Ranvier, enabling saltatory conduction</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. It increases neurotransmitter synthesis in the soma</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">C. It prevents Na+/K+ ATPase from using ATP</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. It converts chemical signals directly into electrical signals at the synapse</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Myelin insulates the axon so ions mainly cross at nodes of Ranvier; the AP 'hops' node-to-node (saltatory conduction), increasing speed.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Neurotransmitter synthesis is not myelin’s primary role.</li><li><b>C:</b> ATPase continues to use ATP to maintain gradients.</li><li><b>D:</b> Synaptic receptors mediate chemical-to-electrical changes; myelin does not.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q12">
+  <b>12. Tetrodotoxin (TTX) blocks voltage-gated Na+ channels. Which immediate functional deficit is most directly predicted?</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Increased neurotransmitter reuptake at presynaptic terminals</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Excessive Ca2+ influx into dendrites</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">C. Failure to initiate or propagate action potentials along axons</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">D. Enhanced myelin production by Schwann cells</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Voltage-gated Na+ channels are essential for the depolarization phase; blocking them prevents AP initiation/propagation.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Reuptake involves transporters, not Na+ channel opening during APs.</li><li><b>B:</b> Not the mechanism described.</li><li><b>D:</b> Myelin production is glial and not enhanced by Na+ blockade.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q13">
+  <b>13. Local anesthetics preferentially block pain transmission because pain fibers often have which features?</b>
+  <div class="choice" onclick="selectChoice('q13', this, false)">A. Large diameter and heavy myelination</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. High density of astrocytes at the synapse</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. High intracellular Na+ concentration at rest</div>
+  <div class="choice" onclick="selectChoice('q13', this, true)">D. Small axonal diameter and little or no myelin, allowing easier access to Na+ channels</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Small-diameter and lightly myelinated/unmyelinated fibers allow easier anesthetic access to Na+ channels; low doses can block pain without major motor effects.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Large, heavily myelinated fibers are less consistent with the described selectivity.</li><li><b>B:</b> Astrocyte density doesn’t explain Na+ channel access.</li><li><b>C:</b> Resting intracellular Na+ is low; not the key factor.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q14">
+  <b>14. When an action potential reaches the nerve terminal, which ion’s influx triggers synaptic vesicle fusion and neurotransmitter exocytosis?</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. K+</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Ca2+</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Na+</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Cl−</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Voltage-gated Ca2+ channels open at the nerve terminal; Ca2+ influx triggers vesicle fusion and neurotransmitter release.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> K+ efflux is mainly for repolarization.</li><li><b>C:</b> Na+ influx depolarizes the axon, but Ca2+ triggers vesicle fusion.</li><li><b>D:</b> Cl− is often involved in inhibitory postsynaptic effects.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q15">
+  <b>15. Which option is NOT one of the three main methods described for terminating neurotransmitter action in the synaptic cleft?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Enzymatic breakdown of the neurotransmitter</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Reuptake into the presynaptic neuron via carriers</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Conversion of neurotransmitter into action potentials by myelin</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Diffusion out of the synaptic cleft</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Termination mechanisms described are enzymatic degradation, reuptake, and diffusion away. Myelin does not convert neurotransmitters into action potentials.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> ACh breakdown by AChE is a classic example.</li><li><b>B:</b> Serotonin reuptake is a classic example.</li><li><b>D:</b> Some transmitters can diffuse away from the cleft.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+<div class="passage-header">
+  <span>Passage 1: Demyelination, Conduction Speed, and Signal Integrity</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box"><p>A 29-year-old patient reports episodes of blurry vision and unsteady gait that come and go over several months. Neurologic examination shows weakness in one leg and impaired coordination. MRI reveals scattered lesions in the brain and spinal cord that are consistent with loss of insulating material around axons.</p>
+
+<p>Electrophysiology testing demonstrates that action potentials still reach distal axon segments in some pathways, but conduction velocity is reduced and signal timing becomes less reliable. The clinician explains that in healthy myelinated axons, ion flow across the membrane is largely restricted to periodic gaps where the axonal membrane is exposed. Because depolarization can only be regenerated at those gaps, the signal effectively travels by jumping between them.</p>
+
+<p>In this patient, disruption of insulation increases current leakage along the axon. The clinician predicts that the effect will be especially noticeable in long CNS pathways that normally require rapid, precisely timed transmission to coordinate motor output and sensory feedback.</p></div>
+<div class="reasoning-box" id="p1-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Match “brain and spinal cord myelin loss” to a CNS demyelinating disorder and its functional consequences.</li>
+  <li>Use the conduction mechanism: myelin restricts ion flow to nodes; loss of myelin increases leakage and slows propagation.</li>
+  <li>Identify the feature enabling jumping conduction and predict how signal timing changes when insulation is disrupted.</li>
+  <li>Connect slower conduction and less reliable timing to sensory and motor symptoms described.</li>
+</ol></div>
+<div class="question" id="q16">
+  <b>16. Which structure is described as the periodic gap where the axonal membrane is exposed and action potentials are regenerated in myelinated fibers?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. synaptic cleft</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. axon hillock</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">C. node of Ranvier</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">D. soma</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Nodes of Ranvier are breaks in the myelin sheath where the membrane is exposed; saltatory conduction involves the signal jumping node-to-node.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Synaptic cleft is between neurons, not along the axon.</li><li><b>B:</b> Axon hillock is where AP initiation decision occurs.</li><li><b>D:</b> Soma contains nucleus and organelles.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q17">
+  <b>17. The reduced conduction velocity in this patient is most directly explained by which change?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Increased opening of voltage-gated Na+ channels at rest</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Enhanced microglial phagocytosis of neurotransmitters</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Increased release of acetylcholine into synaptic clefts</div>
+  <div class="choice" onclick="selectChoice('q17', this, true)">D. Loss of insulation increases current leakage and reduces the efficiency of saltatory conduction</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Myelin normally prevents dissipation of current and confines ion flow to nodes. Demyelination increases leakage, slowing conduction and reducing timing reliability.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Na+ channels are not normally open at rest; this doesn’t explain demyelination effects.</li><li><b>B:</b> Microglia are phagocytes; neurotransmitter clearance is not their main described role.</li><li><b>C:</b> Synaptic release changes do not primarily explain slowed axonal conduction.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q18">
+  <b>18. The anatomic finding that myelin is targeted in the brain and spinal cord most directly implies dysfunction of which myelin-producing cell type?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Schwann cells</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. oligodendrocytes</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. ependymal cells</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. astrocytes</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Oligodendrocytes produce myelin in the CNS. Demyelination in brain/spinal cord implicates oligodendrocyte-produced myelin.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Schwann cells myelinate in the PNS.</li><li><b>C:</b> Ependymal cells produce CSF.</li><li><b>D:</b> Astrocytes support neurons and BBB, not myelin.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: Synaptic Inputs, Summation, and Threshold</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box"><p>A postsynaptic neuron receives input from several presynaptic neurons. Some presynaptic terminals release neurotransmitters that open ligand-gated cation channels on the postsynaptic membrane, producing small depolarizations. Other terminals release neurotransmitters that increase permeability to ions that drive the membrane potential more negative, producing hyperpolarizations.</p>
+
+<p>During an experiment, a researcher delivers three small excitatory inputs to the same dendritic region in rapid succession and observes that the postsynaptic neuron fires an action potential. In a second condition, the researcher delivers the same three excitatory inputs but spaces them farther apart in time; now the neuron does not fire. In a third condition, the researcher delivers multiple inhibitory inputs clustered near the soma while simultaneously delivering the rapid excitatory inputs at dendrites; firing fails again.</p>
+
+<p>The researcher concludes that both the timing and the location of incoming signals determine whether the membrane at the decision point reaches threshold. They note that a typical threshold may be around −55 to −40 mV from a resting potential near −70 mV.</p></div>
+<div class="reasoning-box" id="p2-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>Depolarizations increase firing likelihood; hyperpolarizations decrease it.</li>
+  <li>Rapid repeated inputs over time → temporal summation; many inputs at different sites/locations → spatial summation.</li>
+  <li>The decision point for threshold is the axon hillock, not the dendrites.</li>
+  <li>Use which condition fires vs fails to infer which summation principle is limiting.</li>
+</ol></div>
+<div class="question" id="q19">
+  <b>19. The firing seen when three excitatory inputs arrive in rapid succession at the same region is best explained by:</b>
+  <div class="choice" onclick="selectChoice('q19', this, true)">A. temporal summation</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. saltatory conduction</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. absolute refractory period</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">D. neurotransmitter diffusion out of the cleft</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Temporal summation occurs when multiple inputs arrive close together in time and add to reach threshold.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Saltatory conduction is AP propagation in myelinated axons.</li><li><b>C:</b> Absolute refractory period prevents firing.</li><li><b>D:</b> Diffusion away terminates signaling and would reduce firing.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q20">
+  <b>20. Why do inhibitory inputs clustered near the soma more effectively prevent firing than the same number of inhibitory inputs placed far out on dendrites?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Because inhibitory neurotransmitters are always degraded faster near the soma</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Because dendrites cannot change membrane potential</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">C. Because inhibitory inputs increase myelin thickness around the axon</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">D. Because location matters for spatial summation; inputs closer to the axon hillock influence Vm at the decision point more strongly</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Spatial summation depends on where signals occur. Inputs closer to the soma/axon hillock have a stronger impact on Vm at the decision point than distant dendritic inputs.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Not a core principle described here.</li><li><b>B:</b> Dendrites do change Vm via synaptic channels.</li><li><b>C:</b> Myelin thickness is not acutely changed by synaptic inhibition.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q21">
+  <b>21. In this experiment, the ‘decision point’ where threshold comparison occurs is the:</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. axon hillock</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. node of Ranvier</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. synaptic cleft</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. oligodendrocyte</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> The axon hillock integrates inputs and initiates an action potential if threshold is reached.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>B:</b> Nodes of Ranvier are for saltatory conduction.</li><li><b>C:</b> Synaptic cleft is between neurons.</li><li><b>D:</b> Oligodendrocytes produce CNS myelin.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Synaptic Transmission and Drug Mechanisms</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box"><p>A lab studies synaptic transmission at a neuromuscular junction-like preparation. When an action potential arrives at the presynaptic terminal, a rapid rise in a particular divalent cation inside the terminal is recorded. Immediately afterward, vesicles fuse with the presynaptic membrane and a neurotransmitter is released into the synaptic cleft. The postsynaptic cell depolarizes and contracts.</p>
+
+<p>In one trial, the preparation is exposed to a compound that blocks the enzyme that normally breaks down the neurotransmitter in the cleft. The postsynaptic response becomes prolonged and repeated contractions occur. In a second trial, the preparation is exposed to a different drug that blocks a presynaptic reuptake carrier used by monoamine neurotransmitters. Neurotransmitter signaling is also prolonged, but the mechanism does not require inhibiting an enzyme in the cleft.</p>
+
+<p>The investigators remind trainees that neurotransmitter action can be terminated by enzymatic breakdown, transporter-mediated reuptake, or simple diffusion away from the cleft. They also emphasize that electrical signaling occurs within a neuron along the axon, whereas chemical signaling occurs between neurons (or to effectors) across the synapse.</p></div>
+<div class="reasoning-box" id="p3-reason"><p><b>How to reason:</b></p>
+<ol>
+  <li>The divalent cation that triggers vesicle fusion at terminals is Ca2+.</li>
+  <li>Prolonged response from blocking breakdown points to inhibiting an enzyme like acetylcholinesterase.</li>
+  <li>Blocking reuptake carriers prolongs signaling without enzyme inhibition (think monoamine transporters).</li>
+  <li>Keep electrical (within neuron) vs chemical (between cells) transmission straight.</li>
+</ol></div>
+<div class="question" id="q22">
+  <b>22. Which ion influx is most directly responsible for triggering vesicle fusion and neurotransmitter release in this preparation?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Na+</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">B. Ca2+</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. K+</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">D. Cl−</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Ca2+ influx into the presynaptic terminal triggers vesicle fusion and neurotransmitter exocytosis.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Na+ influx drives AP depolarization along the axon.</li><li><b>C:</b> K+ efflux contributes to repolarization.</li><li><b>D:</b> Cl− often mediates inhibitory postsynaptic effects.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q23">
+  <b>23. The prolonged postsynaptic response produced by blocking an enzyme in the cleft most closely matches inhibition of:</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. serotonin transporter (SERT)</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">B. Na+/K+ ATPase</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">C. acetylcholinesterase (AChE)</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. voltage-gated Na+ channels</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> AChE breaks down acetylcholine in the synaptic cleft; inhibiting it prolongs ACh signaling and can cause repeated contractions.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> SERT is a reuptake carrier, not an enzyme.</li><li><b>B:</b> ATPase maintains ion gradients; not the described mechanism.</li><li><b>D:</b> Na+ channel blockade decreases signaling.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q24">
+  <b>24. Which conclusion best distinguishes the two drug trials described?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Both drugs reduce neurotransmitter signaling by preventing vesicle fusion</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. The first drug blocks reuptake carriers; the second blocks enzymatic breakdown</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">C. Both drugs terminate neurotransmitter action by accelerating diffusion out of the cleft</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">D. Both drugs prolong signaling, but one acts by inhibiting enzymatic breakdown and the other by blocking reuptake transporters</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Both prolong signaling, but the first acts by inhibiting enzymatic breakdown in the cleft and the second by blocking presynaptic reuptake carriers.</p>
+<p><b>Other choices:</b></p>
+<ul>
+<li><b>A:</b> Vesicle fusion still occurs; clearance is impaired.</li><li><b>B:</b> This reverses the mechanisms.</li><li><b>C:</b> Diffusion would reduce signaling rather than prolong it.</li>
+</ul>
+    </div>
+  </details>
+</div>
+
+</body>
+</html>
