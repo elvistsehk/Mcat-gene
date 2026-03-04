@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Chapter 12 Practice (Redox & Metabolic States)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+
+
+<body>
+
+<div class="main-header">
+  <div class="header-left">
+    <div class="header-title">MCAT Biochemistry — Chapter 12.3–12.4: Redox Reactions & Metabolic States</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-tag">Standalone Questions (Q1–Q15)</div>
+
+  <!-- Q1 Correct: A -->
+  <div class="question" id="q1">
+    <b>1. A researcher splits the reaction NADH + H⁺ + pyruvate → NAD⁺ + lactate into half-reactions. Which change best represents the oxidation half-reaction?</b>
+    <div class="choice" onclick="selectChoice('q1', this, true)">A. NADH → NAD⁺ + H⁺ + 2e⁻</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. Pyruvate + 2H⁺ + 2e⁻ → lactate</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. NAD⁺ + H⁺ + 2e⁻ → NADH</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Lactate → pyruvate + 2H⁺ + 2e⁻</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Oxidation is loss of electrons. NADH is the reduced form and is oxidized to NAD⁺ by <i>donating</i> a hydride equivalent (2 e⁻). Writing it explicitly as NADH → NAD⁺ + H⁺ + 2e⁻ captures electron loss.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> This is a <i>reduction</i> half-reaction (gain of electrons) for pyruvate.</li>
+<li><b>C.</b> This is NAD⁺ being reduced (reverse direction).</li>
+<li><b>D.</b> Lactate → pyruvate would be oxidation of lactate, but in lactic fermentation the substrate being oxidized is NADH, not lactate.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q2 Correct: B -->
+  <div class="question" id="q2">
+    <b>2. Why is it especially useful in biochemistry to write oxidation–reduction reactions as paired half-reactions?</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. It converts all redox reactions into acid–base reactions so that pH becomes irrelevant</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">B. It makes electron accounting explicit, allowing you to track how many electrons are transferred and identify oxidizing vs reducing agents</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. It eliminates the need to consider enzyme cofactors because they are not part of the net reaction</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. It guarantees that ΔG is negative whenever electrons appear on the reactant side</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Half-reactions isolate oxidation and reduction, so you can (1) balance electrons, (2) see the direction of electron flow, and (3) identify the oxidizing agent (gets reduced) and reducing agent (gets oxidized).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> pH can matter a lot in biological redox because H⁺ often appears in half-reactions.</li>
+<li><b>C.</b> Cofactors (NAD⁺/NADH, FAD/FADH₂, etc.) are central to the chemistry; half-reactions often highlight them.</li>
+<li><b>D.</b> ΔG depends on potentials and conditions; merely writing half-reactions doesn’t ensure spontaneity.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q3 Correct: C -->
+  <div class="question" id="q3">
+    <b>3. A pathway is primarily used to generate reducing power for fatty acid synthesis and to maintain glutathione in a reduced state. Which electron carrier is most directly associated with that role?</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. NADH</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. FADH₂</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">C. NADPH</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. Ubiquinone (CoQ)</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> <b>NADPH</b> is the major anabolic reducing agent. It is produced notably by the <b>pentose phosphate pathway</b> and is used for reductive biosynthesis (e.g., fatty acid synthesis) and antioxidant defense (keeping glutathione reduced).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> NADH is mainly catabolic: it delivers electrons to the ETC for ATP production.</li>
+<li><b>B.</b> FADH₂ is often enzyme-bound and feeds electrons into the ETC, but it is not the main reducing currency for anabolism.</li>
+<li><b>D.</b> CoQ is a lipid-soluble ETC carrier, not a cytosolic reducing equivalent for biosynthesis.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q4 Correct: D -->
+  <div class="question" id="q4">
+    <b>4. A student states: “If an overall redox reaction has a positive electromotive force (E), then it is spontaneous under those conditions.” Which statement best supports this claim?</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Positive E means ΔS is positive, which always guarantees spontaneity</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. Positive E implies Q = 1, so ΔG must equal ΔG°</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. Positive E means electrons move toward lower potential energy, which makes ΔH negative by definition</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">D. For a redox process, ΔG = −nFE; therefore E > 0 implies ΔG < 0</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> In electrochemistry, the free energy change relates to cell potential by <b>ΔG = −nFE</b>. If <b>E &gt; 0</b>, then <b>ΔG &lt; 0</b> and the reaction is thermodynamically favorable in the forward direction (under the stated conditions).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> E is not directly a statement about ΔS.</li>
+<li><b>B.</b> Q may differ from 1 in vivo; E (and ΔG) can be nonstandard.</li>
+<li><b>C.</b> Redox spontaneity is not defined by ΔH alone; ΔG captures both ΔH and ΔS.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q5 Correct: A -->
+  <div class="question" id="q5">
+    <b>5. Which electron carrier is <b>lipid-soluble</b> and diffuses within the inner mitochondrial membrane to shuttle electrons between complexes?</b>
+    <div class="choice" onclick="selectChoice('q5', this, true)">A. Ubiquinone (CoQ)</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">B. NADH</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Glutathione</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. Cytochrome c</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> <b>CoQ (ubiquinone)</b> is a hydrophobic, membrane-diffusible carrier that transfers electrons from Complex I and II to Complex III.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> NADH is soluble (primarily in the matrix/cytosol) and donates electrons to Complex I; it doesn’t diffuse in the membrane.</li>
+<li><b>C.</b> Glutathione is a soluble antioxidant in cytosol/mitochondria, not the main inter-complex shuttle.</li>
+<li><b>D.</b> Cytochrome <i>c</i> is soluble but resides in the intermembrane space; it transfers electrons from Complex III to IV, not within the lipid bilayer.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q6 Correct: B -->
+  <div class="question" id="q6">
+    <b>6. Flavin mononucleotide (FMN) is mentioned as a membrane-associated electron carrier. Where is FMN most directly used in oxidative phosphorylation?</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. As the terminal electron acceptor in Complex IV</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">B. As an initial electron acceptor within Complex I (NADH dehydrogenase)</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. As the primary lipid-soluble shuttle between Complex III and IV</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. As the enzyme that phosphorylates ADP to ATP</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> In the ETC, <b>Complex I</b> accepts electrons from NADH and passes them first to <b>FMN</b> (a flavin prosthetic group), then through iron–sulfur centers to CoQ.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> The terminal acceptor is O₂ (reduced to H₂O) at Complex IV.</li>
+<li><b>C.</b> That role is CoQ (within membrane) and cytochrome c (in intermembrane space), not FMN.</li>
+<li><b>D.</b> ATP synthase catalyzes phosphorylation; FMN is not that enzyme.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q7 Correct: C -->
+  <div class="question" id="q7">
+    <b>7. Proteins containing iron–sulfur clusters are described as well suited for electron transport. What property best explains this?</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. They store electrons as long-lived radicals that never change oxidation state</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. They transfer electrons by releasing free Fe²⁺ into solution</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">C. Their metal centers can reversibly change oxidation state, allowing one-electron transfers with minimal structural change</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. They generate ATP directly by substrate-level phosphorylation</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Iron–sulfur clusters can toggle between oxidation states (e.g., Fe²⁺/Fe³⁺) and often mediate <b>one-electron</b> transfers efficiently while remaining protein-bound and structurally stable.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> The point is controlled, reversible redox cycling—not permanent radical storage.</li>
+<li><b>B.</b> Free iron release would be damaging and is not how these cofactors function.</li>
+<li><b>D.</b> They are electron carriers, not ATP-producing enzymes.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q8 Correct: D -->
+  <div class="question" id="q8">
+    <b>8. A severely malnourished patient has signs consistent with riboflavin (vitamin B2) deficiency. Which enzymatic activity would be most directly impaired?</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Transfer of acetyl groups by coenzyme A</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. Carboxylation reactions requiring biotin</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. One-carbon transfers requiring tetrahydrofolate</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. Flavoprotein-mediated redox reactions that use FAD or FMN as cofactors</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Riboflavin (B2) is the precursor to <b>FAD</b> and <b>FMN</b>. Deficiency therefore impairs <b>flavoproteins</b>, which participate in many redox reactions (ETC, fatty acid oxidation, etc.).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Coenzyme A derives from pantothenic acid (B5), not B2.</li>
+<li><b>B.</b> Biotin is B7.</li>
+<li><b>C.</b> Folate is B9.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q9 Correct: A -->
+  <div class="question" id="q9">
+    <b>9. Biochemists emphasize homeostasis rather than equilibrium in living systems. Which example best illustrates a non-equilibrium disequilibrium maintained at energetic cost?</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. Keeping Na⁺ much higher outside neurons than inside, storing potential energy in the gradient</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Allowing all metabolites to reach equal concentrations across membranes to minimize ATP use</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. Letting the mitochondrial proton gradient dissipate to ensure maximal entropy</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. Driving reactions to equilibrium immediately to prevent any net flux through pathways</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> Ion gradients (like the Na⁺ gradient across neuronal membranes) are <b>stored potential energy</b> maintained by ATP-dependent pumps (e.g., Na⁺/K⁺-ATPase). This is the opposite of equilibrium.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> Equalizing concentrations is equilibrium; it removes stored energy and undermines excitability/transport.</li>
+<li><b>C.</b> Dissipating the proton gradient collapses oxidative phosphorylation capacity.</li>
+<li><b>D.</b> Immediate equilibrium would eliminate directional metabolism (no net flux).</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q10 Correct: B -->
+  <div class="question" id="q10">
+    <b>10. Two hours after a carbohydrate-rich meal, which combination of hormonal signal and liver metabolic activity is most expected?</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. High glucagon; increased hepatic glycogenolysis and ketogenesis</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">B. High insulin; increased hepatic glycogenesis and, after glycogen fills, lipogenesis</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. High epinephrine; increased hepatic proteolysis to supply gluconeogenesis</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Low insulin; maximal hepatic gluconeogenesis with high β-oxidation</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> The postprandial (absorptive) state is characterized by <b>insulin</b> dominance. The liver first stores glucose as <b>glycogen</b>; after glycogen is replete, excess glucose is converted to <b>fatty acids/triacylglycerols</b> (lipogenesis).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Glucagon predominates in fasting, not shortly after eating.</li>
+<li><b>C.</b> Proteolysis for gluconeogenesis is a fasting adaptation, not an immediate fed-state response.</li>
+<li><b>D.</b> Low insulin/high β-oxidation aligns with fasting/starvation.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q11 Correct: C -->
+  <div class="question" id="q11">
+    <b>11. Which statement about red blood cell (RBC) fuel use is most accurate across metabolic states?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. RBCs switch to ketone bodies during prolonged fasting to spare glucose</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. RBCs oxidize fatty acids in mitochondria when insulin is low</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">C. RBCs rely on anaerobic glycolysis for ATP because they lack mitochondria</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. RBCs primarily use oxidative phosphorylation in the postprandial state</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> RBCs have <b>no mitochondria</b>, so they cannot perform the citric acid cycle or oxidative phosphorylation. They make ATP via <b>anaerobic glycolysis</b> in all states, producing lactate.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Ketone utilization requires mitochondria; RBCs cannot use ketones for ATP.</li>
+<li><b>B.</b> β-oxidation also requires mitochondria.</li>
+<li><b>D.</b> RBCs cannot do oxidative phosphorylation at any time.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q12 Correct: D -->
+  <div class="question" id="q12">
+    <b>12. A student begins a fast at 8 PM. Around what time would hepatic gluconeogenesis be expected to approach its <i>maximum velocity</i>, assuming typical physiology?</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. By 9 PM (within 1 hour)</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. By midnight (within 4 hours)</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. By 8 AM (within 12 hours)</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. By 8 AM the next day (about 12 hours after fasting begins), after glycogenolysis has been active earlier</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> In the postabsorptive state, <b>glycogenolysis rises quickly</b> and begins almost immediately, while <b>gluconeogenesis ramps more slowly</b> and reaches near-maximal velocity at about <b>12 hours</b>.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A/B.</b> Too early—glycogen breakdown dominates initially.</li>
+<li><b>C.</b> “Within 12 hours” is close, but the key concept is that peak is reached <b>after</b> the ramp (≈12 h) and following earlier glycogenolysis; D captures both timing and sequence.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q13 Correct: A -->
+  <div class="question" id="q13">
+    <b>13. After several weeks of fasting, which fuel profile for the brain is most consistent with the described adaptation?</b>
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. Approximately two-thirds ketone bodies and one-third glucose</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. Exclusive fatty acid oxidation in mitochondria</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. Exclusive glucose oxidation because the brain cannot adapt</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. Primarily amino acids because proteins become the preferred long-term fuel</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> During prolonged fasting, the liver produces ketone bodies. After weeks, the <b>brain adapts</b> to use ketones for a large fraction of its energy—about <b>two-thirds</b>—reducing the need for amino-acid-derived gluconeogenesis (protein sparing).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> The brain does not significantly oxidize long-chain fatty acids because of transport and metabolic constraints.</li>
+<li><b>C.</b> The brain <i>does</i> adapt by increasing ketone utilization.</li>
+<li><b>D.</b> Using amino acids heavily would waste vital protein; adaptation aims to <i>spare</i> protein.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q14 Correct: B -->
+  <div class="question" id="q14">
+    <b>14. Which hormone pair most directly represents <i>counterregulatory</i> signaling that opposes insulin during fasting?</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Insulin and IGF-1</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. Glucagon and epinephrine</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. Insulin and cortisol</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Leptin and ghrelin</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> During fasting, <b>glucagon</b> promotes hepatic glycogenolysis and gluconeogenesis, and <b>epinephrine</b> promotes mobilization of fuels (including lipolysis). Together they counter insulin’s storage/anabolic effects.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> IGF-1 is generally anabolic and insulin-like in many contexts.</li>
+<li><b>C.</b> Insulin does not oppose itself; cortisol is counterregulatory but the pair is mismatched.</li>
+<li><b>D.</b> These regulate appetite/energy balance, not the primary acute counterregulatory fasting program.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q15 Correct: C -->
+  <div class="question" id="q15">
+    <b>15. Which cell type is <b>notably insulin-insensitive</b> and continues to rely primarily on glucose oxidation under well-fed and typical overnight fasting conditions (before prolonged starvation adaptations)?</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Adipocyte</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Skeletal myocyte</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">C. Neuron (nervous tissue)</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">D. Hepatocyte</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> Nervous tissue is relatively <b>insulin-insensitive</b> and uses glucose as a primary fuel in both the well-fed and normal fasting states; only in prolonged fasting does the brain substantially shift toward ketone bodies.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A/B.</b> Adipose and muscle are major insulin target tissues for glucose uptake and storage/anabolism.</li>
+<li><b>D.</b> The liver responds strongly to insulin/glucagon by changing storage vs output, even though its glucose transport is largely insulin-independent.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+
+
+<div class="section-tag">Passage-Based Questions (3 Passages × 3 Questions)</div>
+
+<!-- ===================== PASSAGE 1 ===================== -->
+<div class="passage-header">
+  <span>Passage 1: Regenerating NAD⁺ During Anaerobic Bursts</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text">
+    <p>A researcher studies skeletal muscle during a brief, intense sprint. Oxygen delivery temporarily lags behind demand, and glycolysis becomes the main ATP source. The lab measures a rising cytosolic NADH/NAD⁺ ratio and an increase in lactate concentration.</p>
+    <p>They focus on lactate dehydrogenase (LDH), which catalyzes: pyruvate + NADH + H⁺ ⇌ lactate + NAD⁺. In isolated cytosol, LDH activity increases when NAD⁺ becomes limiting for glyceraldehyde-3-phosphate dehydrogenase (GAPDH).</p>
+    <p>To connect redox energetics to direction, the investigator reminds trainees that under a given set of conditions, a spontaneous redox reaction has negative ΔG and positive E, and that electron bookkeeping can be clarified by half-reactions.</p>
+  </div>
+</div>
+<div class="reasoning-box" id="p1-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li>Identify what the cell needs during anaerobic glycolysis (regenerate NAD⁺ so GAPDH can keep running).</li>
+  <li>Map who is oxidized vs reduced in the LDH reaction (NADH is oxidized; pyruvate is reduced).</li>
+  <li>Use half-reactions to track electrons (2 e⁻ move from NADH to pyruvate).</li>
+  <li>Predict how changing metabolite ratios (high NADH/NAD⁺, low pyruvate, high lactate) will shift net flux using mass action reasoning.</li>
+</ol>
+</div>
+  <!-- Q16 Correct: D -->
+  <div class="question" id="q16">
+    <b>16. Based on the LDH reaction in the passage, which statement best identifies the <i>oxidizing agent</i> during net lactate production?</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. NADH, because it donates electrons</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. Lactate, because it is produced</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. NAD⁺, because it accepts electrons</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">D. Pyruvate, because it is reduced to lactate</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> The <b>oxidizing agent</b> is the species that <b>gets reduced</b> (accepts electrons). In net lactate production, <b>pyruvate is reduced to lactate</b>, so pyruvate is the oxidizing agent.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> NADH is the <i>reducing</i> agent (it is oxidized to NAD⁺).</li>
+<li><b>B.</b> Lactate is the reduced product; it is not the oxidant in the forward direction.</li>
+<li><b>C.</b> NAD⁺ is produced (and is the oxidized form); it is not accepting electrons in this direction.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q17 Correct: A -->
+  <div class="question" id="q17">
+    <b>17. Suppose a drug partially inhibits LDH during the sprint. Which immediate metabolic consequence is most likely in working muscle fibers?</b>
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Glycolytic flux decreases because NAD⁺ regeneration is impaired, slowing GAPDH</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. β-oxidation increases sharply to compensate, raising NADH production</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. The citric acid cycle becomes the dominant ATP source despite low oxygen delivery</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. RBCs begin exporting ketone bodies to fuel muscle</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> During anaerobic bursts, glycolysis needs <b>NAD⁺</b> for the GAPDH step. LDH helps regenerate NAD⁺ by oxidizing NADH. If LDH is inhibited, <b>NAD⁺ becomes limiting</b> and glycolysis slows.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> β-oxidation is aerobic-heavy and mitochondrial; it does not provide an immediate solution during oxygen limitation.</li>
+<li><b>C.</b> The TCA cycle and oxidative phosphorylation require sufficient O₂ and mitochondrial flux.</li>
+<li><b>D.</b> RBCs cannot produce or export ketone bodies (and lack mitochondria).</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q18 Correct: B -->
+  <div class="question" id="q18">
+    <b>18. During the sprint, the cell maintains a high NADH/NAD⁺ ratio. All else equal, what does this change tend to do to the net direction of the LDH reaction?</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. Drive net pyruvate formation because NADH favors oxidation</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">B. Drive net lactate formation because abundant NADH pushes reduction of pyruvate</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Have no effect because enzymes are not influenced by reactant/product ratios</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. Stop the reaction entirely because NADH is an inhibitor of LDH</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> A high <b>NADH/NAD⁺</b> ratio means abundant reducing equivalents. By mass action, this favors the direction that <b>consumes NADH</b> and produces NAD⁺—the reduction of pyruvate to lactate.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> NADH is a reducing agent; it favors reduction of pyruvate, not oxidation to pyruvate.</li>
+<li><b>C.</b> Enzyme-catalyzed reactions are still governed by thermodynamics and concentrations.</li>
+<li><b>D.</b> NADH is a substrate for LDH in this direction, not a universal inhibitor.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<!-- ===================== PASSAGE 2 ===================== -->
+<div class="passage-header">
+  <span>Passage 2: Riboflavin, Flavoproteins, and Electron Transfer to CoQ</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text">
+    <p>An ICU team evaluates a patient with severe malnutrition. Lab work suggests low riboflavin (vitamin B2). Mitochondrial assays show that NADH-dependent oxygen consumption is reduced, while electron entry from succinate is less affected.</p>
+    <p>The biochemist notes that Complex I contains an FMN prosthetic group and multiple iron–sulfur centers that pass electrons to ubiquinone (CoQ). Complex II also passes electrons to CoQ but uses a different set of redox cofactors. The team suspects a defect in flavoprotein-mediated steps.</p>
+    <p>They discuss how impairing early electron capture can reduce proton pumping and weaken the proton-motive force, lowering ATP synthesis.</p>
+  </div>
+</div>
+<div class="reasoning-box" id="p2-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li>Translate the clinical clue: riboflavin → FAD/FMN cofactors → flavoproteins.</li>
+  <li>Use the assay result to localize the problem: NADH entry (Complex I) vs succinate entry (Complex II).</li>
+  <li>Recall who hands electrons to CoQ (Complex I and II) and which cofactors they use.</li>
+  <li>Connect reduced electron flow to reduced proton pumping → weaker gradient → less ATP.</li>
+</ol>
+</div>
+  <!-- Q19 Correct: C -->
+  <div class="question" id="q19">
+    <b>19. Which mitochondrial component is most directly implicated by the pattern “NADH-dependent O₂ consumption ↓, succinate-supported respiration relatively preserved”?</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Cytochrome c (electron transfer from Complex III to IV)</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. ATP synthase (F₀F₁-ATPase) catalytic site</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">C. Complex I (NADH dehydrogenase), which relies on FMN and passes electrons to CoQ</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. Complex IV terminal reduction of oxygen to water</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> If NADH-driven respiration is selectively reduced, the defect is likely at <b>Complex I</b> (or upstream), where NADH electrons enter via <b>FMN</b> and iron–sulfur clusters before reaching CoQ. Succinate enters at Complex II, partially bypassing Complex I.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A/D.</b> Defects at Complex III/IV would typically impair respiration regardless of whether electrons entered from NADH or succinate.</li>
+<li><b>B.</b> ATP synthase affects ATP yield, but electron transport (O₂ consumption) can persist even if ATP synthase is impaired (often increasing proton leak/backpressure patterns rather than selectively blocking NADH entry).</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q20 Correct: D -->
+  <div class="question" id="q20">
+    <b>20. If Complex I electron transfer to CoQ is impaired, which downstream effect is most expected on oxidative phosphorylation?</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. An increase in cytosolic NADPH because the ETC directly makes NADPH</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. An increase in substrate-level phosphorylation in the ETC complexes</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. A collapse of the mitochondrial outer membrane potential because Complex I pumps protons out of the cell</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">D. A weaker proton gradient across the inner mitochondrial membrane, reducing ATP synthase drive</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Complex I contributes substantially to the proton-motive force by pumping protons across the <b>inner</b> mitochondrial membrane. Reduced electron flow through Complex I → reduced proton pumping → <b>smaller gradient</b> → less ATP synthesis.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> NADPH is generated mainly by pathways like the PPP; the ETC primarily handles NADH/FADH₂ electron disposal.</li>
+<li><b>B.</b> The ETC does not perform substrate-level phosphorylation; ATP synthase uses the gradient.</li>
+<li><b>C.</b> Proton pumping is across the inner membrane into the intermembrane space, not “out of the cell,” and the key consequence is a reduced gradient, not specifically outer-membrane collapse.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q21 Correct: A -->
+  <div class="question" id="q21">
+    <b>21. Which statement best explains why flavoproteins can function as electron carriers in multiple settings (ETC, fatty acid oxidation, glutathione reduction)?</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. Their FAD or FMN cofactors can accept and donate electrons through reversible redox cycling</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. They permanently bind oxygen and transfer it directly to substrates</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. They store energy by forming peptide bonds that later hydrolyze</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. They exclusively catalyze one-electron transfers and cannot participate in two-electron chemistry</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b></p>
+<p><b>Why:</b> FAD and FMN can reversibly change oxidation state, allowing flavoproteins to <b>accept and donate electrons</b> (often as 2 e⁻/2 H⁺ equivalents) and interface with different redox partners in diverse pathways.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> Flavins are not primarily oxygen carriers like hemoglobin; they participate in redox reactions.</li>
+<li><b>C.</b> Energy storage here is not via peptide bonds.</li>
+<li><b>D.</b> Flavins can participate in both one- and two-electron chemistry depending on context.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<!-- ===================== PASSAGE 3 ===================== -->
+<div class="passage-header">
+  <span>Passage 3: Fuel Selection Across Fed, Overnight Fast, and Starvation</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text">
+    <p>A physiology lab follows three volunteers: (1) 2 hours after lunch, (2) 16 hours after the last meal (overnight fast), and (3) 10 days into a medically supervised fast. Blood tests show that insulin is highest in condition 1, while glucagon and epinephrine are elevated in conditions 2 and 3.</p>
+    <p>Muscle biopsies indicate increased fatty acid utilization in conditions 2 and 3. Liver measurements show that glycogenolysis rises early in condition 2, while gluconeogenesis becomes more prominent as fasting continues. Condition 3 shows high circulating ketone bodies produced by the liver.</p>
+    <p>The investigators also measure ATP use by membrane pumps. Neurons maintain a steep Na⁺ gradient in all conditions, requiring constant ATP expenditure to preserve excitability (homeostasis).</p>
+  </div>
+</div>
+<div class="reasoning-box" id="p3-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li>Classify each condition by time since meal: postprandial vs postabsorptive vs prolonged fasting.</li>
+  <li>Use hormone pattern: insulin → storage/anabolism; glucagon/epi → mobilization/catabolism.</li>
+  <li>Match tissue constraints: RBCs lack mitochondria (always glycolysis); brain shifts to ketones only with prolonged fasting.</li>
+  <li>Link gradients to energy cost: maintaining disequilibria (Na⁺ gradient) requires ATP regardless of fuel source.</li>
+</ol>
+</div>
+  <!-- Q22 Correct: B -->
+  <div class="question" id="q22">
+    <b>22. In condition 2 (16-hour fast), which liver process is most directly responsible for maintaining blood glucose <i>early</i> in the fast?</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. De novo fatty acid synthesis</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">B. Glycogenolysis (hepatic glycogen breakdown)</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. Ketogenesis from acetyl-CoA</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. Cholesterol esterification by LCAT</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b></p>
+<p><b>Why:</b> Early in the postabsorptive state, the liver maintains blood glucose primarily via <b>glycogenolysis</b>. Gluconeogenesis ramps up more slowly and becomes dominant later as glycogen depletes.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Lipogenesis is a fed-state process driven by insulin.</li>
+<li><b>C.</b> Ketogenesis becomes prominent in prolonged fasting when β-oxidation generates excess acetyl-CoA.</li>
+<li><b>D.</b> LCAT is part of lipoprotein cholesterol handling, not acute glucose maintenance.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q23 Correct: C -->
+  <div class="question" id="q23">
+    <b>23. In condition 3 (10-day fast), which statement best explains why increased ketone body availability can <i>spare protein</i>?</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Ketones directly convert to glucose in the liver, replacing gluconeogenesis</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Ketones are used primarily by RBCs, reducing their glucose demand</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">C. Brain utilization of ketones reduces the amount of glucose that must be produced by gluconeogenesis from amino acids</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. Ketones inhibit lipolysis, preventing the release of fatty acids from adipose tissue</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b></p>
+<p><b>Why:</b> As fasting prolongs, the brain increases ketone utilization. This lowers the brain’s glucose requirement, reducing the need for <b>amino-acid-derived gluconeogenesis</b>—thereby sparing body protein.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Humans cannot net-convert acetyl-CoA (from ketones) into glucose.</li>
+<li><b>B.</b> RBCs cannot use ketones because they lack mitochondria; they still need glucose.</li>
+<li><b>D.</b> In starvation, lipolysis is generally increased (not inhibited) to supply fuel and acetyl-CoA for ketogenesis.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <!-- Q24 Correct: D -->
+  <div class="question" id="q24">
+    <b>24. The passage notes that neurons continuously maintain a steep Na⁺ gradient. Which conclusion best ties this observation to the concept that equilibrium is undesirable in biochemistry?</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. Neurons maintain equilibrium so that action potentials require no energy</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. Neurons keep Na⁺ equal on both sides of the membrane to maximize entropy and signaling speed</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. Ion gradients arise passively and therefore do not require ATP once established</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">D. Sustaining a non-equilibrium gradient stores potential energy for excitability, but requires ongoing ATP expenditure to oppose equilibrium</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b></p>
+<p><b>Why:</b> Equilibrium would eliminate the gradient (no stored potential energy). Neurons <b>spend ATP</b> to maintain a <b>non-equilibrium</b> Na⁺ distribution, enabling rapid electrical signaling.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Action potentials and pump maintenance have energetic costs.</li>
+<li><b>B.</b> Equal concentrations would remove the driving force for depolarization.</li>
+<li><b>C.</b> Gradients dissipate spontaneously; maintaining them requires work (ATP).</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+</body>
+</html>

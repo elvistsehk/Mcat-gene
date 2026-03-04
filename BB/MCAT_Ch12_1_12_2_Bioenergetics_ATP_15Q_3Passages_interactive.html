@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Chapter 12.1–12.2 Practice (Bioenergetics &amp; ATP)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+</head>
+<body>
+
+<div class="main-header">
+  <div class="header-left">
+    <div class="header-title">MCAT Biochemistry — Chapter 12.1–12.2: Bioenergetics &amp; ATP</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-tag">Standalone Questions (Q1–Q15)</div>
+  <div class="question" id="q1">
+    <b>1. Which statement best describes the relationship between ΔG° and ΔG°′ in biochemistry?</b>
+    <div class="choice" onclick="selectChoice('q1', this, false)">A. ΔG°′ is defined at 37°C; ΔG° is defined at 25°C.</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">B. ΔG°′ applies only to ATP hydrolysis; ΔG° applies to all other reactions.</div>
+    <div class="choice" onclick="selectChoice('q1', this, true)">C. ΔG°′ fixes [H+] at 10⁻⁷ M (pH 7), whereas ΔG° assumes 1 M protons (pH 0).</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. ΔG°′ is always equal to ΔG at equilibrium.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> ΔG°′ fixes [H+] at 10⁻⁷ M (pH 7), whereas ΔG° assumes 1 M protons (pH 0).</p>
+<p><b>Why:</b> Standard biochemical free energy (ΔG°′) modifies the standard state by setting proton concentration to pH 7, since pH 0 is not physiological.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> ATP involvement is not what defines ΔG°′; the key modification is [H+].</li>
+<li><b>B.</b> Temperature is not changed by the notation; standard state is still 25°C unless specified.</li>
+<li><b>D.</b> ΔG depends on Q; ΔG°′ is a reference state.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q2">
+    <b>2. Which equation correctly relates ΔG to ΔG° and the reaction quotient Q (at a given temperature)?</b>
+    <div class="choice" onclick="selectChoice('q2', this, true)">A. ΔG = ΔG° + RT ln(Q)</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">B. ΔG = ΔH − TΔS</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">C. ΔG = −RT ln(K)</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. ΔU = Q − W</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> ΔG = ΔG° + RT ln(Q)</p>
+<p><b>Why:</b> This relationship accounts for how current concentrations (Q) shift free energy away from the standard-state value.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> This relates ΔG° to the equilibrium constant K, not Q at arbitrary conditions.</li>
+<li><b>C.</b> ΔU = Q − W is the First Law for internal energy, not Gibbs free energy.</li>
+<li><b>D.</b> Use ΔG = ΔG° + RT ln(Q) to include concentration effects.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q3">
+    <b>3. A reaction has ΔH &lt; 0 and ΔS &gt; 0. Which statement is most accurate about spontaneity?</b>
+    <div class="choice" onclick="selectChoice('q3', this, false)">A. It is spontaneous only at high temperature.</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. It is spontaneous only at low temperature.</div>
+    <div class="choice" onclick="selectChoice('q3', this, true)">C. It is spontaneous at all temperatures.</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. It is never spontaneous.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> It is spontaneous at all temperatures.</p>
+<p><b>Why:</b> ΔG = ΔH − TΔS. With ΔH negative and ΔS positive, both terms drive ΔG negative for any T.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Low-temperature dependence applies when ΔH&lt;0 and ΔS&lt;0.</li>
+<li><b>B.</b> High-temperature dependence applies when ΔH&gt;0 and ΔS&gt;0.</li>
+<li><b>D.</b> Here, both signs favor ΔG &lt; 0.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q4">
+    <b>4. Why can heat exchange often be treated as a proxy for changes in internal energy (ΔU) in many biological contexts?</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Because entropy changes are negligible in living systems.</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">B. Because pressure–volume work is usually small when pressure and volume are roughly constant.</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. Because biological systems are always isolated from the environment.</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">D. Because ΔU and ΔG are the same state function in cells.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Because pressure–volume work is usually small when pressure and volume are roughly constant.</p>
+<p><b>Why:</b> For a closed system, ΔU = Q − W. If PV work is minimal, Q becomes the main contributor to ΔU.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Entropy changes can be important; they are not generally negligible.</li>
+<li><b>C.</b> ΔU and ΔG are different state functions with different meanings.</li>
+<li><b>D.</b> The key reason is small PV work, not identical definitions.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q5">
+    <b>5. A reaction has ΔH &gt; 0 and ΔS &gt; 0. Under what condition is it most likely to be spontaneous?</b>
+    <div class="choice" onclick="selectChoice('q5', this, false)">A. At low temperature.</div>
+    <div class="choice" onclick="selectChoice('q5', this, true)">B. At high temperature.</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. Only at equilibrium.</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. Never; ΔH &gt; 0 prevents spontaneity.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> At high temperature.</p>
+<p><b>Why:</b> When ΔS &gt; 0, increasing T increases TΔS, making ΔG = ΔH − TΔS more likely to become negative.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Low temperature reduces TΔS, so ΔG stays more positive.</li>
+<li><b>C.</b> ΔH &gt; 0 can be overcome by sufficiently large TΔS when ΔS &gt; 0.</li>
+<li><b>D.</b> High temperature favors spontaneity for this sign combination.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q6">
+    <b>6. If Q is much smaller than K for a reaction, then ΔG is most likely:</b>
+    <div class="choice" onclick="selectChoice('q6', this, false)">A. Unrelated to direction unless ΔH is known.</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">B. Positive, favoring the reverse reaction.</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. Zero, because Q indicates equilibrium.</div>
+    <div class="choice" onclick="selectChoice('q6', this, true)">D. Negative, favoring the forward reaction.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Negative, favoring the forward reaction.</p>
+<p><b>Why:</b> When Q &lt; K, the mixture has ‘too many reactants’ relative to equilibrium, so the reaction proceeds forward and ΔG &lt; 0.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Positive ΔG corresponds to Q &gt; K.</li>
+<li><b>B.</b> ΔG = 0 occurs when Q = K.</li>
+<li><b>C.</b> Direction can be inferred from Q vs K without separately knowing ΔH.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q7">
+    <b>7. Why is ATP considered a ‘mid-level’ energy carrier rather than an extremely high-energy carrier?</b>
+    <div class="choice" onclick="selectChoice('q7', this, true)">A. It releases a moderate amount of free energy, reducing waste when coupling to many cellular reactions.</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. It has the most negative ΔG of hydrolysis of all phosphate compounds.</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">C. It cannot be regenerated from ADP in cells.</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. It is used only in oxidative phosphorylation.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> It releases a moderate amount of free energy, reducing waste when coupling to many cellular reactions.</p>
+<p><b>Why:</b> A mid-level carrier like ATP can power many processes without wasting large ‘leftover’ energy each time.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> ATP is continually regenerated (ATP synthase, substrate-level phosphorylation).</li>
+<li><b>C.</b> ATP is used widely across metabolism and signaling, not just oxidative phosphorylation.</li>
+<li><b>D.</b> The key idea is minimizing wasted free energy while remaining useful.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q8">
+    <b>8. Which feature most directly contributes to ATP’s large negative ΔG of hydrolysis?</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Hydrogen bonding between adenine and ribose.</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">B. Electrostatic repulsion among phosphate groups and resonance stabilization of ADP and Pi.</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. Aromaticity of the adenine ring.</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">D. Presence of a nitrogenous base with three rings.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Electrostatic repulsion among phosphate groups and resonance stabilization of ADP and Pi.</p>
+<p><b>Why:</b> Hydrolysis relieves phosphate charge repulsion and yields products stabilized by resonance/solvation, making the reaction strongly exergonic.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Base–sugar bonding isn’t what drives phosphoanhydride hydrolysis energetics.</li>
+<li><b>C.</b> Adenine has two fused rings, not three; ring count isn’t the key driver anyway.</li>
+<li><b>D.</b> The dominant contributors are charge repulsion relief and product stabilization.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q9">
+    <b>9. A pathway couples an endergonic step (ΔG = +12 kJ/mol) to ATP hydrolysis (ΔG = −30 kJ/mol). The net ΔG is:</b>
+    <div class="choice" onclick="selectChoice('q9', this, false)">A. −42 kJ/mol</div>
+    <div class="choice" onclick="selectChoice('q9', this, true)">B. −18 kJ/mol</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. +18 kJ/mol</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. +42 kJ/mol</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> −18 kJ/mol</p>
+<p><b>Why:</b> Coupled free energy changes add: (+12) + (−30) = −18 kJ/mol.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> −42 would require both steps to be strongly exergonic with those magnitudes.</li>
+<li><b>C.</b> +42 is inconsistent with adding +12 and −30.</li>
+<li><b>D.</b> Add ΔG values to get the net.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q10">
+    <b>10. A reaction is nonspontaneous under standard conditions (ΔG° &gt; 0). Which change could make ΔG negative without changing ΔG°?</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Add an enzyme catalyst to lower the activation energy.</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">B. Shift concentrations so RT ln(Q) becomes sufficiently negative.</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. Move the reaction from cytosol to nucleus.</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Redefine the reaction to use ΔG°′ instead of ΔG°.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Shift concentrations so RT ln(Q) becomes sufficiently negative.</p>
+<p><b>Why:</b> ΔG = ΔG° + RT ln(Q). Concentrations (Q) can drive ΔG negative even when ΔG° is positive.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Enzymes change rate, not the thermodynamic state function values.</li>
+<li><b>C.</b> ΔG°′ is a reference for pH 7; it doesn’t automatically change ΔG for a given Q.</li>
+<li><b>D.</b> The direct lever is Q via the ln(Q) term.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q11">
+    <b>11. Which statement best distinguishes thermodynamics from kinetics in the context of ΔG?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. ΔG predicts reaction rate, while activation energy predicts spontaneity.</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. ΔG depends only on enzymes, while activation energy depends only on temperature.</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">C. ΔG predicts favorability/direction, while activation energy and mechanism determine rate.</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. If ΔG is negative, the reaction must proceed instantly.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> ΔG predicts favorability/direction, while activation energy and mechanism determine rate.</p>
+<p><b>Why:</b> ΔG is a thermodynamic measure of driving force; kinetics depends on activation energy and pathway (often enzyme-catalyzed).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This reverses the concepts: ΔG is thermodynamics; activation energy relates to rate.</li>
+<li><b>B.</b> ΔG does not depend only on enzymes; enzymes do not change ΔG.</li>
+<li><b>D.</b> The key correction is thermodynamics vs kinetics.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q12">
+    <b>12. As a reaction mixture approaches equilibrium at constant temperature, what happens to ΔG?</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. ΔG° changes continuously as concentrations change.</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. ΔG becomes more negative as products accumulate.</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">C. ΔG approaches 0 because Q approaches K.</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">D. ΔG becomes independent of Q.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> ΔG approaches 0 because Q approaches K.</p>
+<p><b>Why:</b> Driving force decreases as Q → K; at equilibrium, ΔG = 0.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Product accumulation increases Q and tends to raise ΔG (less negative), not make it more negative indefinitely.</li>
+<li><b>B.</b> ΔG° is a standard-state constant for a given reaction at a given T; it does not vary with concentrations.</li>
+<li><b>D.</b> The hallmark is ΔG → 0 as Q → K.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q13">
+    <b>13. Which statement correctly applies the First Law of Thermodynamics to a closed system?</b>
+    <div class="choice" onclick="selectChoice('q13', this, false)">A. ΔG = ΔG° + RT ln(Q)</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. ΔG = ΔH − TΔS</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. ΔS = Q/T</div>
+    <div class="choice" onclick="selectChoice('q13', this, true)">D. ΔU = Q − W</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> ΔU = Q − W</p>
+<p><b>Why:</b> The First Law relates changes in internal energy to heat added and work done by the system.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This is Gibbs free energy, not the First Law.</li>
+<li><b>B.</b> ΔS = Q/T applies to reversible heat transfer, not the general First Law statement.</li>
+<li><b>C.</b> This relates ΔG to concentrations, not internal energy.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q14">
+    <b>14. Which best describes ‘ATP cleavage’ as used in many coupled reactions?</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Breaking the adenine ring to release energy.</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. Transfer of a phosphoryl group from ATP to another molecule, often altering the target’s activity.</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. Removing two phosphates to form AMP is always required.</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Spontaneous decomposition of ATP without enzymes is the main cellular mechanism.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Transfer of a phosphoryl group from ATP to another molecule, often altering the target’s activity.</p>
+<p><b>Why:</b> ATP frequently drives reactions via phosphoryl group transfer (phosphorylation), forming activated intermediates or regulatory modifications.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Energy is not released by destroying adenine; the key chemistry is phosphoanhydride/phosphoryl transfer.</li>
+<li><b>C.</b> Cells use enzymes to control ATP hydrolysis/transfer; ‘main mechanism’ is not uncontrolled decomposition.</li>
+<li><b>D.</b> Phosphoryl transfer is central to ATP coupling.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q15">
+    <b>15. Why is ΔG°′ used so often in biochemistry problems, even when other concentrations are not 1 M?</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Because it replaces the need for the RT ln(Q) term.</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Because it converts all reactant and product concentrations to their physiological values automatically.</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">C. Because it guarantees ΔG is negative for all metabolic reactions.</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">D. Because it corrects only the standard state for protons to pH 7; other species may still be nonstandard and handled by Q.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Because it corrects only the standard state for protons to pH 7; other species may still be nonstandard and handled by Q.</p>
+<p><b>Why:</b> ΔG°′ is a modified standard state reflecting pH 7. Actual cellular ΔG still depends on concentrations through Q.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> ΔG°′ does not automatically account for non-1 M concentrations of other species.</li>
+<li><b>B.</b> ΔG can be positive or negative depending on Q; ΔG°′ does not guarantee spontaneity.</li>
+<li><b>C.</b> You still need RT ln(Q) to adjust from standard to actual conditions.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<div class="section-tag">Passage-Based Questions (3 Passages × 3 Questions)</div>
+
+<!-- ===================== PASSAGE 1 ===================== -->
+<div class="passage-header">
+  <span>Passage 1: Thermodynamics Under Physiological Conditions</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text"><p>A researcher studies an enzyme-catalyzed reaction at 37°C. Under standard conditions (1 M reactants/products, 1 atm, 25°C), the reaction has ΔG° = +4 kJ/mol.</p>
+<p>Inside cells, the substrate is maintained near 5 mM while the product is rapidly consumed, keeping product concentration near 50 μM. The buffer is near pH 7, and the system shows heat release during turnover with increased dispersion of energy into the solvent.</p>
+<p>The investigator uses ΔG = ΔG° + RT ln(Q) (and the concept of ΔG°′ at pH 7) to reconcile ‘unfavorable’ standard data with observed forward flux in vivo.</p></div>
+</div>
+<div class="reasoning-box" id="p1-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li><b>Write the governing relationship</b>: ΔG = ΔG° + RT ln(Q).</li>
+  <li><b>Infer Q from the narrative</b>: product kept very low while reactant is higher → Q ≪ 1 → ln(Q) < 0.</li>
+  <li><b>Translate qualitative thermodynamics</b>: heat release → ΔH < 0; increased dispersion/disorder → ΔS > 0.</li>
+  <li><b>Pick the option consistent with forward flux</b>: forward progress implies ΔG < 0 under cellular conditions.</li>
+</ol>
+</div>
+  <div class="question" id="q16">
+    <b>16. Which statement best explains why the reaction can proceed forward in the cell despite ΔG° being positive?</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. Heat release forces ΔG to equal ΔH.</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. Enzymes change ΔG° by lowering the activation energy.</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Using ΔG°′ instead of ΔG° automatically makes the reaction favorable.</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">D. Cellular Q is very small, so RT ln(Q) is negative enough to offset +ΔG°.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Cellular Q is very small, so RT ln(Q) is negative enough to offset +ΔG°.</p>
+<p><b>Why:</b> Because ΔG depends on concentration via Q, maintaining low product and higher reactant drives ΔG negative even if ΔG° &gt; 0.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Enzymes change rate, not ΔG°.</li>
+<li><b>B.</b> ΔG°′ adjusts the proton standard state but does not automatically flip reaction favorability.</li>
+<li><b>C.</b> ΔG includes entropy; it is not forced to equal ΔH.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q17">
+    <b>17. Based on the passage’s qualitative observations, which sign combination is most consistent?</b>
+    <div class="choice" onclick="selectChoice('q17', this, false)">A. ΔH &lt; 0 and ΔS &lt; 0</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. ΔH &gt; 0 and ΔS &lt; 0</div>
+    <div class="choice" onclick="selectChoice('q17', this, true)">C. ΔH &lt; 0 and ΔS &gt; 0</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. ΔH &gt; 0 and ΔS &gt; 0</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> ΔH &lt; 0 and ΔS &gt; 0</p>
+<p><b>Why:</b> Heat release indicates ΔH &lt; 0. Increased energy dispersion/disorder indicates ΔS &gt; 0.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> ΔH &gt; 0 contradicts heat release and ΔS &lt; 0 contradicts increased dispersion.</li>
+<li><b>B.</b> ΔS &lt; 0 contradicts increased dispersion; would make temperature dependence critical.</li>
+<li><b>D.</b> The best match is ΔH &lt; 0 and ΔS &gt; 0.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q18">
+    <b>18. If the product were allowed to accumulate substantially (increasing Q) while temperature stays constant, what happens to ΔG?</b>
+    <div class="choice" onclick="selectChoice('q18', this, true)">A. ΔG increases (becomes less negative or more positive), moving toward equilibrium.</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">B. ΔG becomes more negative, driving the reaction faster.</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. ΔG is unchanged because ΔG° is constant.</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. ΔG instantly becomes 0 because enzymes enforce equilibrium.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> ΔG increases (becomes less negative or more positive), moving toward equilibrium.</p>
+<p><b>Why:</b> As Q increases, ln(Q) increases, raising ΔG and reducing the driving force toward products.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> ΔG depends on Q via RT ln(Q).</li>
+<li><b>C.</b> Enzymes speed approach to equilibrium but do not force ΔG = 0 unless Q = K.</li>
+<li><b>D.</b> The correct trend is ΔG increases as Q increases.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<!-- ===================== PASSAGE 2 ===================== -->
+<div class="passage-header">
+  <span>Passage 2: ATP Coupling and Net Free Energy</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text"><p>A ligase reaction in vitro has ΔG = +18 kJ/mol under physiological conditions, so it does not proceed measurably on its own.</p>
+<p>In cells, the ligase couples the process to ATP by first forming a phosphorylated intermediate (Step 1: ΔG = +13 kJ/mol), then completing bond formation (Step 2: ΔG = +2 kJ/mol). The enzyme also catalyzes ATP → ADP + Pi (Step 0: ΔG = −30 kJ/mol) in the same active site during the overall cycle.</p>
+<p>A student argues that because some individual steps are still endergonic, the overall process cannot be favorable. The instructor points out that for coupled processes, free energies add across the linked steps.</p></div>
+</div>
+<div class="reasoning-box" id="p2-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li><b>Identify what is actually coupled</b>: Step 0 (ATP hydrolysis) + Steps 1–2 (mechanism).</li>
+  <li><b>Add ΔG values</b>: net ΔG = ΣΔG (state functions add).</li>
+  <li><b>Interpret the sign</b>: net negative → thermodynamically favorable overall, even if some steps are positive.</li>
+  <li><b>Don’t confuse rate with sign</b>: enzymes tune kinetics, but the net ΔG comes from the sum.</li>
+</ol>
+</div>
+  <div class="question" id="q19">
+    <b>19. What is the net ΔG for the coupled cycle described (Step 0 + Step 1 + Step 2)?</b>
+    <div class="choice" onclick="selectChoice('q19', this, true)">A. −15 kJ/mol</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. −33 kJ/mol</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">C. +15 kJ/mol</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">D. +33 kJ/mol</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> −15 kJ/mol</p>
+<p><b>Why:</b> Add the coupled steps: (−30) + (+13) + (+2) = −15 kJ/mol.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> +15 would be missing the ATP term or adding incorrectly.</li>
+<li><b>C.</b> +33 is inconsistent with a large negative ATP term.</li>
+<li><b>D.</b> Sum the given ΔG values for the coupled steps.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q20">
+    <b>20. Which statement best addresses the student’s objection that ‘a positive step means the pathway cannot run’?</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. ATP hydrolysis must be endothermic to drive coupling.</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. Any endergonic step is impossible in biology.</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">C. Enzymes change ΔG for each step so signs do not matter.</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">D. A pathway can proceed if the overall ΔG across coupled steps is negative, even if some individual steps are endergonic.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> A pathway can proceed if the overall ΔG across coupled steps is negative, even if some individual steps are endergonic.</p>
+<p><b>Why:</b> Coupling works because state functions add. Local uphill steps can occur if compensated by larger downhill steps in the same coupled process.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Biology frequently uses uphill steps (e.g., transport) powered by coupling.</li>
+<li><b>B.</b> Enzymes alter rates and pathways, not the thermodynamic state function values.</li>
+<li><b>C.</b> ATP hydrolysis is exergonic (not endothermic) and provides negative ΔG.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q21">
+    <b>21. Which change would most directly make this coupled ligase cycle less favorable (net ΔG less negative), assuming ΔG° values are unchanged?</b>
+    <div class="choice" onclick="selectChoice('q21', this, false)">A. Moving the enzyme to a different organelle without changing concentrations.</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Adding more enzyme to the cell.</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Lowering activation energy of Step 1.</div>
+    <div class="choice" onclick="selectChoice('q21', this, true)">D. Allowing ADP and Pi to accumulate while ATP becomes relatively scarce.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Allowing ADP and Pi to accumulate while ATP becomes relatively scarce.</p>
+<p><b>Why:</b> Changing concentrations alters Q for ATP hydrolysis, making its ΔG less negative, which reduces the net driving force for the coupled cycle.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> More enzyme changes rate, not ΔG at given concentrations.</li>
+<li><b>B.</b> Activation energy affects kinetics, not thermodynamic favorability.</li>
+<li><b>C.</b> Location alone doesn’t change ΔG unless it changes conditions/concentrations.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<!-- ===================== PASSAGE 3 ===================== -->
+<div class="passage-header">
+  <span>Passage 3: ATP as a Cellular ‘Energy Currency’</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text"><p>A physiologist compares fuels and energy carriers. Complete combustion yields ~9 kcal/g for fats but ~4 kcal/g for carbohydrates or proteins, so fats are preferred for long-term storage.</p>
+<p>In contrast, cells rely on ATP as an immediately usable currency. Under physiological conditions, ATP hydrolysis releases about 30 kJ/mol. A high-energy carrier like creatine phosphate releases more (≈43 kJ/mol), while lower-energy phosphates like glucose-6-phosphate release much less.</p>
+<p>In a muscle biopsy, a subject performs repeated short sprints. The lab observes rapid ATP turnover and notes that total ATP present at any moment is small compared to daily ATP use, implying extensive recycling of ATP ↔ ADP + Pi.</p></div>
+</div>
+<div class="reasoning-box" id="p3-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li><b>Separate storage vs currency</b>: fats store lots of energy per gram; ATP is about rapid, controllable energy transfer.</li>
+  <li><b>Use the ‘change-making’ analogy</b>: mid-level ΔG avoids wasting large excess free energy for small tasks.</li>
+  <li><b>Connect turnover to pool size</b>: small ATP pool + large daily usage implies rapid regeneration cycles.</li>
+  <li><b>Pick choices consistent with physiology</b>: sprinting favors rapid ATP regeneration, not ‘one-and-done’ ATP use.</li>
+</ol>
+</div>
+  <div class="question" id="q22">
+    <b>22. Why are fats preferred for long-term energy storage compared with carbohydrates?</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. They are more water-soluble, making storage easier.</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">B. They can be used directly by every tissue, including red blood cells.</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">C. They are more energy-dense per gram, storing more chemical energy in the same mass.</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. They contain phosphate bonds with the highest ΔG of hydrolysis.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> They are more energy-dense per gram, storing more chemical energy in the same mass.</p>
+<p><b>Why:</b> Fats yield roughly 9 kcal/g versus ~4 kcal/g for carbohydrates/proteins, making them efficient long-term stores.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> RBCs lack mitochondria and rely on glucose anaerobically; they do not use fats directly for ATP production.</li>
+<li><b>B.</b> Fats are largely hydrophobic and stored as triacylglycerols; they are not water-soluble.</li>
+<li><b>D.</b> The key distinction is energy density per gram.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q23">
+    <b>23. The passage argues ATP is a ‘mid-level’ carrier. Which scenario best illustrates the advantage of that?</b>
+    <div class="choice" onclick="selectChoice('q23', this, true)">A. If a process needs ~10 kJ/mol, coupling to ATP (~30 kJ/mol) wastes less energy than coupling to creatine phosphate (~43 kJ/mol).</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Using the highest-energy carrier always minimizes waste.</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">C. Mid-level carriers are used because they cannot be regenerated.</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. ATP is mid-level because it is the only phosphate compound in cells.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> If a process needs ~10 kJ/mol, coupling to ATP (~30 kJ/mol) wastes less energy than coupling to creatine phosphate (~43 kJ/mol).</p>
+<p><b>Why:</b> A moderate ΔG of hydrolysis allows energy payments closer to the ‘price’ of many reactions, reducing leftover free energy that can’t be recovered.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> ATP is regenerated constantly; mid-level status is not due to irreversibility.</li>
+<li><b>C.</b> Cells contain multiple phosphate compounds (e.g., creatine phosphate, G6P).</li>
+<li><b>D.</b> The advantage is minimizing waste while remaining broadly useful.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="question" id="q24">
+    <b>24. A lab notes that the total ATP present at any given moment is far smaller than the amount of ATP used in a day. Which inference best explains this?</b>
+    <div class="choice" onclick="selectChoice('q24', this, true)">A. ATP is recycled rapidly: ADP + Pi are continually rephosphorylated to ATP many times per day.</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. ATP is stored long-term in adipose tissue.</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. ATP is not actually consumed; it only binds enzymes.</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">D. Cells obtain ATP only by dietary absorption of ATP molecules.</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> ATP is recycled rapidly: ADP + Pi are continually rephosphorylated to ATP many times per day.</p>
+<p><b>Why:</b> A small pool can support huge daily flux if turnover is high; ATP is repeatedly regenerated via oxidative and substrate-level phosphorylation.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> ATP hydrolysis/transfer is real consumption in reactions; it’s not merely binding.</li>
+<li><b>C.</b> Dietary ATP is not the main source; cells synthesize ATP internally.</li>
+<li><b>D.</b> High turnover explains small standing pool with large daily use.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</body>
+</html>

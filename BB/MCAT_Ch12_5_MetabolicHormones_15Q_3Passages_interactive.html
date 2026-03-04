@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Chapter 12.5 Practice (Metabolic Hormones)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+
+</style>
+<script>
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+
+</script>
+</head>
+<body>
+<div class="main-header">MCAT Biochemistry — Chapter 12.5: Metabolic Hormones (Insulin, Glucagon, Cortisol, Catecholamines, Thyroid)
+<div class="controls">
+<button class="ctrl-btn" id="resetAll">Reset all</button>
+</div></div>
+<div class="section-tag">Standalone Questions (1–15)</div>
+<div class="question" id="q1">
+  <b>1. Which tissue requires insulin for high-capacity glucose uptake under resting conditions?</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. Adipose tissue</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">B. Red blood cells</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">C. Nervous tissue</div>
+  <div class="choice" onclick="selectChoice('q1', this, false)">D. Intestinal mucosa</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b> Adipose tissue</p>
+<p><b>Why:</b> GLUT4 translocation to the membrane is insulin-dependent, and GLUT4 is expressed in adipose tissue and resting skeletal muscle. In contrast, many other tissues use insulin-independent transporters (e.g., GLUT1/GLUT3) to ensure glucose uptake even when insulin is low.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>B.</b> Erythrocytes rely on insulin-independent GLUT1 and must continuously take up glucose because they cannot oxidize fatty acids or ketones.</li>
+<li><b>C.</b> Neurons primarily use insulin-independent transporters (notably GLUT3) so the brain can access glucose even during fasting.</li>
+<li><b>D.</b> Intestinal mucosa absorbs glucose from the lumen using transporters that do not require insulin for uptake.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q2">
+  <b>2. A drop in insulin during an overnight fast most directly increases which process in adipocytes?</b>
+  <div class="choice" onclick="selectChoice('q2', this, false)">A. Glycogen synthesis</div>
+  <div class="choice" onclick="selectChoice('q2', this, true)">B. Triacylglycerol breakdown via hormone-sensitive lipase</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">C. Glucose uptake via GLUT4</div>
+  <div class="choice" onclick="selectChoice('q2', this, false)">D. Cholesterol clearance from plasma</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b> Triacylglycerol breakdown via hormone-sensitive lipase</p>
+<p><b>Why:</b> Low insulin removes inhibition on lipolysis. Catecholamines can further stimulate hormone-sensitive lipase (HSL), releasing free fatty acids and glycerol for use during the postabsorptive state.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> Glycogen synthesis is promoted by insulin in liver and muscle; adipocytes store energy mainly as triacylglycerol, not glycogen.</li>
+<li><b>C.</b> GLUT4-mediated glucose uptake in adipose tissue falls when insulin is low.</li>
+<li><b>D.</b> Cholesterol clearance is more associated with thyroid hormone effects and lipoprotein handling; it is not the primary acute adipocyte response to low insulin.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q3">
+  <b>3. Insulin secretion from pancreatic β-cells increases when intracellular ATP rises because ATP primarily:</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. Activates adenylate cyclase to raise cAMP</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">B. Opens voltage-gated chloride channels to depolarize the cell</div>
+  <div class="choice" onclick="selectChoice('q3', this, true)">C. Closes ATP-sensitive K+ channels, leading to Ca2+ influx and exocytosis</div>
+  <div class="choice" onclick="selectChoice('q3', this, false)">D. Directly phosphorylates insulin to activate it</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b> Closes ATP-sensitive K+ channels, leading to Ca2+ influx and exocytosis</p>
+<p><b>Why:</b> Glucose must be metabolized in the β-cell to raise ATP. ATP closes KATP channels, depolarizing the membrane, opening voltage-gated Ca2+ channels, and triggering exocytosis of preformed insulin vesicles.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> cAMP can modulate secretion, but the core glucose-sensing trigger is KATP channel closure and Ca2+ entry.</li>
+<li><b>B.</b> β-cell depolarization is driven mainly by KATP channel closure, not chloride channel opening.</li>
+<li><b>D.</b> Insulin is secreted as a peptide hormone; it is not activated by direct phosphorylation by ATP.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q4">
+  <b>4. Which statement best describes glucagon’s primary physiological target and effect?</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Skeletal muscle; increases glucose export by activating glucose-6-phosphatase</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">B. Adipose tissue; is the major hormone that mobilizes fat stores via HSL</div>
+  <div class="choice" onclick="selectChoice('q4', this, false)">C. Nervous tissue; decreases glucose uptake to conserve fuel</div>
+  <div class="choice" onclick="selectChoice('q4', this, true)">D. Hepatocytes; increases glycogenolysis and gluconeogenesis via second messengers</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b> Hepatocytes; increases glycogenolysis and gluconeogenesis via second messengers</p>
+<p><b>Why:</b> Glucagon is secreted by pancreatic α-cells and acts mainly on the liver. Via cAMP/PKA signaling, it activates glycogen phosphorylase, inhibits glycogen synthase, and promotes gluconeogenic enzyme activity (e.g., PEPCK).</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> Muscle lacks glucose-6-phosphatase and cannot release free glucose into blood; glucagon’s major target is liver, not skeletal muscle.</li>
+<li><b>B.</b> Glucagon is not considered the major fat-mobilizing hormone because its dominant actions are hepatic; epinephrine is more important for adipocyte lipolysis.</li>
+<li><b>C.</b> Neurons are not the primary targets of glucagon, and brain glucose uptake is largely insulin-independent.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q5">
+  <b>5. After a protein-rich meal with relatively low carbohydrate content, plasma glucagon rises primarily because:</b>
+  <div class="choice" onclick="selectChoice('q5', this, true)">A. Amino acids (especially basic amino acids) stimulate α-cells, helping prevent hypoglycemia</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">B. Insulin secretion is completely shut off by amino acids</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">C. Glucagon is released to promote glycogen synthesis in the liver</div>
+  <div class="choice" onclick="selectChoice('q5', this, false)">D. Glucagon directly increases glucose uptake in adipose tissue</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b> Amino acids stimulate α-cells, helping prevent hypoglycemia</p>
+<p><b>Why:</b> Amino acids—particularly basic ones like arginine—promote glucagon secretion. This supports hepatic glucose output (gluconeogenesis/glycogenolysis) to prevent blood glucose from falling when insulin may also rise due to nutrient intake.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>B.</b> Amino acids can also stimulate insulin release; secretion is not ‘completely shut off.’</li>
+<li><b>C.</b> Glucagon promotes glycogen breakdown, not glycogen synthesis.</li>
+<li><b>D.</b> Glucagon does not increase glucose uptake in adipose tissue; insulin is the key hormone for adipose GLUT4-mediated uptake.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q6">
+  <b>6. Which combination best matches hormone type with the typical time scale and mechanism emphasized in metabolic regulation?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Insulin: transcriptional regulation over days; Thyroid hormone: rapid second messenger cascades</div>
+  <div class="choice" onclick="selectChoice('q6', this, true)">B. Insulin: rapid second messenger cascades; Thyroid hormone: longer-term transcriptional effects</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">C. Cortisol: rapid membrane receptor signaling; Epinephrine: nuclear receptor signaling</div>
+  <div class="choice" onclick="selectChoice('q6', this, false)">D. Glucagon: direct DNA binding; Insulin: direct DNA binding</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b> Insulin: rapid second messenger cascades; Thyroid hormone: longer-term transcriptional effects</p>
+<p><b>Why:</b> Peptide hormones like insulin act through membrane receptors and intracellular signaling to rapidly change enzyme activity and transporter localization. Thyroid hormones are fat-soluble amino acid derivatives that enter cells and alter gene expression via nuclear receptors, producing slower but longer-lasting effects.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> This reverses the typical mechanisms: insulin is fast and signaling-based; thyroid hormone is slower and transcriptional.</li>
+<li><b>C.</b> Cortisol is a steroid hormone that acts largely via transcriptional regulation; epinephrine acts via membrane receptors and second messengers.</li>
+<li><b>D.</b> Neither glucagon nor insulin directly binds DNA; both signal through membrane receptors.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q7">
+  <b>7. Epinephrine increases glycogenolysis in both liver and skeletal muscle, but only the liver can increase blood glucose because skeletal muscle:</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Lacks glycogen phosphorylase</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">B. Cannot perform glycolysis under any conditions</div>
+  <div class="choice" onclick="selectChoice('q7', this, true)">C. Lacks glucose-6-phosphatase, so glucose cannot be dephosphorylated for export</div>
+  <div class="choice" onclick="selectChoice('q7', this, false)">D. Cannot respond to catecholamines due to absent receptors</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b> Lacks glucose-6-phosphatase, so glucose cannot be exported</p>
+<p><b>Why:</b> Muscle glycogen can be broken down to glucose-6-phosphate for its own glycolysis, but without glucose-6-phosphatase, muscle cannot generate free glucose to release into the bloodstream. Hepatocytes can.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> Muscle has glycogen phosphorylase; it is activated by epinephrine and by AMP during exercise.</li>
+<li><b>B.</b> Muscle can perform glycolysis (both aerobic and anaerobic).</li>
+<li><b>D.</b> Skeletal muscle responds strongly to catecholamines via adrenergic receptors.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q8">
+  <b>8. Cortisol raises blood glucose during stress primarily by which paired mechanisms?</b>
+  <div class="choice" onclick="selectChoice('q8', this, false)">A. Increasing insulin secretion and increasing GLUT4 translocation in muscle</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">B. Increasing hepatic glycolysis and increasing glucose uptake in adipose tissue</div>
+  <div class="choice" onclick="selectChoice('q8', this, false)">C. Decreasing hepatic gluconeogenesis and increasing glycogen synthesis</div>
+  <div class="choice" onclick="selectChoice('q8', this, true)">D. Decreasing glucose uptake in many tissues and increasing hepatic gluconeogenesis (especially from amino acids)</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b> Decreasing peripheral glucose uptake and increasing hepatic gluconeogenesis</p>
+<p><b>Why:</b> Cortisol (a glucocorticoid steroid) promotes protein catabolism to provide amino acids and stimulates hepatic gluconeogenesis. It also inhibits glucose uptake in many tissues, preserving glucose availability for insulin-insensitive tissues like the brain.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> Cortisol tends to oppose insulin’s peripheral actions; it does not primarily increase GLUT4 translocation.</li>
+<li><b>B.</b> Cortisol promotes gluconeogenesis rather than hepatic glycolysis, and it does not primarily drive adipose glucose uptake.</li>
+<li><b>C.</b> This describes the opposite of cortisol’s effects in stress/fasting contexts.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q9">
+  <b>9. A patient with untreated type 1 diabetes mellitus is expected to have which hormonal pattern and consequence?</b>
+  <div class="choice" onclick="selectChoice('q9', this, true)">A. Low insulin with preserved glucagon → increased hepatic glucose output and ketogenesis</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">B. High insulin with low glucagon → increased glycogen synthesis and low blood glucose</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">C. Low insulin with low glucagon → minimal change in hepatic glucose output</div>
+  <div class="choice" onclick="selectChoice('q9', this, false)">D. High insulin with high glucagon → net decreased blood glucose due to insulin dominance</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b> Low insulin with preserved glucagon → increased hepatic glucose output and ketogenesis</p>
+<p><b>Why:</b> In type 1 diabetes, β-cells fail to produce insulin, but α-cells can still produce glucagon. With low insulin and relatively high counterregulatory signaling, the liver increases glycogenolysis, gluconeogenesis, and ketone production, contributing to hyperglycemia and risk of ketoacidosis.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>B.</b> Type 1 diabetes is characterized by insulin deficiency, not excess.</li>
+<li><b>C.</b> Glucagon is usually present and contributes to increased hepatic glucose output.</li>
+<li><b>D.</b> Insulin is not high in untreated type 1 diabetes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q10">
+  <b>10. Which statement best captures the role of thyroid hormones in metabolic regulation?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. They fluctuate rapidly after meals and directly trigger GLUT4 insertion in adipocytes</div>
+  <div class="choice" onclick="selectChoice('q10', this, true)">B. They act permissively to increase basal metabolic rate, O2 consumption, and heat production</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">C. They are major day-to-day controllers of hepatic glycogenolysis in fasting</div>
+  <div class="choice" onclick="selectChoice('q10', this, false)">D. They directly activate hormone-sensitive lipase in adipose tissue as the primary lipolytic signal</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b> They act permissively to increase basal metabolic rate and heat production</p>
+<p><b>Why:</b> Thyroid hormones are kept relatively steady and exert longer-term, permissive effects that raise basal metabolic rate, increasing O2 consumption and heat production. They also enhance responsiveness to catecholamines.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> This describes insulin-mediated short-term regulation, not thyroid hormone.</li>
+<li><b>C.</b> Fasting glycogenolysis is regulated mainly by glucagon and catecholamines.</li>
+<li><b>D.</b> Primary acute lipolysis in adipose is driven mainly by catecholamines (and low insulin), not thyroid hormone as the main signal.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q11">
+  <b>11. A key reason red blood cells are ‘insulin-insensitive’ in fuel use is that they:</b>
+  <div class="choice" onclick="selectChoice('q11', this, false)">A. Prefer fatty acids and therefore downregulate glucose transporters</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">B. Can switch to ketone bodies after 24 hours of fasting</div>
+  <div class="choice" onclick="selectChoice('q11', this, true)">C. Lack mitochondria and therefore must rely on anaerobic glucose metabolism regardless of state</div>
+  <div class="choice" onclick="selectChoice('q11', this, false)">D. Store large glycogen reserves that buffer plasma glucose</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b> Lack mitochondria and must rely on anaerobic glucose metabolism</p>
+<p><b>Why:</b> Erythrocytes have no mitochondria, so they cannot perform β-oxidation, the TCA cycle, oxidative phosphorylation, or ketone utilization. They depend on glycolysis for ATP in all metabolic states, so they must take up glucose continuously via insulin-independent transporters.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> RBCs cannot oxidize fatty acids (no mitochondria).</li>
+<li><b>B.</b> RBCs cannot use ketones (no mitochondria).</li>
+<li><b>D.</b> RBCs do not meaningfully store glycogen as an energy buffer.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q12">
+  <b>12. Insulin’s lipid-related effects include all of the following EXCEPT:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Increasing lipoprotein lipase activity to clear chylomicrons and VLDL</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">B. Promoting triacylglycerol synthesis from acetyl-CoA in liver and adipose</div>
+  <div class="choice" onclick="selectChoice('q12', this, false)">C. Increasing triacylglycerol uptake by fat cells</div>
+  <div class="choice" onclick="selectChoice('q12', this, true)">D. Increasing hepatic ketone body production during fasting</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b> Increasing hepatic ketone body production during fasting</p>
+<p><b>Why:</b> Insulin suppresses ketogenesis. In the well-fed state, insulin promotes storage pathways (lipogenesis) and inhibits mobilization pathways (lipolysis and ketone production).</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> Correct effect: insulin upregulates LPL to help clear circulating TAG-rich lipoproteins.</li>
+<li><b>B.</b> Correct effect: insulin promotes lipogenesis in liver/adipose.</li>
+<li><b>C.</b> Correct effect: insulin promotes nutrient uptake and storage in adipocytes.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q13">
+  <b>13. Which hormone is most directly responsible for acute stimulation of adipocyte lipolysis in the classic ‘fight-or-flight’ response?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Epinephrine</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">B. Thyroxine (T4)</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">C. Insulin</div>
+  <div class="choice" onclick="selectChoice('q13', this, false)">D. Somatostatin</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b> Epinephrine</p>
+<p><b>Why:</b> Catecholamines (especially epinephrine) activate adrenergic receptors in adipose tissue, increasing cAMP/PKA signaling and activating hormone-sensitive lipase, rapidly releasing free fatty acids.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>B.</b> Thyroid hormones are permissive and slower-acting; they are not the main acute lipolytic trigger.</li>
+<li><b>C.</b> Insulin inhibits lipolysis.</li>
+<li><b>D.</b> Somatostatin broadly inhibits endocrine secretion; it is not the primary mobilizer of fat stores.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q14">
+  <b>14. A patient treated with long-term high-dose glucocorticoids develops hyperglycemia and increased central fat deposition. The fat gain is best explained because:</b>
+  <div class="choice" onclick="selectChoice('q14', this, false)">A. Glucocorticoids directly activate insulin receptors in adipocytes</div>
+  <div class="choice" onclick="selectChoice('q14', this, true)">B. Chronic hyperglycemia stimulates insulin release, which promotes lipogenesis and fat storage despite cortisol’s mobilizing signals</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">C. Cortisol permanently shuts down insulin secretion</div>
+  <div class="choice" onclick="selectChoice('q14', this, false)">D. Cortisol decreases hepatic glucose output over time, forcing fat storage</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b> Hyperglycemia → insulin → lipogenesis/fat storage</p>
+<p><b>Why:</b> Although cortisol can promote lipolysis acutely, persistent cortisol exposure causes sustained hyperglycemia. Elevated glucose drives insulin secretion, and insulin strongly promotes triacylglycerol synthesis and storage in adipose tissue, contributing to fat accumulation.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> Glucocorticoids do not directly ‘activate insulin receptors’ as their primary mechanism.</li>
+<li><b>C.</b> Cortisol does not permanently shut down insulin secretion; hyperglycemia tends to increase insulin release.</li>
+<li><b>D.</b> Cortisol generally increases hepatic gluconeogenesis and glucose output, not decreases it.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q15">
+  <b>15. Which statement best describes the interaction between thyroid hormones and epinephrine in metabolic regulation?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Thyroid hormones block adrenergic receptors, preventing epinephrine from raising metabolic rate</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">B. Epinephrine replaces thyroid hormone function when thyroid levels are low</div>
+  <div class="choice" onclick="selectChoice('q15', this, true)">C. Epinephrine requires thyroid hormones to have a significant metabolic effect (thyroid is permissive)</div>
+  <div class="choice" onclick="selectChoice('q15', this, false)">D. Thyroid hormone secretion rapidly spikes after a meal to drive epinephrine release</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b> Epinephrine requires thyroid hormones for significant metabolic effect</p>
+<p><b>Why:</b> Thyroid hormones increase basal metabolic rate and enhance responsiveness to catecholamines—classically described as a permissive effect. Without adequate thyroid hormone, adrenergic stimulation produces a blunted metabolic response.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> This is opposite: thyroid hormones tend to enhance catecholamine responsiveness.</li>
+<li><b>B.</b> Epinephrine cannot ‘replace’ thyroid hormone’s transcriptional effects on basal metabolic rate.</li>
+<li><b>D.</b> Thyroid hormones do not rapidly spike after meals; they are relatively steady compared with insulin/glucagon.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="section-tag">Passage-Based Sets (3 passages × 3 questions)</div>
+<div class="passage-header"><span>Passage 1</span><button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button></div>
+<div class="passage-box">
+<p>An 18-year-old presents with episodes of tremor, sweating, and confusion that occur most often in the late morning when she skips breakfast. During one episode, a fingerstick glucose is 42 mg/dL. In the emergency department, labs drawn during symptoms show elevated insulin and elevated C‑peptide. Plasma free fatty acids and ketone bodies are both low. After IV dextrose, her symptoms rapidly resolve.</p>
+<p>Her physician suspects a hormone-secreting pancreatic tumor and orders additional testing to determine how the patient’s endocrine profile is driving her metabolic state.</p>
+</div>
+<div class="reasoning-box" id="p1-reason"><b>How to reason:</b> (1) Identify the metabolic state implied by the labs (glucose low + insulin high). 
+(2) Use insulin’s pathway-level effects: ↑GLUT4 uptake in adipose/resting muscle, ↑lipogenesis, ↑LPL, and especially ↓lipolysis and ↓ketogenesis.
+(3) Use “C‑peptide present” to distinguish endogenous insulin secretion from injected insulin.
+(4) Map each answer choice to one of these consequences and pick the one that best matches the evidence (low FFA/ketones = insulin suppressing fat mobilization).</div>
+<div class="question" id="q16">
+  <b>16. Which additional finding most strongly supports the diagnosis suggested by the insulin and C‑peptide results?</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Low insulin with high C‑peptide</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">B. High glucagon with low insulin</div>
+  <div class="choice" onclick="selectChoice('q16', this, false)">C. No change in insulin after dextrose infusion</div>
+  <div class="choice" onclick="selectChoice('q16', this, true)">D. A pancreatic β-cell mass that autonomously secretes insulin</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b> A pancreatic β-cell mass that autonomously secretes insulin</p>
+<p><b>Why:</b> High insulin plus high C‑peptide indicates endogenous insulin secretion (C‑peptide is cleaved from proinsulin). Combined with fasting hypoglycemia and suppressed lipolysis/ketogenesis, this pattern is classic for insulinoma (β-cell tumor).</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> Endogenous insulin secretion produces insulin and C‑peptide together; ‘low insulin with high C‑peptide’ is internally inconsistent.</li>
+<li><b>B.</b> Glucagon may rise in hypoglycemia, but it would not explain high insulin with high C‑peptide.</li>
+<li><b>C.</b> Dextrose typically suppresses insulin secretion in normal physiology; lack of suppression might be abnormal, but the core diagnostic support here is autonomous β-cell insulin overproduction.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q17">
+  <b>17. The patient’s low plasma free fatty acids and low ketones are best explained because insulin is:</b>
+  <div class="choice" onclick="selectChoice('q17', this, true)">A. Inhibiting adipocyte lipolysis and hepatic ketogenesis</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">B. Activating hepatic hormone-sensitive lipase as a major fat-mobilizing signal</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">C. Increasing gluconeogenesis from amino acids while increasing ketone production</div>
+  <div class="choice" onclick="selectChoice('q17', this, false)">D. Directly increasing β-oxidation in skeletal muscle mitochondria</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b> Inhibiting adipocyte lipolysis and hepatic ketogenesis</p>
+<p><b>Why:</b> High insulin suppresses hormone-sensitive lipase activity in adipose tissue, so fewer free fatty acids are released. With fewer FFAs delivered to the liver, β-oxidation and ketogenesis fall, producing low ketones.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>B.</b> Glucagon (not insulin) can activate hepatic HSL; insulin generally promotes storage, not mobilization.</li>
+<li><b>C.</b> Insulin opposes gluconeogenesis and ketogenesis in the liver.</li>
+<li><b>D.</b> Insulin does not directly ‘increase β-oxidation’ as its primary effect; it tends to promote fuel storage and suppress fat oxidation/ketone formation in the liver.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q18">
+  <b>18. If the same hypoglycemic presentation occurred but insulin was high while C‑peptide was undetectable, the most likely explanation would be:</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. A glucagon-secreting α-cell tumor</div>
+  <div class="choice" onclick="selectChoice('q18', this, true)">B. Exogenous insulin administration</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">C. Primary hypothyroidism</div>
+  <div class="choice" onclick="selectChoice('q18', this, false)">D. Addison disease (low cortisol) as the sole cause</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b> Exogenous insulin administration</p>
+<p><b>Why:</b> Injected insulin raises plasma insulin but does not produce C‑peptide because C‑peptide is generated only when the body processes proinsulin in β-cells. Therefore, high insulin with absent C‑peptide points to exogenous insulin.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> A glucagon tumor would tend to raise glucose, not produce hypoglycemia with high insulin.</li>
+<li><b>C.</b> Hypothyroidism can lower basal metabolic rate but does not typically cause high insulin with absent C‑peptide.</li>
+<li><b>D.</b> Low cortisol can predispose to hypoglycemia, but it would not specifically explain high insulin with undetectable C‑peptide.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="passage-header"><span>Passage 2</span><button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button></div>
+<div class="passage-box">
+<p>A 42-year-old with severe asthma has been taking high-dose oral prednisone for several months. He reports proximal muscle weakness and easy bruising. Fasting blood glucose is persistently elevated, and he has gained weight despite no increase in caloric intake. Laboratory tests show increased circulating amino acids and a decrease in lymphocyte count.</p>
+<p>His clinician explains that many of these findings reflect the metabolic actions of glucocorticoids and the body’s compensatory hormonal responses.</p>
+</div>
+<div class="reasoning-box" id="p2-reason"><b>How to reason:</b> (1) Recognize prednisone as a glucocorticoid (cortisol-like steroid). 
+(2) List hallmark effects: ↑protein catabolism (muscle wasting), ↑gluconeogenesis (hyperglycemia), ↓glucose uptake in many tissues, permissive enhancement of glucagon/epinephrine, and immunosuppression (↓lymphocytes).
+(3) For each question, connect a symptom/lab clue to a specific mechanism, then eliminate choices that fit an insulin-like (fed) state rather than a stress/fasting-like state.</div>
+<div class="question" id="q19">
+  <b>19. Which mechanism most directly explains the patient’s proximal muscle weakness?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Increased GLUT4-mediated glucose uptake into muscle</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">B. Inhibition of hepatic gluconeogenesis, forcing muscle to use protein</div>
+  <div class="choice" onclick="selectChoice('q19', this, false)">C. Direct blockade of neuromuscular junction transmission by prednisone</div>
+  <div class="choice" onclick="selectChoice('q19', this, true)">D. Increased protein catabolism with amino acid release for hepatic gluconeogenesis</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b> Increased protein catabolism to supply amino acids for gluconeogenesis</p>
+<p><b>Why:</b> Glucocorticoids promote proteolysis in muscle, releasing amino acids that the liver can use for gluconeogenesis. Chronic proteolysis leads to muscle wasting and weakness.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> This is an insulin-like effect and would not explain muscle wasting.</li>
+<li><b>B.</b> Glucocorticoids increase (not inhibit) gluconeogenesis.</li>
+<li><b>C.</b> Prednisone does not primarily cause weakness by blocking neuromuscular transmission; the metabolic/catabolic mechanism is the key.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q20">
+  <b>20. Despite cortisol-like hormones promoting fuel mobilization, this patient gains adipose mass over time primarily because:</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Prednisone eliminates insulin secretion, preventing lipolysis</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">B. Glucocorticoids directly convert amino acids into triacylglycerol in adipocytes</div>
+  <div class="choice" onclick="selectChoice('q20', this, true)">C. Chronic hyperglycemia stimulates insulin, which promotes lipogenesis and fat storage</div>
+  <div class="choice" onclick="selectChoice('q20', this, false)">D. Thyroid hormone levels must be elevated, increasing appetite-driven fat storage</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b> Hyperglycemia → insulin → lipogenesis and fat storage</p>
+<p><b>Why:</b> Persistent glucocorticoid exposure elevates blood glucose. The compensatory rise in insulin strongly favors triacylglycerol synthesis and storage in adipose tissue, contributing to weight gain and fat deposition.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> Prednisone does not eliminate insulin secretion; hyperglycemia tends to increase it.</li>
+<li><b>B.</b> The key driver of adipose storage is insulin signaling and substrate availability, not a direct ‘amino acid to TAG’ conversion switch.</li>
+<li><b>D.</b> Thyroid hormone can affect metabolic rate, but the passage points to glucocorticoid-driven hyperglycemia and compensatory insulin as the main explanation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q21">
+  <b>21. Which endocrine change would be most consistent with prednisone’s permissive effect during stress physiology?</b>
+  <div class="choice" onclick="selectChoice('q21', this, true)">A. Enhanced metabolic response to epinephrine at target tissues</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">B. Complete inability of glucagon to activate hepatic glycogenolysis</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">C. Suppression of all catecholamine release from the adrenal medulla</div>
+  <div class="choice" onclick="selectChoice('q21', this, false)">D. Permanent increase in thyroid hormone secretion immediately after each meal</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: A.</b> Enhanced response to epinephrine</p>
+<p><b>Why:</b> Glucocorticoids have permissive effects that enhance the actions of glucagon and catecholamines at target tissues, helping maintain glucose availability during stress. This does not necessarily mean massive increases in catecholamine secretion—rather increased effectiveness of their signaling.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>B.</b> Glucagon action is generally supported, not blocked, by the stress hormone milieu.</li>
+<li><b>C.</b> Prednisone does not suppress all catecholamine release as a defining mechanism.</li>
+<li><b>D.</b> Thyroid hormones are relatively steady and not meal-spiking; this is inconsistent with the described endocrine regulation.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="passage-header"><span>Passage 3</span><button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button></div>
+<div class="passage-box">
+<p>Two patients present with different metabolic complaints. Patient X reports fatigue, weight gain, constipation, and cold intolerance. Patient Y reports anxiety, heat intolerance, unintended weight loss, and palpitations. Both patients have normal fasting glucose and normal pancreatic function.</p>
+<p>On examination, Patient Y has a fine tremor and appears ‘jittery.’ The clinician notes that these symptoms resemble an exaggerated sympathetic response and discusses how thyroid hormones influence baseline metabolism and responsiveness to catecholamines.</p>
+</div>
+<div class="reasoning-box" id="p3-reason"><b>How to reason:</b> (1) Match symptom clusters: cold intolerance + weight gain suggests hypothyroidism; heat intolerance + weight loss + palpitations suggests hyperthyroidism.
+(2) Recall thyroid hormones: increase basal metabolic rate, O2 consumption, and heat; act permissively to amplify catecholamine effects.
+(3) For each answer, decide whether it fits “low thyroid” (slowed metabolism, reduced adrenergic responsiveness) or “high thyroid” (elevated BMR, heightened adrenergic symptoms).</div>
+<div class="question" id="q22">
+  <b>22. Which laboratory pattern is most consistent with Patient Y’s presentation?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Low T3/T4 with low basal metabolic rate</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">B. Normal T3/T4 with episodic postprandial insulin spikes</div>
+  <div class="choice" onclick="selectChoice('q22', this, false)">C. Low cortisol with low epinephrine responsiveness</div>
+  <div class="choice" onclick="selectChoice('q22', this, true)">D. High T3 activity at tissues with increased O2 consumption and heat production</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: D.</b> High T3 activity with increased O2 consumption and heat production</p>
+<p><b>Why:</b> Hyperthyroidism increases basal metabolic rate, leading to heat intolerance, weight loss, and heightened sympathetic-like symptoms. T3 is the more active thyroid hormone at tissues and produces more rapid effects than T4.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> Low thyroid hormone would fit Patient X (hypothyroid) symptoms.</li>
+<li><b>B.</b> Insulin spikes do not explain heat intolerance, tremor, and palpitations with normal fasting glucose.</li>
+<li><b>C.</b> Low cortisol can cause fatigue but does not typically create the classic hyperthyroid adrenergic phenotype.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q23">
+  <b>23. Patient X would be expected to show which change in adrenergic physiology compared with a euthyroid individual?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. Increased sensitivity to epinephrine, causing exaggerated tremor</div>
+  <div class="choice" onclick="selectChoice('q23', this, true)">B. Blunted metabolic response to epinephrine because thyroid hormone is permissive</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">C. No change in catecholamine responsiveness because thyroid hormone only affects pH</div>
+  <div class="choice" onclick="selectChoice('q23', this, false)">D. Markedly increased hepatic glycogenolysis after meals due to thyroid surges</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: B.</b> Blunted response to epinephrine because thyroid hormone is permissive</p>
+<p><b>Why:</b> In hypothyroidism, lower thyroid hormone reduces basal metabolic rate and diminishes the permissive amplification of catecholamine effects. Patients therefore tend to have reduced adrenergic tone and slowed physiology.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> This describes hyperthyroid-like sensitivity, not hypothyroid blunting.</li>
+<li><b>C.</b> Thyroid hormones affect metabolism and gene expression; they do not act ‘only on pH.’</li>
+<li><b>D.</b> Thyroid hormone levels do not surge after meals, and hepatic glycogenolysis after meals is not the hallmark thyroid effect.</li>
+</ul>
+    </div>
+  </details>
+</div>
+<div class="question" id="q24">
+  <b>24. The clinician explains that many of Patient Y’s symptoms resemble sympathetic activation. Which statement best supports this explanation mechanistically?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. Thyroid hormones are peptide hormones that directly raise cAMP in seconds</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">B. Thyroid hormones primarily decrease O2 consumption to conserve energy</div>
+  <div class="choice" onclick="selectChoice('q24', this, true)">C. Thyroid hormones enhance the effectiveness of epinephrine at target tissues, increasing heart rate and heat production</div>
+  <div class="choice" onclick="selectChoice('q24', this, false)">D. Thyroid hormones prevent insulin from lowering blood glucose, causing palpitations</div>
+  <div class="feedback correct fb-correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain">
+    <summary>Show explanation</summary>
+    <div class="explain-body">
+<p><b>Correct Answer: C.</b> Thyroid hormones enhance catecholamine effectiveness</p>
+<p><b>Why:</b> Thyroid hormones increase basal metabolic rate and have permissive effects on catecholamines. Increased adrenergic responsiveness contributes to palpitations, tremor, and a jittery feeling in hyperthyroidism.</p>
+<p><b>Why the other choices are wrong:</b></p>
+<ul>
+<li><b>A.</b> Thyroid hormones are fat-soluble amino acid derivatives that act via nuclear receptors; they are not rapid peptide hormones.</li>
+<li><b>B.</b> They increase (not decrease) O2 consumption and heat production.</li>
+<li><b>D.</b> Palpitations in hyperthyroidism are not primarily from insulin-glucose interactions; they reflect heightened metabolic and adrenergic effects.</li>
+</ul>
+    </div>
+  </details>
+</div>
+</body></html>

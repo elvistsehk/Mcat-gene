@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT Chapter 12.6–12.7 Practice (Tissue Fuels, RQ, Body Mass Regulation)</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+  }
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  .ctrl-btn{
+    background:#fff; border:1px solid rgba(0,0,0,0.18); padding:8px 12px; border-radius:8px;
+    cursor:pointer; font-weight:bold; box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .section-tag{
+    display:inline-block; margin:8px 0 16px 0; padding:6px 10px; border-radius:999px;
+    background:#e8f0fe; color:#0f4fa0; font-weight:bold; font-size:13px;
+  }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  details.explain{
+    display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70;
+  }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+
+  /* Passage styling */
+  .passage-header{
+    background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify; text-justify: inter-word; hyphens:auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+  .reasoning-box{
+    display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    border-left:5px solid #1565c0;
+    margin: 0 0 18px 0;
+    line-height:1.75; font-size:14px;
+  }
+  .reasoning-box b{ color:#0f4fa0; }
+</style>
+
+<script>
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const details = q.querySelector('details.explain');
+    if (details){ details.style.display='block'; details.open = true; }
+  }
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + "-reason");
+    const btn = document.getElementById(pid + "-btn");
+    if(!box || !btn) return;
+
+    const currentlyHidden = (box.style.display === "" || box.style.display === "none");
+    box.style.display = currentlyHidden ? "block" : "none";
+    btn.textContent = currentlyHidden ? "Hide reasoning" : "How to reason";
+  }
+
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const details = q.querySelector('details.explain');
+      if (details){ details.open=false; details.style.display='none'; }
+    });
+
+    document.querySelectorAll('.reasoning-box').forEach(b=> b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=> btn.textContent = "How to reason");
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+</script>
+</head>
+
+<body>
+<div class="main-header">
+  <div class="header-left">
+    <div class="header-title">MCAT Biochemistry — Chapter 12.6–12.7: Tissue Fuels, Respiratory Quotient, Body Mass Regulation</div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-tag">Standalone Questions (Q1–Q15)</div>
+  <!-- Q1 Correct: B -->
+  <div class="question" id="q1">
+    <b>1. A runner eats a carbohydrate-rich meal 1 hour before training. Which tissue is most likely to increase GLUT4-mediated glucose uptake in response to rising insulin?</b>
+    <div class="choice" onclick="selectChoice('q1', this, false)">A. Brain neurons</div>
+    <div class="choice" onclick="selectChoice('q1', this, true)">B. Resting skeletal muscle fibers</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">C. Red blood cells</div>
+    <div class="choice" onclick="selectChoice('q1', this, false)">D. Intestinal mucosal cells</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Resting skeletal muscle fibers</p>
+<p><b>Why:</b> GLUT4 translocation to the membrane is insulin-dependent and occurs prominently in adipose tissue and resting skeletal muscle. This supports glycogen repletion and oxidation of glucose in the well-fed state.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Brain glucose uptake is largely insulin-independent; the brain must receive glucose even when insulin is low.</li>
+<li><b>C.</b> Erythrocytes use glucose but do not rely on insulin-dependent transporters; they depend on insulin-insensitive glucose uptake.</li>
+<li><b>D.</b> Intestinal mucosa absorbs glucose from the lumen; this uptake is not the classic insulin-dependent GLUT4 mechanism.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q2 Correct: C -->
+  <div class="question" id="q2">
+    <b>2. During an overnight fast, which change most directly enables adipocytes to release fatty acids into circulation?</b>
+    <div class="choice" onclick="selectChoice('q2', this, false)">A. Increased lipoprotein lipase activity in adipose capillaries</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">B. Increased hepatic glucokinase activity</div>
+    <div class="choice" onclick="selectChoice('q2', this, true)">C. Activation of hormone-sensitive lipase due to low insulin and elevated epinephrine</div>
+    <div class="choice" onclick="selectChoice('q2', this, false)">D. Increased VLDL secretion from the liver</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> Activation of hormone-sensitive lipase due to low insulin and elevated epinephrine</p>
+<p><b>Why:</b> In the fasting state, decreased insulin and increased catecholamines activate hormone-sensitive lipase (HSL) inside adipocytes, promoting lipolysis of stored triacylglycerols and release of free fatty acids.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Lipoprotein lipase (LPL) primarily helps *store* fat by hydrolyzing TAGs in chylomicrons/VLDL for uptake—its activity is induced by insulin.</li>
+<li><b>B.</b> Glucokinase is a hepatic enzyme upregulated in the fed state to trap glucose as glucose-6-phosphate; it does not trigger adipose lipolysis.</li>
+<li><b>D.</b> VLDL secretion is a liver export mechanism for TAGs and is more associated with the fed state after lipogenesis.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q3 Correct: A -->
+  <div class="question" id="q3">
+    <b>3. Which statement best explains why the brain cannot use fatty acids as a major fuel source under normal conditions?</b>
+    <div class="choice" onclick="selectChoice('q3', this, true)">A. Long-chain fatty acids do not cross the blood–brain barrier efficiently</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">B. The brain lacks enzymes for β-oxidation</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">C. Fatty acids yield less ATP per carbon than glucose</div>
+    <div class="choice" onclick="selectChoice('q3', this, false)">D. Fatty acids cannot be transported in the blood</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> Long-chain fatty acids do not cross the blood–brain barrier efficiently</p>
+<p><b>Why:</b> The blood–brain barrier restricts entry of many molecules, including long-chain fatty acids, preventing the brain from relying on them for energy. In prolonged fasting, the brain adapts to use ketone bodies, which *can* cross the barrier.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> The primary limitation emphasized for MCAT-level reasoning is transport across the BBB, not complete absence of oxidative enzymes.</li>
+<li><b>C.</b> Fatty acids are actually highly energy-dense and generally yield *more* ATP per carbon when fully oxidized.</li>
+<li><b>D.</b> Fatty acids can be transported in blood (often bound to albumin or within lipoproteins); transport is not the limiting factor for the brain.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q4 Correct: D -->
+  <div class="question" id="q4">
+    <b>4. A subject performs maximal sprinting for 5 seconds. The dominant immediate ATP source supporting contraction during this interval is:</b>
+    <div class="choice" onclick="selectChoice('q4', this, false)">A. Oxidative phosphorylation of fatty acids</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">B. Oxidation of ketone bodies</div>
+    <div class="choice" onclick="selectChoice('q4', this, false)">C. Aerobic oxidation of blood glucose</div>
+    <div class="choice" onclick="selectChoice('q4', this, true)">D. Phosphocreatine (creatine phosphate) donating phosphate to ADP</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Phosphocreatine (creatine phosphate) donating phosphate to ADP</p>
+<p><b>Why:</b> For very short, high-intensity efforts (~2–7 seconds), stored phosphocreatine rapidly regenerates ATP via phosphate transfer to ADP before glycolysis and oxidative pathways ramp up.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> β-oxidation is too slow to meet the immediate demand of a 5-second all-out sprint.</li>
+<li><b>B.</b> Ketone use is relevant mainly in prolonged fasting; it is not the rapid first-line system for a sudden sprint.</li>
+<li><b>C.</b> Aerobic oxidation contributes during sustained activity but cannot supply ATP fast enough in the first few seconds of maximal exertion.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q5 Correct: B -->
+  <div class="question" id="q5">
+    <b>5. In the well-fed state, the liver exports newly synthesized triacylglycerols primarily as:</b>
+    <div class="choice" onclick="selectChoice('q5', this, false)">A. Chylomicrons</div>
+    <div class="choice" onclick="selectChoice('q5', this, true)">B. VLDL</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">C. LDL</div>
+    <div class="choice" onclick="selectChoice('q5', this, false)">D. HDL</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> VLDL</p>
+<p><b>Why:</b> In the fed state, excess hepatic acetyl-CoA can be converted to fatty acids and then triacylglycerols, which the liver packages into VLDL for delivery to peripheral tissues (especially adipose).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Chylomicrons are assembled in the intestinal epithelium to transport *dietary* lipids from the gut.</li>
+<li><b>C.</b> LDL primarily delivers cholesterol to peripheral tissues; it is not the main TAG export particle from liver synthesis.</li>
+<li><b>D.</b> HDL is involved in reverse cholesterol transport and apoprotein exchange, not bulk TAG export.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q6 Correct: A -->
+  <div class="question" id="q6">
+    <b>6. A patient with advanced heart failure shows decreased β-oxidation in cardiac myocytes. Which shift in fuel utilization is most consistent with the passage’s description of a failing heart?</b>
+    <div class="choice" onclick="selectChoice('q6', this, true)">A. Increased reliance on glucose oxidation</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">B. Increased reliance on branched-chain amino acids as the dominant fuel</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">C. Exclusive reliance on ketone bodies regardless of nutritional state</div>
+    <div class="choice" onclick="selectChoice('q6', this, false)">D. Complete inability to use fatty acids in any metabolic state</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> Increased reliance on glucose oxidation</p>
+<p><b>Why:</b> Cardiac muscle normally prefers fatty acids, but in cardiac hypertrophy or failure, glucose oxidation increases and β-oxidation falls—reflecting a partial reversion toward glucose use.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> Amino acids can be oxidized, but the key stated shift in failing heart is toward more glucose and less β-oxidation.</li>
+<li><b>C.</b> Ketones can be used during prolonged fasting, but the heart does not become *exclusively* ketone-dependent in all states.</li>
+<li><b>D.</b> The heart can still use fatty acids; the change is a relative shift, not an absolute inability.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q7 Correct: C -->
+  <div class="question" id="q7">
+    <b>7. Which combination best describes the liver’s roles during fasting?</b>
+    <div class="choice" onclick="selectChoice('q7', this, false)">A. Increased glycogen synthesis and increased VLDL secretion</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">B. Decreased gluconeogenesis and increased ketone utilization</div>
+    <div class="choice" onclick="selectChoice('q7', this, true)">C. Maintenance of blood glucose via glycogenolysis/gluconeogenesis and production of ketone bodies from excess acetyl-CoA</div>
+    <div class="choice" onclick="selectChoice('q7', this, false)">D. Conversion of fatty acids into glucose to supply the brain</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> Maintenance of blood glucose via glycogenolysis/gluconeogenesis and production of ketone bodies from excess acetyl-CoA</p>
+<p><b>Why:</b> During fasting, the liver maintains plasma glucose (initially via glycogenolysis, then predominantly via gluconeogenesis) and converts excess acetyl-CoA from β-oxidation into ketone bodies for export.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> These are fed-state actions driven by insulin and substrate abundance.</li>
+<li><b>B.</b> Fasting increases (not decreases) gluconeogenesis; the liver produces ketones but does not significantly *use* the ketones it makes.</li>
+<li><b>D.</b> Humans cannot convert even-chain fatty acids into net glucose; the liver instead uses lactate, glycerol, and amino acids as gluconeogenic substrates.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q8 Correct: D -->
+  <div class="question" id="q8">
+    <b>8. A respirometry experiment reports an RQ of 0.70. Which interpretation is most supported?</b>
+    <div class="choice" onclick="selectChoice('q8', this, false)">A. Predominant oxidation of carbohydrates</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">B. Predominant oxidation of proteins</div>
+    <div class="choice" onclick="selectChoice('q8', this, false)">C. Predominant ketone body oxidation with no oxygen consumption</div>
+    <div class="choice" onclick="selectChoice('q8', this, true)">D. Predominant oxidation of lipids</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Predominant oxidation of lipids</p>
+<p><b>Why:</b> Respiratory quotient (RQ = CO₂ produced / O₂ consumed) is ~1.0 for carbohydrates and ~0.7 for lipids. An RQ near 0.70 indicates a strong shift toward fat oxidation.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Carbohydrate combustion produces an RQ near 1.0.</li>
+<li><b>B.</b> Protein RQ varies and is not the classic 0.70 value highlighted for MCAT; the prompt’s clean 0.70 points to lipids.</li>
+<li><b>C.</b> Ketone oxidation still consumes oxygen; RQ is not defined as ‘no oxygen consumption.’</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q9 Correct: A -->
+  <div class="question" id="q9">
+    <b>9. A subject at rest has an RQ of ~0.80. Which conclusion is most appropriate?</b>
+    <div class="choice" onclick="selectChoice('q9', this, true)">A. Both glucose and fatty acids are contributing substantially to energy production</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">B. Only carbohydrates are being oxidized</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">C. Only lipids are being oxidized</div>
+    <div class="choice" onclick="selectChoice('q9', this, false)">D. The subject is in metabolic acidosis with no relationship to fuel selection</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> Both glucose and fatty acids are contributing substantially to energy production</p>
+<p><b>Why:</b> An RQ around 0.8 in resting individuals indicates mixed fuel use—commonly both glucose and fatty acids—rather than exclusive reliance on one substrate.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> That would push RQ toward ~1.0.</li>
+<li><b>C.</b> That would push RQ toward ~0.7.</li>
+<li><b>D.</b> RQ is specifically used to infer substrate utilization; acidosis is not required to interpret it.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q10 Correct: B -->
+  <div class="question" id="q10">
+    <b>10. Which hormone is secreted by adipocytes and tends to decrease appetite by suppressing orexin signaling?</b>
+    <div class="choice" onclick="selectChoice('q10', this, false)">A. Ghrelin</div>
+    <div class="choice" onclick="selectChoice('q10', this, true)">B. Leptin</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">C. Orexin</div>
+    <div class="choice" onclick="selectChoice('q10', this, false)">D. Glucagon</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Leptin</p>
+<p><b>Why:</b> Leptin is secreted by fat cells and signals satiety, decreasing appetite in part by suppressing orexin production. Low leptin (or leptin resistance) is linked to increased hunger and obesity risk.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Ghrelin is secreted by the stomach and increases appetite, often in anticipation of a meal.</li>
+<li><b>C.</b> Orexin is produced in the hypothalamus; it increases appetite and is involved in alertness/sleep–wake regulation.</li>
+<li><b>D.</b> Glucagon primarily targets the liver to raise blood glucose; it is not the key satiety hormone described here.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q11 Correct: C -->
+  <div class="question" id="q11">
+    <b>11. A participant smells food and immediately feels hungry. Which sequence best matches the described hormonal signaling?</b>
+    <div class="choice" onclick="selectChoice('q11', this, false)">A. Leptin rises → orexin rises → appetite decreases</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">B. Insulin rises → glucagon rises → appetite decreases</div>
+    <div class="choice" onclick="selectChoice('q11', this, true)">C. Ghrelin rises → orexin rises → appetite increases</div>
+    <div class="choice" onclick="selectChoice('q11', this, false)">D. Cortisol falls → epinephrine falls → appetite increases</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> Ghrelin rises → orexin rises → appetite increases</p>
+<p><b>Why:</b> Ghrelin is secreted by the stomach in response to signals of an impending meal (including smell) and stimulates orexin. Orexin further increases appetite and is also linked to alertness.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Leptin generally decreases appetite and suppresses orexin production, opposing this pattern.</li>
+<li><b>B.</b> These hormones regulate blood glucose and fuel mobilization; they are not the primary ‘smell-triggered hunger’ pathway described.</li>
+<li><b>D.</b> The described rapid ‘restaurant cue’ hunger response is mediated by ghrelin/orexin, not by simultaneous falls in stress hormones.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q12 Correct: D -->
+  <div class="question" id="q12">
+    <b>12. Which lab approach most directly measures basal metabolic rate (BMR) by quantifying heat exchange with the environment?</b>
+    <div class="choice" onclick="selectChoice('q12', this, false)">A. Arterial blood gas analysis</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">B. Glucose tolerance testing</div>
+    <div class="choice" onclick="selectChoice('q12', this, false)">C. Respirometry using CO₂ and O₂ measurements only</div>
+    <div class="choice" onclick="selectChoice('q12', this, true)">D. Whole-body calorimetry in an insulated chamber</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Whole-body calorimetry in an insulated chamber</p>
+<p><b>Why:</b> Calorimeters can determine energy expenditure by measuring heat exchange. Whole-body calorimetry uses insulated chambers and heat sinks to quantify heat output and estimate BMR.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> ABGs measure gas tensions/pH; they do not directly quantify heat output.</li>
+<li><b>B.</b> A glucose tolerance test assesses glucose handling and insulin response, not total heat production.</li>
+<li><b>C.</b> Respirometry estimates substrate use (via RQ) and can infer energy expenditure, but the prompt asks specifically about *heat exchange* measurement.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q13 Correct: A -->
+  <div class="question" id="q13">
+    <b>13. A 70-kg person who is 1.75 m tall has a BMI closest to:</b>
+    <div class="choice" onclick="selectChoice('q13', this, true)">A. 22.9</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">B. 18.0</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">C. 25.8</div>
+    <div class="choice" onclick="selectChoice('q13', this, false)">D. 30.1</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> 22.9</p>
+<p><b>Why:</b> BMI = mass (kg) / height² (m²) = 70 / (1.75²) = 70 / 3.0625 ≈ 22.9, which falls in the ‘normal’ range (18.5–25).</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> 18.0 would correspond to a lower mass or higher height; it is below the normal cutoff.</li>
+<li><b>C.</b> 25.8 would require a higher mass at this height; it is in the overweight range.</li>
+<li><b>D.</b> 30.1 would require substantially higher mass; it is in the obese range.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q14 Correct: B -->
+  <div class="question" id="q14">
+    <b>14. During a prolonged fast, which change helps spare body protein from being catabolized for gluconeogenesis?</b>
+    <div class="choice" onclick="selectChoice('q14', this, false)">A. Increased insulin secretion to stimulate glycogen synthesis</div>
+    <div class="choice" onclick="selectChoice('q14', this, true)">B. The brain’s increased use of ketone bodies for a substantial fraction of its fuel needs</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">C. Conversion of fatty acids into glucose to fully replace gluconeogenesis</div>
+    <div class="choice" onclick="selectChoice('q14', this, false)">D. Switch of red blood cells to ketone body oxidation</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> The brain’s increased use of ketone bodies for a substantial fraction of its fuel needs</p>
+<p><b>Why:</b> In prolonged fasting, the liver produces ketone bodies from excess acetyl-CoA. Once the brain adapts to using ketones (up to about two-thirds of its energy), less glucose is required, reducing the need to degrade amino acids for gluconeogenesis.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Insulin is low in fasting; increasing insulin would oppose fasting adaptations.</li>
+<li><b>C.</b> Even-chain fatty acids cannot provide net glucose; gluconeogenesis is still required for certain tissues.</li>
+<li><b>D.</b> RBCs lack mitochondria and therefore cannot oxidize ketones; they remain dependent on glucose.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q15 Correct: C -->
+  <div class="question" id="q15">
+    <b>15. Which tissue’s ability to release free glucose into the bloodstream is limited by absence of glucose-6-phosphatase, despite increased glycogenolysis during stress?</b>
+    <div class="choice" onclick="selectChoice('q15', this, false)">A. Liver</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">B. Adipose tissue</div>
+    <div class="choice" onclick="selectChoice('q15', this, true)">C. Skeletal muscle</div>
+    <div class="choice" onclick="selectChoice('q15', this, false)">D. Kidney cortex</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> Skeletal muscle</p>
+<p><b>Why:</b> Catecholamines stimulate glycogenolysis in liver and muscle. Liver can export glucose because it expresses glucose-6-phosphatase; skeletal muscle lacks this enzyme, so liberated glucose-6-phosphate is used locally for energy rather than released.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> The liver does express glucose-6-phosphatase and is a major source of blood glucose in fasting/stress.</li>
+<li><b>B.</b> Adipose tissue stores triacylglycerols; it is not a primary glycogen-based glucose exporter.</li>
+<li><b>D.</b> Kidney cortex participates in gluconeogenesis during prolonged fasting, but the classic ‘no glucose-6-phosphatase’ limitation in this context is skeletal muscle.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+<div class="section-tag">Passage-Based Questions (3 Passages × 3 Questions)</div>
+
+<!-- ===================== PASSAGE 1 ===================== -->
+<div class="passage-header">
+  <span>Passage 1: Endurance Exercise, Fuel Switching, and Respiratory Quotient</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text"><p>A physiology lab tracks substrate use in a trained endurance cyclist during a continuous ride at moderately high intensity. The cyclist begins 90 minutes after a mixed meal. Every 30 minutes, the lab measures O<sub>2</sub> consumption and CO<sub>2</sub> production by respirometry and computes the respiratory quotient (RQ = CO<sub>2</sub>/O<sub>2</sub>).</p>
+<p>At 10 minutes, RQ is 0.95 and blood lactate is low. At 60 minutes, RQ is 0.80 with stable heart rate and pace. At 120 minutes, RQ falls to 0.72 and the cyclist reports that maintaining the original pace feels dramatically harder despite unchanged motivation.</p>
+<p>A muscle biopsy taken after the session shows a high proportion of oxidative fibers with dense capillary networks and abundant mitochondria compared with an untrained control.</p></div>
+</div>
+<div class="reasoning-box" id="p1-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li>Translate RQ into fuel choice: ~1.0 suggests mostly carbohydrate oxidation; ~0.7 suggests mostly lipid oxidation; intermediate values suggest mixed fuels.</li>
+  <li>Use the time course: early exercise after a meal favors carbohydrate use; prolonged exercise shifts toward fatty acids as glycogen is depleted.</li>
+  <li>Connect physiology to performance: fatty acid oxidation supports long-duration ATP production but generally at a lower maximal power output than carbohydrate oxidation.</li>
+  <li>Link training adaptations: slow-twitch/oxidative fibers are well vascularized and mitochondria-rich, supporting sustained aerobic metabolism.</li>
+</ol>
+</div>
+
+  <!-- Q16 Correct: D -->
+  <div class="question" id="q16">
+    <b>16. The decline in RQ from 0.95 at 10 minutes to 0.72 at 120 minutes most strongly suggests an increased reliance on:</b>
+    <div class="choice" onclick="selectChoice('q16', this, false)">A. Protein oxidation as the primary fuel</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">B. Anaerobic glycolysis from blood glucose</div>
+    <div class="choice" onclick="selectChoice('q16', this, false)">C. Ketone bodies as the exclusive fuel source</div>
+    <div class="choice" onclick="selectChoice('q16', this, true)">D. Fatty acid oxidation as muscle glycogen becomes depleted</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Fatty acid oxidation as muscle glycogen becomes depleted</p>
+<p><b>Why:</b> RQ values near 1.0 reflect carbohydrate use, while values near 0.7 reflect lipid use. A progressive drop toward ~0.7 during prolonged exercise indicates a shift from carbohydrate oxidation toward fatty acid oxidation, especially as glycogen stores wane.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Protein can contribute but would not be the dominant driver of an RQ trend toward ~0.7 in this context.</li>
+<li><b>B.</b> Anaerobic glycolysis would be associated with short, high-intensity activity and would not lower RQ toward lipid values.</li>
+<li><b>C.</b> Ketones may contribute during prolonged fasting, but during fed-state endurance exercise the major shift is typically toward fatty acids, not exclusive ketone reliance.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q17 Correct: A -->
+  <div class="question" id="q17">
+    <b>17. The coach notes that after ~2 hours, the athlete must reduce pace to maintain effort. Which mechanism best explains this observation based on the passage?</b>
+    <div class="choice" onclick="selectChoice('q17', this, true)">A. Depletion of muscle glycogen forces reliance on slower fatty acid oxidation, reducing sustainable intensity</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">B. A sudden increase in phosphocreatine stores allows less ATP to be generated per second</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">C. Increased lactate production fully inhibits mitochondrial respiration in slow-twitch fibers</div>
+    <div class="choice" onclick="selectChoice('q17', this, false)">D. A rise in insulin acutely shuts down lipolysis and prevents use of fatty acids</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> Depletion of muscle glycogen forces reliance on slower fatty acid oxidation, reducing sustainable intensity</p>
+<p><b>Why:</b> As prolonged moderate-high intensity exercise continues, muscle glycogen becomes depleted. The athlete then relies more on fatty acid oxidation, which supports lower power output, so pace/intensity must drop to match the rate of ATP production.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> Phosphocreatine is a short-term (seconds) buffer and is not what determines performance after hours of exercise.</li>
+<li><b>C.</b> Lactate can rise with intensity, but endurance-trained slow-twitch fibers remain oxidative; lactate does not ‘fully inhibit’ mitochondrial respiration as described.</li>
+<li><b>D.</b> During prolonged exercise, insulin generally does not spike to shut down lipolysis; catecholamine signaling tends to support fatty acid availability.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q18 Correct: B -->
+  <div class="question" id="q18">
+    <b>18. Which adaptation is most consistent with an increase in slow-twitch fiber capacity described for trained endurance athletes?</b>
+    <div class="choice" onclick="selectChoice('q18', this, false)">A. Lower capillary density and fewer mitochondria per fiber</div>
+    <div class="choice" onclick="selectChoice('q18', this, true)">B. Higher mitochondrial content and enhanced oxidative enzyme activity</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">C. Higher reliance on creatine phosphate for minutes at a time</div>
+    <div class="choice" onclick="selectChoice('q18', this, false)">D. Decreased ability to oxidize fatty acids due to reduced O₂ delivery</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Higher mitochondrial content and enhanced oxidative enzyme activity</p>
+<p><b>Why:</b> Slow-twitch fibers are well vascularized and primarily oxidative; endurance training increases their mitochondrial number and oxidative capacity, improving sustained ATP generation via aerobic metabolism.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Endurance training increases (not decreases) vascularization and mitochondrial content in oxidative fibers.</li>
+<li><b>C.</b> Creatine phosphate supports only seconds of activity; it is not a minutes-long endurance adaptation.</li>
+<li><b>D.</b> Endurance training improves oxygen delivery/utilization and fatty acid oxidation capacity rather than decreasing it.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+<!-- ===================== PASSAGE 2 ===================== -->
+<div class="passage-header">
+  <span>Passage 2: Hormonal Control of Appetite: Leptin, Ghrelin, and Orexin</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text"><p>A research group studies mice with a mutation that disrupts adipocyte-to-brain satiety signaling. Compared with wild-type littermates on the same diet, the mutant mice eat larger meals and gain significant fat mass over several weeks.</p>
+<p>Plasma hormone measurements show persistently low satiety signaling despite increasing fat stores. When the mice are moved to a highly palatable environment (strong food odors and frequent meal cues), feeding increases even further, especially just before scheduled feeding times.</p>
+<p>To test whether appetite pathways are upstream or downstream of the mutation, investigators measure hypothalamic neuropeptide output and find elevated orexin signaling during the period leading up to meals.</p></div>
+</div>
+<div class="reasoning-box" id="p2-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li>Identify hormone sources and direction of effect: ghrelin (stomach) increases appetite and can stimulate orexin; leptin (adipocytes) decreases appetite by suppressing orexin.</li>
+  <li>Use the phenotype: progressive fat gain plus persistent hyperphagia suggests loss of a satiety ‘brake’ rather than overproduction of a hunger signal alone.</li>
+  <li>Distinguish meal-cue effects from baseline tone: meal cues can drive ghrelin/orexin even when baseline appetite is low; leptin primarily sets longer-term satiety tone.</li>
+  <li>Predict downstream signals: restoring leptin signaling should reduce orexin output and reduce overall intake.</li>
+</ol>
+</div>
+
+  <!-- Q19 Correct: D -->
+  <div class="question" id="q19">
+    <b>19. The phenotype in the study animal is most likely explained by loss of which signal that normally suppresses appetite?</b>
+    <div class="choice" onclick="selectChoice('q19', this, false)">A. Ghrelin released from the stomach</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">B. Orexin released from the hypothalamus</div>
+    <div class="choice" onclick="selectChoice('q19', this, false)">C. Epinephrine released from the adrenal medulla</div>
+    <div class="choice" onclick="selectChoice('q19', this, true)">D. Leptin released from adipocytes</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Leptin released from adipocytes</p>
+<p><b>Why:</b> Leptin is produced by fat cells and acts as a satiety signal; it suppresses orexin and decreases appetite. Loss of leptin signaling (leptin deficiency or receptor defects) promotes hyperphagia and weight gain.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Ghrelin increases appetite and would worsen, not explain, satiety loss when elevated.</li>
+<li><b>B.</b> Orexin increases appetite; losing it would tend to decrease hunger.</li>
+<li><b>C.</b> Epinephrine is a counterregulatory hormone for fuel mobilization; it is not the primary satiety signal described.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q20 Correct: C -->
+  <div class="question" id="q20">
+    <b>20. If the animal is given a therapy that restores leptin signaling, which downstream change is most expected?</b>
+    <div class="choice" onclick="selectChoice('q20', this, false)">A. Increased orexin production and increased appetite</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">B. Increased ghrelin secretion and increased appetite</div>
+    <div class="choice" onclick="selectChoice('q20', this, true)">C. Decreased orexin signaling and decreased appetite</div>
+    <div class="choice" onclick="selectChoice('q20', this, false)">D. Increased glucagon signaling to the liver and decreased appetite</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> Decreased orexin signaling and decreased appetite</p>
+<p><b>Why:</b> Leptin is a satiety hormone from adipocytes that decreases appetite in part by suppressing orexin production in the hypothalamus. Restoring leptin signaling should therefore reduce orexin-driven hunger and lower food intake.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> This is the opposite of leptin’s effect; leptin suppresses orexin rather than increasing it.</li>
+<li><b>B.</b> Ghrelin is a hunger hormone from the stomach; increasing it would tend to raise appetite.</li>
+<li><b>D.</b> Glucagon primarily regulates hepatic glucose output and is not the key satiety pathway described for leptin’s effect.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q21 Correct: A -->
+  <div class="question" id="q21">
+    <b>21. The researchers observe that a small, sustained 3% caloric deficit produces little weight loss in control animals. Which explanation best matches the text’s ‘threshold’ concept?</b>
+    <div class="choice" onclick="selectChoice('q21', this, true)">A. Minor intake decreases are partially compensated by reduced energy expenditure and/or increased hunger</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">B. Minor intake decreases directly increase BMR, offsetting fat loss</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">C. Minor intake decreases convert all carbohydrates into ketone bodies, preventing fat oxidation</div>
+    <div class="choice" onclick="selectChoice('q21', this, false)">D. Minor intake decreases cause complete shutdown of thyroid hormone production</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: A.</b> Minor intake decreases are partially compensated by reduced energy expenditure and/or increased hunger</p>
+<p><b>Why:</b> The passage notes that small changes in intake can be partially or fully compensated by changes in energy expenditure, and small changes in activity can be compensated by changes in hunger. Meaningful weight change requires alterations above this threshold.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>B.</b> BMR does not typically rise because intake falls slightly; compensation tends to lower expenditure, not raise it.</li>
+<li><b>C.</b> Ketone production can rise in fasting, but a small caloric deficit does not automatically convert all carbs into ketones or prevent fat oxidation.</li>
+<li><b>D.</b> Thyroid hormones are relatively permissive and not described as completely shutting down from a minor deficit.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+<!-- ===================== PASSAGE 3 ===================== -->
+<div class="passage-header">
+  <span>Passage 3: Fasting Adaptations and Measuring Metabolism</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+  <div class="passage-text"><p>A metabolic ward evaluates a volunteer across three conditions: (i) 2 hours after a meal, (ii) after an overnight fast, and (iii) after 48 hours without food. In each condition, the team records blood glucose and ketone levels and performs respirometry during rest to compute RQ.</p>
+<p>The volunteer’s RQ is 0.82 after the meal, 0.77 after the overnight fast, and 0.73 after 48 hours. Blood ketones are minimal after the meal, modest after overnight fasting, and elevated after 48 hours. Despite the shift in fuels, one cell population continues to produce lactate as its dominant end product in all three conditions.</p>
+<p>Because building a calorimetry chamber is impractical, the team estimates basal metabolic rate (BMR) using standard equations based on age, height, weight, and phenotypical sex, and uses the RQ trend to interpret which substrates are supplying most ATP.</p></div>
+</div>
+<div class="reasoning-box" id="p3-reason">
+<p><b>How to reason:</b></p>
+<ol>
+  <li>Map metabolic state to hormone-driven fuel selection: fed state favors mixed use and storage; fasting increases fatty acid use and ketone production.</li>
+  <li>Interpret the RQ trajectory: falling RQ toward ~0.7 indicates increasing lipid contribution to oxidative metabolism.</li>
+  <li>Remember tissue constraints: cells without mitochondria cannot oxidize fatty acids or ketones and must rely on anaerobic glycolysis (lactate production).</li>
+  <li>Differentiate tools: respirometry infers substrate use (RQ) from gases, whereas calorimetry measures heat; when calorimetry isn’t feasible, BMR is often estimated empirically.</li>
+</ol>
+</div>
+
+  <!-- Q22 Correct: B -->
+  <div class="question" id="q22">
+    <b>22. Even after several days of fasting, which tissue remains obligatorily dependent on glucose for ATP production?</b>
+    <div class="choice" onclick="selectChoice('q22', this, false)">A. Cardiac muscle</div>
+    <div class="choice" onclick="selectChoice('q22', this, true)">B. Red blood cells</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">C. Resting skeletal muscle</div>
+    <div class="choice" onclick="selectChoice('q22', this, false)">D. Adipose tissue</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: B.</b> Red blood cells</p>
+<p><b>Why:</b> Red blood cells lack mitochondria, so they cannot perform β-oxidation or oxidative phosphorylation and must rely on anaerobic glycolysis of glucose in all metabolic states.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Cardiac muscle prefers fatty acids and can also use ketones during prolonged fasting.</li>
+<li><b>C.</b> Resting skeletal muscle can switch to fatty acids and ketones during fasting/prolonged fasting.</li>
+<li><b>D.</b> Adipose tissue uses glucose in the fed state but can shift its metabolism and is a major source of circulating fatty acids during fasting.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q23 Correct: C -->
+  <div class="question" id="q23">
+    <b>23. During the postabsorptive state, which set of substrates provides major carbon skeleton inputs for hepatic gluconeogenesis as described?</b>
+    <div class="choice" onclick="selectChoice('q23', this, false)">A. Fatty acids only</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">B. Cholesterol and ketone bodies</div>
+    <div class="choice" onclick="selectChoice('q23', this, true)">C. Lactate, glycerol, and amino acids</div>
+    <div class="choice" onclick="selectChoice('q23', this, false)">D. Acetyl-CoA only</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: C.</b> Lactate, glycerol, and amino acids</p>
+<p><b>Why:</b> As insulin falls and counterregulatory hormones rise, the liver maintains blood glucose via glycogenolysis and gluconeogenesis. Lactate (from anaerobic metabolism), glycerol (from triacylglycerol breakdown), and amino acids (from muscle proteolysis) provide gluconeogenic carbon skeletons.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> Fatty acids are important fuels, but they cannot be converted to net glucose (even-chain) and are not the primary carbon skeleton input set described.</li>
+<li><b>B.</b> These are not the main gluconeogenic carbon sources outlined; ketones are produced from acetyl-CoA and used by other tissues.</li>
+<li><b>D.</b> Acetyl-CoA cannot be converted to net glucose in humans; it can drive gluconeogenesis energetically but not as a carbon source.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+  <!-- Q24 Correct: D -->
+  <div class="question" id="q24">
+    <b>24. A lab wants the most direct measurement of energy expenditure from heat output but cannot afford a large insulated chamber. Which statement best captures the limitation described and a common workaround?</b>
+    <div class="choice" onclick="selectChoice('q24', this, false)">A. Calorimetry is unnecessary because BMR is identical in all individuals</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">B. Respirometry cannot be used to infer metabolic rate because O₂ and CO₂ are unrelated to metabolism</div>
+    <div class="choice" onclick="selectChoice('q24', this, false)">C. Blood glucose levels alone provide a complete and direct measure of total energy expenditure</div>
+    <div class="choice" onclick="selectChoice('q24', this, true)">D. Whole-body calorimetry is expensive and isolating, so BMR is often estimated from demographic/anthropometric variables (age, weight, height, phenotypical sex)</div>
+    <div class="feedback"></div>
+    <details class="explain">
+      <summary>Show explanation</summary>
+      <div class="explain-body">
+<p><b>Correct Answer: D.</b> Whole-body calorimetry is expensive and isolating, so BMR is often estimated from demographic/anthropometric variables (age, weight, height, phenotypical sex)</p>
+<p><b>Why:</b> The passage notes that calorimetry chambers are costly and inconvenient; as a result, BMR is commonly estimated using empirically derived equations based on age, weight, height, and phenotypical sex.</p>
+<p><b>Why the other choices are not as good:</b></p>
+<ul>
+<li><b>A.</b> BMR varies widely with body size, composition, age, and other factors.</li>
+<li><b>B.</b> O₂ consumption and CO₂ production are tightly linked to oxidative metabolism; respirometry can inform substrate use (RQ) and can help estimate energy expenditure.</li>
+<li><b>C.</b> Blood glucose is only one substrate marker and does not directly capture whole-body heat production or total ATP turnover.</li>
+</ul>
+      </div>
+    </details>
+  </div>
+
+</body>
+</html>
