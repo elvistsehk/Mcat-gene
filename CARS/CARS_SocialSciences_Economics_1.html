@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MCAT CARS - Social Sciences (Economics) (1 Passage, 8 Questions)</title>
+<style>
+:root {
+  --blue:#1f6fae;
+  --blue2:#2d7fbf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#d7dee8;
+  --good:#118a4a;
+  --bad:#c0262d;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--blue);color:#fff;padding:12px 16px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .left{display:flex;flex-direction:column;gap:2px}
+.topbar .subtitle{font-weight:600;opacity:.9;font-size:13px}
+.timer{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);border-radius:10px;color:#fff;font-weight:800;}
+.timer-label{opacity:.9;font-weight:700}
+.timer-time{min-width:60px;text-align:center;letter-spacing:.5px}
+.timer-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:5px 8px;font-weight:800;cursor:pointer}
+.timer-btn:hover{background:rgba(255,255,255,.18)}
+.timer-danger{background:rgba(192,38,45,.35)!important;border-color:rgba(255,255,255,.55)!important}
+
+.container{width:100%;max-width:none;margin:0 auto;padding:12px;box-sizing:border-box;height:calc(100vh - 56px);}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(0deg,var(--blue),var(--blue2));color:#fff;padding:10px 12px}
+.bar .title{font-weight:900}
+.iconbtn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:7px 10px;font-weight:800;cursor:pointer}
+.iconbtn.is-active,.iconbtn.active{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.7)}
+.iconbtn.is-active:hover,.iconbtn.active:hover{background:rgba(0,0,0,.26)}
+
+.iconbtn:hover{background:rgba(255,255,255,.18)}
+.content{padding:14px 16px;line-height:1.6;font-size:15px}
+.content p{margin:0 0 12px}
+.content p.noindent{text-indent:0}
+.reason-box{white-space:pre-wrap;border:1px solid var(--border);background:#fbfdff;border-radius:10px;padding:10px 12px;margin-top:10px}
+
+.subbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);background:#fbfdff}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 10px;font-weight:800;color:#334155;cursor:pointer}
+.chip.active{border-color:var(--blue2);color:var(--blue2)}
+.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn.ghost{background:#f3f6fb}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+.qwrap{padding:12px}
+.qcard{display:none}
+.qcard.active{display:block}
+.qhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qnum{font-weight:950}
+.qskill{color:var(--muted);font-weight:800;font-size:12px}
+.qstem{font-size:16px;font-weight:800;margin:8px 0 10px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px;cursor:pointer}
+.choice:hover{border-color:#b9c6d8}
+.choice input{margin-top:3px}
+.choice-letter{font-weight:950;min-width:28px}
+.choice.selected{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,132,198,.12)}
+.choice.correct{border-color:rgba(17,138,74,.6);box-shadow:0 0 0 3px rgba(17,138,74,.12)}
+.choice.incorrect{border-color:rgba(192,38,45,.55);box-shadow:0 0 0 3px rgba(192,38,45,.10)}
+
+.feedback{margin-top:10px;font-weight:950}
+.feedback.good{color:var(--good)}
+.feedback.bad{color:var(--bad)}
+.actions{display:flex;gap:8px;margin-top:10px}
+
+.explanation{margin-top:10px;border:1px solid var(--border);background:#fbfdff;border-radius:12px;padding:10px 12px}
+.exp-title{font-weight:950;margin:6px 0}
+.exp-text{color:#111827}
+.exp-list{margin:6px 0 0 18px}
+.footer-note{padding:10px 12px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+
+.split{display:flex;gap:0;height:100%;}
+.pane{flex:1;min-width:0;height:100%;}
+.vdiv{width:6px;background:linear-gradient(#cbd5e1,#cbd5e1);border-radius:3px;margin:0 10px;}
+/* Make both panels fill height and allow independent scrolling */
+.pane .panel{height:100%;display:flex;flex-direction:column;overflow:hidden;}
+.pane .panel .content{flex:1;overflow:auto;}
+/* Blue emphasis for **bold** / highlighted terms */
+:root{--accent:#1d4ed8;}
+.content strong,.content b,.reveal strong,.reveal b,.exp strong,.exp b{color:var(--accent);}
+
+/* Highlight tool */
+#passageText .hl, #passageText mark.hl { background: #fff59d; padding: 0 2px; border-radius: 2px; }
+/* Highlight button active state */
+.toolBtn.active{background:#ffe082;}
+/* Blue emphasis inside How to Reason */
+#reasonBox strong, #reasonBox .key{color:#1f67d6;font-weight:700;}
+/* Blue emphasis like AAMC */
+.reasoning strong, .explain strong, #passageText strong { color: #1f67d6; }
+
+
+
+/* --- tweaks (2026-03-04) --- */
+#passageText p{
+  text-indent: 1.6em;           /* indent first line of each paragraph */
+  margin: 0 0 14px 0;
+}
+#passageText p.noindent{ text-indent: 1.6em; } /* keep consistent */
+
+.reason-box ul{ margin: 8px 0 0 22px; }
+.reason-box li{
+  margin: 4px 0;                /* reduce line-to-line spacing */
+  line-height: 1.35;
+}
+
+
+/* FIX6 tweaks */
+.passage-toolbar button{min-height:44px;height:44px;line-height:1.1;padding:10px 18px;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;}
+.passage-toolbar{gap:10px;}
+.reasoning-box{margin-top:12px;}
+.reasoning-title{margin-bottom:8px;}
+.reasoning-content{line-height:1.35;}
+.reasoning-content li{margin:8px 0;}
+.reasoning-content ul{margin:0;padding-left:20px;}
+#passageText p{ text-indent:1.5em; margin:10px 0; }
+
+/* --- FIXED7: consistent passage buttons + tighter How-to-reason spacing --- */
+.panel .bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.panel .bar .title{flex:1 1 auto; min-width:180px;}
+.panel .bar .iconbtn{
+  height:40px;
+  min-width:130px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 14px;
+  line-height:1;
+  white-space:nowrap;
+  box-sizing:border-box;
+}
+/* How to reason box spacing */
+.reason-box{padding:14px 16px;}
+.reason-box p{margin:0 0 8px 0;}
+.reason-box ul{margin:0; padding-left:18px;}
+.reason-box li{margin:8px 0; line-height:1.25;}
+
+  .panel .bar .barActions{display:flex; gap:10px; margin-left:auto; align-items:center;}
+  .panel .bar .barActions .iconbtn{min-width:120px; justify-content:center;}
+</style>
+
+<style>
+  /* Overlay highlight (does not modify underlying text) */
+  #passageText{ position: relative; -webkit-touch-callout: none; }
+  #passageText, #passageText *{ -webkit-user-drag: none; user-drag: none; }
+  .hl-layer{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+  .hl-rect{ position:absolute; background:rgba(255,245,157,0.75); border-radius:2px; }
+  /* keep passage content below overlay */
+  #passageText > *:not(.hl-layer){ position:relative; z-index:1; }
+</style>
+
+</head>
+<body>
+  <div class="topbar">
+    <div class="left">
+      <div>MCAT CARS - Social Sciences (Economics) (1 Passage, 8 Questions)</div>
+      <div class="subtitle">Social Sciences • 6 paragraphs • ~585 words</div>
+    </div>
+    <div class="timer" id="timerWrap" aria-label="Passage timer">
+      <span class="timer-label">Timer</span>
+      <span class="timer-time" id="timerDisplay">10:00</span>
+      <button class="timer-btn" id="timerStart" type="button">Start</button>
+      <button class="timer-btn" id="timerPause" type="button">Pause</button>
+      <button class="timer-btn" id="timerReset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="split">
+  <div class="pane leftPane">
+<div class="panel">
+      <div class="bar">
+        <div class="title">Passage 1 (Questions 1–8)</div>
+        <div class="barActions">
+          <button class="iconbtn" id="highlightBtn" type="button">Highlight</button>
+          <button class="iconbtn" id="clearHighlightBtn" type="button">Clear highlight</button>
+          <button class="iconbtn" id="toggleReason" type="button">How to reason</button>
+        </div>
+      </div>
+      <div class="content" id="passageText">
+  <div class="hl-layer" id="hlLayer" aria-hidden="true"></div>
+        <p class="noindent">During a recession, the same storefront can be read two ways. One passerby sees a shuttered café and concludes that demand has collapsed; another notices a new kiosk across the street and concludes that the city is adapting. Both stories can be true, and the tension between them reveals a persistent mistake: treating “the economy” as a single creature with one mood. What actually changes is an arrangement of relationships—wages, credit, expectations, and bargaining power—that can shift unevenly across neighborhoods and industries.</p>
+<p>This is why arguments about stimulus and austerity often talk past each other. One side emphasizes aggregate spending: when households cut consumption, a government deficit can keep money circulating until confidence returns. The other side emphasizes credibility: when debt rises, investors may demand higher interest, and uncertainty can discourage private investment. Both positions invoke “confidence,” but they mean different things—confidence as the willingness to spend versus confidence as the belief that institutions will honor debts. Disagreement persists because the same word covers two mechanisms.</p>
+<p>Even when people agree on the mechanism, they disagree about measurement. Official unemployment counts those actively seeking work, yet it can miss discouraged workers, underemployment, and precarious gig labor. Inflation statistics can track a representative basket, but households do not buy the same basket. Rent, health care, and childcare dominate some budgets while barely touching others. When a headline says “inflation is easing,” a family whose major expense is still rising may hear not reassurance but accusation, as if their anxiety were irrational. A number meant to summarize becomes a verdict on lived experience.</p>
+<p>Economists sometimes respond by building better indices and by disaggregating data. Those improvements matter. But measurement debates also reflect a normative question: which experiences deserve to count as central? When a model treats lost leisure as minor, it quietly assumes that time is cheap for everyone. When it treats unpaid caregiving as invisible, it treats whole forms of labor as non-events. These choices are not mere technicalities; they distribute attention and, in the long run, policy priority.</p>
+<p>Markets, too, are shaped by stories. A central banker’s announcement can move prices not because it changes today’s factories but because it changes expectations about tomorrow. A “housing boom” can be fueled by speculation that turns rising prices into evidence that prices will continue to rise. When narratives become self‑fulfilling, critics complain that the market is irrational. Yet narratives are not external to markets; they are part of how participants coordinate in the presence of uncertainty. The problem is not storytelling per se, but whose stories are treated as authoritative.</p>
+<p>The healthiest public debates therefore resist two temptations: technocracy that pretends numbers are neutral, and populism that pretends numbers are lies. A statistic is neither an oracle nor a conspiracy. It is a tool that compresses a messy world, and every compression throws something away. The task is to ask, openly, what is being thrown away, who bears the cost, and which alternative measures might better match the goals a society claims to value.</p>
+        <div class="reason-box" id="reasonBox" hidden>
+
+  <p><strong>How to reason (CARS)</strong></p>
+  <ul>
+    <li>Track the author’s <strong>thesis</strong>: economic debates hinge on <strong>uneven relationships</strong>, <strong>measurement choices</strong>, and <strong>narrative authority</strong>—not a single 'economy mood.'</li>
+    <li>Note key contrasts: stimulus vs austerity framed through different meanings of <strong>confidence</strong>; headline stats vs <strong>lived budgets</strong>.</li>
+    <li>For <strong>main idea</strong>, choose what spans all examples: tools/indices compress reality and must be examined for what they <strong>omit</strong>.</li>
+    <li>For <strong>within-text</strong> questions, tie answers to an example’s <strong>job</strong> (confidence ambiguity; inflation basket mismatch; norms in indices).</li>
+    <li>For <strong>beyond-text</strong> questions, apply the logic: ask <strong>who bears costs</strong>, what assumptions are embedded, and who controls <strong>authoritative stories</strong>.</li>
+    <li>Eliminate traps: <strong>extremes</strong> (“numbers are lies” / “numbers are neutral”), <strong>scope shifts</strong>, and <strong>reversals</strong>.</li>
+  </ul>
+</div>
+      </div>
+    </div>
+  </div>
+  <div class="vdiv"></div>
+  <div class="pane rightPane">
+<div class="panel">
+      <div class="subbar">
+        <div class="right-actions">
+          <button class="btn" id="resetAll" type="button">Reset all</button>
+          <button class="btn primary" id="prevBtn" type="button">Previous</button>
+          <button class="btn primary" id="nextBtn" type="button">Next</button>
+        </div>
+      </div>
+      <div class="qwrap" id="qwrap">
+        
+    
+
+    <section class="qcard" id="card-1">
+      <div class="qhead">
+        <div class="qnum">Question 1</div>
+        <div class="qskill">Foundations of Comprehension</div>
+      </div>
+      <div class="qstem">The primary purpose of the passage is to:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="1" data-letter="A">
+        <input type="radio" name="q1" id="q1_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">argue that economic debates require attention to uneven relationships, measurement choices, and narrative authority rather than a single &#x27;economy-wide&#x27; story.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="B">
+        <input type="radio" name="q1" id="q1_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">show that statistics are inherently deceptive and should be replaced by personal anecdotes.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="C">
+        <input type="radio" name="q1" id="q1_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">defend austerity as the most reliable way to restore investor confidence.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="D">
+        <input type="radio" name="q1" id="q1_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">claim that markets are irrational because they are driven by narratives instead of fundamentals.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-1" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="1" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-1" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why A is correct</div>
+        <div class="exp-text">The passage emphasizes that economic change is uneven and relationship-based, that key policy debates often conflate meanings (e.g., &#x27;confidence&#x27;), that measurement choices are partly normative, and that narratives coordinate behavior under uncertainty. It ends by rejecting both technocratic neutrality and populist dismissal.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>B.</b> The author rejects populism that treats numbers as lies; they argue for scrutinizing what statistics compress, not abandoning them (reversal).</li><li><b>C.</b> The passage presents stimulus vs austerity as mechanisms with different meanings of confidence, not as an endorsement of austerity (unsupported).</li><li><b>D.</b> The author says narratives are part of coordination; the problem is whose stories become authoritative, not narrative itself (reversal).</li></ul>
+      </div>
+      
+      <div class="exp-section">
+        <div class="exp-title">Common trap</div>
+        <div class="exp-text">Choosing a strong-sounding anti-statistics or anti-market option even though the passage argues for balanced scrutiny.</div>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-2">
+      <div class="qhead">
+        <div class="qnum">Question 2</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">In the second paragraph, the author’s discussion of “confidence” mainly serves to show that policy disagreements can persist because:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="2" data-letter="A">
+        <input type="radio" name="q2" id="q2_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">both sides secretly agree but use different rhetoric to satisfy voters.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="B">
+        <input type="radio" name="q2" id="q2_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">economic mechanisms are unknowable, so any policy can be justified.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="C">
+        <input type="radio" name="q2" id="q2_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">the same term can refer to distinct mechanisms, causing participants to argue past each other.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="D">
+        <input type="radio" name="q2" id="q2_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">investors alone determine whether stimulus or austerity will work.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-2" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="2" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-2" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why C is correct</div>
+        <div class="exp-text">The paragraph explicitly says both sides invoke &#x27;confidence&#x27; but mean different things (willingness to spend vs belief debts will be honored). That semantic overlap masks a mechanistic difference and fuels talking past one another.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The passage does not claim secret agreement; it claims conceptual mismatch (unsupported).</li><li><b>B.</b> The author does not argue mechanisms are unknowable; they identify two mechanisms clearly (reversal).</li><li><b>D.</b> Investor behavior is one part of one mechanism, but the passage does not reduce outcomes to investors alone (too narrow).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-3">
+      <div class="qhead">
+        <div class="qnum">Question 3</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">The third paragraph most strongly implies that headline economic indicators can alienate people because:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="3" data-letter="A">
+        <input type="radio" name="q3" id="q3_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">households misunderstand how inflation and unemployment are calculated.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="B">
+        <input type="radio" name="q3" id="q3_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">aggregate statistics may not match the cost structure of particular households, making their experience feel dismissed.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="C">
+        <input type="radio" name="q3" id="q3_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">inflation and unemployment are measured incorrectly and should be eliminated from reporting.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="D">
+        <input type="radio" name="q3" id="q3_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">economic anxiety is primarily driven by media sensationalism rather than real conditions.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-3" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="3" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-3" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why B is correct</div>
+        <div class="exp-text">The author notes that baskets differ across households and that dominant expenses vary. So when &#x27;inflation is easing,&#x27; those still facing rising major costs may feel accused of irrationality. The issue is mismatch between aggregates and lived experience.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The author’s point is not misunderstanding, but representativeness and heterogeneity (too narrow).</li><li><b>C.</b> The passage calls for better indices and disaggregation, not eliminating indicators (extreme).</li><li><b>D.</b> Media sensationalism is not the mechanism the author highlights (out-of-passage).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-4">
+      <div class="qhead">
+        <div class="qnum">Question 4</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">Which research choice best illustrates the passage’s claim that measurement debates can be partly normative?</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="4" data-letter="A">
+        <input type="radio" name="q4" id="q4_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">Selecting a larger sample size to reduce sampling error.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="B">
+        <input type="radio" name="q4" id="q4_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">Using the same price index each year to ensure comparability over time.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="C">
+        <input type="radio" name="q4" id="q4_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">Applying a standard formula for unemployment so countries can be compared.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="D">
+        <input type="radio" name="q4" id="q4_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">Redesigning a wellbeing index to include unpaid caregiving time because excluding it treats a major form of labor as invisible.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-4" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="4" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-4" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why D is correct</div>
+        <div class="exp-text">The passage argues that what counts as central is a value-laden decision: excluding unpaid caregiving or treating leisure as minor embodies assumptions about whose time matters. Including caregiving time directly reflects that normative choice.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> Sample size is technical, not about what experiences deserve to count (too narrow).</li><li><b>B.</b> Comparability is methodological, not necessarily normative in the sense discussed (unsupported).</li><li><b>C.</b> Standardization helps comparison but does not, by itself, address inclusion of neglected experiences (too narrow).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-5">
+      <div class="qhead">
+        <div class="qnum">Question 5</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">In the fifth paragraph, the author suggests that narratives in markets are best understood as:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="5" data-letter="A">
+        <input type="radio" name="q5" id="q5_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">proof that markets are inherently irrational and should be replaced by planning.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="B">
+        <input type="radio" name="q5" id="q5_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">pure propaganda imposed from outside the market by politicians and media.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="C">
+        <input type="radio" name="q5" id="q5_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">coordination devices under uncertainty, whose danger lies in unequal authority over which stories dominate.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="D">
+        <input type="radio" name="q5" id="q5_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">temporary distractions that do not affect prices once fundamentals are known.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-5" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="5" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-5" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why C is correct</div>
+        <div class="exp-text">The author explains that announcements move prices by changing expectations, and that self-fulfilling narratives help coordinate behavior under uncertainty. The concern is not storytelling per se but which narratives are treated as authoritative.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The passage explicitly rejects calling narrative-driven coordination simply &#x27;irrational&#x27; (reversal).</li><li><b>B.</b> Narratives are described as internal to market coordination, not purely external propaganda (reversal).</li><li><b>D.</b> The passage says expectations move prices even without immediate changes in production; narratives can matter (reversal).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-6">
+      <div class="qhead">
+        <div class="qnum">Question 6</div>
+        <div class="qskill">Foundations of Comprehension</div>
+      </div>
+      <div class="qstem">The author’s attitude toward economic statistics is best described as:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="6" data-letter="A">
+        <input type="radio" name="q6" id="q6_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">cautious but constructive, treating statistics as compressive tools that require transparent scrutiny of what they omit.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="B">
+        <input type="radio" name="q6" id="q6_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">hostile, because numbers necessarily conceal reality and cannot inform policy.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="C">
+        <input type="radio" name="q6" id="q6_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">uncritical, because technical indices are neutral and should settle disputes.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="D">
+        <input type="radio" name="q6" id="q6_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">indifferent, because narratives matter more than any quantitative measure.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-6" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="6" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-6" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why A is correct</div>
+        <div class="exp-text">The conclusion rejects both technocracy (numbers as neutral oracles) and populism (numbers as lies). It frames statistics as tools that compress complexity and urges asking what is thrown away and who pays the cost.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>B.</b> This matches the populist temptation the author rejects (reversal).</li><li><b>C.</b> This matches the technocratic temptation the author rejects (reversal).</li><li><b>D.</b> Narratives matter, but the author still treats measurement as important and revisable (unsupported).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-7">
+      <div class="qhead">
+        <div class="qnum">Question 7</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">A commentator argues that because national inflation has fallen, any remaining hardship reports are &#x27;just perception.&#x27; Based on the passage, the best critique is that the commentator:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="7" data-letter="A">
+        <input type="radio" name="q7" id="q7_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">correctly prioritizes aggregate indicators, which are the only objective facts.</span>
+      </label>
+    
+      <label class="choice" data-q="7" data-letter="B">
+        <input type="radio" name="q7" id="q7_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">should ignore inflation entirely because it cannot represent anyone’s experience.</span>
+      </label>
+    
+      <label class="choice" data-q="7" data-letter="C">
+        <input type="radio" name="q7" id="q7_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">proves that stimulus policy always works better than austerity.</span>
+      </label>
+    
+      <label class="choice" data-q="7" data-letter="D">
+        <input type="radio" name="q7" id="q7_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">treats a summary statistic as a verdict, overlooking heterogeneity in household budgets and the normative choices embedded in measurement.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-7" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="7" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-7" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why D is correct</div>
+        <div class="exp-text">The passage warns that aggregates can misfit particular cost structures and that numbers can become verdicts on lived experience. It also notes measurement embeds choices about what counts. D captures both the heterogeneity and the normative dimension.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The passage rejects treating statistics as oracles that settle disputes (reversal).</li><li><b>B.</b> The author rejects abandoning numbers as lies and instead calls for scrutiny and better indices (reversal).</li><li><b>C.</b> This introduces a separate debate (stimulus vs austerity) and claims &#x27;always&#x27; without support (scope shift/extreme).</li></ul>
+      </div>
+      
+      <div class="exp-section">
+        <div class="exp-title">Common trap</div>
+        <div class="exp-text">Letting a national average substitute for the passage’s repeated theme of uneven relationships and uneven burdens.</div>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-8">
+      <div class="qhead">
+        <div class="qnum">Question 8</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">Which approach to economic policy debate is most consistent with the author’s recommendations?</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="8" data-letter="A">
+        <input type="radio" name="q8" id="q8_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">Choose the policy that maximizes a single headline indicator, since tradeoffs are unavoidable anyway.</span>
+      </label>
+    
+      <label class="choice" data-q="8" data-letter="B">
+        <input type="radio" name="q8" id="q8_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">Debate which measures best reflect stated social goals and who bears the costs of what current measures omit.</span>
+      </label>
+    
+      <label class="choice" data-q="8" data-letter="C">
+        <input type="radio" name="q8" id="q8_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">Avoid quantitative measures and rely on the narratives of affected communities alone.</span>
+      </label>
+    
+      <label class="choice" data-q="8" data-letter="D">
+        <input type="radio" name="q8" id="q8_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">Treat market narratives as noise and restrict public communication from institutions to prevent speculation.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-8" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="8" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-8" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why B is correct</div>
+        <div class="exp-text">The author urges resisting technocracy and populism by openly asking what statistics omit, who bears costs, and what alternative measures better match societal goals. That implies debate about measurement design and distributional impacts.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> This reintroduces technocratic oracle thinking by collapsing debate into one indicator (reversal).</li><li><b>C.</b> This matches the populist dismissal of numbers the author rejects (reversal).</li><li><b>D.</b> The author treats narratives as part of coordination; suppressing communication is not proposed and ignores authority concerns (unsupported).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+    
+        <div class="footer-note">Immediate feedback is enabled: selecting an answer will mark correct/incorrect. Use “Show explanation” for full reasoning (Questions 1–8).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+<script>
+(function(){
+  const DEFAULT_SECONDS = 600;
+  const STORAGE_KEY = "cars_timer_soc_economics_p1_q1_8_v1";
+  let remaining = DEFAULT_SECONDS;
+  let running = false;
+  let tickId = null;
+  let lastTick = null;
+
+  const display = document.getElementById("timerDisplay");
+  const wrap = document.getElementById("timerWrap");
+  const startBtn = document.getElementById("timerStart");
+  const pauseBtn = document.getElementById("timerPause");
+  const resetBtn = document.getElementById("timerReset");
+
+  function fmt(sec){
+    sec = Math.max(0, Math.floor(sec));
+    const m = String(Math.floor(sec/60)).padStart(2,"0");
+    const s = String(sec%60).padStart(2,"0");
+    return m + ":" + s;
+  }
+
+  function render(){
+    display.textContent = fmt(remaining);
+    if (remaining <= 60) wrap.classList.add("timer-danger");
+    else wrap.classList.remove("timer-danger");
+  }
+
+  function save(){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        remaining: remaining, running: running, lastTick: running ? Date.now() : null
+      }));
+    } catch(e) {}
+  }
+
+  function load(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (typeof data.remaining === "number") remaining = data.remaining;
+      if (typeof data.running === "boolean") running = data.running;
+      if (data.lastTick) lastTick = data.lastTick;
+      if (running && lastTick) {
+        const elapsed = (Date.now() - lastTick)/1000;
+        remaining = Math.max(0, remaining - elapsed);
+      }
+    } catch(e) {}
+  }
+
+  function stopInterval(){
+    if (tickId) clearInterval(tickId);
+    tickId = null;
+  }
+
+  function start(){
+    if (running) return;
+    running = true;
+    lastTick = Date.now();
+    save();
+    stopInterval();
+    tickId = setInterval(function(){
+      const now = Date.now();
+      const elapsed = (now - lastTick)/1000;
+      lastTick = now;
+      remaining = Math.max(0, remaining - elapsed);
+      render();
+      save();
+      if (remaining <= 0) {
+        running = false;
+        stopInterval();
+        save();
+        alert("Time is up for this passage.");
+      }
+    }, 250);
+  }
+
+  function pause(){
+    if (!running) return;
+    running = false;
+    stopInterval();
+    save();
+  }
+
+  function reset(){
+    running = false;
+    stopInterval();
+    remaining = DEFAULT_SECONDS;
+    lastTick = null;
+    render();
+    save();
+  }
+
+  startBtn.addEventListener("click", start);
+  pauseBtn.addEventListener("click", pause);
+  resetBtn.addEventListener("click", reset);
+
+  load();
+  render();
+  if (running) start();
+})();
+
+const correct = {"1": "A", "2": "C", "3": "B", "4": "D", "5": "C", "6": "A", "7": "D", "8": "B"};
+const qOrder = Object.keys(correct).map(function(x){return parseInt(x,10);}).sort(function(a,b){return a-b;});
+let currentIndex = 0;
+
+function $(sel, root) {
+  root = root || document;
+  // If it looks like a CSS selector, use querySelector.
+  if (sel && (sel[0] === '#' || sel[0] === '.' || sel[0] === '[')) {
+    return root.querySelector(sel);
+  }
+  // Otherwise, treat it as an element id (most of our calls pass bare ids).
+  if (root === document) return document.getElementById(sel);
+  return root.querySelector('#' + CSS.escape(sel));
+}
+function $all(sel, root) {
+  return Array.prototype.slice.call((root||document).querySelectorAll(sel));
+}
+
+function showQuestion(num) {
+  $all('.qcard').forEach(function(el){ el.classList.remove('active'); });
+  const card = $('#card-' + num);
+  if (card) card.classList.add('active');
+  $all('.chip').forEach(function(ch){ ch.classList.toggle('active', ch.dataset.go == String(num)); });
+  currentIndex = qOrder.indexOf(num);
+  const pb = $('#prevBtn'); if (pb) pb.disabled = currentIndex <= 0;
+  const nb = $('#nextBtn'); if (nb) nb.disabled = currentIndex >= qOrder.length - 1;
+}
+
+function getSelected(num) {
+  const checked = document.querySelector('input[name="q'+num+'"]:checked');
+  return checked ? checked.value : null;
+}
+
+function setFeedback(num, ok) {
+  const fb = $('#fb-' + num);
+  fb.classList.remove('good','bad');
+  if (ok === null) { fb.textContent = ''; return; }
+  if (ok) {
+    fb.classList.add('good');
+    fb.textContent = 'Correct ✓';
+  } else {
+    fb.classList.add('bad');
+    fb.textContent = 'Incorrect ✗   Correct answer: ' + correct[String(num)];
+  }
+}
+
+function markChoices(num, selected) {
+  const card = $('#card-' + num);
+  if (!card) return;
+  const labs = $all('.choice', card);
+  labs.forEach(function(lab){
+    lab.classList.remove('selected','correct','incorrect');
+    const input = lab.querySelector('input');
+    if (!input) return;
+    if (input.value === selected) lab.classList.add('selected');
+    if (selected) {
+      if (input.value === correct[String(num)]) lab.classList.add('correct');
+      if (input.value === selected && selected !== correct[String(num)]) lab.classList.add('incorrect');
+    }
+  });
+}
+
+function enableExplanation(num) {
+  const card = $('#card-' + num);
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.disabled = false;
+}
+
+function resetQuestion(num) {
+  document.querySelectorAll('input[name="q'+num+'"]').forEach(function(i){ i.checked = false; });
+  setFeedback(num, null);
+  const card = $('#card-' + num);
+  $all('.choice', card).forEach(function(l){ l.classList.remove('selected','correct','incorrect'); });
+  const exp = $('#exp-' + num);
+  exp.hidden = true;
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.textContent = 'Show explanation';
+  btn.disabled = true;
+}
+
+function resetAll() {
+    try{ clearHighlights(); }catch(e){}
+ qOrder.forEach(function(n){ resetQuestion(n); }); }
+
+const toggleReasonBtn = $('#toggleReason');
+if (toggleReasonBtn) toggleReasonBtn.addEventListener('click', function(){
+  const box = $('#reasonBox');
+  box.hidden = !box.hidden;
+  toggleReasonBtn.textContent = box.hidden ? 'How to reason' : 'Hide reasoning';
+});
+
+const prevBtn = $('#prevBtn');
+if (prevBtn) prevBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.max(0, currentIndex-1)]); });
+const nextBtn = $('#nextBtn');
+if (nextBtn) nextBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.min(qOrder.length-1, currentIndex+1)]); });
+const resetAllBtn = $('#resetAll');
+if (resetAllBtn) resetAllBtn.addEventListener('click', function(){ resetAll(); showQuestion(qOrder[0]); });
+
+const chipsEl = $('#chips');
+if (chipsEl) chipsEl.addEventListener('click', function(e){
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  showQuestion(parseInt(btn.dataset.go,10));
+});
+
+document.addEventListener('change', function(e){
+  if (!(e.target && e.target.matches('input[type="radio"]'))) return;
+  const name = e.target.name;
+  const num = parseInt(name.replace('q',''),10);
+  const sel = getSelected(num);
+  const ok = sel === correct[String(num)];
+  setFeedback(num, ok);
+  markChoices(num, sel);
+  enableExplanation(num);
+});
+
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  if (btn.dataset.action === 'toggle-exp') {
+    const num = parseInt(btn.dataset.q,10);
+    const exp = $('#exp-' + num);
+    exp.hidden = !exp.hidden;
+    btn.textContent = exp.hidden ? 'Show explanation' : 'Hide explanation';
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  showQuestion(qOrder[0]);
+  resetAll();
+  showQuestion(qOrder[0]);
+});
+
+  
+// ===== Overlay highlight (no DOM edits; prevents text shifting) =====
+(function(){
+  const passage = document.getElementById('passageText');
+  const layer = document.getElementById('hlLayer');
+  const highlightBtn = document.getElementById('highlightBtn');
+  const clearHighlightBtn = document.getElementById('clearHighlightBtn');
+  const resetAllBtn = document.getElementById('resetAll');
+
+  if (!passage || !layer || !highlightBtn) return;
+
+  // Prevent accidental drag of selected text/images inside the passage area
+  const blockDrag = (e)=>{ try{ e.preventDefault(); }catch(_){} try{ e.stopPropagation(); }catch(_){} };
+  ['dragstart','drag','dragend','drop'].forEach(evt=>{
+    passage.addEventListener(evt, blockDrag, {capture:true});
+    document.addEventListener(evt, (e)=>{ if (passage.contains(e.target)) blockDrag(e); }, {capture:true});
+  });
+
+  let highlightMode = false;
+  let groups = [];
+
+  function clearHighlights(){
+    while(layer.firstChild) layer.removeChild(layer.firstChild);
+    groups = [];
+  }
+
+  function undoLastHighlight(){
+    const g = groups.pop();
+    if (g && g.parentNode === layer) layer.removeChild(g);
+  }
+
+  function createGroup(){
+    const g = document.createElement('div');
+    g.className = 'hl-group';
+    layer.appendChild(g);
+    groups.push(g);
+    return g;
+  }
+
+  function selectionWithinPassage(sel){
+    if(!sel || sel.rangeCount===0) return false;
+    return passage.contains(sel.anchorNode) && passage.contains(sel.focusNode);
+  }
+
+  function addRect(rect, base, group){
+    const div = document.createElement('div');
+    div.className = 'hl-rect';
+    // Store coordinates in the passage's scrollable coordinate space
+    div.style.top = (rect.top - base.top + passage.scrollTop) + 'px';
+    div.style.left = (rect.left - base.left + passage.scrollLeft) + 'px';
+    div.style.width = rect.width + 'px';
+    div.style.height = rect.height + 'px';
+    (group || layer).appendChild(div);
+  }
+
+  function highlightSelection(){
+    const sel = window.getSelection();
+    if(!selectionWithinPassage(sel)) return;
+    const range = sel.getRangeAt(0);
+    if(range.collapsed) return;
+
+    const base = passage.getBoundingClientRect();
+    const rects = Array.from(range.getClientRects()).filter(r=>r.width>0 && r.height>0);
+    if(!rects.length) return;
+
+    const group = createGroup();
+    rects.forEach(r=>addRect(r, base, group));
+
+    // Clear selection after creating overlay, to reduce accidental text dragging
+    try{ sel.removeAllRanges(); }catch(_){}
+  }
+
+  function setMode(on){
+    highlightMode = !!on;
+    highlightBtn.classList.toggle('is-active', highlightMode);
+    highlightBtn.classList.toggle('active', highlightMode);
+  }
+
+  // Toggle highlight mode. When ON: select text (drag), then release to highlight.
+  highlightBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    setMode(!highlightMode);
+    if (highlightMode) setTimeout(highlightSelection, 0); // in case something is already selected
+  });
+
+  // Clear last highlight (undo)
+  if (clearHighlightBtn){
+    clearHighlightBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      // brief visual pressed state
+      clearHighlightBtn.classList.add('is-active');
+      clearHighlightBtn.classList.add('active');
+      setTimeout(()=>{ clearHighlightBtn.classList.remove('is-active'); clearHighlightBtn.classList.remove('active'); }, 180);
+      undoLastHighlight();
+    });
+  }
+
+  // Mouse + touch support
+  passage.addEventListener('mouseup', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  });
+  passage.addEventListener('touchend', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  }, {passive:true});
+
+  // Clear highlights whenever Reset all is pressed
+  if (resetAllBtn){
+    resetAllBtn.addEventListener('click', clearHighlights, {capture:true});
+  }
+
+  // Expose for safety (some other code calls clearHighlights())
+  window.clearHighlights = clearHighlights;
+})();
+</script>
+
+
+</body>
+</html>

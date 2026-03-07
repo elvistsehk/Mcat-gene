@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Humanity philosophy 01.</title>
+<style>
+:root {
+  --blue:#1f6fae;
+  --blue2:#2d7fbf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#d7dee8;
+  --good:#118a4a;
+  --bad:#c0262d;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--blue);color:#fff;padding:12px 16px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .left{display:flex;flex-direction:column;gap:2px}
+.topbar .subtitle{font-weight:600;opacity:.9;font-size:13px}
+.timer{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);border-radius:10px;color:#fff;font-weight:800;}
+.timer-label{opacity:.9;font-weight:700}
+.timer-time{min-width:60px;text-align:center;letter-spacing:.5px}
+.timer-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:5px 8px;font-weight:800;cursor:pointer}
+.timer-btn:hover{background:rgba(255,255,255,.18)}
+.timer-danger{background:rgba(192,38,45,.35)!important;border-color:rgba(255,255,255,.55)!important}
+
+.container{width:100%;max-width:none;margin:0 auto;padding:12px;box-sizing:border-box;height:calc(100vh - 56px);}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(0deg,var(--blue),var(--blue2));color:#fff;padding:10px 12px}
+.bar .title{font-weight:900}
+.iconbtn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:7px 10px;font-weight:800;cursor:pointer}
+.iconbtn.is-active,.iconbtn.active{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.7)}
+.iconbtn.is-active:hover,.iconbtn.active:hover{background:rgba(0,0,0,.26)}
+
+.iconbtn:hover{background:rgba(255,255,255,.18)}
+.content{padding:14px 16px;line-height:1.6;font-size:15px}
+.content p{margin:0 0 12px}
+.content p.noindent{text-indent:0}
+.reason-box{white-space:pre-wrap;border:1px solid var(--border);background:#fbfdff;border-radius:10px;padding:10px 12px;margin-top:10px}
+
+.subbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);background:#fbfdff}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 10px;font-weight:800;color:#334155;cursor:pointer}
+.chip.active{border-color:var(--blue2);color:var(--blue2)}
+.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn.ghost{background:#f3f6fb}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+.qwrap{padding:12px}
+.qcard{display:none}
+.qcard.active{display:block}
+.qhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qnum{font-weight:950}
+.qskill{color:var(--muted);font-weight:800;font-size:12px}
+.qstem{font-size:16px;font-weight:800;margin:8px 0 10px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px;cursor:pointer}
+.choice:hover{border-color:#b9c6d8}
+.choice input{margin-top:3px}
+.choice-letter{font-weight:950;min-width:28px}
+.choice.selected{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,132,198,.12)}
+.choice.correct{border-color:rgba(17,138,74,.6);box-shadow:0 0 0 3px rgba(17,138,74,.12)}
+.choice.incorrect{border-color:rgba(192,38,45,.55);box-shadow:0 0 0 3px rgba(192,38,45,.10)}
+
+.feedback{margin-top:10px;font-weight:950}
+.feedback.good{color:var(--good)}
+.feedback.bad{color:var(--bad)}
+.actions{display:flex;gap:8px;margin-top:10px}
+
+.explanation{margin-top:10px;border:1px solid var(--border);background:#fbfdff;border-radius:12px;padding:10px 12px}
+.exp-title{font-weight:950;margin:6px 0}
+.exp-text{color:#111827}
+.exp-list{margin:6px 0 0 18px}
+.footer-note{padding:10px 12px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+
+.split{display:flex;gap:0;height:100%;}
+.pane{flex:1;min-width:0;height:100%;}
+.vdiv{width:6px;background:linear-gradient(#cbd5e1,#cbd5e1);border-radius:3px;margin:0 10px;}
+/* Make both panels fill height and allow independent scrolling */
+.pane .panel{height:100%;display:flex;flex-direction:column;overflow:hidden;}
+.pane .panel .content{flex:1;overflow:auto;}
+/* Blue emphasis for **bold** / highlighted terms */
+:root{--accent:#1d4ed8;}
+.content strong,.content b,.reveal strong,.reveal b,.exp strong,.exp b{color:var(--accent);}
+
+/* Highlight tool */
+#passageText .hl, #passageText mark.hl { background: #fff59d; padding: 0 2px; border-radius: 2px; }
+/* Highlight button active state */
+.toolBtn.active{background:#ffe082;}
+/* Blue emphasis inside How to Reason */
+#reasonBox strong, #reasonBox .key{color:#1f67d6;font-weight:700;}
+/* Blue emphasis like AAMC */
+.reasoning strong, .explain strong, #passageText strong { color: #1f67d6; }
+
+
+
+/* --- tweaks (2026-03-04) --- */
+#passageText p{
+  text-indent: 1.6em;           /* indent first line of each paragraph */
+  margin: 0 0 14px 0;
+}
+#passageText p.noindent{ text-indent: 1.6em; } /* keep consistent */
+
+.reason-box ul{ margin: 8px 0 0 22px; }
+.reason-box li{
+  margin: 4px 0;                /* reduce line-to-line spacing */
+  line-height: 1.35;
+}
+
+
+/* FIX6 tweaks */
+.passage-toolbar button{min-height:44px;height:44px;line-height:1.1;padding:10px 18px;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;}
+.passage-toolbar{gap:10px;}
+.reasoning-box{margin-top:12px;}
+.reasoning-title{margin-bottom:8px;}
+.reasoning-content{line-height:1.35;}
+.reasoning-content li{margin:8px 0;}
+.reasoning-content ul{margin:0;padding-left:20px;}
+#passageText p{ text-indent:1.5em; margin:10px 0; }
+
+/* --- FIXED7: consistent passage buttons + tighter How-to-reason spacing --- */
+.panel .bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.panel .bar .title{flex:1 1 auto; min-width:180px;}
+.panel .bar .iconbtn{
+  height:40px;
+  min-width:130px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 14px;
+  line-height:1;
+  white-space:nowrap;
+  box-sizing:border-box;
+}
+/* How to reason box spacing */
+.reason-box{padding:14px 16px;}
+.reason-box p{margin:0 0 8px 0;}
+.reason-box ul{margin:0; padding-left:18px;}
+.reason-box li{margin:8px 0; line-height:1.25;}
+
+  .panel .bar .barActions{display:flex; gap:10px; margin-left:auto; align-items:center;}
+  .panel .bar .barActions .iconbtn{min-width:120px; justify-content:center;}
+
+/* ===== Color rules ===== */
+/* Passage body text should NOT be blue */
+#passageText, #passageText p { color: var(--text); }
+/* Only emphasized words are blue */
+#passageText strong, #passageText .key, #reasonBox strong, #reasonBox .key { color: var(--blue2); }
+
+
+/* ===== Passage color override (per user): NO blue inside passage ===== */
+#passageText, #passageText p { color: var(--text) !important; }
+#passageText strong, #passageText .key { color: var(--text) !important; }
+
+
+/* Keep blue emphasis in How to reason + explanations */
+#reasonBox strong, #reasonBox .key, .explanation strong, .explanation .key { color: var(--blue2) !important; }
+
+
+  .hrt-key{font-weight:700;color:#1f6feb;}
+</style>
+
+<style>
+  /* Overlay highlight (does not modify underlying text) */
+  #passageText{ position: relative; -webkit-touch-callout: none; }
+  #passageText, #passageText *{ -webkit-user-drag: none; user-drag: none; }
+  .hl-layer{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+  .hl-rect{ position:absolute; background:rgba(255,245,157,0.75); border-radius:2px; }
+  /* keep passage content below overlay */
+  #passageText > *:not(.hl-layer){ position:relative; z-index:1; }
+</style>
+
+</head>
+<body>
+  <div class="topbar">
+    <div class="left">
+      <div>Humanity philosophy 01.</div>
+      <div class="subtitle">Humanities • Philosophy • 7 paragraphs • ~512 words</div>
+    </div>
+    <div class="timer" id="timerWrap" aria-label="Passage timer">
+      <span class="timer-label">Timer</span>
+      <span class="timer-time" id="timerDisplay">10:00</span>
+      <button class="timer-btn" id="timerStart" type="button">Start</button>
+      <button class="timer-btn" id="timerPause" type="button">Pause</button>
+      <button class="timer-btn" id="timerReset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="split">
+  <div class="pane leftPane">
+<div class="panel">
+      <div class="bar">
+        <div class="title">Passage 1 (Questions 1–7)</div>
+        <div class="barActions">
+          <button class="iconbtn" id="highlightBtn" type="button">Highlight</button>
+          <button class="iconbtn" id="clearHighlightBtn" type="button">Clear highlight</button>
+          <button class="iconbtn" id="toggleReason" type="button">How to reason</button>
+        </div>
+      </div>
+      <div class="content" id="passageText">
+  <div class="hl-layer" id="hlLayer" aria-hidden="true"></div>
+        <p class="noindent">Walk into any bookstore and you will find a familiar promise: become your “authentic self.” The phrase is packaged as liberation. It suggests that beneath social roles there lies a truer person—steady, coherent, waiting to be uncovered. Many readers welcome this picture because it turns the messiness of life into a problem with a solution: remove the false layers and the real will appear. But the promise smuggles in a philosophical claim: that the self is a hidden object, and that living well is primarily a task of discovery.</p>
+        <p>A different tradition treats authenticity less like excavation and more like construction. The self is not a buried statue but an ongoing practice. What counts as “me” depends on commitments that take shape over time—relationships, projects, and the standards by which we judge ourselves. To call such a self authentic is not to say it has been found; it is to say it has been owned.</p>
+        <p>The construction view can sound dangerous: if the self is made, then anything can count as authentic. That worry fuels a defense of discovery: authenticity must be anchored in something prior to choice—temperament, desire, perhaps biology—otherwise the term becomes mere praise. Yet this defense confuses limits with essences. Constraints are real, but they do not entail a fixed inner blueprint that determines what is “really” us.</p>
+        <p>Consider how quickly the discovery story turns moral. When someone changes—leaves a career, adopts a new faith, ends a long relationship—observers ask whether the change reveals the person’s “true” nature or betrays it. The grammar of betrayal makes sense only if authenticity means loyalty to an original self. But many changes are answers to new reasons. They can be judged wise or foolish, but the verdict is not delivered by an inner court; it is delivered by standards for evaluating reasons: coherence, honesty, courage, and the willingness to take responsibility for consequences.</p>
+        <p>This is why authenticity cannot be reduced to spontaneity. The discovery story celebrates whatever feels immediate, as if the unfiltered impulse were the surest evidence of reality. But a life guided by impulse may be guided by what is loudest in the moment. Authenticity, if it is worth anything, must include reflection: the ability to step back, to ask what one’s desires mean, and to decide which deserve endorsement.</p>
+        <p>A final complication is that authenticity is often sold as a private achievement, while our identities are shaped in conversation. Language, norms, and even the categories by which we describe ourselves are learned. If we insist that the authentic self is what remains after society is stripped away, we risk imagining a person too thin to live. The construction view does not deny inwardness; it denies that inwardness is enough.</p>
+        <p>If authenticity is a moral ideal, its core demand is not “be what you already are,” but “be what you can justify becoming.” That demand preserves resistance to mere conformity without turning the self into a fossil. The authentic life is not uncovered in a single revelation; it is assembled, tested, and, sometimes, repaired.</p>
+<div class="reason-box" id="reasonBox" hidden>
+  <p>How to reason (CARS)</p>
+  <ul>
+    <li>State the <span class="hrt-key">thesis</span>: the passage favors <span class="hrt-key">authenticity</span> as <span class="hrt-key">justified practice</span> over <span class="hrt-key">hidden essence</span>.</li>
+    <li>Track <span class="hrt-key">contrasts</span>: <span class="hrt-key">discovery</span> vs. <span class="hrt-key">construction</span>, <span class="hrt-key">impulse</span> vs. <span class="hrt-key">reflection</span>, <span class="hrt-key">private</span> vs. <span class="hrt-key">social</span>.</li>
+    <li>For <span class="hrt-key">function</span> questions, ask what <span class="hrt-key">role</span> a <span class="hrt-key">paragraph</span> plays (<span class="hrt-key">raises objection</span>, <span class="hrt-key">reframes terms</span>, <span class="hrt-key">draws implication</span>).</li>
+    <li>For <span class="hrt-key">inference/apply</span>, test options against the author’s <span class="hrt-key">standard</span>: <span class="hrt-key">reasons + responsibility</span>, not mere <span class="hrt-key">spontaneity</span>.</li>
+    <li>Use the <span class="hrt-key">scope test</span>: eliminate <span class="hrt-key">extremes</span> and answers that assume a fixed <span class="hrt-key">“true self”</span> hidden behind society.</li>
+  </ul>
+</div>
+      </div>
+    </div>
+  </div>
+  <div class="vdiv"></div>
+  <div class="pane rightPane">
+<div class="panel">
+      <div class="subbar">
+        <div class="right-actions">
+          <button class="btn" id="resetAll" type="button">Reset all</button>
+          <button class="btn primary" id="prevBtn" type="button">Previous</button>
+          <button class="btn primary" id="nextBtn" type="button">Next</button>
+        </div>
+      </div>
+      <div class="qwrap" id="qwrap">
+        
+    <section class="qcard" id="card-1">
+      <div class="qhead">
+        <div class="qnum">Question 1</div>
+        <div class="qskill">Foundations of Comprehension</div>
+      </div>
+      <div class="qstem">The primary purpose of the passage is to:</div>
+      <div class="choices">
+      <label class="choice" data-q="1" data-letter="A">
+        <input type="radio" name="q1" id="q1_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">argue that authenticity is better understood as a justified practice than as the discovery of a hidden inner essence.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="B">
+        <input type="radio" name="q1" id="q1_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">prove that social roles always prevent people from knowing who they truly are.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="C">
+        <input type="radio" name="q1" id="q1_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">show that spontaneity is the most reliable guide to moral action.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="D">
+        <input type="radio" name="q1" id="q1_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">suggest that philosophical accounts of the self are irrelevant to everyday life.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-1" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="1" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-1" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why A is correct</div>
+        <div class="exp-text">The author contrasts a popular ‘discovery’ picture with a ‘construction’ picture and concludes that authenticity is what one can justify becoming—an accountable practice rather than an uncovered essence.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>B.</b> The passage criticizes stripping society away as incoherent, but it does not claim social roles make authenticity impossible.</li><li><b>C.</b> The author explicitly rejects equating authenticity with spontaneity and introduces reflection as central.</li><li><b>D.</b> The passage applies philosophy to common slogans and everyday judgments; it treats the issue as practically important.</li></ul>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-2">
+      <div class="qhead">
+        <div class="qnum">Question 2</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">The author’s discussion of the worry that “anything can count as authentic” (third paragraph) mainly serves to:</div>
+      <div class="choices">
+      <label class="choice" data-q="2" data-letter="A">
+        <input type="radio" name="q2" id="q2_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">concede that the construction view collapses into relativism and must be abandoned.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="B">
+        <input type="radio" name="q2" id="q2_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">replace the construction view with a biological account of identity.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="C">
+        <input type="radio" name="q2" id="q2_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">show that constraints on choice do not imply a fixed inner essence and therefore do not rescue the discovery view.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="D">
+        <input type="radio" name="q2" id="q2_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">argue that authenticity should never be used as a moral concept.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-2" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="2" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-2" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why C is correct</div>
+        <div class="exp-text">The author raises the worry to explain why defenders of discovery appeal to something prior to choice, then argues that this move confuses limits with essences: constraints exist, but they do not entail a predetermined ‘true self.’</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The worry is treated as an objection to answer, not as a decisive refutation of construction.</li><li><b>B.</b> Biology is mentioned as a possible anchor, but the author rejects the inference from constraint to blueprint.</li><li><b>D.</b> The passage treats authenticity as a moral ideal—just not one grounded in hidden essences.</li></ul>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-3">
+      <div class="qhead">
+        <div class="qnum">Question 3</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">A friend says, “I act on whatever I feel in the moment—that’s the only way to be authentic.” Based on the passage, the author would most likely respond by:</div>
+      <div class="choices">
+      <label class="choice" data-q="3" data-letter="A">
+        <input type="radio" name="q3" id="q3_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">agreeing, because impulses reveal the self more reliably than reflection does.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="B">
+        <input type="radio" name="q3" id="q3_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">arguing that authenticity requires reflection and endorsement of desires, not mere spontaneity.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="C">
+        <input type="radio" name="q3" id="q3_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">insisting that authenticity depends entirely on matching one’s original personality traits.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="D">
+        <input type="radio" name="q3" id="q3_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">claiming that authenticity should be judged by whether others find one’s actions admirable.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-3" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="3" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-3" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why B is correct</div>
+        <div class="exp-text">The author rejects spontaneity as the mark of authenticity and insists on reflection: stepping back to decide which desires deserve endorsement and taking responsibility for consequences.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> This restates the spontaneity-as-truth assumption the author criticizes.</li><li><b>C.</b> The author resists treating constraints or traits as a fixed ‘blueprint’ of the self.</li><li><b>D.</b> The passage appeals to standards for evaluating reasons, not to admiration or popularity.</li></ul>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-4">
+      <div class="qhead">
+        <div class="qnum">Question 4</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">In context, the phrase “confuses limits with essences” most nearly means that the defense of discovery:</div>
+      <div class="choices">
+      <label class="choice" data-q="4" data-letter="A">
+        <input type="radio" name="q4" id="q4_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">mistakes social pressure for biological determination.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="B">
+        <input type="radio" name="q4" id="q4_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">assumes that authenticity requires the absence of all constraints.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="C">
+        <input type="radio" name="q4" id="q4_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">treats personal preferences as evidence of moral truth.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="D">
+        <input type="radio" name="q4" id="q4_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">infers a fixed inner blueprint from the mere fact that choices are constrained.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-4" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="4" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-4" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why D is correct</div>
+        <div class="exp-text">The author’s point is that being constrained by bodies and circumstances (limits) does not entail that a stable inner ‘true self’ (essence) dictates who one really is.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The paragraph is not about swapping society for biology; it is about what constraints imply.</li><li><b>B.</b> The author does not say freedom requires no constraints; rather, constraints do not equal essences.</li><li><b>C.</b> The issue is conceptual (self/identity), not whether preferences constitute moral truth.</li></ul>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-5">
+      <div class="qhead">
+        <div class="qnum">Question 5</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">Which finding would most strengthen the author’s claim that authenticity cannot be reduced to spontaneity?</div>
+      <div class="choices">
+      <label class="choice" data-q="5" data-letter="A">
+        <input type="radio" name="q5" id="q5_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">People report feeling happier when they follow their first impulse.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="B">
+        <input type="radio" name="q5" id="q5_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">People often describe authenticity as ‘doing what feels natural.’</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="C">
+        <input type="radio" name="q5" id="q5_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">Deliberated life changes are judged more ‘true to self’ when the reasons behind them are clearly articulated and owned.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="D">
+        <input type="radio" name="q5" id="q5_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">Spontaneous choices tend to be remembered more vividly than planned ones.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-5" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="5" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-5" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why C is correct</div>
+        <div class="exp-text">The author links authenticity to reflection, justification, and ownership of reasons. Evidence that articulated reasons make deliberated changes seem more authentic directly supports this account and weakens spontaneity as the key marker.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> Happiness after an impulse shifts the criterion from justification to feeling.</li><li><b>B.</b> This repeats the common slogan the author critiques rather than supporting the author’s view.</li><li><b>D.</b> Memorability is unrelated to whether spontaneity constitutes authenticity.</li></ul>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-6">
+      <div class="qhead">
+        <div class="qnum">Question 6</div>
+        <div class="qskill">Foundations of Comprehension</div>
+      </div>
+      <div class="qstem">Which statement best captures the author’s view of the relationship between the self and society?</div>
+      <div class="choices">
+      <label class="choice" data-q="6" data-letter="A">
+        <input type="radio" name="q6" id="q6_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">Social influences help constitute the categories and standards through which selves become intelligible, rather than simply obscuring a ‘real’ self.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="B">
+        <input type="radio" name="q6" id="q6_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">Society should be stripped away so the authentic self can be discovered in isolation.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="C">
+        <input type="radio" name="q6" id="q6_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">Society determines identity completely, leaving no room for responsibility.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="D">
+        <input type="radio" name="q6" id="q6_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">The self is primarily biological and society merely labels what is already fixed.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-6" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="6" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-6" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why A is correct</div>
+        <div class="exp-text">The author argues that language, norms, and categories are learned; without them the ‘pure’ self would be too thin to live. Social shaping is a condition for meaningful agency and justification.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>B.</b> This is the discovery picture the author criticizes as incoherent in practice.</li><li><b>C.</b> The passage emphasizes responsibility and justification, which presuppose agency.</li><li><b>D.</b> Biology is treated as a constraint, not a complete determinant of identity.</li></ul>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-7">
+      <div class="qhead">
+        <div class="qnum">Question 7</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">The passage most strongly suggests that the ideal of authenticity is valuable because it:</div>
+      <div class="choices">
+      <label class="choice" data-q="7" data-letter="A">
+        <input type="radio" name="q7" id="q7_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">guarantees that reflective choices will be morally virtuous.</span>
+      </label>
+    
+      <label class="choice" data-q="7" data-letter="B">
+        <input type="radio" name="q7" id="q7_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">resists mere conformity while still requiring that one’s self-shaping be answerable to reasons.</span>
+      </label>
+    
+      <label class="choice" data-q="7" data-letter="C">
+        <input type="radio" name="q7" id="q7_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">eliminates the need for shared standards when evaluating reasons.</span>
+      </label>
+    
+      <label class="choice" data-q="7" data-letter="D">
+        <input type="radio" name="q7" id="q7_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">promises that self-knowledge can be achieved in a single decisive revelation.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-7" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="7" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-7" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why B is correct</div>
+        <div class="exp-text">The conclusion frames authenticity as resisting mere conformity while demanding justification for what one becomes. That combines freedom with discipline and makes the agent answerable.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The author explicitly notes that reflection does not guarantee virtue.</li><li><b>C.</b> The passage appeals to standards for evaluating reasons (coherence, honesty, responsibility).</li><li><b>D.</b> The author rejects a single-revelation model and treats authenticity as ongoing.</li></ul>
+      </div>
+    
+    </div>
+    </section>
+    
+        <div class="footer-note">Immediate feedback is enabled: selecting an answer will mark correct/incorrect. Use “Show explanation” for full reasoning.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+<script>
+(function(){
+  const DEFAULT_SECONDS = 600;
+  const STORAGE_KEY = "cars_timer_humanity_philosophy_01";
+  let remaining = DEFAULT_SECONDS;
+  let running = false;
+  let tickId = null;
+  let lastTick = null;
+
+  const display = document.getElementById("timerDisplay");
+  const wrap = document.getElementById("timerWrap");
+  const startBtn = document.getElementById("timerStart");
+  const pauseBtn = document.getElementById("timerPause");
+  const resetBtn = document.getElementById("timerReset");
+
+  function fmt(sec){
+    sec = Math.max(0, Math.floor(sec));
+    const m = String(Math.floor(sec/60)).padStart(2,"0");
+    const s = String(sec%60).padStart(2,"0");
+    return m + ":" + s;
+  }
+
+  function render(){
+    display.textContent = fmt(remaining);
+    if (remaining <= 60) wrap.classList.add("timer-danger");
+    else wrap.classList.remove("timer-danger");
+  }
+
+  function save(){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        remaining: remaining, running: running, lastTick: running ? Date.now() : null
+      }));
+    } catch(e) {}
+  }
+
+  function load(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (typeof data.remaining === "number") remaining = data.remaining;
+      if (typeof data.running === "boolean") running = data.running;
+      if (data.lastTick) lastTick = data.lastTick;
+      if (running && lastTick) {
+        const elapsed = (Date.now() - lastTick)/1000;
+        remaining = Math.max(0, remaining - elapsed);
+      }
+    } catch(e) {}
+  }
+
+  function stopInterval(){
+    if (tickId) clearInterval(tickId);
+    tickId = null;
+  }
+
+  function start(){
+    if (running) return;
+    running = true;
+    lastTick = Date.now();
+    save();
+    stopInterval();
+    tickId = setInterval(function(){
+      const now = Date.now();
+      const elapsed = (now - lastTick)/1000;
+      lastTick = now;
+      remaining = Math.max(0, remaining - elapsed);
+      render();
+      save();
+      if (remaining <= 0) {
+        running = false;
+        stopInterval();
+        save();
+        alert("Time is up for this passage.");
+      }
+    }, 250);
+  }
+
+  function pause(){
+    if (!running) return;
+    running = false;
+    stopInterval();
+    save();
+  }
+
+  function reset(){
+    running = false;
+    stopInterval();
+    remaining = DEFAULT_SECONDS;
+    lastTick = null;
+    render();
+    save();
+  }
+
+  startBtn.addEventListener("click", start);
+  pauseBtn.addEventListener("click", pause);
+  resetBtn.addEventListener("click", reset);
+
+  load();
+  render();
+  if (running) start();
+})();
+
+const correct = {"1": "A", "2": "C", "3": "B", "4": "D", "5": "C", "6": "A", "7": "B"};
+const qOrder = Object.keys(correct).map(function(x){return parseInt(x,10);}).sort(function(a,b){return a-b;});
+let currentIndex = 0;
+
+function $(sel, root) {
+  root = root || document;
+  // If it looks like a CSS selector, use querySelector.
+  if (sel && (sel[0] === '#' || sel[0] === '.' || sel[0] === '[')) {
+    return root.querySelector(sel);
+  }
+  // Otherwise, treat it as an element id (most of our calls pass bare ids).
+  if (root === document) return document.getElementById(sel);
+  return root.querySelector('#' + CSS.escape(sel));
+}
+function $all(sel, root) {
+  return Array.prototype.slice.call((root||document).querySelectorAll(sel));
+}
+
+function showQuestion(num) {
+  $all('.qcard').forEach(function(el){ el.classList.remove('active'); });
+  const card = $('#card-' + num);
+  if (card) card.classList.add('active');
+  $all('.chip').forEach(function(ch){ ch.classList.toggle('active', ch.dataset.go == String(num)); });
+  currentIndex = qOrder.indexOf(num);
+  const pb = $('#prevBtn'); if (pb) pb.disabled = currentIndex <= 0;
+  const nb = $('#nextBtn'); if (nb) nb.disabled = currentIndex >= qOrder.length - 1;
+}
+
+function getSelected(num) {
+  const checked = document.querySelector('input[name="q'+num+'"]:checked');
+  return checked ? checked.value : null;
+}
+
+function setFeedback(num, ok) {
+  const fb = $('#fb-' + num);
+  fb.classList.remove('good','bad');
+  if (ok === null) { fb.textContent = ''; return; }
+  if (ok) {
+    fb.classList.add('good');
+    fb.textContent = 'Correct ✓';
+  } else {
+    fb.classList.add('bad');
+    fb.textContent = 'Incorrect ✗   Correct answer: ' + correct[String(num)];
+  }
+}
+
+function markChoices(num, selected) {
+  const card = $('#card-' + num);
+  if (!card) return;
+  const labs = $all('.choice', card);
+  labs.forEach(function(lab){
+    lab.classList.remove('selected','correct','incorrect');
+    const input = lab.querySelector('input');
+    if (!input) return;
+    if (input.value === selected) lab.classList.add('selected');
+    if (selected) {
+      if (input.value === correct[String(num)]) lab.classList.add('correct');
+      if (input.value === selected && selected !== correct[String(num)]) lab.classList.add('incorrect');
+    }
+  });
+}
+
+function enableExplanation(num) {
+  const card = $('#card-' + num);
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.disabled = false;
+}
+
+function resetQuestion(num) {
+  document.querySelectorAll('input[name="q'+num+'"]').forEach(function(i){ i.checked = false; });
+  setFeedback(num, null);
+  const card = $('#card-' + num);
+  $all('.choice', card).forEach(function(l){ l.classList.remove('selected','correct','incorrect'); });
+  const exp = $('#exp-' + num);
+  exp.hidden = true;
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.textContent = 'Show explanation';
+  btn.disabled = true;
+}
+
+function resetAll() {
+    try{ clearHighlights(); }catch(e){}
+ qOrder.forEach(function(n){ resetQuestion(n); }); }
+
+const toggleReasonBtn = $('#toggleReason');
+if (toggleReasonBtn) toggleReasonBtn.addEventListener('click', function(){
+  const box = $('#reasonBox');
+  box.hidden = !box.hidden;
+  toggleReasonBtn.textContent = box.hidden ? 'How to reason' : 'Hide reasoning';
+});
+
+const prevBtn = $('#prevBtn');
+if (prevBtn) prevBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.max(0, currentIndex-1)]); });
+const nextBtn = $('#nextBtn');
+if (nextBtn) nextBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.min(qOrder.length-1, currentIndex+1)]); });
+const resetAllBtn = $('#resetAll');
+if (resetAllBtn) resetAllBtn.addEventListener('click', function(){ resetAll(); showQuestion(qOrder[0]); });
+
+const chipsEl = $('#chips');
+if (chipsEl) chipsEl.addEventListener('click', function(e){
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  showQuestion(parseInt(btn.dataset.go,10));
+});
+
+document.addEventListener('change', function(e){
+  if (!(e.target && e.target.matches('input[type="radio"]'))) return;
+  const name = e.target.name;
+  const num = parseInt(name.replace('q',''),10);
+  const sel = getSelected(num);
+  const ok = sel === correct[String(num)];
+  setFeedback(num, ok);
+  markChoices(num, sel);
+  enableExplanation(num);
+});
+
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  if (btn.dataset.action === 'toggle-exp') {
+    const num = parseInt(btn.dataset.q,10);
+    const exp = $('#exp-' + num);
+    exp.hidden = !exp.hidden;
+    btn.textContent = exp.hidden ? 'Show explanation' : 'Hide explanation';
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  showQuestion(qOrder[0]);
+  resetAll();
+  showQuestion(qOrder[0]);
+});
+
+  
+// ===== Overlay highlight (no DOM edits; prevents text shifting) =====
+(function(){
+  const passage = document.getElementById('passageText');
+  const layer = document.getElementById('hlLayer');
+  const highlightBtn = document.getElementById('highlightBtn');
+  const clearHighlightBtn = document.getElementById('clearHighlightBtn');
+  const resetAllBtn = document.getElementById('resetAll');
+
+  if (!passage || !layer || !highlightBtn) return;
+
+  // Prevent accidental drag of selected text/images inside the passage area
+  const blockDrag = (e)=>{ try{ e.preventDefault(); }catch(_){} try{ e.stopPropagation(); }catch(_){} };
+  ['dragstart','drag','dragend','drop'].forEach(evt=>{
+    passage.addEventListener(evt, blockDrag, {capture:true});
+    document.addEventListener(evt, (e)=>{ if (passage.contains(e.target)) blockDrag(e); }, {capture:true});
+  });
+
+  let highlightMode = false;
+  let groups = [];
+
+  function clearHighlights(){
+    while(layer.firstChild) layer.removeChild(layer.firstChild);
+    groups = [];
+  }
+
+  function undoLastHighlight(){
+    const g = groups.pop();
+    if (g && g.parentNode === layer) layer.removeChild(g);
+  }
+
+  function createGroup(){
+    const g = document.createElement('div');
+    g.className = 'hl-group';
+    layer.appendChild(g);
+    groups.push(g);
+    return g;
+  }
+
+  function selectionWithinPassage(sel){
+    if(!sel || sel.rangeCount===0) return false;
+    return passage.contains(sel.anchorNode) && passage.contains(sel.focusNode);
+  }
+
+  function addRect(rect, base, group){
+    const div = document.createElement('div');
+    div.className = 'hl-rect';
+    // Store coordinates in the passage's scrollable coordinate space
+    div.style.top = (rect.top - base.top + passage.scrollTop) + 'px';
+    div.style.left = (rect.left - base.left + passage.scrollLeft) + 'px';
+    div.style.width = rect.width + 'px';
+    div.style.height = rect.height + 'px';
+    (group || layer).appendChild(div);
+  }
+
+  function highlightSelection(){
+    const sel = window.getSelection();
+    if(!selectionWithinPassage(sel)) return;
+    const range = sel.getRangeAt(0);
+    if(range.collapsed) return;
+
+    const base = passage.getBoundingClientRect();
+    const rects = Array.from(range.getClientRects()).filter(r=>r.width>0 && r.height>0);
+    if(!rects.length) return;
+
+    const group = createGroup();
+    rects.forEach(r=>addRect(r, base, group));
+
+    // Clear selection after creating overlay, to reduce accidental text dragging
+    try{ sel.removeAllRanges(); }catch(_){}
+  }
+
+  function setMode(on){
+    highlightMode = !!on;
+    highlightBtn.classList.toggle('is-active', highlightMode);
+    highlightBtn.classList.toggle('active', highlightMode);
+  }
+
+  // Toggle highlight mode. When ON: select text (drag), then release to highlight.
+  highlightBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    setMode(!highlightMode);
+    if (highlightMode) setTimeout(highlightSelection, 0); // in case something is already selected
+  });
+
+  // Clear last highlight (undo)
+  if (clearHighlightBtn){
+    clearHighlightBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      // brief visual pressed state
+      clearHighlightBtn.classList.add('is-active');
+      clearHighlightBtn.classList.add('active');
+      setTimeout(()=>{ clearHighlightBtn.classList.remove('is-active'); clearHighlightBtn.classList.remove('active'); }, 180);
+      undoLastHighlight();
+    });
+  }
+
+  // Mouse + touch support
+  passage.addEventListener('mouseup', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  });
+  passage.addEventListener('touchend', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  }, {passive:true});
+
+  // Clear highlights whenever Reset all is pressed
+  if (resetAllBtn){
+    resetAllBtn.addEventListener('click', clearHighlights, {capture:true});
+  }
+
+  // Expose for safety (some other code calls clearHighlights())
+  window.clearHighlights = clearHighlights;
+})();
+</script>
+
+
+</body>
+</html>

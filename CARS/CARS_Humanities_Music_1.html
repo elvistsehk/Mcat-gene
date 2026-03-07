@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MCAT CARS - Humanities (Music) (1 Passage, 6 Questions)</title>
+<style>
+:root {
+  --blue:#1f6fae;
+  --blue2:#2d7fbf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#d7dee8;
+  --good:#118a4a;
+  --bad:#c0262d;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--blue);color:#fff;padding:12px 16px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .left{display:flex;flex-direction:column;gap:2px}
+.topbar .subtitle{font-weight:600;opacity:.9;font-size:13px}
+.timer{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);border-radius:10px;color:#fff;font-weight:800;}
+.timer-label{opacity:.9;font-weight:700}
+.timer-time{min-width:60px;text-align:center;letter-spacing:.5px}
+.timer-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:5px 8px;font-weight:800;cursor:pointer}
+.timer-btn:hover{background:rgba(255,255,255,.18)}
+.timer-danger{background:rgba(192,38,45,.35)!important;border-color:rgba(255,255,255,.55)!important}
+
+.container{width:100%;max-width:none;margin:0 auto;padding:12px;box-sizing:border-box;height:calc(100vh - 56px);}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(0deg,var(--blue),var(--blue2));color:#fff;padding:10px 12px}
+.bar .title{font-weight:900}
+.iconbtn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:7px 10px;font-weight:800;cursor:pointer}
+.iconbtn.is-active,.iconbtn.active{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.7)}
+.iconbtn.is-active:hover,.iconbtn.active:hover{background:rgba(0,0,0,.26)}
+
+.iconbtn:hover{background:rgba(255,255,255,.18)}
+.content{padding:14px 16px;line-height:1.6;font-size:15px}
+.content p{margin:0 0 12px}
+.content p.noindent{text-indent:0}
+.reason-box{white-space:pre-wrap;border:1px solid var(--border);background:#fbfdff;border-radius:10px;padding:10px 12px;margin-top:10px}
+
+.subbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);background:#fbfdff}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 10px;font-weight:800;color:#334155;cursor:pointer}
+.chip.active{border-color:var(--blue2);color:var(--blue2)}
+.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn.ghost{background:#f3f6fb}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+.qwrap{padding:12px}
+.qcard{display:none}
+.qcard.active{display:block}
+.qhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qnum{font-weight:950}
+.qskill{color:var(--muted);font-weight:800;font-size:12px}
+.qstem{font-size:16px;font-weight:800;margin:8px 0 10px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px;cursor:pointer}
+.choice:hover{border-color:#b9c6d8}
+.choice input{margin-top:3px}
+.choice-letter{font-weight:950;min-width:28px}
+.choice.selected{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,132,198,.12)}
+.choice.correct{border-color:rgba(17,138,74,.6);box-shadow:0 0 0 3px rgba(17,138,74,.12)}
+.choice.incorrect{border-color:rgba(192,38,45,.55);box-shadow:0 0 0 3px rgba(192,38,45,.10)}
+
+.feedback{margin-top:10px;font-weight:950}
+.feedback.good{color:var(--good)}
+.feedback.bad{color:var(--bad)}
+.actions{display:flex;gap:8px;margin-top:10px}
+
+.explanation{margin-top:10px;border:1px solid var(--border);background:#fbfdff;border-radius:12px;padding:10px 12px}
+.exp-title{font-weight:950;margin:6px 0}
+.exp-text{color:#111827}
+.exp-list{margin:6px 0 0 18px}
+.footer-note{padding:10px 12px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+
+.split{display:flex;gap:0;height:100%;}
+.pane{flex:1;min-width:0;height:100%;}
+.vdiv{width:6px;background:linear-gradient(#cbd5e1,#cbd5e1);border-radius:3px;margin:0 10px;}
+/* Make both panels fill height and allow independent scrolling */
+.pane .panel{height:100%;display:flex;flex-direction:column;overflow:hidden;}
+.pane .panel .content{flex:1;overflow:auto;}
+/* Blue emphasis for **bold** / highlighted terms */
+:root{--accent:#1d4ed8;}
+.content strong,.content b,.reveal strong,.reveal b,.exp strong,.exp b{color:var(--accent);}
+
+/* Highlight tool */
+#passageText .hl, #passageText mark.hl { background: #fff59d; padding: 0 2px; border-radius: 2px; }
+/* Highlight button active state */
+.toolBtn.active{background:#ffe082;}
+/* Blue emphasis inside How to Reason */
+#reasonBox strong, #reasonBox .key{color:#1f67d6;font-weight:700;}
+/* Blue emphasis like AAMC */
+.reasoning strong, .explain strong, #passageText strong { color: #1f67d6; }
+
+
+
+/* --- tweaks (2026-03-04) --- */
+#passageText p{
+  text-indent: 1.6em;           /* indent first line of each paragraph */
+  margin: 0 0 14px 0;
+}
+#passageText p.noindent{ text-indent: 1.6em; } /* keep consistent */
+
+.reason-box ul{ margin: 8px 0 0 22px; }
+.reason-box li{
+  margin: 4px 0;                /* reduce line-to-line spacing */
+  line-height: 1.35;
+}
+
+
+/* FIX6 tweaks */
+.passage-toolbar button{min-height:44px;height:44px;line-height:1.1;padding:10px 18px;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;}
+.passage-toolbar{gap:10px;}
+.reasoning-box{margin-top:12px;}
+.reasoning-title{margin-bottom:8px;}
+.reasoning-content{line-height:1.35;}
+.reasoning-content li{margin:8px 0;}
+.reasoning-content ul{margin:0;padding-left:20px;}
+#passageText p{ text-indent:1.5em; margin:10px 0; }
+
+/* --- FIXED7: consistent passage buttons + tighter How-to-reason spacing --- */
+.panel .bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.panel .bar .title{flex:1 1 auto; min-width:180px;}
+.panel .bar .iconbtn{
+  height:40px;
+  min-width:130px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 14px;
+  line-height:1;
+  white-space:nowrap;
+  box-sizing:border-box;
+}
+/* How to reason box spacing */
+.reason-box{padding:14px 16px;}
+.reason-box p{margin:0 0 8px 0;}
+.reason-box ul{margin:0; padding-left:18px;}
+.reason-box li{margin:8px 0; line-height:1.25;}
+
+  .panel .bar .barActions{display:flex; gap:10px; margin-left:auto; align-items:center;}
+  .panel .bar .barActions .iconbtn{min-width:120px; justify-content:center;}
+</style>
+
+<style>
+  /* Overlay highlight (does not modify underlying text) */
+  #passageText{ position: relative; -webkit-touch-callout: none; }
+  #passageText, #passageText *{ -webkit-user-drag: none; user-drag: none; }
+  .hl-layer{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+  .hl-rect{ position:absolute; background:rgba(255,245,157,0.75); border-radius:2px; }
+  /* keep passage content below overlay */
+  #passageText > *:not(.hl-layer){ position:relative; z-index:1; }
+</style>
+
+</head>
+<body>
+  <div class="topbar">
+    <div class="left">
+      <div>MCAT CARS - Humanities (Music) (1 Passage, 6 Questions)</div>
+      <div class="subtitle">Humanities • 6 paragraphs • ~585 words</div>
+    </div>
+    <div class="timer" id="timerWrap" aria-label="Passage timer">
+      <span class="timer-label">Timer</span>
+      <span class="timer-time" id="timerDisplay">10:00</span>
+      <button class="timer-btn" id="timerStart" type="button">Start</button>
+      <button class="timer-btn" id="timerPause" type="button">Pause</button>
+      <button class="timer-btn" id="timerReset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="split">
+  <div class="pane leftPane">
+<div class="panel">
+      <div class="bar">
+        <div class="title">Passage 1 (Questions 1–6)</div>
+        <div class="barActions">
+          <button class="iconbtn" id="highlightBtn" type="button">Highlight</button>
+          <button class="iconbtn" id="clearHighlightBtn" type="button">Clear highlight</button>
+          <button class="iconbtn" id="toggleReason" type="button">How to reason</button>
+        </div>
+      </div>
+      <div class="content" id="passageText">
+  <div class="hl-layer" id="hlLayer" aria-hidden="true"></div>
+        <p class="noindent">Music criticism often begins with the temptation to translate sound into something more stable: a story, a message, an identity. We ask what a song is “about,” as if meaning were a parcel carried by melody from composer to listener. Yet music is unusually resistant to that model. A chord progression can suggest arrival without specifying where one has arrived; a rhythm can insist without telling us what is being insisted upon. If music communicates, it does so through patterns that invite attention and expectation rather than through propositions that can be neatly paraphrased.</p>
+<p>This resistance has led some writers to declare musical meaning ineffable, a private sensation beyond argument. But ineffable is often a shortcut for unexamined. Listeners do not encounter music as raw sound; they hear it through habits shaped by training, genre, and social setting. A jazz standard performed in a small club asks for a different kind of listening than the same tune piped through a shopping mall. In one context, the solo’s deviations may be heard as risk and wit; in another, as mere background. The meaning is not locked inside the notes, yet it is not arbitrary either: it depends on shared conventions about what counts as foreground, surprise, and skill.</p>
+<p>Consider the familiar dispute between formalists and contextualists. Formalists argue that music’s significance lies in its internal relations—motivic development, harmonic tension, thematic transformation. Contextualists respond that these relations become significant only within histories of patronage, technology, and politics. The dispute can harden into a false choice. A listener can be moved by a modulation because of its sonic logic and because the modulation carries the scent of a tradition that the listener has learned to value. Form and context are not rival explanations; they are layers that interact, each shaping what the other can be.</p>
+<p>This interaction is easiest to see when music travels. A folk melody recorded for an archive may later be sampled in a dance track, or arranged for a concert hall. The notes may remain recognizable, but the roles they play shift. In the archive, the melody stands as evidence of a community’s continuity; in the dance track, it may function as an exotic texture; in the concert hall, as a token of authenticity. None of these uses is purely musical or purely social. They rely on both sound and the narratives listeners attach to sound, narratives that can confer dignity or reduce a tradition to decoration.</p>
+<p>Digital platforms have intensified these transformations by sorting music into categories that feel both personal and impersonal. A recommendation system learns that a listener prefers “focus” playlists and supplies tracks engineered to be unobtrusive. The listener may experience this as customization, yet the very categories encourage certain functions of music: to regulate mood, to sustain productivity, to fill silence. When music is treated primarily as a utility, surprise can become a defect. But when surprise is always demanded, familiarity can be dismissed as laziness. The platform’s design thus quietly presses listeners toward a theory of what music is for.</p>
+<p>A more careful criticism would take these pressures as part of the object under study. Instead of asking only what a piece expresses, it would ask what kinds of listening it invites and what institutions reward those kinds of listening. This does not mean reducing music to sociology; it means refusing to pretend that sound arrives without framing. The richest musical experiences may be those in which form and context check each other: patterns in sound generate expectations, and the world around the sound determines which expectations matter. Meaning, then, is not a message hidden in the score, but a relationship negotiated in time.</p>
+        <div class="reason-box" id="reasonBox" hidden>
+
+  <p><strong>How to reason (CARS)</strong></p>
+  <ul>
+    <li>Find the author’s <strong>thesis</strong>: music’s meaning is not a paraphrasable <strong>message</strong> nor pure <strong>ineffability</strong>.</li>
+    <li>Track the key <strong>contrast</strong>: <strong>form</strong> (patterns/expectations) and <strong>context</strong> (institutions/genres/settings) as <strong>interacting layers</strong>.</li>
+    <li>For <strong>main idea</strong>, choose what spans the whole passage (meaning as a <strong>relationship</strong>), not one example (platforms, travel).</li>
+    <li>For <strong>within-text</strong> questions, identify each example’s <strong>function</strong> (club vs mall = conventions; travel = role shift).</li>
+    <li>For <strong>beyond-text</strong> questions, extend the author’s logic about <strong>framing</strong> and <strong>listening habits</strong>—avoid claims that meaning is fixed or arbitrary.</li>
+    <li>Eliminate traps: <strong>extremes</strong>, <strong>reversals</strong>, <strong>scope shifts</strong>, and “only” / “always” language.</li>
+  </ul>
+</div>
+      </div>
+    </div>
+  </div>
+  <div class="vdiv"></div>
+  <div class="pane rightPane">
+<div class="panel">
+      <div class="subbar">
+        <div class="right-actions">
+          <button class="btn" id="resetAll" type="button">Reset all</button>
+          <button class="btn primary" id="prevBtn" type="button">Previous</button>
+          <button class="btn primary" id="nextBtn" type="button">Next</button>
+        </div>
+      </div>
+      <div class="qwrap" id="qwrap">
+        
+    
+
+    <section class="qcard" id="card-1">
+      <div class="qhead">
+        <div class="qnum">Question 1</div>
+        <div class="qskill">Foundations of Comprehension</div>
+      </div>
+      <div class="qstem">The author’s central claim about musical meaning is that it:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="1" data-letter="A">
+        <input type="radio" name="q1" id="q1_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">is produced through a relationship between patterns in sound and the listening contexts that frame them.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="B">
+        <input type="radio" name="q1" id="q1_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">is a fixed message that can be recovered by identifying the composer’s intended story.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="C">
+        <input type="radio" name="q1" id="q1_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">is entirely private and therefore cannot be discussed rationally.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="D">
+        <input type="radio" name="q1" id="q1_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">resides only in social narratives and not in musical form.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-1" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="1" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-1" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why A is correct</div>
+        <div class="exp-text">Across the passage, the author rejects meaning-as-message and meaning-as-ineffable. They argue that musical patterns create expectations, while conventions, institutions, and settings determine which expectations matter—so meaning is negotiated between form and context.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>B.</b> The passage critiques treating music as a parcel-like message about a story (reversal).</li><li><b>C.</b> The author criticizes &#x27;ineffable&#x27; as a shortcut and insists meaning can be examined through conventions (reversal).</li><li><b>D.</b> The author rejects a false choice: form matters, and context matters; neither alone is sufficient (reversal).</li></ul>
+      </div>
+      
+      <div class="exp-section">
+        <div class="exp-title">Common trap</div>
+        <div class="exp-text">Choosing an extreme &#x27;all context&#x27; or &#x27;all form&#x27; option, even though the passage repeatedly argues for interaction.</div>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-2">
+      <div class="qhead">
+        <div class="qnum">Question 2</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">The jazz club versus shopping mall example primarily serves to illustrate that:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="2" data-letter="A">
+        <input type="radio" name="q2" id="q2_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">jazz is the only genre in which context significantly shapes meaning.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="B">
+        <input type="radio" name="q2" id="q2_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">the same musical material can be heard differently depending on conventions about attention, surprise, and skill.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="C">
+        <input type="radio" name="q2" id="q2_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">listeners in commercial spaces are incapable of serious musical appreciation.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="D">
+        <input type="radio" name="q2" id="q2_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">music becomes meaningful only when performed live rather than recorded.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-2" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="2" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-2" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why B is correct</div>
+        <div class="exp-text">The author uses the same tune in different settings to show that listening habits and shared conventions shape what counts as foreground or background, and how deviations are interpreted (wit versus noise).</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The example is illustrative, not a claim about jazz uniquely (scope shift).</li><li><b>C.</b> The passage does not insult listeners; it analyzes how the setting frames attention (unsupported).</li><li><b>D.</b> The contrast is about context, not live-versus-recorded formats (out-of-passage).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-3">
+      <div class="qhead">
+        <div class="qnum">Question 3</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">The author introduces the formalist–contextualist dispute mainly to argue that:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="3" data-letter="A">
+        <input type="radio" name="q3" id="q3_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">formal analysis is sufficient, while historical context is a distraction.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="B">
+        <input type="radio" name="q3" id="q3_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">contextual analysis is sufficient, while musical structure is irrelevant.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="C">
+        <input type="radio" name="q3" id="q3_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">treating form and context as mutually exclusive explanations creates a false choice.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="D">
+        <input type="radio" name="q3" id="q3_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">only experts can meaningfully interpret motivic development and harmonic tension.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-3" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="3" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-3" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why C is correct</div>
+        <div class="exp-text">The passage says the dispute can harden into a false choice and then argues that sonic logic and learned tradition can both make a modulation meaningful. That is an explicit reconciliation of layers.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The author does not privilege formalism; they say form and context interact (reversal).</li><li><b>B.</b> Likewise, the author does not reduce meaning to context alone (reversal).</li><li><b>D.</b> Expertise shapes habits, but the passage does not claim only experts can interpret (unsupported).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-4">
+      <div class="qhead">
+        <div class="qnum">Question 4</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">Which scenario best matches the author’s point about music &#x27;traveling&#x27; and shifting roles?</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="4" data-letter="A">
+        <input type="radio" name="q4" id="q4_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">A protest song used in a commercial advertisement retains its melody but is reinterpreted as a mood-setting brand signal.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="B">
+        <input type="radio" name="q4" id="q4_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">A symphony performed twice in the same hall is interpreted identically by all audience members.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="C">
+        <input type="radio" name="q4" id="q4_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">A composer revises a piece so that the harmony becomes more complex, thereby fixing its meaning.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="D">
+        <input type="radio" name="q4" id="q4_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">A listener dislikes a genre and therefore concludes it has no cultural significance.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-4" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="4" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-4" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why A is correct</div>
+        <div class="exp-text">The passage’s traveling example shows that recognizable notes can take on different social roles depending on framing narratives. A protest song repurposed in an advertisement captures that shift in role and meaning.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>B.</b> The author emphasizes that context and convention shape meaning, so identical interpretations are unlikely (extreme/unsupported).</li><li><b>C.</b> Complexity does not &#x27;fix&#x27; meaning; meaning remains negotiated with context (reversal).</li><li><b>D.</b> Personal dislike does not determine cultural role; the passage focuses on framing and institutions (scope shift).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-5">
+      <div class="qhead">
+        <div class="qnum">Question 5</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">Based on the passage, which consequence of recommendation-driven &#x27;focus&#x27; playlists would most concern the author?</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="5" data-letter="A">
+        <input type="radio" name="q5" id="q5_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">Listeners will learn too much music theory and become less spontaneous.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="B">
+        <input type="radio" name="q5" id="q5_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">The history of recorded music will become impossible to study.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="C">
+        <input type="radio" name="q5" id="q5_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">Genres will disappear entirely because algorithms prefer uniform tracks.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="D">
+        <input type="radio" name="q5" id="q5_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">Music may be valued mainly for utility, making surprise seem like a defect and narrowing what listeners expect music to do.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-5" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="5" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-5" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why D is correct</div>
+        <div class="exp-text">The author argues that platform categories encourage certain functions of music (regulate mood, sustain productivity). When music is treated primarily as utility, surprise can be seen as a defect—narrowing the expectations of listening.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The passage does not claim platforms teach theory (out-of-passage).</li><li><b>B.</b> No claim is made about historical study becoming impossible (unsupported).</li><li><b>C.</b> The passage suggests pressure toward unobtrusive tracks, not total genre disappearance (extreme).</li></ul>
+      </div>
+      
+      <div class="exp-section">
+        <div class="exp-title">Common trap</div>
+        <div class="exp-text">Choosing a dramatic prediction (genres vanish) instead of the passage’s precise concern about narrowed expectations.</div>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-6">
+      <div class="qhead">
+        <div class="qnum">Question 6</div>
+        <div class="qskill">Foundations of Comprehension</div>
+      </div>
+      <div class="qstem">Which approach to criticism would the author most likely endorse?</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="6" data-letter="A">
+        <input type="radio" name="q6" id="q6_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">Ignore institutions and focus only on the internal mechanics of musical form.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="B">
+        <input type="radio" name="q6" id="q6_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">Examine what kinds of listening a piece invites and what settings reward those listening habits, without reducing music to sociology.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="C">
+        <input type="radio" name="q6" id="q6_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">Treat any attempt to discuss meaning as misguided, since music resists paraphrase.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="D">
+        <input type="radio" name="q6" id="q6_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">Judge music primarily by whether it communicates an explicit narrative that can be summarized.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-6" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="6" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-6" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why B is correct</div>
+        <div class="exp-text">The author calls for criticism that studies listening invitations and institutional pressures while refusing to pretend sound arrives without framing—and also refusing to reduce music entirely to sociology.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> This repeats the false-choice error the author criticizes (reversal).</li><li><b>C.</b> The author rejects &#x27;ineffable&#x27; as unexamined and insists discussion is possible (reversal).</li><li><b>D.</b> The passage rejects message-like paraphrase as the model of meaning (reversal).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+    
+        <div class="footer-note">Immediate feedback is enabled: selecting an answer will mark correct/incorrect. Use “Show explanation” for full reasoning (Questions 1–6).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+<script>
+(function(){
+  const DEFAULT_SECONDS = 600;
+  const STORAGE_KEY = "cars_timer_hum_music_p1_q1_6_v1";
+  let remaining = DEFAULT_SECONDS;
+  let running = false;
+  let tickId = null;
+  let lastTick = null;
+
+  const display = document.getElementById("timerDisplay");
+  const wrap = document.getElementById("timerWrap");
+  const startBtn = document.getElementById("timerStart");
+  const pauseBtn = document.getElementById("timerPause");
+  const resetBtn = document.getElementById("timerReset");
+
+  function fmt(sec){
+    sec = Math.max(0, Math.floor(sec));
+    const m = String(Math.floor(sec/60)).padStart(2,"0");
+    const s = String(sec%60).padStart(2,"0");
+    return m + ":" + s;
+  }
+
+  function render(){
+    display.textContent = fmt(remaining);
+    if (remaining <= 60) wrap.classList.add("timer-danger");
+    else wrap.classList.remove("timer-danger");
+  }
+
+  function save(){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        remaining: remaining, running: running, lastTick: running ? Date.now() : null
+      }));
+    } catch(e) {}
+  }
+
+  function load(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (typeof data.remaining === "number") remaining = data.remaining;
+      if (typeof data.running === "boolean") running = data.running;
+      if (data.lastTick) lastTick = data.lastTick;
+      if (running && lastTick) {
+        const elapsed = (Date.now() - lastTick)/1000;
+        remaining = Math.max(0, remaining - elapsed);
+      }
+    } catch(e) {}
+  }
+
+  function stopInterval(){
+    if (tickId) clearInterval(tickId);
+    tickId = null;
+  }
+
+  function start(){
+    if (running) return;
+    running = true;
+    lastTick = Date.now();
+    save();
+    stopInterval();
+    tickId = setInterval(function(){
+      const now = Date.now();
+      const elapsed = (now - lastTick)/1000;
+      lastTick = now;
+      remaining = Math.max(0, remaining - elapsed);
+      render();
+      save();
+      if (remaining <= 0) {
+        running = false;
+        stopInterval();
+        save();
+        alert("Time is up for this passage.");
+      }
+    }, 250);
+  }
+
+  function pause(){
+    if (!running) return;
+    running = false;
+    stopInterval();
+    save();
+  }
+
+  function reset(){
+    running = false;
+    stopInterval();
+    remaining = DEFAULT_SECONDS;
+    lastTick = null;
+    render();
+    save();
+  }
+
+  startBtn.addEventListener("click", start);
+  pauseBtn.addEventListener("click", pause);
+  resetBtn.addEventListener("click", reset);
+
+  load();
+  render();
+  if (running) start();
+})();
+
+const correct = {"1": "A", "2": "B", "3": "C", "4": "A", "5": "D", "6": "B"};
+const qOrder = Object.keys(correct).map(function(x){return parseInt(x,10);}).sort(function(a,b){return a-b;});
+let currentIndex = 0;
+
+function $(sel, root) {
+  root = root || document;
+  // If it looks like a CSS selector, use querySelector.
+  if (sel && (sel[0] === '#' || sel[0] === '.' || sel[0] === '[')) {
+    return root.querySelector(sel);
+  }
+  // Otherwise, treat it as an element id (most of our calls pass bare ids).
+  if (root === document) return document.getElementById(sel);
+  return root.querySelector('#' + CSS.escape(sel));
+}
+function $all(sel, root) {
+  return Array.prototype.slice.call((root||document).querySelectorAll(sel));
+}
+
+function showQuestion(num) {
+  $all('.qcard').forEach(function(el){ el.classList.remove('active'); });
+  const card = $('#card-' + num);
+  if (card) card.classList.add('active');
+  $all('.chip').forEach(function(ch){ ch.classList.toggle('active', ch.dataset.go == String(num)); });
+  currentIndex = qOrder.indexOf(num);
+  const pb = $('#prevBtn'); if (pb) pb.disabled = currentIndex <= 0;
+  const nb = $('#nextBtn'); if (nb) nb.disabled = currentIndex >= qOrder.length - 1;
+}
+
+function getSelected(num) {
+  const checked = document.querySelector('input[name="q'+num+'"]:checked');
+  return checked ? checked.value : null;
+}
+
+function setFeedback(num, ok) {
+  const fb = $('#fb-' + num);
+  fb.classList.remove('good','bad');
+  if (ok === null) { fb.textContent = ''; return; }
+  if (ok) {
+    fb.classList.add('good');
+    fb.textContent = 'Correct ✓';
+  } else {
+    fb.classList.add('bad');
+    fb.textContent = 'Incorrect ✗   Correct answer: ' + correct[String(num)];
+  }
+}
+
+function markChoices(num, selected) {
+  const card = $('#card-' + num);
+  if (!card) return;
+  const labs = $all('.choice', card);
+  labs.forEach(function(lab){
+    lab.classList.remove('selected','correct','incorrect');
+    const input = lab.querySelector('input');
+    if (!input) return;
+    if (input.value === selected) lab.classList.add('selected');
+    if (selected) {
+      if (input.value === correct[String(num)]) lab.classList.add('correct');
+      if (input.value === selected && selected !== correct[String(num)]) lab.classList.add('incorrect');
+    }
+  });
+}
+
+function enableExplanation(num) {
+  const card = $('#card-' + num);
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.disabled = false;
+}
+
+function resetQuestion(num) {
+  document.querySelectorAll('input[name="q'+num+'"]').forEach(function(i){ i.checked = false; });
+  setFeedback(num, null);
+  const card = $('#card-' + num);
+  $all('.choice', card).forEach(function(l){ l.classList.remove('selected','correct','incorrect'); });
+  const exp = $('#exp-' + num);
+  exp.hidden = true;
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.textContent = 'Show explanation';
+  btn.disabled = true;
+}
+
+function resetAll() {
+    try{ clearHighlights(); }catch(e){}
+ qOrder.forEach(function(n){ resetQuestion(n); }); }
+
+const toggleReasonBtn = $('#toggleReason');
+if (toggleReasonBtn) toggleReasonBtn.addEventListener('click', function(){
+  const box = $('#reasonBox');
+  box.hidden = !box.hidden;
+  toggleReasonBtn.textContent = box.hidden ? 'How to reason' : 'Hide reasoning';
+});
+
+const prevBtn = $('#prevBtn');
+if (prevBtn) prevBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.max(0, currentIndex-1)]); });
+const nextBtn = $('#nextBtn');
+if (nextBtn) nextBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.min(qOrder.length-1, currentIndex+1)]); });
+const resetAllBtn = $('#resetAll');
+if (resetAllBtn) resetAllBtn.addEventListener('click', function(){ resetAll(); showQuestion(qOrder[0]); });
+
+const chipsEl = $('#chips');
+if (chipsEl) chipsEl.addEventListener('click', function(e){
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  showQuestion(parseInt(btn.dataset.go,10));
+});
+
+document.addEventListener('change', function(e){
+  if (!(e.target && e.target.matches('input[type="radio"]'))) return;
+  const name = e.target.name;
+  const num = parseInt(name.replace('q',''),10);
+  const sel = getSelected(num);
+  const ok = sel === correct[String(num)];
+  setFeedback(num, ok);
+  markChoices(num, sel);
+  enableExplanation(num);
+});
+
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  if (btn.dataset.action === 'toggle-exp') {
+    const num = parseInt(btn.dataset.q,10);
+    const exp = $('#exp-' + num);
+    exp.hidden = !exp.hidden;
+    btn.textContent = exp.hidden ? 'Show explanation' : 'Hide explanation';
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  showQuestion(qOrder[0]);
+  resetAll();
+  showQuestion(qOrder[0]);
+});
+
+  
+// ===== Overlay highlight (no DOM edits; prevents text shifting) =====
+(function(){
+  const passage = document.getElementById('passageText');
+  const layer = document.getElementById('hlLayer');
+  const highlightBtn = document.getElementById('highlightBtn');
+  const clearHighlightBtn = document.getElementById('clearHighlightBtn');
+  const resetAllBtn = document.getElementById('resetAll');
+
+  if (!passage || !layer || !highlightBtn) return;
+
+  // Prevent accidental drag of selected text/images inside the passage area
+  const blockDrag = (e)=>{ try{ e.preventDefault(); }catch(_){} try{ e.stopPropagation(); }catch(_){} };
+  ['dragstart','drag','dragend','drop'].forEach(evt=>{
+    passage.addEventListener(evt, blockDrag, {capture:true});
+    document.addEventListener(evt, (e)=>{ if (passage.contains(e.target)) blockDrag(e); }, {capture:true});
+  });
+
+  let highlightMode = false;
+  let groups = [];
+
+  function clearHighlights(){
+    while(layer.firstChild) layer.removeChild(layer.firstChild);
+    groups = [];
+  }
+
+  function undoLastHighlight(){
+    const g = groups.pop();
+    if (g && g.parentNode === layer) layer.removeChild(g);
+  }
+
+  function createGroup(){
+    const g = document.createElement('div');
+    g.className = 'hl-group';
+    layer.appendChild(g);
+    groups.push(g);
+    return g;
+  }
+
+  function selectionWithinPassage(sel){
+    if(!sel || sel.rangeCount===0) return false;
+    return passage.contains(sel.anchorNode) && passage.contains(sel.focusNode);
+  }
+
+  function addRect(rect, base, group){
+    const div = document.createElement('div');
+    div.className = 'hl-rect';
+    // Store coordinates in the passage's scrollable coordinate space
+    div.style.top = (rect.top - base.top + passage.scrollTop) + 'px';
+    div.style.left = (rect.left - base.left + passage.scrollLeft) + 'px';
+    div.style.width = rect.width + 'px';
+    div.style.height = rect.height + 'px';
+    (group || layer).appendChild(div);
+  }
+
+  function highlightSelection(){
+    const sel = window.getSelection();
+    if(!selectionWithinPassage(sel)) return;
+    const range = sel.getRangeAt(0);
+    if(range.collapsed) return;
+
+    const base = passage.getBoundingClientRect();
+    const rects = Array.from(range.getClientRects()).filter(r=>r.width>0 && r.height>0);
+    if(!rects.length) return;
+
+    const group = createGroup();
+    rects.forEach(r=>addRect(r, base, group));
+
+    // Clear selection after creating overlay, to reduce accidental text dragging
+    try{ sel.removeAllRanges(); }catch(_){}
+  }
+
+  function setMode(on){
+    highlightMode = !!on;
+    highlightBtn.classList.toggle('is-active', highlightMode);
+    highlightBtn.classList.toggle('active', highlightMode);
+  }
+
+  // Toggle highlight mode. When ON: select text (drag), then release to highlight.
+  highlightBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    setMode(!highlightMode);
+    if (highlightMode) setTimeout(highlightSelection, 0); // in case something is already selected
+  });
+
+  // Clear last highlight (undo)
+  if (clearHighlightBtn){
+    clearHighlightBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      // brief visual pressed state
+      clearHighlightBtn.classList.add('is-active');
+      clearHighlightBtn.classList.add('active');
+      setTimeout(()=>{ clearHighlightBtn.classList.remove('is-active'); clearHighlightBtn.classList.remove('active'); }, 180);
+      undoLastHighlight();
+    });
+  }
+
+  // Mouse + touch support
+  passage.addEventListener('mouseup', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  });
+  passage.addEventListener('touchend', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  }, {passive:true});
+
+  // Clear highlights whenever Reset all is pressed
+  if (resetAllBtn){
+    resetAllBtn.addEventListener('click', clearHighlights, {capture:true});
+  }
+
+  // Expose for safety (some other code calls clearHighlights())
+  window.clearHighlights = clearHighlights;
+})();
+</script>
+
+
+</body>
+</html>

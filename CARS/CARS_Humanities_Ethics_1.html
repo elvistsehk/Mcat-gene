@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MCAT CARS - Humanities (Ethics) (1 Passage, 8 Questions)</title>
+<style>
+:root {
+  --blue:#1f6fae;
+  --blue2:#2d7fbf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#d7dee8;
+  --good:#118a4a;
+  --bad:#c0262d;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--blue);color:#fff;padding:12px 16px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .left{display:flex;flex-direction:column;gap:2px}
+.topbar .subtitle{font-weight:600;opacity:.9;font-size:13px}
+.timer{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);border-radius:10px;color:#fff;font-weight:800;}
+.timer-label{opacity:.9;font-weight:700}
+.timer-time{min-width:60px;text-align:center;letter-spacing:.5px}
+.timer-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:5px 8px;font-weight:800;cursor:pointer}
+.timer-btn:hover{background:rgba(255,255,255,.18)}
+.timer-danger{background:rgba(192,38,45,.35)!important;border-color:rgba(255,255,255,.55)!important}
+
+.container{width:100%;max-width:none;margin:0 auto;padding:12px;box-sizing:border-box;height:calc(100vh - 56px);}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(0deg,var(--blue),var(--blue2));color:#fff;padding:10px 12px}
+.bar .title{font-weight:900}
+.iconbtn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:7px 10px;font-weight:800;cursor:pointer}
+.iconbtn.is-active,.iconbtn.active{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.7)}
+.iconbtn.is-active:hover,.iconbtn.active:hover{background:rgba(0,0,0,.26)}
+
+.iconbtn:hover{background:rgba(255,255,255,.18)}
+.content{padding:14px 16px;line-height:1.6;font-size:15px}
+.content p{margin:0 0 12px}
+.content p.noindent{text-indent:0}
+.reason-box{white-space:pre-wrap;border:1px solid var(--border);background:#fbfdff;border-radius:10px;padding:10px 12px;margin-top:10px}
+
+.subbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);background:#fbfdff}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 10px;font-weight:800;color:#334155;cursor:pointer}
+.chip.active{border-color:var(--blue2);color:var(--blue2)}
+.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn.ghost{background:#f3f6fb}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+.qwrap{padding:12px}
+.qcard{display:none}
+.qcard.active{display:block}
+.qhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qnum{font-weight:950}
+.qskill{color:var(--muted);font-weight:800;font-size:12px}
+.qstem{font-size:16px;font-weight:800;margin:8px 0 10px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px;cursor:pointer}
+.choice:hover{border-color:#b9c6d8}
+.choice input{margin-top:3px}
+.choice-letter{font-weight:950;min-width:28px}
+.choice.selected{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,132,198,.12)}
+.choice.correct{border-color:rgba(17,138,74,.6);box-shadow:0 0 0 3px rgba(17,138,74,.12)}
+.choice.incorrect{border-color:rgba(192,38,45,.55);box-shadow:0 0 0 3px rgba(192,38,45,.10)}
+
+.feedback{margin-top:10px;font-weight:950}
+.feedback.good{color:var(--good)}
+.feedback.bad{color:var(--bad)}
+.actions{display:flex;gap:8px;margin-top:10px}
+
+.explanation{margin-top:10px;border:1px solid var(--border);background:#fbfdff;border-radius:12px;padding:10px 12px}
+.exp-title{font-weight:950;margin:6px 0}
+.exp-text{color:#111827}
+.exp-list{margin:6px 0 0 18px}
+.footer-note{padding:10px 12px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+
+.split{display:flex;gap:0;height:100%;}
+.pane{flex:1;min-width:0;height:100%;}
+.vdiv{width:6px;background:linear-gradient(#cbd5e1,#cbd5e1);border-radius:3px;margin:0 10px;}
+/* Make both panels fill height and allow independent scrolling */
+.pane .panel{height:100%;display:flex;flex-direction:column;overflow:hidden;}
+.pane .panel .content{flex:1;overflow:auto;}
+/* Blue emphasis for **bold** / highlighted terms */
+:root{--accent:#1d4ed8;}
+.content strong,.content b,.reveal strong,.reveal b,.exp strong,.exp b{color:var(--accent);}
+
+/* Highlight tool */
+#passageText .hl, #passageText mark.hl { background: #fff59d; padding: 0 2px; border-radius: 2px; }
+/* Highlight button active state */
+.toolBtn.active{background:#ffe082;}
+/* Blue emphasis inside How to Reason */
+#reasonBox strong, #reasonBox .key{color:#1f67d6;font-weight:700;}
+/* Blue emphasis like AAMC */
+.reasoning strong, .explain strong, #passageText strong { color: #1f67d6; }
+
+
+
+/* --- tweaks (2026-03-04) --- */
+#passageText p{
+  text-indent: 1.6em;           /* indent first line of each paragraph */
+  margin: 0 0 14px 0;
+}
+#passageText p.noindent{ text-indent: 1.6em; } /* keep consistent */
+
+.reason-box ul{ margin: 8px 0 0 22px; }
+.reason-box li{
+  margin: 4px 0;                /* reduce line-to-line spacing */
+  line-height: 1.35;
+}
+
+
+/* FIX6 tweaks */
+.passage-toolbar button{min-height:44px;height:44px;line-height:1.1;padding:10px 18px;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;}
+.passage-toolbar{gap:10px;}
+.reasoning-box{margin-top:12px;}
+.reasoning-title{margin-bottom:8px;}
+.reasoning-content{line-height:1.35;}
+.reasoning-content li{margin:8px 0;}
+.reasoning-content ul{margin:0;padding-left:20px;}
+#passageText p{ text-indent:1.5em; margin:10px 0; }
+
+/* --- FIXED7: consistent passage buttons + tighter How-to-reason spacing --- */
+.panel .bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.panel .bar .title{flex:1 1 auto; min-width:180px;}
+.panel .bar .iconbtn{
+  height:40px;
+  min-width:130px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 14px;
+  line-height:1;
+  white-space:nowrap;
+  box-sizing:border-box;
+}
+/* How to reason box spacing */
+.reason-box{padding:14px 16px;}
+.reason-box p{margin:0 0 8px 0;}
+.reason-box ul{margin:0; padding-left:18px;}
+.reason-box li{margin:8px 0; line-height:1.25;}
+
+  .panel .bar .barActions{display:flex; gap:10px; margin-left:auto; align-items:center;}
+  .panel .bar .barActions .iconbtn{min-width:120px; justify-content:center;}
+</style>
+
+<style>
+  /* Overlay highlight (does not modify underlying text) */
+  #passageText{ position: relative; -webkit-touch-callout: none; }
+  #passageText, #passageText *{ -webkit-user-drag: none; user-drag: none; }
+  .hl-layer{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+  .hl-rect{ position:absolute; background:rgba(255,245,157,0.75); border-radius:2px; }
+  /* keep passage content below overlay */
+  #passageText > *:not(.hl-layer){ position:relative; z-index:1; }
+</style>
+
+</head>
+<body>
+  <div class="topbar">
+    <div class="left">
+      <div>MCAT CARS - Humanities (Ethics) (1 Passage, 8 Questions)</div>
+      <div class="subtitle">Humanities • 6 paragraphs • ~585 words</div>
+    </div>
+    <div class="timer" id="timerWrap" aria-label="Passage timer">
+      <span class="timer-label">Timer</span>
+      <span class="timer-time" id="timerDisplay">10:00</span>
+      <button class="timer-btn" id="timerStart" type="button">Start</button>
+      <button class="timer-btn" id="timerPause" type="button">Pause</button>
+      <button class="timer-btn" id="timerReset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="split">
+  <div class="pane leftPane">
+<div class="panel">
+      <div class="bar">
+        <div class="title">Passage 1 (Questions 1–8)</div>
+        <div class="barActions">
+          <button class="iconbtn" id="highlightBtn" type="button">Highlight</button>
+          <button class="iconbtn" id="clearHighlightBtn" type="button">Clear highlight</button>
+          <button class="iconbtn" id="toggleReason" type="button">How to reason</button>
+        </div>
+      </div>
+      <div class="content" id="passageText">
+  <div class="hl-layer" id="hlLayer" aria-hidden="true"></div>
+        <p class="noindent">Ethics is often introduced as a set of answers: do this, avoid that, respect this rule. But the more unsettling ethical work begins not with answers but with a question about what kind of creature is making them. We act, after all, under descriptions. A promise can be framed as a sacred bond, a strategic move, or an inconvenient constraint; each frame makes different reasons feel compelling. When moral debate collapses into slogan and counter‑slogan, it is often because participants treat their own frame as obvious and their opponents’ frame as either malicious or irrational.</p>
+<p>One familiar attempt to avoid framing disputes is to seek a single, universal moral algorithm—maximize happiness, follow the rule you can will as universal law, cultivate the virtues of a good person. These traditions are not interchangeable, yet they share a hope: that if we find the right principle, practical disagreement will shrink. In reality, principles do not apply themselves. They require judgment about what counts as harm, whose happiness is relevant, what a person could will, and which traits are virtues rather than vices. The algorithm fantasy treats moral life as a math problem; ethical experience is closer to interpretation.</p>
+<p>Consider the difference between acting with clean hands and acting responsibly. Some agents refuse to participate in institutions they regard as compromised—a company with exploitative supply chains, a political system that tolerates injustice. Withdrawal can preserve personal purity, but it can also abandon the field to those with fewer scruples. Conversely, engagement can reduce harm by improving practices from within, yet it can also normalize wrongdoing by making it seem manageable. The point is not that one posture is always superior, but that both involve tradeoffs between complicity, effectiveness, and moral self‑understanding.</p>
+<p>These tradeoffs become vivid in cases of &#x27;remote responsibility,&#x27; where actions are mediated by systems. A consumer buys an inexpensive device and later learns that its components were produced under dangerous conditions in a distant factory. The consumer did not order harm; the harm was upstream. Still, the consumer’s demand helped make the system profitable. Some argue that responsibility tracks intention; others that it tracks foreseeable participation. But even foreseeability is graded: we cannot know everything, yet we can choose whether to remain curious or comfortably ignorant.</p>
+<p>Because knowledge is uneven, ethical agency depends on practices of attention. Transparency reports, investigative journalism, and whistleblowing do not merely provide facts; they reshape what counts as a reasonable excuse. Once an industry’s harms are public, continued indifference looks less like innocence and more like a choice. At the same time, attention has limits, and moral life can be paralyzed by demands to track every causal thread. A mature ethics must therefore combine vigilance with a sense of proportionality—deciding which obligations are genuine and which are rhetorical traps designed to exhaust concern.</p>
+<p>If this sounds less tidy than textbook theories, that is the point. Ethics is not only about deriving conclusions; it is about cultivating capacities—to notice hidden dependencies, to articulate the frame one is using, to revise that frame when evidence or argument warrants it. A society that wants ethical citizens should not train them merely to recite principles, but to practice this reflective skill: explaining why a reason counts here, and how it might count differently for someone situated elsewhere. Moral disagreement will not vanish, but it can become more honest.</p>
+        <div class="reason-box" id="reasonBox" hidden>
+
+  <p><strong>How to reason (CARS)</strong></p>
+  <ul>
+    <li>Identify the author’s <strong>thesis</strong>: ethics is not a simple <strong>rulebook</strong> or moral <strong>algorithm</strong>, but an <strong>interpretive practice</strong>.</li>
+    <li>Track key contrasts: <strong>principles</strong> vs <strong>judgment</strong>, <strong>clean hands</strong> vs <strong>responsible engagement</strong>, <strong>intention</strong> vs <strong>foreseeable participation</strong>.</li>
+    <li>For <strong>main idea</strong>, pick what spans the whole passage (framing + attention + proportionality), not one example (supply chains).</li>
+    <li>For <strong>within-text</strong> questions, tie answers to an example’s <strong>function</strong> (device = mediated responsibility; transparency = excuses).</li>
+    <li>For <strong>beyond-text</strong> questions, extend the author’s logic about <strong>tradeoffs</strong> and <strong>graded responsibility</strong>—avoid extremes.</li>
+    <li>Eliminate traps: <strong>always/never</strong> claims, <strong>scope shifts</strong>, and <strong>reversals</strong> of the author’s balanced stance.</li>
+  </ul>
+</div>
+      </div>
+    </div>
+  </div>
+  <div class="vdiv"></div>
+  <div class="pane rightPane">
+<div class="panel">
+      <div class="subbar">
+        <div class="right-actions">
+          <button class="btn" id="resetAll" type="button">Reset all</button>
+          <button class="btn primary" id="prevBtn" type="button">Previous</button>
+          <button class="btn primary" id="nextBtn" type="button">Next</button>
+        </div>
+      </div>
+      <div class="qwrap" id="qwrap">
+        
+    
+
+    <section class="qcard" id="card-1">
+      <div class="qhead">
+        <div class="qnum">Question 1</div>
+        <div class="qskill">Foundations of Comprehension</div>
+      </div>
+      <div class="qstem">The primary aim of the passage is to:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="1" data-letter="A">
+        <input type="radio" name="q1" id="q1_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">defend one moral theory as superior because it offers a universal decision procedure.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="B">
+        <input type="radio" name="q1" id="q1_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">argue that moral responsibility depends only on an agent’s intentions.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="C">
+        <input type="radio" name="q1" id="q1_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">present ethics as an interpretive practice shaped by framing, judgment, and attention rather than a simple rulebook.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="D">
+        <input type="radio" name="q1" id="q1_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">show that ethical disagreement is mostly caused by ignorance of factual information.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-1" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="1" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-1" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why C is correct</div>
+        <div class="exp-text">Across the passage, the author emphasizes that people act under descriptions, that principles require judgment to apply, and that responsibility depends on practices of attention and proportionality. The conclusion frames ethics as cultivating reflective capacities, not merely reciting rules.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The author critiques the &#x27;moral algorithm&#x27; fantasy rather than endorsing a single theory (reversal).</li><li><b>B.</b> Intention is discussed as one view, but the author presents competing accounts and emphasizes attention and participation (scope shift).</li><li><b>D.</b> Facts matter, but disagreement is tied to framing and judgment, not mostly to ignorance (too narrow).</li></ul>
+      </div>
+      
+      <div class="exp-section">
+        <div class="exp-title">Common trap</div>
+        <div class="exp-text">Mistaking the passage’s discussion of moral theories for an endorsement of one as the decisive solution.</div>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-2">
+      <div class="qhead">
+        <div class="qnum">Question 2</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">The author calls the search for a universal moral algorithm a &#x27;fantasy&#x27; mainly to emphasize that:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="2" data-letter="A">
+        <input type="radio" name="q2" id="q2_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">principles still require interpretation about key concepts like harm, relevance, and virtue.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="B">
+        <input type="radio" name="q2" id="q2_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">moral theories are useless because they never reduce disagreement.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="C">
+        <input type="radio" name="q2" id="q2_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">ethical questions can be solved only by studying psychology rather than philosophy.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="D">
+        <input type="radio" name="q2" id="q2_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">mathematical reasoning has no place in any ethical deliberation.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-2" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="2" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-2" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why A is correct</div>
+        <div class="exp-text">In the second paragraph, the author notes that even broad principles need judgments about what counts as harm, whose happiness matters, and what traits qualify as virtues. The point is not that principles are worthless, but that they do not apply themselves.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>B.</b> The author says principles are not interchangeable and share a hope, but does not call them useless (extreme).</li><li><b>C.</b> Psychology is not offered as a replacement; the critique concerns application of principles (out-of-passage).</li><li><b>D.</b> The author uses math as a metaphor for over-simplification, not as a total ban on quantitative reasoning (extreme).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-3">
+      <div class="qhead">
+        <div class="qnum">Question 3</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">Which scenario best fits the passage’s discussion of &#x27;clean hands&#x27; versus acting responsibly?</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="3" data-letter="A">
+        <input type="radio" name="q3" id="q3_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">A person refuses to vote because politics is imperfect, and later celebrates that they avoided &#x27;complicity&#x27; regardless of outcomes.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="B">
+        <input type="radio" name="q3" id="q3_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">A manager insists that intentions excuse outcomes, so they ignore evidence of harm caused by their decisions.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="C">
+        <input type="radio" name="q3" id="q3_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">A consumer assumes they have no obligations because harms occur far away and are therefore irrelevant.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="D">
+        <input type="radio" name="q3" id="q3_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">A physician joins a flawed hospital system to reduce patient harm, while acknowledging that their participation also risks normalizing systemic problems.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-3" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="3" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-3" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why D is correct</div>
+        <div class="exp-text">The passage contrasts withdrawal for purity with engagement that can reduce harm but risk normalizing wrongdoing. Option D captures both sides: acting within a compromised institution to improve outcomes while recognizing complicity risks.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> This shows withdrawal/purity but lacks the passage’s balancing recognition of tradeoffs; it is one-sided (half-right).</li><li><b>B.</b> This focuses on intention-only responsibility, not the clean-hands vs engagement tradeoff (scope shift).</li><li><b>C.</b> This resembles &#x27;remote responsibility&#x27; discussion but ignores the passage’s emphasis on graded foreseeability and attention (unsupported).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-4">
+      <div class="qhead">
+        <div class="qnum">Question 4</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">In the fourth paragraph, the example of the inexpensive device is used mainly to highlight that:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="4" data-letter="A">
+        <input type="radio" name="q4" id="q4_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">consumers are always morally guilty for any harm in supply chains.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="B">
+        <input type="radio" name="q4" id="q4_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">responsibility can be debated when harm is mediated by systems and when intention and foreseeability come apart.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="C">
+        <input type="radio" name="q4" id="q4_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">only corporations, not individuals, can be held responsible for distant harms.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="D">
+        <input type="radio" name="q4" id="q4_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">harm is irrelevant unless it was directly commanded by the consumer.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-4" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="4" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-4" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why B is correct</div>
+        <div class="exp-text">The author frames the case as &#x27;remote responsibility&#x27; where harm is upstream and mediated. They present competing views (intention vs foreseeable participation) and note that even foreseeability is graded, tied to choices about curiosity versus ignorance.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The author does not claim &#x27;always guilty&#x27;; they emphasize graded responsibility and debate (extreme).</li><li><b>C.</b> The passage does not exclude individual responsibility; it explores how it might track participation (reversal).</li><li><b>D.</b> The author explicitly challenges the idea that intention alone settles responsibility (reversal).</li></ul>
+      </div>
+      
+      <div class="exp-section">
+        <div class="exp-title">Common trap</div>
+        <div class="exp-text">Confusing the existence of upstream harm with a blanket claim that the end consumer is always fully culpable.</div>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-5">
+      <div class="qhead">
+        <div class="qnum">Question 5</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">Which development would most strengthen the author’s claim that public information can reshape what counts as a reasonable excuse?</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="5" data-letter="A">
+        <input type="radio" name="q5" id="q5_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">After credible investigations widely document an industry’s harms, companies and consumers who continue unchanged increasingly justify themselves by avoiding the topic rather than claiming ignorance.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="B">
+        <input type="radio" name="q5" id="q5_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">A new ethical theory gains popularity in universities and becomes a standard topic in introductory courses.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="C">
+        <input type="radio" name="q5" id="q5_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">People disagree about whether a harm is serious, even when they have access to the same reports.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="D">
+        <input type="radio" name="q5" id="q5_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">A firm issues a transparency report that is so technical that almost no one reads it.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-5" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="5" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-5" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why A is correct</div>
+        <div class="exp-text">The author argues that once harms are public, indifference looks more like a choice than innocence. Evidence that actors shift from ignorance-claims to avoidance/deflection after investigations supports the idea that excuses become less credible when information is widely available.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>B.</b> Popularity of theory does not show how public facts reshape excuses (irrelevant).</li><li><b>C.</b> Disagreement despite shared facts could happen, but it does not directly support the &#x27;excuse reshaping&#x27; mechanism (weak/unsupported).</li><li><b>D.</b> If no one reads the report, it would not reshape what counts as a reasonable excuse (opposite direction).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-6">
+      <div class="qhead">
+        <div class="qnum">Question 6</div>
+        <div class="qskill">Foundations of Comprehension</div>
+      </div>
+      <div class="qstem">The author most likely views moral disagreement as:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="6" data-letter="A">
+        <input type="radio" name="q6" id="q6_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">evidence that ethical reasoning is futile and should be replaced by social consensus.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="B">
+        <input type="radio" name="q6" id="q6_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">a problem that will largely disappear once a single correct principle is discovered.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="C">
+        <input type="radio" name="q6" id="q6_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">a persistent feature that can become more honest if people clarify and revise their frames and reasons.</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="D">
+        <input type="radio" name="q6" id="q6_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">primarily a result of bad faith, since reasonable people would share the same moral intuitions.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-6" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="6" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-6" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why C is correct</div>
+        <div class="exp-text">The conclusion says disagreement will not vanish but can become more honest through reflective skills: articulating frames, revising them when warranted, and explaining why reasons count differently for differently situated people.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The author does not call ethics futile; they call for cultivating capacities (reversal).</li><li><b>B.</b> This repeats the algorithm fantasy the author critiques (reversal).</li><li><b>D.</b> The author criticizes assuming opponents are malicious or irrational; they treat framing as a source of conflict (reversal).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-7">
+      <div class="qhead">
+        <div class="qnum">Question 7</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">The author’s point about attention having limits is primarily that:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="7" data-letter="A">
+        <input type="radio" name="q7" id="q7_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">ethical agents should ignore distant harms because they cannot track every causal thread.</span>
+      </label>
+    
+      <label class="choice" data-q="7" data-letter="B">
+        <input type="radio" name="q7" id="q7_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">mature ethics must balance vigilance with proportionality, distinguishing genuine obligations from exhausting rhetorical demands.</span>
+      </label>
+    
+      <label class="choice" data-q="7" data-letter="C">
+        <input type="radio" name="q7" id="q7_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">transparency initiatives are counterproductive because they overload people with information.</span>
+      </label>
+    
+      <label class="choice" data-q="7" data-letter="D">
+        <input type="radio" name="q7" id="q7_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">moral life is mainly about collecting facts rather than interpreting values.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-7" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="7" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-7" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why B is correct</div>
+        <div class="exp-text">In paragraph five, the author notes that moral life can be paralyzed by demands to track every causal thread, so ethics must combine vigilance with proportionality—deciding which obligations are genuine and which are rhetorical traps.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The author advocates vigilance, not ignoring distant harms (reversal).</li><li><b>C.</b> Transparency is portrayed as reshaping excuses; the issue is balancing attention, not rejecting information (scope shift).</li><li><b>D.</b> The passage emphasizes interpretation, framing, and judgment, not fact collection alone (reversal).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-8">
+      <div class="qhead">
+        <div class="qnum">Question 8</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">Which educational practice best reflects the author’s recommendation for cultivating ethical citizens?</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="8" data-letter="A">
+        <input type="radio" name="q8" id="q8_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">Teach students to memorize major theories and require them to apply one theory uniformly to every scenario.</span>
+      </label>
+    
+      <label class="choice" data-q="8" data-letter="B">
+        <input type="radio" name="q8" id="q8_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">Prioritize moral intuition exercises so students can identify the &#x27;obvious&#x27; right answer quickly.</span>
+      </label>
+    
+      <label class="choice" data-q="8" data-letter="C">
+        <input type="radio" name="q8" id="q8_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">Focus on teaching negotiation tactics so students can win debates regardless of the merits.</span>
+      </label>
+    
+      <label class="choice" data-q="8" data-letter="D">
+        <input type="radio" name="q8" id="q8_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">Have students practice identifying their assumptions, explaining why certain reasons count in a case, and revising conclusions when new evidence or perspectives emerge.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-8" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="8" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-8" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why D is correct</div>
+        <div class="exp-text">The author argues that ethics involves cultivating capacities: noticing dependencies, articulating frames, and revising them when warranted. Option D directly embodies that reflective practice rather than rote application or debate gamesmanship.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> Uniform application of a single theory repeats the algorithm fantasy and ignores interpretation (reversal).</li><li><b>B.</b> The passage criticizes treating one’s frame as obvious and opponents as irrational; quick intuition is not the proposed remedy (unsupported).</li><li><b>C.</b> Winning debates regardless of merits contradicts the call for honest disagreement and reflective skill (reversal).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+    
+        <div class="footer-note">Immediate feedback is enabled: selecting an answer will mark correct/incorrect. Use “Show explanation” for full reasoning (Questions 1–8).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+<script>
+(function(){
+  const DEFAULT_SECONDS = 600;
+  const STORAGE_KEY = "cars_timer_hum_ethics_p1_q1_8_v1";
+  let remaining = DEFAULT_SECONDS;
+  let running = false;
+  let tickId = null;
+  let lastTick = null;
+
+  const display = document.getElementById("timerDisplay");
+  const wrap = document.getElementById("timerWrap");
+  const startBtn = document.getElementById("timerStart");
+  const pauseBtn = document.getElementById("timerPause");
+  const resetBtn = document.getElementById("timerReset");
+
+  function fmt(sec){
+    sec = Math.max(0, Math.floor(sec));
+    const m = String(Math.floor(sec/60)).padStart(2,"0");
+    const s = String(sec%60).padStart(2,"0");
+    return m + ":" + s;
+  }
+
+  function render(){
+    display.textContent = fmt(remaining);
+    if (remaining <= 60) wrap.classList.add("timer-danger");
+    else wrap.classList.remove("timer-danger");
+  }
+
+  function save(){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        remaining: remaining, running: running, lastTick: running ? Date.now() : null
+      }));
+    } catch(e) {}
+  }
+
+  function load(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (typeof data.remaining === "number") remaining = data.remaining;
+      if (typeof data.running === "boolean") running = data.running;
+      if (data.lastTick) lastTick = data.lastTick;
+      if (running && lastTick) {
+        const elapsed = (Date.now() - lastTick)/1000;
+        remaining = Math.max(0, remaining - elapsed);
+      }
+    } catch(e) {}
+  }
+
+  function stopInterval(){
+    if (tickId) clearInterval(tickId);
+    tickId = null;
+  }
+
+  function start(){
+    if (running) return;
+    running = true;
+    lastTick = Date.now();
+    save();
+    stopInterval();
+    tickId = setInterval(function(){
+      const now = Date.now();
+      const elapsed = (now - lastTick)/1000;
+      lastTick = now;
+      remaining = Math.max(0, remaining - elapsed);
+      render();
+      save();
+      if (remaining <= 0) {
+        running = false;
+        stopInterval();
+        save();
+        alert("Time is up for this passage.");
+      }
+    }, 250);
+  }
+
+  function pause(){
+    if (!running) return;
+    running = false;
+    stopInterval();
+    save();
+  }
+
+  function reset(){
+    running = false;
+    stopInterval();
+    remaining = DEFAULT_SECONDS;
+    lastTick = null;
+    render();
+    save();
+  }
+
+  startBtn.addEventListener("click", start);
+  pauseBtn.addEventListener("click", pause);
+  resetBtn.addEventListener("click", reset);
+
+  load();
+  render();
+  if (running) start();
+})();
+
+const correct = {"1": "C", "2": "A", "3": "D", "4": "B", "5": "A", "6": "C", "7": "B", "8": "D"};
+const qOrder = Object.keys(correct).map(function(x){return parseInt(x,10);}).sort(function(a,b){return a-b;});
+let currentIndex = 0;
+
+function $(sel, root) {
+  root = root || document;
+  // If it looks like a CSS selector, use querySelector.
+  if (sel && (sel[0] === '#' || sel[0] === '.' || sel[0] === '[')) {
+    return root.querySelector(sel);
+  }
+  // Otherwise, treat it as an element id (most of our calls pass bare ids).
+  if (root === document) return document.getElementById(sel);
+  return root.querySelector('#' + CSS.escape(sel));
+}
+function $all(sel, root) {
+  return Array.prototype.slice.call((root||document).querySelectorAll(sel));
+}
+
+function showQuestion(num) {
+  $all('.qcard').forEach(function(el){ el.classList.remove('active'); });
+  const card = $('#card-' + num);
+  if (card) card.classList.add('active');
+  $all('.chip').forEach(function(ch){ ch.classList.toggle('active', ch.dataset.go == String(num)); });
+  currentIndex = qOrder.indexOf(num);
+  const pb = $('#prevBtn'); if (pb) pb.disabled = currentIndex <= 0;
+  const nb = $('#nextBtn'); if (nb) nb.disabled = currentIndex >= qOrder.length - 1;
+}
+
+function getSelected(num) {
+  const checked = document.querySelector('input[name="q'+num+'"]:checked');
+  return checked ? checked.value : null;
+}
+
+function setFeedback(num, ok) {
+  const fb = $('#fb-' + num);
+  fb.classList.remove('good','bad');
+  if (ok === null) { fb.textContent = ''; return; }
+  if (ok) {
+    fb.classList.add('good');
+    fb.textContent = 'Correct ✓';
+  } else {
+    fb.classList.add('bad');
+    fb.textContent = 'Incorrect ✗   Correct answer: ' + correct[String(num)];
+  }
+}
+
+function markChoices(num, selected) {
+  const card = $('#card-' + num);
+  if (!card) return;
+  const labs = $all('.choice', card);
+  labs.forEach(function(lab){
+    lab.classList.remove('selected','correct','incorrect');
+    const input = lab.querySelector('input');
+    if (!input) return;
+    if (input.value === selected) lab.classList.add('selected');
+    if (selected) {
+      if (input.value === correct[String(num)]) lab.classList.add('correct');
+      if (input.value === selected && selected !== correct[String(num)]) lab.classList.add('incorrect');
+    }
+  });
+}
+
+function enableExplanation(num) {
+  const card = $('#card-' + num);
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.disabled = false;
+}
+
+function resetQuestion(num) {
+  document.querySelectorAll('input[name="q'+num+'"]').forEach(function(i){ i.checked = false; });
+  setFeedback(num, null);
+  const card = $('#card-' + num);
+  $all('.choice', card).forEach(function(l){ l.classList.remove('selected','correct','incorrect'); });
+  const exp = $('#exp-' + num);
+  exp.hidden = true;
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.textContent = 'Show explanation';
+  btn.disabled = true;
+}
+
+function resetAll() {
+    try{ clearHighlights(); }catch(e){}
+ qOrder.forEach(function(n){ resetQuestion(n); }); }
+
+const toggleReasonBtn = $('#toggleReason');
+if (toggleReasonBtn) toggleReasonBtn.addEventListener('click', function(){
+  const box = $('#reasonBox');
+  box.hidden = !box.hidden;
+  toggleReasonBtn.textContent = box.hidden ? 'How to reason' : 'Hide reasoning';
+});
+
+const prevBtn = $('#prevBtn');
+if (prevBtn) prevBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.max(0, currentIndex-1)]); });
+const nextBtn = $('#nextBtn');
+if (nextBtn) nextBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.min(qOrder.length-1, currentIndex+1)]); });
+const resetAllBtn = $('#resetAll');
+if (resetAllBtn) resetAllBtn.addEventListener('click', function(){ resetAll(); showQuestion(qOrder[0]); });
+
+const chipsEl = $('#chips');
+if (chipsEl) chipsEl.addEventListener('click', function(e){
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  showQuestion(parseInt(btn.dataset.go,10));
+});
+
+document.addEventListener('change', function(e){
+  if (!(e.target && e.target.matches('input[type="radio"]'))) return;
+  const name = e.target.name;
+  const num = parseInt(name.replace('q',''),10);
+  const sel = getSelected(num);
+  const ok = sel === correct[String(num)];
+  setFeedback(num, ok);
+  markChoices(num, sel);
+  enableExplanation(num);
+});
+
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  if (btn.dataset.action === 'toggle-exp') {
+    const num = parseInt(btn.dataset.q,10);
+    const exp = $('#exp-' + num);
+    exp.hidden = !exp.hidden;
+    btn.textContent = exp.hidden ? 'Show explanation' : 'Hide explanation';
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  showQuestion(qOrder[0]);
+  resetAll();
+  showQuestion(qOrder[0]);
+});
+
+  
+// ===== Overlay highlight (no DOM edits; prevents text shifting) =====
+(function(){
+  const passage = document.getElementById('passageText');
+  const layer = document.getElementById('hlLayer');
+  const highlightBtn = document.getElementById('highlightBtn');
+  const clearHighlightBtn = document.getElementById('clearHighlightBtn');
+  const resetAllBtn = document.getElementById('resetAll');
+
+  if (!passage || !layer || !highlightBtn) return;
+
+  // Prevent accidental drag of selected text/images inside the passage area
+  const blockDrag = (e)=>{ try{ e.preventDefault(); }catch(_){} try{ e.stopPropagation(); }catch(_){} };
+  ['dragstart','drag','dragend','drop'].forEach(evt=>{
+    passage.addEventListener(evt, blockDrag, {capture:true});
+    document.addEventListener(evt, (e)=>{ if (passage.contains(e.target)) blockDrag(e); }, {capture:true});
+  });
+
+  let highlightMode = false;
+  let groups = [];
+
+  function clearHighlights(){
+    while(layer.firstChild) layer.removeChild(layer.firstChild);
+    groups = [];
+  }
+
+  function undoLastHighlight(){
+    const g = groups.pop();
+    if (g && g.parentNode === layer) layer.removeChild(g);
+  }
+
+  function createGroup(){
+    const g = document.createElement('div');
+    g.className = 'hl-group';
+    layer.appendChild(g);
+    groups.push(g);
+    return g;
+  }
+
+  function selectionWithinPassage(sel){
+    if(!sel || sel.rangeCount===0) return false;
+    return passage.contains(sel.anchorNode) && passage.contains(sel.focusNode);
+  }
+
+  function addRect(rect, base, group){
+    const div = document.createElement('div');
+    div.className = 'hl-rect';
+    // Store coordinates in the passage's scrollable coordinate space
+    div.style.top = (rect.top - base.top + passage.scrollTop) + 'px';
+    div.style.left = (rect.left - base.left + passage.scrollLeft) + 'px';
+    div.style.width = rect.width + 'px';
+    div.style.height = rect.height + 'px';
+    (group || layer).appendChild(div);
+  }
+
+  function highlightSelection(){
+    const sel = window.getSelection();
+    if(!selectionWithinPassage(sel)) return;
+    const range = sel.getRangeAt(0);
+    if(range.collapsed) return;
+
+    const base = passage.getBoundingClientRect();
+    const rects = Array.from(range.getClientRects()).filter(r=>r.width>0 && r.height>0);
+    if(!rects.length) return;
+
+    const group = createGroup();
+    rects.forEach(r=>addRect(r, base, group));
+
+    // Clear selection after creating overlay, to reduce accidental text dragging
+    try{ sel.removeAllRanges(); }catch(_){}
+  }
+
+  function setMode(on){
+    highlightMode = !!on;
+    highlightBtn.classList.toggle('is-active', highlightMode);
+    highlightBtn.classList.toggle('active', highlightMode);
+  }
+
+  // Toggle highlight mode. When ON: select text (drag), then release to highlight.
+  highlightBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    setMode(!highlightMode);
+    if (highlightMode) setTimeout(highlightSelection, 0); // in case something is already selected
+  });
+
+  // Clear last highlight (undo)
+  if (clearHighlightBtn){
+    clearHighlightBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      // brief visual pressed state
+      clearHighlightBtn.classList.add('is-active');
+      clearHighlightBtn.classList.add('active');
+      setTimeout(()=>{ clearHighlightBtn.classList.remove('is-active'); clearHighlightBtn.classList.remove('active'); }, 180);
+      undoLastHighlight();
+    });
+  }
+
+  // Mouse + touch support
+  passage.addEventListener('mouseup', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  });
+  passage.addEventListener('touchend', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  }, {passive:true});
+
+  // Clear highlights whenever Reset all is pressed
+  if (resetAllBtn){
+    resetAllBtn.addEventListener('click', clearHighlights, {capture:true});
+  }
+
+  // Expose for safety (some other code calls clearHighlights())
+  window.clearHighlights = clearHighlights;
+})();
+</script>
+
+
+</body>
+</html>

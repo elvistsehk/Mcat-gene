@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MCAT CARS - Humanities (Religion) (1 Passage, 6 Questions)</title>
+<style>
+:root {
+  --blue:#1f6fae;
+  --blue2:#2d7fbf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#d7dee8;
+  --good:#118a4a;
+  --bad:#c0262d;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--blue);color:#fff;padding:12px 16px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .left{display:flex;flex-direction:column;gap:2px}
+.topbar .subtitle{font-weight:600;opacity:.9;font-size:13px}
+.timer{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);border-radius:10px;color:#fff;font-weight:800;}
+.timer-label{opacity:.9;font-weight:700}
+.timer-time{min-width:60px;text-align:center;letter-spacing:.5px}
+.timer-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:5px 8px;font-weight:800;cursor:pointer}
+.timer-btn:hover{background:rgba(255,255,255,.18)}
+.timer-danger{background:rgba(192,38,45,.35)!important;border-color:rgba(255,255,255,.55)!important}
+
+.container{width:100%;max-width:none;margin:0 auto;padding:12px;box-sizing:border-box;height:calc(100vh - 56px);}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(0deg,var(--blue),var(--blue2));color:#fff;padding:10px 12px}
+.bar .title{font-weight:900}
+.iconbtn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:7px 10px;font-weight:800;cursor:pointer}
+.iconbtn.is-active,.iconbtn.active{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.7)}
+.iconbtn.is-active:hover,.iconbtn.active:hover{background:rgba(0,0,0,.26)}
+
+.iconbtn:hover{background:rgba(255,255,255,.18)}
+.content{padding:14px 16px;line-height:1.6;font-size:15px}
+.content p{margin:0 0 12px}
+.content p.noindent{text-indent:0}
+.reason-box{white-space:pre-wrap;border:1px solid var(--border);background:#fbfdff;border-radius:10px;padding:10px 12px;margin-top:10px}
+
+.subbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);background:#fbfdff}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 10px;font-weight:800;color:#334155;cursor:pointer}
+.chip.active{border-color:var(--blue2);color:var(--blue2)}
+.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn.ghost{background:#f3f6fb}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+.qwrap{padding:12px}
+.qcard{display:none}
+.qcard.active{display:block}
+.qhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qnum{font-weight:950}
+.qskill{color:var(--muted);font-weight:800;font-size:12px}
+.qstem{font-size:16px;font-weight:800;margin:8px 0 10px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px;cursor:pointer}
+.choice:hover{border-color:#b9c6d8}
+.choice input{margin-top:3px}
+.choice-letter{font-weight:950;min-width:28px}
+.choice.selected{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,132,198,.12)}
+.choice.correct{border-color:rgba(17,138,74,.6);box-shadow:0 0 0 3px rgba(17,138,74,.12)}
+.choice.incorrect{border-color:rgba(192,38,45,.55);box-shadow:0 0 0 3px rgba(192,38,45,.10)}
+
+.feedback{margin-top:10px;font-weight:950}
+.feedback.good{color:var(--good)}
+.feedback.bad{color:var(--bad)}
+.actions{display:flex;gap:8px;margin-top:10px}
+
+.explanation{margin-top:10px;border:1px solid var(--border);background:#fbfdff;border-radius:12px;padding:10px 12px}
+.exp-title{font-weight:950;margin:6px 0}
+.exp-text{color:#111827}
+.exp-list{margin:6px 0 0 18px}
+.footer-note{padding:10px 12px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+
+.split{display:flex;gap:0;height:100%;}
+.pane{flex:1;min-width:0;height:100%;}
+.vdiv{width:6px;background:linear-gradient(#cbd5e1,#cbd5e1);border-radius:3px;margin:0 10px;}
+/* Make both panels fill height and allow independent scrolling */
+.pane .panel{height:100%;display:flex;flex-direction:column;overflow:hidden;}
+.pane .panel .content{flex:1;overflow:auto;}
+/* Blue emphasis for **bold** / highlighted terms */
+:root{--accent:#1d4ed8;}
+.content strong,.content b,.reveal strong,.reveal b,.exp strong,.exp b{color:var(--accent);}
+
+/* Highlight tool */
+#passageText .hl, #passageText mark.hl { background: #fff59d; padding: 0 2px; border-radius: 2px; }
+/* Highlight button active state */
+.toolBtn.active{background:#ffe082;}
+/* Blue emphasis inside How to Reason */
+#reasonBox strong, #reasonBox .key{color:#1f67d6;font-weight:700;}
+/* Blue emphasis like AAMC */
+.reasoning strong, .explain strong, #passageText strong { color: #1f67d6; }
+
+
+
+/* --- tweaks (2026-03-04) --- */
+#passageText p{
+  text-indent: 1.6em;           /* indent first line of each paragraph */
+  margin: 0 0 14px 0;
+}
+#passageText p.noindent{ text-indent: 1.6em; } /* keep consistent */
+
+.reason-box ul{ margin: 8px 0 0 22px; }
+.reason-box li{
+  margin: 4px 0;                /* reduce line-to-line spacing */
+  line-height: 1.35;
+}
+
+
+/* FIX6 tweaks */
+.passage-toolbar button{min-height:44px;height:44px;line-height:1.1;padding:10px 18px;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;}
+.passage-toolbar{gap:10px;}
+.reasoning-box{margin-top:12px;}
+.reasoning-title{margin-bottom:8px;}
+.reasoning-content{line-height:1.35;}
+.reasoning-content li{margin:8px 0;}
+.reasoning-content ul{margin:0;padding-left:20px;}
+#passageText p{ text-indent:1.5em; margin:10px 0; }
+
+/* --- FIXED7: consistent passage buttons + tighter How-to-reason spacing --- */
+.panel .bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.panel .bar .title{flex:1 1 auto; min-width:180px;}
+.panel .bar .iconbtn{
+  height:40px;
+  min-width:130px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 14px;
+  line-height:1;
+  white-space:nowrap;
+  box-sizing:border-box;
+}
+/* How to reason box spacing */
+.reason-box{padding:14px 16px;}
+.reason-box p{margin:0 0 8px 0;}
+.reason-box ul{margin:0; padding-left:18px;}
+.reason-box li{margin:8px 0; line-height:1.25;}
+
+  .panel .bar .barActions{display:flex; gap:10px; margin-left:auto; align-items:center;}
+  .panel .bar .barActions .iconbtn{min-width:120px; justify-content:center;}
+</style>
+
+<style>
+  /* Overlay highlight (does not modify underlying text) */
+  #passageText{ position: relative; -webkit-touch-callout: none; }
+  #passageText, #passageText *{ -webkit-user-drag: none; user-drag: none; }
+  .hl-layer{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+  .hl-rect{ position:absolute; background:rgba(255,245,157,0.75); border-radius:2px; }
+  /* keep passage content below overlay */
+  #passageText > *:not(.hl-layer){ position:relative; z-index:1; }
+</style>
+
+</head>
+<body>
+  <div class="topbar">
+    <div class="left">
+      <div>MCAT CARS - Humanities (Religion) (1 Passage, 6 Questions)</div>
+      <div class="subtitle">Humanities • 6 paragraphs • ~585 words</div>
+    </div>
+    <div class="timer" id="timerWrap" aria-label="Passage timer">
+      <span class="timer-label">Timer</span>
+      <span class="timer-time" id="timerDisplay">10:00</span>
+      <button class="timer-btn" id="timerStart" type="button">Start</button>
+      <button class="timer-btn" id="timerPause" type="button">Pause</button>
+      <button class="timer-btn" id="timerReset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="split">
+  <div class="pane leftPane">
+<div class="panel">
+      <div class="bar">
+        <div class="title">Passage 1 (Questions 1–6)</div>
+        <div class="barActions">
+          <button class="iconbtn" id="highlightBtn" type="button">Highlight</button>
+          <button class="iconbtn" id="clearHighlightBtn" type="button">Clear highlight</button>
+          <button class="iconbtn" id="toggleReason" type="button">How to reason</button>
+        </div>
+      </div>
+      <div class="content" id="passageText">
+  <div class="hl-layer" id="hlLayer" aria-hidden="true"></div>
+        <p class="noindent">In everyday speech, religion is often treated as a set of doctrines: statements about the world that can be accepted or rejected. From this angle, the central question becomes whether a creed is true, and religious practice is merely the outward sign of an inner belief. But many historians and anthropologists of religion begin elsewhere. They notice that communities do not simply hold ideas; they rehearse them. Rituals, calendars, and bodily disciplines teach participants what to pay attention to, what to fear, what to hope for, and which stories are worth repeating. Religion, on this view, is not only a map of reality but a training of perception.</p>
+<p>This does not mean that doctrine is irrelevant. Rather, doctrine gains force by being embedded in forms of life. A theological claim about forgiveness, for example, becomes more than a sentence when it is paired with a public practice of confession, restitution, or reconciliation. The practice supplies a script for emotions and expectations; it tells a participant what counts as remorse, what counts as repair, and what kind of future is imaginable afterward. Belief is not simply inside the head; it is stabilized by shared acts that make certain interpretations feel natural.</p>
+<p>The modern tendency to define religion as private belief has practical consequences. It can make religion appear fragile, since beliefs may seem easy to abandon once counterarguments arise. It can also make religion appear intolerant, since disagreements about truth can be framed as incompatible propositions. When religion is understood as a repertoire of practices, however, the focus shifts from winning an argument to sustaining a way of living. Disputes still occur, but they often concern authority, belonging, and the meaning of communal symbols as much as they concern metaphysical claims.</p>
+<p>This shift helps explain why religious symbols can feel simultaneously personal and political. A head covering, a dietary rule, or a prayer schedule can be an intimate discipline that organizes a day, yet it can also become a public marker by which outsiders categorize a person. In pluralistic societies, governments sometimes try to manage religion by regulating symbols while claiming neutrality about beliefs. But regulating symbols often regulates the lived form of the religion itself, because the symbol is not an optional accessory; it is part of the practice that trains perception and belonging.</p>
+<p>Skeptics sometimes respond that emphasizing practice merely avoids the hard question of truth. But the question of truth does not vanish; it changes shape. If a tradition trains perception, then it also trains what counts as evidence and what counts as a credible witness. A community may not be persuaded by data that it does not recognize as relevant, just as a scientific community is not persuaded by testimony that lacks agreed methods. To describe this is not to declare all truths equal; it is to notice that standards of justification are themselves learned and maintained.</p>
+<p>A charitable interpretation, then, treats religion as a set of techniques for forming persons and communities—techniques that can be criticized, defended, and revised. One might ask whether a ritual cultivates generosity or resentment, whether a calendar sustains solidarity or exclusion, whether authority is exercised with care or coercion. These questions do not bypass belief; they ask how belief becomes durable and what it does in the world. Religion is not merely a set of propositions to be debated, but a practice of making certain lives intelligible.</p>
+        <div class="reason-box" id="reasonBox" hidden>
+
+  <p><strong>How to reason (CARS)</strong></p>
+  <ul>
+    <li>Identify the author’s <strong>reframing</strong>: religion is not only <strong>doctrine</strong> but a set of <strong>practices</strong> that train perception and belonging.</li>
+    <li>Track the key moves: belief embedded in <strong>forms of life</strong>; private-belief definition changes public <strong>framing</strong>; symbols are part of <strong>lived practice</strong>.</li>
+    <li>For <strong>main idea</strong>, choose the option that captures practice + community formation (not pure truth debate).</li>
+    <li>For <strong>within-text</strong> questions, match each example to its <strong>function</strong> (forgiveness = practice makes doctrine durable).</li>
+    <li>For <strong>beyond-text</strong> questions, apply the logic: regulating “symbols” can regulate <strong>practice</strong> and <strong>belonging</strong>.</li>
+    <li>Eliminate traps: <strong>relativism</strong> (“all truths equal”), <strong>extremes</strong>, <strong>scope shifts</strong>, and <strong>reversals</strong>.</li>
+  </ul>
+</div>
+      </div>
+    </div>
+  </div>
+  <div class="vdiv"></div>
+  <div class="pane rightPane">
+<div class="panel">
+      <div class="subbar">
+        <div class="right-actions">
+          <button class="btn" id="resetAll" type="button">Reset all</button>
+          <button class="btn primary" id="prevBtn" type="button">Previous</button>
+          <button class="btn primary" id="nextBtn" type="button">Next</button>
+        </div>
+      </div>
+      <div class="qwrap" id="qwrap">
+        
+    
+
+    <section class="qcard" id="card-1">
+      <div class="qhead">
+        <div class="qnum">Question 1</div>
+        <div class="qskill">Foundations of Comprehension</div>
+      </div>
+      <div class="qstem">The primary purpose of the passage is to:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="1" data-letter="A">
+        <input type="radio" name="q1" id="q1_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">argue that religious truth claims are meaningless because standards of evidence differ across communities.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="B">
+        <input type="radio" name="q1" id="q1_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">reframe religion as a set of practices that form perception and community, rather than merely private doctrine.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="C">
+        <input type="radio" name="q1" id="q1_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">defend government regulation of religious symbols as a neutral policy tool.</span>
+      </label>
+    
+      <label class="choice" data-q="1" data-letter="D">
+        <input type="radio" name="q1" id="q1_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">show that doctrine is more important than ritual for sustaining religious identity.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-1" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="1" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-1" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why B is correct</div>
+        <div class="exp-text">The author begins by contrasting religion-as-doctrine with an approach that emphasizes ritual, calendars, and bodily disciplines as training perception. They repeatedly argue that beliefs gain force through embedded practices and that disputes often concern belonging and authority as much as propositions.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The author explicitly says describing learned standards is not declaring all truths equal; meaninglessness is a reversal (reversal/extreme).</li><li><b>C.</b> The passage warns that regulating symbols regulates lived religion; it does not defend such regulation (reversal).</li><li><b>D.</b> The author says doctrine matters but gains force through forms of life; ritual is not downgraded (reversal).</li></ul>
+      </div>
+      
+      <div class="exp-section">
+        <div class="exp-title">Common trap</div>
+        <div class="exp-text">Choosing an option that focuses on &#x27;truth is relative&#x27; even though the author carefully avoids that conclusion.</div>
+      </div>
+    
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-2">
+      <div class="qhead">
+        <div class="qnum">Question 2</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">The forgiveness example in the second paragraph is used mainly to show that:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="2" data-letter="A">
+        <input type="radio" name="q2" id="q2_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">religious emotions are entirely socially scripted and never sincere.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="B">
+        <input type="radio" name="q2" id="q2_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">doctrinal claims matter only when they can be proven with empirical evidence.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="C">
+        <input type="radio" name="q2" id="q2_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">doctrine becomes practically compelling when paired with communal practices that define expectations and emotions.</span>
+      </label>
+    
+      <label class="choice" data-q="2" data-letter="D">
+        <input type="radio" name="q2" id="q2_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">confession is the most important ritual in all religious traditions.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-2" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="2" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-2" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why C is correct</div>
+        <div class="exp-text">The author explains that a theological claim about forgiveness becomes more than a sentence when it is linked to practices like confession or reconciliation, which supply scripts for remorse, repair, and future expectations.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The passage says practice supplies scripts, not that sincerity is impossible (unsupported/extreme).</li><li><b>B.</b> Empirical proof is not the author’s criterion; the focus is on embedding doctrine in forms of life (out-of-passage).</li><li><b>D.</b> The example is illustrative, not a universal ranking of rituals (scope shift).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-3">
+      <div class="qhead">
+        <div class="qnum">Question 3</div>
+        <div class="qskill">Reasoning Within the Text</div>
+      </div>
+      <div class="qstem">According to the passage, defining religion primarily as private belief can make religion appear:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="3" data-letter="A">
+        <input type="radio" name="q3" id="q3_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">both fragile in the face of counterargument and intolerant when disagreements are framed as incompatible propositions.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="B">
+        <input type="radio" name="q3" id="q3_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">immune to public controversy because beliefs are not visible.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="C">
+        <input type="radio" name="q3" id="q3_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">less connected to authority and belonging than to ritual performance.</span>
+      </label>
+    
+      <label class="choice" data-q="3" data-letter="D">
+        <input type="radio" name="q3" id="q3_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">more politically neutral because symbols can be regulated without affecting practice.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-3" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="3" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-3" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why A is correct</div>
+        <div class="exp-text">The third paragraph states that a private-belief model can make religion seem fragile (beliefs can be abandoned) and intolerant (truth disputes become proposition clashes). It contrasts this with a practice-centered focus on sustaining ways of living.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>B.</b> The passage suggests the opposite: the belief model shapes public framing of disagreement (reversal).</li><li><b>C.</b> The author says disputes often concern authority and belonging; the belief model can obscure these, not eliminate them (unsupported).</li><li><b>D.</b> The passage argues regulating symbols often regulates lived religion, undermining neutrality (reversal).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-4">
+      <div class="qhead">
+        <div class="qnum">Question 4</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">A policy bans certain religious garments in public schools while claiming it does not restrict anyone’s beliefs. Based on the passage, the author would most likely argue that this policy:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="4" data-letter="A">
+        <input type="radio" name="q4" id="q4_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">successfully protects neutrality because beliefs remain unrestricted.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="B">
+        <input type="radio" name="q4" id="q4_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">is justified because public institutions must prioritize uniformity over individual expression.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="C">
+        <input type="radio" name="q4" id="q4_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">has no effect on religion because garments are optional accessories.</span>
+      </label>
+    
+      <label class="choice" data-q="4" data-letter="D">
+        <input type="radio" name="q4" id="q4_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">still constrains religion by regulating a practice that shapes belonging and daily discipline, not merely an external symbol.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-4" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="4" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-4" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why D is correct</div>
+        <div class="exp-text">The passage argues that symbols like head coverings can be integral practices that train perception and belonging, so regulating them effectively regulates lived religion, even if policymakers claim neutrality about belief.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> This repeats the neutrality claim the passage problematizes (reversal).</li><li><b>B.</b> The author does not endorse uniformity as the overriding value; they analyze consequences for lived religion (unsupported).</li><li><b>C.</b> The passage explicitly denies that symbols are merely optional accessories (reversal).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-5">
+      <div class="qhead">
+        <div class="qnum">Question 5</div>
+        <div class="qskill">Foundations of Comprehension</div>
+      </div>
+      <div class="qstem">In the fifth paragraph, the author responds to skeptics mainly by arguing that focusing on practice:</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="5" data-letter="A">
+        <input type="radio" name="q5" id="q5_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">eliminates the need to discuss truth because all standards are equally valid.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="B">
+        <input type="radio" name="q5" id="q5_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">shows that truth is only a matter of personal feeling and cannot be justified.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="C">
+        <input type="radio" name="q5" id="q5_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">shifts the truth question toward how communities learn and maintain standards of evidence and credibility.</span>
+      </label>
+    
+      <label class="choice" data-q="5" data-letter="D">
+        <input type="radio" name="q5" id="q5_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">proves that religious communities should adopt scientific methods to be rational.</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-5" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="5" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-5" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why C is correct</div>
+        <div class="exp-text">The author says the truth question does not vanish but changes shape: if traditions train perception, they also train what counts as evidence and credible witnesses. This highlights learned standards of justification without endorsing relativism.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>A.</b> The author explicitly rejects the move to &#x27;all truths equal&#x27; (reversal).</li><li><b>B.</b> Personal feeling is not the author’s criterion; the focus is on learned justification standards (unsupported).</li><li><b>D.</b> The passage compares communities without prescribing that religion adopt science (out-of-passage).</li></ul>
+      </div>
+      
+    </div>
+    </section>
+    
+
+    <section class="qcard" id="card-6">
+      <div class="qhead">
+        <div class="qnum">Question 6</div>
+        <div class="qskill">Reasoning Beyond the Text</div>
+      </div>
+      <div class="qstem">Which question most closely reflects the kind of evaluation the author recommends in the final paragraph?</div>
+      <div class="choices">
+      
+      <label class="choice" data-q="6" data-letter="A">
+        <input type="radio" name="q6" id="q6_A" value="A">
+        <span class="choice-letter">A.</span>
+        <span class="choice-text">Does this ritual tend to cultivate generosity or resentment within the community that practices it?</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="B">
+        <input type="radio" name="q6" id="q6_B" value="B">
+        <span class="choice-letter">B.</span>
+        <span class="choice-text">Is this doctrine logically provable from universally shared premises?</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="C">
+        <input type="radio" name="q6" id="q6_C" value="C">
+        <span class="choice-letter">C.</span>
+        <span class="choice-text">Can this tradition be reduced to a single set of propositions that outsiders can debate efficiently?</span>
+      </label>
+    
+      <label class="choice" data-q="6" data-letter="D">
+        <input type="radio" name="q6" id="q6_D" value="D">
+        <span class="choice-letter">D.</span>
+        <span class="choice-text">Should all religious symbols be removed from public life to prevent political conflict?</span>
+      </label>
+    
+    </div>
+      <div class="feedback" id="fb-6" aria-live="polite"></div>
+      <div class="actions">
+        <button class="btn ghost" data-action="toggle-exp" data-q="6" disabled>Show explanation</button>
+      </div>
+      <div class="explanation" id="exp-6" hidden>
+      <div class="exp-section">
+        <div class="exp-title">Why A is correct</div>
+        <div class="exp-text">The author proposes evaluating how practices form persons and communities—asking, for example, whether rituals cultivate generosity or resentment and how authority is exercised. Option A mirrors that recommended evaluative stance.</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-title">Why the other choices are not correct</div>
+        <ul class="exp-list"><li><b>B.</b> The passage does not require universal premises; it focuses on learned standards and lived effects (scope shift).</li><li><b>C.</b> Reducing religion to propositions is the approach the author critiques (reversal).</li><li><b>D.</b> The author does not advocate blanket removal of symbols; they analyze how symbols function in practice (extreme).</li></ul>
+      </div>
+      
+      <div class="exp-section">
+        <div class="exp-title">Common trap</div>
+        <div class="exp-text">Picking a &#x27;prove it logically&#x27; option because the passage discusses truth, even though the author reframes truth toward learned standards and lived effects.</div>
+      </div>
+    
+    </div>
+    </section>
+    
+    
+        <div class="footer-note">Immediate feedback is enabled: selecting an answer will mark correct/incorrect. Use “Show explanation” for full reasoning (Questions 1–6).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+<script>
+(function(){
+  const DEFAULT_SECONDS = 600;
+  const STORAGE_KEY = "cars_timer_hum_religion_p1_q1_6_v1";
+  let remaining = DEFAULT_SECONDS;
+  let running = false;
+  let tickId = null;
+  let lastTick = null;
+
+  const display = document.getElementById("timerDisplay");
+  const wrap = document.getElementById("timerWrap");
+  const startBtn = document.getElementById("timerStart");
+  const pauseBtn = document.getElementById("timerPause");
+  const resetBtn = document.getElementById("timerReset");
+
+  function fmt(sec){
+    sec = Math.max(0, Math.floor(sec));
+    const m = String(Math.floor(sec/60)).padStart(2,"0");
+    const s = String(sec%60).padStart(2,"0");
+    return m + ":" + s;
+  }
+
+  function render(){
+    display.textContent = fmt(remaining);
+    if (remaining <= 60) wrap.classList.add("timer-danger");
+    else wrap.classList.remove("timer-danger");
+  }
+
+  function save(){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        remaining: remaining, running: running, lastTick: running ? Date.now() : null
+      }));
+    } catch(e) {}
+  }
+
+  function load(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (typeof data.remaining === "number") remaining = data.remaining;
+      if (typeof data.running === "boolean") running = data.running;
+      if (data.lastTick) lastTick = data.lastTick;
+      if (running && lastTick) {
+        const elapsed = (Date.now() - lastTick)/1000;
+        remaining = Math.max(0, remaining - elapsed);
+      }
+    } catch(e) {}
+  }
+
+  function stopInterval(){
+    if (tickId) clearInterval(tickId);
+    tickId = null;
+  }
+
+  function start(){
+    if (running) return;
+    running = true;
+    lastTick = Date.now();
+    save();
+    stopInterval();
+    tickId = setInterval(function(){
+      const now = Date.now();
+      const elapsed = (now - lastTick)/1000;
+      lastTick = now;
+      remaining = Math.max(0, remaining - elapsed);
+      render();
+      save();
+      if (remaining <= 0) {
+        running = false;
+        stopInterval();
+        save();
+        alert("Time is up for this passage.");
+      }
+    }, 250);
+  }
+
+  function pause(){
+    if (!running) return;
+    running = false;
+    stopInterval();
+    save();
+  }
+
+  function reset(){
+    running = false;
+    stopInterval();
+    remaining = DEFAULT_SECONDS;
+    lastTick = null;
+    render();
+    save();
+  }
+
+  startBtn.addEventListener("click", start);
+  pauseBtn.addEventListener("click", pause);
+  resetBtn.addEventListener("click", reset);
+
+  load();
+  render();
+  if (running) start();
+})();
+
+const correct = {"1": "B", "2": "C", "3": "A", "4": "D", "5": "C", "6": "A"};
+const qOrder = Object.keys(correct).map(function(x){return parseInt(x,10);}).sort(function(a,b){return a-b;});
+let currentIndex = 0;
+
+function $(sel, root) {
+  root = root || document;
+  // If it looks like a CSS selector, use querySelector.
+  if (sel && (sel[0] === '#' || sel[0] === '.' || sel[0] === '[')) {
+    return root.querySelector(sel);
+  }
+  // Otherwise, treat it as an element id (most of our calls pass bare ids).
+  if (root === document) return document.getElementById(sel);
+  return root.querySelector('#' + CSS.escape(sel));
+}
+function $all(sel, root) {
+  return Array.prototype.slice.call((root||document).querySelectorAll(sel));
+}
+
+function showQuestion(num) {
+  $all('.qcard').forEach(function(el){ el.classList.remove('active'); });
+  const card = $('#card-' + num);
+  if (card) card.classList.add('active');
+  $all('.chip').forEach(function(ch){ ch.classList.toggle('active', ch.dataset.go == String(num)); });
+  currentIndex = qOrder.indexOf(num);
+  const pb = $('#prevBtn'); if (pb) pb.disabled = currentIndex <= 0;
+  const nb = $('#nextBtn'); if (nb) nb.disabled = currentIndex >= qOrder.length - 1;
+}
+
+function getSelected(num) {
+  const checked = document.querySelector('input[name="q'+num+'"]:checked');
+  return checked ? checked.value : null;
+}
+
+function setFeedback(num, ok) {
+  const fb = $('#fb-' + num);
+  fb.classList.remove('good','bad');
+  if (ok === null) { fb.textContent = ''; return; }
+  if (ok) {
+    fb.classList.add('good');
+    fb.textContent = 'Correct ✓';
+  } else {
+    fb.classList.add('bad');
+    fb.textContent = 'Incorrect ✗   Correct answer: ' + correct[String(num)];
+  }
+}
+
+function markChoices(num, selected) {
+  const card = $('#card-' + num);
+  if (!card) return;
+  const labs = $all('.choice', card);
+  labs.forEach(function(lab){
+    lab.classList.remove('selected','correct','incorrect');
+    const input = lab.querySelector('input');
+    if (!input) return;
+    if (input.value === selected) lab.classList.add('selected');
+    if (selected) {
+      if (input.value === correct[String(num)]) lab.classList.add('correct');
+      if (input.value === selected && selected !== correct[String(num)]) lab.classList.add('incorrect');
+    }
+  });
+}
+
+function enableExplanation(num) {
+  const card = $('#card-' + num);
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.disabled = false;
+}
+
+function resetQuestion(num) {
+  document.querySelectorAll('input[name="q'+num+'"]').forEach(function(i){ i.checked = false; });
+  setFeedback(num, null);
+  const card = $('#card-' + num);
+  $all('.choice', card).forEach(function(l){ l.classList.remove('selected','correct','incorrect'); });
+  const exp = $('#exp-' + num);
+  exp.hidden = true;
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.textContent = 'Show explanation';
+  btn.disabled = true;
+}
+
+function resetAll() {
+    try{ clearHighlights(); }catch(e){}
+ qOrder.forEach(function(n){ resetQuestion(n); }); }
+
+const toggleReasonBtn = $('#toggleReason');
+if (toggleReasonBtn) toggleReasonBtn.addEventListener('click', function(){
+  const box = $('#reasonBox');
+  box.hidden = !box.hidden;
+  toggleReasonBtn.textContent = box.hidden ? 'How to reason' : 'Hide reasoning';
+});
+
+const prevBtn = $('#prevBtn');
+if (prevBtn) prevBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.max(0, currentIndex-1)]); });
+const nextBtn = $('#nextBtn');
+if (nextBtn) nextBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.min(qOrder.length-1, currentIndex+1)]); });
+const resetAllBtn = $('#resetAll');
+if (resetAllBtn) resetAllBtn.addEventListener('click', function(){ resetAll(); showQuestion(qOrder[0]); });
+
+const chipsEl = $('#chips');
+if (chipsEl) chipsEl.addEventListener('click', function(e){
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  showQuestion(parseInt(btn.dataset.go,10));
+});
+
+document.addEventListener('change', function(e){
+  if (!(e.target && e.target.matches('input[type="radio"]'))) return;
+  const name = e.target.name;
+  const num = parseInt(name.replace('q',''),10);
+  const sel = getSelected(num);
+  const ok = sel === correct[String(num)];
+  setFeedback(num, ok);
+  markChoices(num, sel);
+  enableExplanation(num);
+});
+
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  if (btn.dataset.action === 'toggle-exp') {
+    const num = parseInt(btn.dataset.q,10);
+    const exp = $('#exp-' + num);
+    exp.hidden = !exp.hidden;
+    btn.textContent = exp.hidden ? 'Show explanation' : 'Hide explanation';
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  showQuestion(qOrder[0]);
+  resetAll();
+  showQuestion(qOrder[0]);
+});
+
+  
+// ===== Overlay highlight (no DOM edits; prevents text shifting) =====
+(function(){
+  const passage = document.getElementById('passageText');
+  const layer = document.getElementById('hlLayer');
+  const highlightBtn = document.getElementById('highlightBtn');
+  const clearHighlightBtn = document.getElementById('clearHighlightBtn');
+  const resetAllBtn = document.getElementById('resetAll');
+
+  if (!passage || !layer || !highlightBtn) return;
+
+  // Prevent accidental drag of selected text/images inside the passage area
+  const blockDrag = (e)=>{ try{ e.preventDefault(); }catch(_){} try{ e.stopPropagation(); }catch(_){} };
+  ['dragstart','drag','dragend','drop'].forEach(evt=>{
+    passage.addEventListener(evt, blockDrag, {capture:true});
+    document.addEventListener(evt, (e)=>{ if (passage.contains(e.target)) blockDrag(e); }, {capture:true});
+  });
+
+  let highlightMode = false;
+  let groups = [];
+
+  function clearHighlights(){
+    while(layer.firstChild) layer.removeChild(layer.firstChild);
+    groups = [];
+  }
+
+  function undoLastHighlight(){
+    const g = groups.pop();
+    if (g && g.parentNode === layer) layer.removeChild(g);
+  }
+
+  function createGroup(){
+    const g = document.createElement('div');
+    g.className = 'hl-group';
+    layer.appendChild(g);
+    groups.push(g);
+    return g;
+  }
+
+  function selectionWithinPassage(sel){
+    if(!sel || sel.rangeCount===0) return false;
+    return passage.contains(sel.anchorNode) && passage.contains(sel.focusNode);
+  }
+
+  function addRect(rect, base, group){
+    const div = document.createElement('div');
+    div.className = 'hl-rect';
+    // Store coordinates in the passage's scrollable coordinate space
+    div.style.top = (rect.top - base.top + passage.scrollTop) + 'px';
+    div.style.left = (rect.left - base.left + passage.scrollLeft) + 'px';
+    div.style.width = rect.width + 'px';
+    div.style.height = rect.height + 'px';
+    (group || layer).appendChild(div);
+  }
+
+  function highlightSelection(){
+    const sel = window.getSelection();
+    if(!selectionWithinPassage(sel)) return;
+    const range = sel.getRangeAt(0);
+    if(range.collapsed) return;
+
+    const base = passage.getBoundingClientRect();
+    const rects = Array.from(range.getClientRects()).filter(r=>r.width>0 && r.height>0);
+    if(!rects.length) return;
+
+    const group = createGroup();
+    rects.forEach(r=>addRect(r, base, group));
+
+    // Clear selection after creating overlay, to reduce accidental text dragging
+    try{ sel.removeAllRanges(); }catch(_){}
+  }
+
+  function setMode(on){
+    highlightMode = !!on;
+    highlightBtn.classList.toggle('is-active', highlightMode);
+    highlightBtn.classList.toggle('active', highlightMode);
+  }
+
+  // Toggle highlight mode. When ON: select text (drag), then release to highlight.
+  highlightBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    setMode(!highlightMode);
+    if (highlightMode) setTimeout(highlightSelection, 0); // in case something is already selected
+  });
+
+  // Clear last highlight (undo)
+  if (clearHighlightBtn){
+    clearHighlightBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      // brief visual pressed state
+      clearHighlightBtn.classList.add('is-active');
+      clearHighlightBtn.classList.add('active');
+      setTimeout(()=>{ clearHighlightBtn.classList.remove('is-active'); clearHighlightBtn.classList.remove('active'); }, 180);
+      undoLastHighlight();
+    });
+  }
+
+  // Mouse + touch support
+  passage.addEventListener('mouseup', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  });
+  passage.addEventListener('touchend', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  }, {passive:true});
+
+  // Clear highlights whenever Reset all is pressed
+  if (resetAllBtn){
+    resetAllBtn.addEventListener('click', clearHighlights, {capture:true});
+  }
+
+  // Expose for safety (some other code calls clearHighlights())
+  window.clearHighlights = clearHighlights;
+})();
+</script>
+
+
+</body>
+</html>

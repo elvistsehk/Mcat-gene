@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MCAT CARS - Humanities (1 Passage, 7 Questions)</title>
+<style>
+:root {
+  --blue:#1f6fae;
+  --blue2:#2d7fbf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#d7dee8;
+  --good:#118a4a;
+  --bad:#c0262d;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--blue);color:#fff;padding:12px 16px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .left{display:flex;flex-direction:column;gap:2px}
+.topbar .subtitle{font-weight:600;opacity:.9;font-size:13px}
+.timer{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);border-radius:10px;color:#fff;font-weight:800;}
+.timer-label{opacity:.9;font-weight:700}
+.timer-time{min-width:60px;text-align:center;letter-spacing:.5px}
+.timer-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:5px 8px;font-weight:800;cursor:pointer}
+.timer-btn:hover{background:rgba(255,255,255,.18)}
+.timer-danger{background:rgba(192,38,45,.35)!important;border-color:rgba(255,255,255,.55)!important}
+
+.container{width:100%;max-width:none;margin:0 auto;padding:12px;box-sizing:border-box;height:calc(100vh - 56px);}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(0deg,var(--blue),var(--blue2));color:#fff;padding:10px 12px}
+.bar .title{font-weight:900}
+.iconbtn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:7px 10px;font-weight:800;cursor:pointer}
+.iconbtn.is-active,.iconbtn.active{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.7)}
+.iconbtn.is-active:hover,.iconbtn.active:hover{background:rgba(0,0,0,.26)}
+.iconbtn:hover{background:rgba(255,255,255,.18)}
+.content{padding:14px 16px;line-height:1.6;font-size:15px}
+.content p{margin:0 0 12px}
+.content p.noindent{text-indent:0}
+.reason-box{white-space:pre-wrap;border:1px solid var(--border);background:#fbfdff;border-radius:10px;padding:10px 12px;margin-top:10px}
+
+.subbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);background:#fbfdff}
+.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn.ghost{background:#f3f6fb}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+.qwrap{padding:12px}
+.qcard{display:none}
+.qcard.active{display:block}
+.qhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qnum{font-weight:950}
+.qskill{color:var(--muted);font-weight:800;font-size:12px}
+.qstem{font-size:16px;font-weight:800;margin:8px 0 10px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px;cursor:pointer}
+.choice:hover{border-color:#b9c6d8}
+.choice input{margin-top:3px}
+.choice-letter{font-weight:950;min-width:28px}
+.choice.selected{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,132,198,.12)}
+.choice.correct{border-color:rgba(17,138,74,.6);box-shadow:0 0 0 3px rgba(17,138,74,.12)}
+.choice.incorrect{border-color:rgba(192,38,45,.55);box-shadow:0 0 0 3px rgba(192,38,45,.10)}
+
+.feedback{margin-top:10px;font-weight:950}
+.feedback.good{color:var(--good)}
+.feedback.bad{color:var(--bad)}
+.actions{display:flex;gap:8px;margin-top:10px}
+
+.explanation{margin-top:10px;border:1px solid var(--border);background:#fbfdff;border-radius:12px;padding:10px 12px}
+.exp-title{font-weight:950;margin:6px 0}
+.exp-text{color:#111827}
+.exp-list{margin:6px 0 0 18px}
+.footer-note{padding:10px 12px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+
+.split{display:flex;gap:0;height:100%;}
+.pane{flex:1;min-width:0;height:100%;}
+.vdiv{width:6px;background:linear-gradient(#cbd5e1,#cbd5e1);border-radius:3px;margin:0 10px;}
+.pane .panel{height:100%;display:flex;flex-direction:column;overflow:hidden;}
+.pane .panel .content{flex:1;overflow:auto;}
+:root{--accent:#1d4ed8;}
+/* Passage bold should NOT turn blue */
+#passageText strong, #passageText b{ color: inherit !important; }
+
+.content strong,.content b,.reveal strong,.reveal b,.exp strong,.exp b{color:var(--accent);}
+
+#passageText p{ text-indent:1.5em; margin:10px 0; }
+
+/* --- FIXED21: overlay highlight (does not modify underlying text) --- */
+#passageText{ position: relative; -webkit-touch-callout: none; }
+#passageText, #passageText *{ -webkit-user-drag: none; user-drag: none; }
+.hl-layer{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+.hl-rect{ position:absolute; background:rgba(255,245,157,0.75); border-radius:2px; }
+#passageText > *:not(.hl-layer){ position:relative; z-index:1; }
+
+/* Consistent passage buttons */
+.panel .bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.panel .bar .title{flex:1 1 auto; min-width:180px;}
+.panel .bar .iconbtn{
+  height:40px;
+  min-width:130px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 14px;
+  line-height:1;
+  white-space:nowrap;
+  box-sizing:border-box;
+}
+.panel .bar .barActions{display:flex; gap:10px; margin-left:auto; align-items:center;}
+.panel .bar .barActions .iconbtn{min-width:120px; justify-content:center;}
+.reason-box{padding:14px 16px;}
+.reason-box ul{margin:0; padding-left:18px;}
+.reason-box li{margin:8px 0; line-height:1.25;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="left">
+      <div>MCAT CARS - Humanities (1 Passage, 7 Questions)</div>
+      <div class="subtitle">Humanities • 5 paragraphs • ~560 words</div>
+    </div>
+    <div class="timer" id="timerWrap" aria-label="Passage timer">
+      <span class="timer-label">Timer</span>
+      <span class="timer-time" id="timerDisplay">10:00</span>
+      <button class="timer-btn" id="timerStart" type="button">Start</button>
+      <button class="timer-btn" id="timerPause" type="button">Pause</button>
+      <button class="timer-btn" id="timerReset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="split">
+      <div class="pane leftPane">
+        <div class="panel">
+          <div class="bar">
+            <div class="title">Passage 1 (Questions 1–7)</div>
+            <div class="barActions">
+              <button class="iconbtn" id="highlightBtn" type="button">Highlight</button>
+              <button class="iconbtn" id="clearHighlightBtn" type="button">Clear highlight</button>
+              <button class="iconbtn" id="toggleReason" type="button">How to reason</button>
+            </div>
+          </div>
+
+          <div class="content" id="passageText">
+            <div class="hl-layer" id="hlLayer" aria-hidden="true"></div>
+
+            <p class="noindent">When museums began to digitize their collections, early press releases often promised a simple salvation: if the public could only “access” art more easily, then art would become more democratic. The idea contained a quiet assumption—namely, that the primary barrier to appreciation is physical distance or scarcity. Yet anyone who has wandered through an online archive at 1 a.m., opening and closing images like browser tabs in a mild trance, suspects another barrier has been built in the act of removing the old one.</p>
+
+            <p>The museum gallery imposes a peculiar discipline. Paintings occupy walls at a fixed scale; sculptures keep their stubborn weight; and the visitor’s body is compelled to move, pause, approach, and retreat. In this choreography, looking is not merely a mental operation but a sequence of small negotiations: Can I stand close without blocking someone? Do I have the patience to read the label? Should I return later when the room is quieter? These constraints can be inconvenient, but they also serve as a kind of frame—an architecture of attention that tells the visitor, implicitly, that this object has earned time.</p>
+
+            <p>Online, the frame dissolves and reappears as interface. The artwork is flattened into a rectangle that sits beside other rectangles: advertising, messages, a half-finished document. The viewer’s body is no longer choreographed by rooms and corridors but by scroll bars, notifications, and battery life. It is tempting to describe this simply as distraction, as if the digital viewer merely lacks willpower. But the problem is subtler. In a gallery, scarcity of space forces curators to select; in an online archive, abundance invites the viewer to select—and to keep selecting. The result is that the viewer’s experience often becomes less like contemplation and more like curation of one’s own rapid sequence of impressions.</p>
+
+            <p>Advocates of digitization reply, correctly, that physical galleries are not neutral frames either. A museum’s architecture can intimidate, its wall texts can smuggle in a story of cultural superiority, and its admission price can function as a gate. Digitization can lower some of these gates. Yet lowering a gate does not guarantee that what lies beyond it will be inhabited in the same way. If a gallery teaches the visitor how to dwell with an object, a database teaches the visitor how to navigate. Each lesson carries values. Dwelling privileges slowness, tolerates ambiguity, and permits an artwork to “resist” immediate consumption. Navigating privileges breadth, comparison, and the satisfaction of coverage: the pleasurable feeling that one has seen enough to move on.</p>
+
+            <p>None of this means that digital access is an artistic disaster. It means only that “more access” is not a synonym for “more democracy,” because democracy is not merely the distribution of goods but the cultivation of capacities. A public that can click on ten thousand paintings but rarely learns to attend to any one of them may be well supplied yet impoverished in attention. If digitization is to fulfill its promise, it must be accompanied by tools and habits that teach a kind of looking suited to abundance—one that can resist the urge to treat art as a checklist and can restore, even on a screen, the sense that an object might deserve time.</p>
+
+            <div class="reason-box" id="reasonBox" hidden>
+              <p><strong>How to reason (CARS)</strong></p>
+              <ul>
+                <li>Find the author’s <strong>central claim</strong> and the main <strong>contrast</strong> (what two ways of viewing are being compared?).</li>
+                <li>Notice where the author <strong>qualifies</strong> earlier promises (e.g., “yet,” “but,” “none of this means…”).</li>
+                <li>Main idea answers should match the passage’s <strong>overall aim</strong>, not a vivid example.</li>
+                <li>For inference, choose what <strong>must</strong> be true if the author’s reasoning is correct.</li>
+                <li>Use the <strong>scope test</strong>: avoid choices that are too extreme, too narrow, or introduce new issues.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vdiv"></div>
+
+      <div class="pane rightPane">
+        <div class="panel">
+          <div class="subbar">
+            <div class="right-actions">
+              <button class="btn" id="resetAll" type="button">Reset all</button>
+              <button class="btn primary" id="prevBtn" type="button">Previous</button>
+              <button class="btn primary" id="nextBtn" type="button">Next</button>
+            </div>
+          </div>
+
+          <div class="qwrap" id="qwrap">
+
+            <section class="qcard" id="card-1">
+              <div class="qhead">
+                <div class="qnum">Question 1</div>
+                <div class="qskill">Foundations of Comprehension</div>
+              </div>
+              <div class="qstem">The author’s main point is that digitization of museum collections:</div>
+              <div class="choices">
+                <label class="choice" data-q="1" data-letter="A"><input type="radio" name="q1" id="q1_A" value="A"><span class="choice-letter">A.</span><span class="choice-text">inevitably undermines serious art appreciation by replacing galleries with screens.</span></label>
+                <label class="choice" data-q="1" data-letter="B"><input type="radio" name="q1" id="q1_B" value="B"><span class="choice-letter">B.</span><span class="choice-text">removes museum gatekeeping by making curatorial selection unnecessary.</span></label>
+                <label class="choice" data-q="1" data-letter="C"><input type="radio" name="q1" id="q1_C" value="C"><span class="choice-letter">C.</span><span class="choice-text">expands access but changes the conditions of attention, so “democracy” requires more than availability.</span></label>
+                <label class="choice" data-q="1" data-letter="D"><input type="radio" name="q1" id="q1_D" value="D"><span class="choice-letter">D.</span><span class="choice-text">should prioritize interface design over physical exhibitions because navigation is a superior way of learning art.</span></label>
+              </div>
+              <div class="feedback" id="fb-1" aria-live="polite"></div>
+              <div class="actions">
+                <button class="btn ghost" data-action="toggle-exp" data-q="1" disabled>Show explanation</button>
+              </div>
+              <div class="explanation" id="exp-1" hidden>
+                <div class="exp-section">
+                  <div class="exp-title">Why C is correct</div>
+                  <div class="exp-text">The passage argues that digitization can lower barriers but also changes viewing from “dwelling” to “navigating.” Therefore, access is not automatically democracy; democracy includes cultivating attention and capacities.</div>
+                </div>
+                <div class="exp-section">
+                  <div class="exp-title">Why the other choices are not correct</div>
+                  <ul class="exp-list">
+                    <li><b>A.</b> Too absolute (“inevitably”) and ignores the author’s “not a disaster” nuance.</li>
+                    <li><b>B.</b> Misreads the argument: abundance shifts selection to the viewer; it does not make curators irrelevant.</li>
+                    <li><b>D.</b> The author does not claim navigation is superior; they warn it can encourage checklist-like viewing.</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-2">
+              <div class="qhead">
+                <div class="qnum">Question 2</div>
+                <div class="qskill">Reasoning Within the Text</div>
+              </div>
+              <div class="qstem">In the passage, the “peculiar discipline” of the museum gallery most directly refers to the way galleries:</div>
+              <div class="choices">
+                <label class="choice" data-q="2" data-letter="A"><input type="radio" name="q2" id="q2_A" value="A"><span class="choice-letter">A.</span><span class="choice-text">force visitors to accept the museum’s interpretation through wall texts.</span></label>
+                <label class="choice" data-q="2" data-letter="B"><input type="radio" name="q2" id="q2_B" value="B"><span class="choice-letter">B.</span><span class="choice-text">organize bodily movement and time, shaping attention through physical constraints.</span></label>
+                <label class="choice" data-q="2" data-letter="C"><input type="radio" name="q2" id="q2_C" value="C"><span class="choice-letter">C.</span><span class="choice-text">limit access primarily by charging admission and intimidating architecture.</span></label>
+                <label class="choice" data-q="2" data-letter="D"><input type="radio" name="q2" id="q2_D" value="D"><span class="choice-letter">D.</span><span class="choice-text">discourage comparison between artworks by separating them into different rooms.</span></label>
+              </div>
+              <div class="feedback" id="fb-2" aria-live="polite"></div>
+              <div class="actions">
+                <button class="btn ghost" data-action="toggle-exp" data-q="2" disabled>Show explanation</button>
+              </div>
+              <div class="explanation" id="exp-2" hidden>
+                <div class="exp-section">
+                  <div class="exp-title">Why B is correct</div>
+                  <div class="exp-text">The author describes a “choreography” of moving, pausing, approaching, and negotiating space—constraints that become an “architecture of attention.”</div>
+                </div>
+                <div class="exp-section">
+                  <div class="exp-title">Why the other choices are not correct</div>
+                  <ul class="exp-list">
+                    <li><b>A.</b> Overemphasizes wall texts; the discipline is embodied viewing and time.</li>
+                    <li><b>C.</b> A real gate, but not what “peculiar discipline” means in context.</li>
+                    <li><b>D.</b> Not supported; the passage does not frame discipline as preventing comparison.</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-3">
+              <div class="qhead">
+                <div class="qnum">Question 3</div>
+                <div class="qskill">Foundations of Comprehension</div>
+              </div>
+              <div class="qstem">The author most likely mentions the “press releases” at the beginning in order to:</div>
+              <div class="choices">
+                <label class="choice" data-q="3" data-letter="A"><input type="radio" name="q3" id="q3_A" value="A"><span class="choice-letter">A.</span><span class="choice-text">introduce a common narrative the passage will complicate and revise.</span></label>
+                <label class="choice" data-q="3" data-letter="B"><input type="radio" name="q3" id="q3_B" value="B"><span class="choice-letter">B.</span><span class="choice-text">demonstrate that museums intentionally mislead the public for financial gain.</span></label>
+                <label class="choice" data-q="3" data-letter="C"><input type="radio" name="q3" id="q3_C" value="C"><span class="choice-letter">C.</span><span class="choice-text">show that digitization was originally motivated by late-night browsing habits.</span></label>
+                <label class="choice" data-q="3" data-letter="D"><input type="radio" name="q3" id="q3_D" value="D"><span class="choice-letter">D.</span><span class="choice-text">argue that public relations language is inherently incompatible with art criticism.</span></label>
+              </div>
+              <div class="feedback" id="fb-3" aria-live="polite"></div>
+              <div class="actions">
+                <button class="btn ghost" data-action="toggle-exp" data-q="3" disabled>Show explanation</button>
+              </div>
+              <div class="explanation" id="exp-3" hidden>
+                <div class="exp-section">
+                  <div class="exp-title">Why A is correct</div>
+                  <div class="exp-text">The press-release promise (“access” → “democracy”) sets up a simplified claim that the author then qualifies by arguing that conditions of attention matter.</div>
+                </div>
+                <div class="exp-section">
+                  <div class="exp-title">Why the other choices are not correct</div>
+                  <ul class="exp-list">
+                    <li><b>B.</b> Adds an accusation the author does not make.</li>
+                    <li><b>C.</b> Confuses an illustrative scene with the historical motivation.</li>
+                    <li><b>D.</b> Too broad; the author critiques an assumption, not all PR language.</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-4">
+              <div class="qhead">
+                <div class="qnum">Question 4</div>
+                <div class="qskill">Reasoning Beyond the Text</div>
+              </div>
+              <div class="qstem">If the author were to agree that a digital archive can encourage “coverage,” they would most likely also agree that “coverage” tends to:</div>
+              <div class="choices">
+                <label class="choice" data-q="4" data-letter="A"><input type="radio" name="q4" id="q4_A" value="A"><span class="choice-letter">A.</span><span class="choice-text">replace the need for curators, since viewers can do the selecting themselves.</span></label>
+                <label class="choice" data-q="4" data-letter="B"><input type="radio" name="q4" id="q4_B" value="B"><span class="choice-letter">B.</span><span class="choice-text">promote a sense of completion that can make sustained attention feel unnecessary.</span></label>
+                <label class="choice" data-q="4" data-letter="C"><input type="radio" name="q4" id="q4_C" value="C"><span class="choice-letter">C.</span><span class="choice-text">function as a form of dwelling, since comparison requires patience and ambiguity.</span></label>
+                <label class="choice" data-q="4" data-letter="D"><input type="radio" name="q4" id="q4_D" value="D"><span class="choice-letter">D.</span><span class="choice-text">eliminate distraction because the viewer controls the sequence of artworks.</span></label>
+              </div>
+              <div class="feedback" id="fb-4" aria-live="polite"></div>
+              <div class="actions">
+                <button class="btn ghost" data-action="toggle-exp" data-q="4" disabled>Show explanation</button>
+              </div>
+              <div class="explanation" id="exp-4" hidden>
+                <div class="exp-section">
+                  <div class="exp-title">Why B is correct</div>
+                  <div class="exp-text">The author links navigating to “the satisfaction of coverage” and the feeling that one has “seen enough to move on,” which discourages dwelling.</div>
+                </div>
+                <div class="exp-section">
+                  <div class="exp-title">Why the other choices are not correct</div>
+                  <ul class="exp-list">
+                    <li><b>A.</b> Overextends; the author does not say curators become unnecessary.</li>
+                    <li><b>C.</b> Reverses the passage’s contrast between dwelling and navigating.</li>
+                    <li><b>D.</b> Contradicts the author’s description of interface-based distraction.</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-5">
+              <div class="qhead">
+                <div class="qnum">Question 5</div>
+                <div class="qskill">Reasoning Beyond the Text</div>
+              </div>
+              <div class="qstem">Which statement best captures the author’s view of the relationship between “access” and “democracy”?</div>
+              <div class="choices">
+                <label class="choice" data-q="5" data-letter="A"><input type="radio" name="q5" id="q5_A" value="A"><span class="choice-letter">A.</span><span class="choice-text">Democracy is achieved once artworks are distributed widely, regardless of how they are encountered.</span></label>
+                <label class="choice" data-q="5" data-letter="B"><input type="radio" name="q5" id="q5_B" value="B"><span class="choice-letter">B.</span><span class="choice-text">Access is irrelevant to democracy because museums are inherently elitist institutions.</span></label>
+                <label class="choice" data-q="5" data-letter="C"><input type="radio" name="q5" id="q5_C" value="C"><span class="choice-letter">C.</span><span class="choice-text">Access can support democracy, but democratic aims also depend on cultivating habits of attention and interpretation.</span></label>
+                <label class="choice" data-q="5" data-letter="D"><input type="radio" name="q5" id="q5_D" value="D"><span class="choice-letter">D.</span><span class="choice-text">Democracy requires discouraging digital archives in favor of returning to physical galleries.</span></label>
+              </div>
+              <div class="feedback" id="fb-5" aria-live="polite"></div>
+              <div class="actions">
+                <button class="btn ghost" data-action="toggle-exp" data-q="5" disabled>Show explanation</button>
+              </div>
+              <div class="explanation" id="exp-5" hidden>
+                <div class="exp-section">
+                  <div class="exp-title">Why C is correct</div>
+                  <div class="exp-text">The author says “more access” is not a synonym for “more democracy,” because democracy includes cultivating capacities for attention. Access matters, but isn’t sufficient.</div>
+                </div>
+                <div class="exp-section">
+                  <div class="exp-title">Why the other choices are not correct</div>
+                  <ul class="exp-list">
+                    <li><b>A.</b> Ignores the author’s central distinction between distribution and cultivated attention.</li>
+                    <li><b>B.</b> Too cynical and not supported; the author acknowledges digitization can lower some gates.</li>
+                    <li><b>D.</b> Contradicts the author’s “not a disaster” stance.</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-6">
+              <div class="qhead">
+                <div class="qnum">Question 6</div>
+                <div class="qskill">Reasoning Beyond the Text</div>
+              </div>
+              <div class="qstem">Suppose a museum’s online exhibit requires viewers to spend at least 60 seconds on each artwork and provides prompts for close observation. This initiative most directly addresses the author’s concern that digitization:</div>
+              <div class="choices">
+                <label class="choice" data-q="6" data-letter="A"><input type="radio" name="q6" id="q6_A" value="A"><span class="choice-letter">A.</span><span class="choice-text">cannot lower gates created by admission prices and intimidating architecture.</span></label>
+                <label class="choice" data-q="6" data-letter="B"><input type="radio" name="q6" id="q6_B" value="B"><span class="choice-letter">B.</span><span class="choice-text">encourages checklist-like “coverage” and weakens the habit of dwelling with an object.</span></label>
+                <label class="choice" data-q="6" data-letter="C"><input type="radio" name="q6" id="q6_C" value="C"><span class="choice-letter">C.</span><span class="choice-text">inevitably smuggles cultural superiority through wall texts.</span></label>
+                <label class="choice" data-q="6" data-letter="D"><input type="radio" name="q6" id="q6_D" value="D"><span class="choice-letter">D.</span><span class="choice-text">makes curatorial selection impossible because abundance prevents meaning.</span></label>
+              </div>
+              <div class="feedback" id="fb-6" aria-live="polite"></div>
+              <div class="actions">
+                <button class="btn ghost" data-action="toggle-exp" data-q="6" disabled>Show explanation</button>
+              </div>
+              <div class="explanation" id="exp-6" hidden>
+                <div class="exp-section">
+                  <div class="exp-title">Why B is correct</div>
+                  <div class="exp-text">The author calls for tools and habits that teach looking suited to abundance and resist checklist viewing. Timed pauses and prompts directly train dwelling/attention.</div>
+                </div>
+                <div class="exp-section">
+                  <div class="exp-title">Why the other choices are not correct</div>
+                  <ul class="exp-list">
+                    <li><b>A.</b> Targets physical gates, not attention habits.</li>
+                    <li><b>C.</b> A different critique; not the main concern solved by timed viewing.</li>
+                    <li><b>D.</b> Not claimed by the author.</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-7">
+              <div class="qhead">
+                <div class="qnum">Question 7</div>
+                <div class="qskill">Reasoning Within the Text</div>
+              </div>
+              <div class="qstem">Which of the following, if true, would most strengthen the author’s argument?</div>
+              <div class="choices">
+                <label class="choice" data-q="7" data-letter="A"><input type="radio" name="q7" id="q7_A" value="A"><span class="choice-letter">A.</span><span class="choice-text">Visitors in physical galleries spend less time per artwork when the gallery is crowded.</span></label>
+                <label class="choice" data-q="7" data-letter="B"><input type="radio" name="q7" id="q7_B" value="B"><span class="choice-letter">B.</span><span class="choice-text">Users of large online art archives report feeling informed mainly because they have viewed many works quickly.</span></label>
+                <label class="choice" data-q="7" data-letter="C"><input type="radio" name="q7" id="q7_C" value="C"><span class="choice-letter">C.</span><span class="choice-text">Museums that digitize their collections are more likely to increase admission prices.</span></label>
+                <label class="choice" data-q="7" data-letter="D"><input type="radio" name="q7" id="q7_D" value="D"><span class="choice-letter">D.</span><span class="choice-text">Curators often disagree about which artworks deserve display in physical galleries.</span></label>
+              </div>
+              <div class="feedback" id="fb-7" aria-live="polite"></div>
+              <div class="actions">
+                <button class="btn ghost" data-action="toggle-exp" data-q="7" disabled>Show explanation</button>
+              </div>
+              <div class="explanation" id="exp-7" hidden>
+                <div class="exp-section">
+                  <div class="exp-title">Why B is correct</div>
+                  <div class="exp-text">It directly supports the claim that abundance can cultivate “coverage” as a proxy for attention and understanding.</div>
+                </div>
+                <div class="exp-section">
+                  <div class="exp-title">Why the other choices are not correct</div>
+                  <ul class="exp-list">
+                    <li><b>A.</b> Does not test the key digital-vs-gallery comparison in the passage.</li>
+                    <li><b>C.</b> Concerns economics, not attention cultivation.</li>
+                    <li><b>D.</b> Irrelevant to the passage’s thesis about access and attention.</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <div class="footer-note">Immediate feedback is enabled: selecting an answer will mark correct/incorrect. Use “Show explanation” for full reasoning.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  const DEFAULT_SECONDS = 600;
+  const STORAGE_KEY = "cars_timer_humanities_p1_q1_7_v2";
+  let remaining = DEFAULT_SECONDS;
+  let running = false;
+  let tickId = null;
+  let lastTick = null;
+
+  const display = document.getElementById("timerDisplay");
+  const wrap = document.getElementById("timerWrap");
+  const startBtn = document.getElementById("timerStart");
+  const pauseBtn = document.getElementById("timerPause");
+  const resetBtn = document.getElementById("timerReset");
+
+  function fmt(sec){
+    sec = Math.max(0, Math.floor(sec));
+    const m = String(Math.floor(sec/60)).padStart(2,"0");
+    const s = String(sec%60).padStart(2,"0");
+    return m + ":" + s;
+  }
+
+  function render(){
+    display.textContent = fmt(remaining);
+    if (remaining <= 60) wrap.classList.add("timer-danger");
+    else wrap.classList.remove("timer-danger");
+  }
+
+  function save(){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        remaining: remaining, running: running, lastTick: running ? Date.now() : null
+      }));
+    } catch(e) {}
+  }
+
+  function load(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (typeof data.remaining === "number") remaining = data.remaining;
+      if (typeof data.running === "boolean") running = data.running;
+      if (data.lastTick) lastTick = data.lastTick;
+      if (running && lastTick) {
+        const elapsed = (Date.now() - lastTick)/1000;
+        remaining = Math.max(0, remaining - elapsed);
+      }
+    } catch(e) {}
+  }
+
+  function stopInterval(){
+    if (tickId) clearInterval(tickId);
+    tickId = null;
+  }
+
+  function start(){
+    if (running) return;
+    running = true;
+    lastTick = Date.now();
+    save();
+    stopInterval();
+    tickId = setInterval(function(){
+      const now = Date.now();
+      const elapsed = (now - lastTick)/1000;
+      lastTick = now;
+      remaining = Math.max(0, remaining - elapsed);
+      render();
+      save();
+      if (remaining <= 0) {
+        running = false;
+        stopInterval();
+        save();
+        alert("Time is up for this passage.");
+      }
+    }, 250);
+  }
+
+  function pause(){
+    if (!running) return;
+    running = false;
+    stopInterval();
+    save();
+  }
+
+  function reset(){
+    running = false;
+    stopInterval();
+    remaining = DEFAULT_SECONDS;
+    lastTick = null;
+    render();
+    save();
+  }
+
+  startBtn.addEventListener("click", start);
+  pauseBtn.addEventListener("click", pause);
+  resetBtn.addEventListener("click", reset);
+
+  load();
+  render();
+  if (running) start();
+})();
+
+const correct = {"1": "C", "2": "B", "3": "A", "4": "B", "5": "C", "6": "B", "7": "B"};
+const qOrder = Object.keys(correct).map(function(x){return parseInt(x,10);}).sort(function(a,b){return a-b;});
+let currentIndex = 0;
+
+function $(sel, root) {
+  root = root || document;
+  if (sel && (sel[0] === '#' || sel[0] === '.' || sel[0] === '[')) {
+    return root.querySelector(sel);
+  }
+  if (root === document) return document.getElementById(sel);
+  return root.querySelector('#' + CSS.escape(sel));
+}
+function $all(sel, root) {
+  return Array.prototype.slice.call((root||document).querySelectorAll(sel));
+}
+
+function showQuestion(num) {
+  $all('.qcard').forEach(function(el){ el.classList.remove('active'); });
+  const card = $('#card-' + num);
+  if (card) card.classList.add('active');
+  currentIndex = qOrder.indexOf(num);
+  const pb = $('#prevBtn'); if (pb) pb.disabled = currentIndex <= 0;
+  const nb = $('#nextBtn'); if (nb) nb.disabled = currentIndex >= qOrder.length - 1;
+}
+
+function getSelected(num) {
+  const checked = document.querySelector('input[name="q'+num+'"]:checked');
+  return checked ? checked.value : null;
+}
+
+function setFeedback(num, ok) {
+  const fb = $('#fb-' + num);
+  fb.classList.remove('good','bad');
+  if (ok === null) { fb.textContent = ''; return; }
+  if (ok) {
+    fb.classList.add('good');
+    fb.textContent = 'Correct ✓';
+  } else {
+    fb.classList.add('bad');
+    fb.textContent = 'Incorrect ✗   Correct answer: ' + correct[String(num)];
+  }
+}
+
+function markChoices(num, selected) {
+  const card = $('#card-' + num);
+  if (!card) return;
+  const labs = $all('.choice', card);
+  labs.forEach(function(lab){
+    lab.classList.remove('selected','correct','incorrect');
+    const input = lab.querySelector('input');
+    if (!input) return;
+    if (input.value === selected) lab.classList.add('selected');
+    if (selected) {
+      if (input.value === correct[String(num)]) lab.classList.add('correct');
+      if (input.value === selected && selected !== correct[String(num)]) lab.classList.add('incorrect');
+    }
+  });
+}
+
+function enableExplanation(num) {
+  const card = $('#card-' + num);
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.disabled = false;
+}
+
+function resetQuestion(num) {
+  document.querySelectorAll('input[name="q'+num+'"]').forEach(function(i){ i.checked = false; });
+  setFeedback(num, null);
+  const card = $('#card-' + num);
+  $all('.choice', card).forEach(function(l){ l.classList.remove('selected','correct','incorrect'); });
+  const exp = $('#exp-' + num);
+  exp.hidden = true;
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.textContent = 'Show explanation';
+  btn.disabled = true;
+}
+
+function resetAll() {
+  try{ clearHighlights(); }catch(e){}
+  qOrder.forEach(function(n){ resetQuestion(n); });
+}
+
+const toggleReasonBtn = $('#toggleReason');
+if (toggleReasonBtn) toggleReasonBtn.addEventListener('click', function(){
+  const box = $('#reasonBox');
+  box.hidden = !box.hidden;
+  toggleReasonBtn.textContent = box.hidden ? 'How to reason' : 'Hide reasoning';
+});
+
+const prevBtn = $('#prevBtn');
+if (prevBtn) prevBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.max(0, currentIndex-1)]); });
+const nextBtn = $('#nextBtn');
+if (nextBtn) nextBtn.addEventListener('click', function(){ showQuestion(qOrder[Math.min(qOrder.length-1, currentIndex+1)]); });
+const resetAllBtn = $('#resetAll');
+if (resetAllBtn) resetAllBtn.addEventListener('click', function(){ resetAll(); showQuestion(qOrder[0]); });
+
+document.addEventListener('change', function(e){
+  if (!(e.target && e.target.matches('input[type="radio"]'))) return;
+  const name = e.target.name;
+  const num = parseInt(name.replace('q',''),10);
+  const sel = getSelected(num);
+  const ok = sel === correct[String(num)];
+  setFeedback(num, ok);
+  markChoices(num, sel);
+  enableExplanation(num);
+});
+
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  if (btn.dataset.action === 'toggle-exp') {
+    const num = parseInt(btn.dataset.q,10);
+    const exp = $('#exp-' + num);
+    exp.hidden = !exp.hidden;
+    btn.textContent = exp.hidden ? 'Show explanation' : 'Hide explanation';
+  }
+});
+
+window.addEventListener('DOMContentLoaded', function(){
+  showQuestion(qOrder[0]);
+  resetAll();
+  showQuestion(qOrder[0]);
+});
+
+// ===== Overlay highlight (no DOM edits; prevents text shifting) =====
+(function(){
+  const passage = document.getElementById('passageText');
+  const layer = document.getElementById('hlLayer');
+  const highlightBtn = document.getElementById('highlightBtn');
+  const clearHighlightBtn = document.getElementById('clearHighlightBtn');
+  const resetAllBtn = document.getElementById('resetAll');
+
+  if (!passage || !layer || !highlightBtn) return;
+
+  const blockDrag = (e)=>{ try{ e.preventDefault(); }catch(_){} try{ e.stopPropagation(); }catch(_){} };
+  ['dragstart','drag','dragend','drop'].forEach(evt=>{
+    passage.addEventListener(evt, blockDrag, {capture:true});
+    document.addEventListener(evt, (e)=>{ if (passage.contains(e.target)) blockDrag(e); }, {capture:true});
+  });
+
+  let highlightMode = false;
+  let groups = [];
+
+  function clearHighlights(){
+    while(layer.firstChild) layer.removeChild(layer.firstChild);
+    groups = [];
+  }
+
+  function undoLastHighlight(){
+    const g = groups.pop();
+    if (g && g.parentNode === layer) layer.removeChild(g);
+  }
+
+  function createGroup(){
+    const g = document.createElement('div');
+    g.className = 'hl-group';
+    layer.appendChild(g);
+    groups.push(g);
+    return g;
+  }
+
+  function selectionWithinPassage(sel){
+    if(!sel || sel.rangeCount===0) return false;
+    return passage.contains(sel.anchorNode) && passage.contains(sel.focusNode);
+  }
+
+  function addRect(rect, base, group){
+    const div = document.createElement('div');
+    div.className = 'hl-rect';
+    div.style.top = (rect.top - base.top + passage.scrollTop) + 'px';
+    div.style.left = (rect.left - base.left + passage.scrollLeft) + 'px';
+    div.style.width = rect.width + 'px';
+    div.style.height = rect.height + 'px';
+    (group || layer).appendChild(div);
+  }
+
+  function highlightSelection(){
+    const sel = window.getSelection();
+    if(!selectionWithinPassage(sel)) return;
+    const range = sel.getRangeAt(0);
+    if(range.collapsed) return;
+
+    const base = passage.getBoundingClientRect();
+    const rects = Array.from(range.getClientRects()).filter(r=>r.width>0 && r.height>0);
+    if(!rects.length) return;
+
+    const group = createGroup();
+    rects.forEach(r=>addRect(r, base, group));
+
+    try{ sel.removeAllRanges(); }catch(_){}
+  }
+
+  function setMode(on){
+    highlightMode = !!on;
+    highlightBtn.classList.toggle('is-active', highlightMode);
+    highlightBtn.classList.toggle('active', highlightMode);
+  }
+
+  highlightBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    setMode(!highlightMode);
+    if (highlightMode) setTimeout(highlightSelection, 0);
+  });
+
+  if (clearHighlightBtn){
+    clearHighlightBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      clearHighlightBtn.classList.add('is-active');
+      clearHighlightBtn.classList.add('active');
+      setTimeout(()=>{ clearHighlightBtn.classList.remove('is-active'); clearHighlightBtn.classList.remove('active'); }, 180);
+      undoLastHighlight();
+    });
+  }
+
+  passage.addEventListener('mouseup', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  });
+  passage.addEventListener('touchend', ()=>{
+    if(!highlightMode) return;
+    setTimeout(highlightSelection, 0);
+  }, {passive:true});
+
+  if (resetAllBtn){
+    resetAllBtn.addEventListener('click', clearHighlights, {capture:true});
+  }
+
+  window.clearHighlights = clearHighlights;
+})();
+</script>
+</body>
+</html>
