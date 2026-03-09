@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>MCAT Bio - Amino Acids &amp; Protein Structure (5 Passages × 5 Questions)</title>
+<style>
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{
+    background:#1565c0; color:#fff; padding:15px;
+    border-radius:8px; font-size:22px; font-weight:bold;
+    margin-bottom:20px;
+  }
+  .controls{
+    display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+    margin-top:10px;
+  }
+  .ctrl-btn{
+    background:#fff;
+    border:1px solid rgba(0,0,0,0.18);
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.06);
+  }
+  .ctrl-btn:hover{ transform: translateY(-1px); }
+
+  .question{
+    background:#fff; padding:15px; margin-bottom:20px;
+    border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .choice{
+    padding:10px; margin:6px 0;
+    background:#f5f5f5; border-radius:6px;
+    cursor:pointer; font-size:15px;
+  }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+
+  .feedback{
+    padding:8px 10px; margin-bottom:8px;
+    border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px;
+  }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:20px; }
+
+  .explanation{
+    display:none; margin-top:12px; padding:10px;
+    background:#fff; border-left:4px solid #888;
+    border-radius:6px; font-size:14px; line-height:1.55;
+  }
+
+  .passage-header{
+    background:#1565c0; color:#fff; padding:15px;
+    border-radius:8px; font-size:20px; font-weight:bold;
+    margin-top:35px; margin-bottom:10px;
+  }
+  .passage-box{
+    background:#fff; padding:15px; border-radius:8px;
+    margin-bottom:20px; line-height:1.65;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+  }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+
+
+
+  .passage-header{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px;
+  }
+  .reason-btn{
+    background:#ffffff;
+    border:1px solid rgba(255,255,255,0.35);
+    color:#1565c0;
+    padding:8px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10);
+    flex:0 0 auto;
+  }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .reasoning-box{
+    display:none;
+    background:#fff;
+    border-left:4px solid #1565c0;
+    padding:12px 14px;
+    border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    margin:-8px 0 20px 0;
+    line-height:1.6;
+    font-size:14px;
+  }
+  .reasoning-box ol{ margin:8px 0 0 20px; }
+  .reasoning-box li{ margin:6px 0; }
+  .kw{ color:#1565c0; font-weight:bold; }
+</style>
+<script>
+
+  const state = {};
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (fbC) fbC.style.display='none';
+    if (fbI) fbI.style.display='none';
+  }
+
+  function selectChoice(qid, el, correct){
+    const q = document.getElementById(qid);
+    if(!q) return;
+
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+
+    const fbC = q.querySelector('.fb-correct');
+    const fbI = q.querySelector('.fb-incorrect');
+    if (correct){
+      if (fbC) fbC.style.display='flex';
+      if (fbI) fbI.style.display='none';
+    } else {
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='flex';
+    }
+
+    const exp = q.querySelector('.explanation');
+    if (exp) exp.style.display='block';
+
+    state[qid] = {answered:true};
+  }
+
+  function resetAll(){
+    for(const k in state){ delete state[k]; }
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC = q.querySelector('.fb-correct');
+      const fbI = q.querySelector('.fb-incorrect');
+      if (fbC) fbC.style.display='none';
+      if (fbI) fbI.style.display='none';
+      const exp = q.querySelector('.explanation');
+      if (exp) exp.style.display='none';
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('resetAll');
+    if(btn) btn.addEventListener('click', resetAll);
+  });
+
+
+  function toggleReasoning(pid){
+    const box = document.getElementById(pid + '-reason');
+    const btn = document.getElementById(pid + '-btn');
+    if(!box || !btn) return;
+    const isOpen = box.style.display === 'block';
+    box.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? 'How to reason' : 'Hide reasoning';
+  }
+</script>
+</head>
+<body>
+<div class="main-header">
+    🧬 MCAT Bio Practice - Amino Acids &amp; Protein Structure (5 Passages × 5 Questions)
+    <div class="controls">
+<button class="ctrl-btn" id="resetAll">Reset all</button>
+</div>
+</div>
+<div class="passage-header"><span>📘 Passage 1 - Amino acid identity, chirality, and side-chain chemistry</span><button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button></div>
+<div class="passage-box">
+<p>A researcher is designing a short peptide to insert into a lipid membrane and remain stable in aqueous buffer. The design includes several residues with long alkyl side chains as well as a single residue that can form a covalent cross-link under oxidizing conditions.</p>
+<p>During synthesis, the lab accidentally supplies one batch of amino acids in the D-configuration. The peptide is still produced, but its interaction with enzymes and its folding behavior appear altered compared with the all‑L version typically found in eukaryotic proteins.</p>
+<p>The team also notes that one amino acid in the sequence is not chiral because its R group is a hydrogen atom.</p>
+</div><div class="reasoning-box" id="p1-reason"><p><b>How to reason:</b></p><ol><li>Extract the design goal: <span class="kw">membrane insertion</span> favors <span class="kw">hydrophobic</span> residues; stability via <span class="kw">oxidation</span> suggests <span class="kw">disulfide</span> formation.</li><li>Map residues to properties: <span class="kw">Val/Leu/Ile</span> are strongly hydrophobic; <span class="kw">Cys</span> forms disulfide bonds; <span class="kw">Gly</span> is <span class="kw">achiral</span>.</li><li>Use stereochemistry logic: eukaryotic proteins are built from <span class="kw">L-amino acids</span>; introducing <span class="kw">D-amino acids</span> can alter folding and protease recognition.</li><li>Choose answers that connect <span class="kw">side-chain chemistry</span> → <span class="kw">location</span> (membrane vs aqueous) and <span class="kw">reactivity</span> (disulfides) rather than memorized labels.</li></ol></div>
+<div class="question" id="q1">
+<b>1. Which set of residues would most strongly favor insertion into the hydrophobic core of a lipid bilayer?</b>
+<div class="choice" onclick="selectChoice('q1', this, true)">A. Valine, leucine, isoleucine</div>
+<div class="choice" onclick="selectChoice('q1', this, false)">B. Aspartate, glutamate, lysine</div>
+<div class="choice" onclick="selectChoice('q1', this, false)">C. Serine, threonine, asparagine</div>
+<div class="choice" onclick="selectChoice('q1', this, false)">D. Arginine, histidine, glutamate</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Nonpolar aliphatic side chains (Val, Leu, Ile) are hydrophobic and partition into membranes more readily than polar or charged residues.<br/>
+<b>中:</b> V/L/I 係非極性長烷基側鏈，疏水，最易插入脂雙層疏水核心；帶電/極性側鏈會偏向水相。
+  </div>
+</div>
+<div class="question" id="q2">
+<b>2. Which amino acid is nonchiral because its R group is a hydrogen atom?</b>
+<div class="choice" onclick="selectChoice('q2', this, false)">A. Alanine</div>
+<div class="choice" onclick="selectChoice('q2', this, true)">B. Glycine</div>
+<div class="choice" onclick="selectChoice('q2', this, false)">C. Cysteine</div>
+<div class="choice" onclick="selectChoice('q2', this, false)">D. Valine</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Glycine has H as its side chain, so the α-carbon has two identical substituents (two H) and is not chiral.<br/>
+<b>中:</b> Glycine 側鏈=H，α-碳有兩個 H（不再是四個不同取代基），所以唔手性。
+  </div>
+</div>
+<div class="question" id="q3">
+<b>3. The presence of D-amino acids is most strongly associated with which statement?</b>
+<div class="choice" onclick="selectChoice('q3', this, false)">A. They are required for all eukaryotic ribosomes to translate mRNA</div>
+<div class="choice" onclick="selectChoice('q3', this, false)">B. They are the predominant form of amino acids in human proteins</div>
+<div class="choice" onclick="selectChoice('q3', this, true)">C. They can occur in prokaryotes and may reduce susceptibility to common proteases</div>
+<div class="choice" onclick="selectChoice('q3', this, false)">D. They cannot exist because amino acids are always L in all organisms</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Eukaryotic proteins are built from L-amino acids, but prokaryotes can contain D-amino acids (e.g., in cell wall components), which may resist enzymes tailored to L-peptides.<br/>
+<b>中:</b> 真核蛋白多用 L；但原核可出現 D-胺基酸（如細菌結構），而且可令常見蛋白酶（多針對 L）較難分解。
+  </div>
+</div>
+<div class="question" id="q4">
+<b>4. Which chiral amino acid is the exception to the rule that most L-amino acids have (S) configuration?</b>
+<div class="choice" onclick="selectChoice('q4', this, false)">A. Leucine</div>
+<div class="choice" onclick="selectChoice('q4', this, false)">B. Serine</div>
+<div class="choice" onclick="selectChoice('q4', this, false)">C. Tryptophan</div>
+<div class="choice" onclick="selectChoice('q4', this, true)">D. Cysteine</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Cysteine is the classic exception: despite being L, it is (R) by CIP rules due to the sulfur-containing side chain affecting priority ranking.<br/>
+<b>中:</b> Cys 係經典例外：雖然係 L，但因為硫原子優先序改變，CIP 配置變成 (R)，唔係 (S)。
+  </div>
+</div>
+<div class="question" id="q5">
+<b>5. Which residue enables a covalent cross-link under oxidizing conditions via disulfide bond formation?</b>
+<div class="choice" onclick="selectChoice('q5', this, true)">A. Cysteine</div>
+<div class="choice" onclick="selectChoice('q5', this, false)">B. Proline</div>
+<div class="choice" onclick="selectChoice('q5', this, false)">C. Phenylalanine</div>
+<div class="choice" onclick="selectChoice('q5', this, false)">D. Asparagine</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Two cysteine side chains (–SH) can be oxidized to form a covalent disulfide bond (cystine).<br/>
+<b>中:</b> 兩個 Cys 的 –SH 可被氧化形成 S–S 共價鍵（cystine），就係常見嘅蛋白交聯。
+  </div>
+</div>
+<div class="passage-header"><span>📘 Passage 2 - Titration behavior and isoelectric point</span><button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button></div>
+<div class="passage-box">
+<p>A student titrates an amino acid that has no ionizable side chain. At very low pH, the amino acid exists predominantly in a fully protonated form. As base is added, a buffering region appears near one pKa, followed later by a second buffering region.</p>
+<p>The student notices that the titration curve is relatively flat near each pKa but becomes steep near a particular pH at which the net charge of the amino acid is zero. The lab uses this pH to predict migration in an electric field.</p>
+<p>In a different trial, the student titrates an amino acid with an additional ionizable side chain and observes three buffering regions.</p>
+</div><div class="reasoning-box" id="p2-reason"><p><b>How to reason:</b></p><ol><li>Identify what the curve features mean: flat regions indicate <span class="kw">buffering</span> near a <span class="kw">pKa</span>; steep regions indicate low buffering capacity.</li><li>At <span class="kw">pH = pKa</span>, apply Henderson–Hasselbalch: <span class="kw">[HA] = [A−]</span>.</li><li>Find the <span class="kw">pI</span> (net charge 0): for amino acids without ionizable side chains, average the two backbone pKas (<span class="kw">α-COOH</span> and <span class="kw">α-NH3+</span>).</li><li>For acidic/basic side chains, recognize an extra ionizable group creates an additional buffering region and shifts the <span class="kw">pI</span> lower (acidic) or higher (basic).</li></ol></div>
+<div class="question" id="q6">
+<b>6. At a pH equal to the pKa of an ionizable group, which relationship is correct?</b>
+<div class="choice" onclick="selectChoice('q6', this, false)">A. The group is fully protonated</div>
+<div class="choice" onclick="selectChoice('q6', this, true)">B. [HA] = [A−] (half protonated, half deprotonated)</div>
+<div class="choice" onclick="selectChoice('q6', this, false)">C. The net charge of the amino acid must be +1</div>
+<div class="choice" onclick="selectChoice('q6', this, false)">D. The group is fully deprotonated</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> By definition, pH = pKa when half of the species is deprotonated and [HA] equals [A−].<br/>
+<b>中:</b> 定義上 pH = pKa 時，一半去質子化，所以 [HA] = [A−]。
+  </div>
+</div>
+<div class="question" id="q7">
+<b>7. At very low (acidic) pH, an amino acid without a charged side chain is most likely to exist as:</b>
+<div class="choice" onclick="selectChoice('q7', this, false)">A. NH2 and COO− (fully deprotonated)</div>
+<div class="choice" onclick="selectChoice('q7', this, false)">B. NH2 and COOH (neutral, no charges)</div>
+<div class="choice" onclick="selectChoice('q7', this, true)">C. NH3+ and COOH (fully protonated)</div>
+<div class="choice" onclick="selectChoice('q7', this, false)">D. NH3+ and COO− (zwitterion as the only form)</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Low pH supplies abundant H+, so the amino group is protonated (NH3+) and the carboxyl group remains COOH.<br/>
+<b>中:</b> 酸性低 pH 有大量 H+，所以胺基變 NH3+、羧基保持 COOH，屬「全質子化」。
+  </div>
+</div>
+<div class="question" id="q8">
+<b>8. For an amino acid with no ionizable side chain, the isoelectric point (pI) is calculated by:</b>
+<div class="choice" onclick="selectChoice('q8', this, false)">A. Subtracting the two pKa values</div>
+<div class="choice" onclick="selectChoice('q8', this, false)">B. Adding all pKa values and dividing by three</div>
+<div class="choice" onclick="selectChoice('q8', this, false)">C. Using only the side-chain pKa</div>
+<div class="choice" onclick="selectChoice('q8', this, true)">D. Averaging the two pKa values of the α-carboxyl and α-amino groups</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Without an ionizable side chain, the neutral zwitterion lies between deprotonation of the carboxyl and amino groups, so pI is the average of those two pKa values.<br/>
+<b>中:</b> 冇可電離側鏈時，zwitterion（淨電荷 0）介乎兩個主鏈 pKa 之間，所以 pI = (pKa1 + pKa2)/2。
+  </div>
+</div>
+<div class="question" id="q9">
+<b>9. The titration curve is most nearly vertical near the pI because:</b>
+<div class="choice" onclick="selectChoice('q9', this, true)">A. Small additions of titrant rapidly change net charge around the zwitterion point, producing a steep pH change</div>
+<div class="choice" onclick="selectChoice('q9', this, false)">B. Buffering capacity is maximal at pI</div>
+<div class="choice" onclick="selectChoice('q9', this, false)">C. [HA] always equals [A−] at pI for every ionizable group</div>
+<div class="choice" onclick="selectChoice('q9', this, false)">D. The amino acid is completely insoluble at pI</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Buffering is strongest near pKa (flat regions). Near pI, the molecule transitions through net charge 0, so pH changes steeply with added titrant (vertical region).<br/>
+<b>中:</b> pKa 附近先係最平（buffering 強）。pI 附近係淨電荷轉換區，滴少少鹼/酸都令 pH 大變，所以曲線接近垂直。
+  </div>
+</div>
+<div class="question" id="q10">
+<b>10. Compared with amino acids lacking ionizable side chains (pI ~6), acidic amino acids (Asp/Glu) generally have:</b>
+<div class="choice" onclick="selectChoice('q10', this, false)">A. A much higher pI because they carry extra positive charge</div>
+<div class="choice" onclick="selectChoice('q10', this, true)">B. A lower pI because they acquire negative charge more readily</div>
+<div class="choice" onclick="selectChoice('q10', this, false)">C. An unchanged pI because side chains do not affect net charge</div>
+<div class="choice" onclick="selectChoice('q10', this, false)">D. No pI because they cannot form zwitterions</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Acidic side chains introduce an additional carboxyl group, so the amino acid becomes negatively charged at lower pH, shifting pI below ~6.<br/>
+<b>中:</b> 酸性側鏈多一個羧基，更易帶負電，因此淨電荷=0 的點會向低 pH 移，pI 低於 6。
+  </div>
+</div>
+<div class="passage-header"><span>📘 Passage 3 - Peptide bond chemistry and rigidity</span><button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button></div>
+<div class="passage-box">
+<p>In a synthesis reaction, a dipeptide is formed by linking two amino acids. The reaction produces a small molecule byproduct and proceeds when the nucleophilic amino group of one amino acid attacks the electrophilic carbonyl carbon of another.</p>
+<p>When the resulting peptide is analyzed, the bond between the carbonyl carbon and the amide nitrogen appears unusually rigid, restricting rotation. Later, an enzyme catalyzes the reverse reaction in water to break the peptide into its original amino acids.</p>
+</div><div class="reasoning-box" id="p3-reason"><p><b>How to reason:</b></p><ol><li>Classify the forward reaction: peptide bond formation is a <span class="kw">condensation (dehydration)</span> producing <span class="kw">water</span> as a byproduct.</li><li>Track electrophile/nucleophile: the <span class="kw">amino nitrogen</span> attacks the <span class="kw">carbonyl carbon</span> to form an <span class="kw">amide</span> (peptide bond).</li><li>Explain rigidity: <span class="kw">resonance</span> gives the C–N bond partial double-bond character, restricting rotation.</li><li>Reverse reaction: cleavage in water is <span class="kw">hydrolysis</span>, regenerating free amino acids.</li></ol></div>
+<div class="question" id="q11">
+<b>11. Formation of a peptide bond between two amino acids is best classified as:</b>
+<div class="choice" onclick="selectChoice('q11', this, false)">A. Hydrolysis that consumes water</div>
+<div class="choice" onclick="selectChoice('q11', this, false)">B. Redox reaction that transfers electrons between side chains</div>
+<div class="choice" onclick="selectChoice('q11', this, true)">C. Condensation (dehydration) reaction that releases water</div>
+<div class="choice" onclick="selectChoice('q11', this, false)">D. Isomerization that changes stereochemistry without bond formation</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Peptide bond formation is a dehydration (condensation) reaction: the amino acid linkage forms while releasing a molecule of water.<br/>
+<b>中:</b> 肽鍵形成屬縮合/脫水反應：成鍵同時放出一分子水。
+  </div>
+</div>
+<div class="question" id="q12">
+<b>12. In peptide bond formation, which functional group acts as the nucleophile and which site is electrophilic?</b>
+<div class="choice" onclick="selectChoice('q12', this, false)">A. Carboxyl oxygen is nucleophile; amino nitrogen is electrophile</div>
+<div class="choice" onclick="selectChoice('q12', this, false)">B. R group is nucleophile; α-carbon is electrophile</div>
+<div class="choice" onclick="selectChoice('q12', this, false)">C. Hydrogen is nucleophile; carboxyl carbon is electrophile</div>
+<div class="choice" onclick="selectChoice('q12', this, true)">D. Amino nitrogen is nucleophile; carbonyl carbon is electrophile</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> The amino group (nitrogen lone pair) is nucleophilic and attacks the electrophilic carbonyl carbon to form the amide (peptide) bond.<br/>
+<b>中:</b> 胺基 N 有孤對電子→親核；羰基碳帶部分正電→親電；N 進攻 C=O 形成酰胺（肽鍵）。
+  </div>
+</div>
+<div class="question" id="q13">
+<b>13. Why is the peptide (amide) bond relatively rigid compared with a typical single bond?</b>
+<div class="choice" onclick="selectChoice('q13', this, true)">A. Resonance gives the C–N bond partial double-bond character, limiting rotation</div>
+<div class="choice" onclick="selectChoice('q13', this, false)">B. The peptide bond is purely ionic, so rotation is impossible</div>
+<div class="choice" onclick="selectChoice('q13', this, false)">C. The peptide bond contains a full triple bond between C and N</div>
+<div class="choice" onclick="selectChoice('q13', this, false)">D. Hydrophobic interactions lock the peptide bond in place</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Amide resonance delocalizes electrons between the carbonyl and nitrogen, giving the C–N bond partial double-bond character and restricting rotation.<br/>
+<b>中:</b> 酰胺共振令 C–N 有部分雙鍵性，因此轉動受限，肽鍵較硬。
+  </div>
+</div>
+<div class="question" id="q14">
+<b>14. Breaking a peptide bond to regenerate free amino acids is best described as:</b>
+<div class="choice" onclick="selectChoice('q14', this, false)">A. Condensation reaction releasing water</div>
+<div class="choice" onclick="selectChoice('q14', this, true)">B. Hydrolysis reaction consuming water</div>
+<div class="choice" onclick="selectChoice('q14', this, false)">C. Deamination reaction removing an amino group</div>
+<div class="choice" onclick="selectChoice('q14', this, false)">D. Phosphorylation reaction adding phosphate</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Peptide bond cleavage is hydrolysis: water is used to break the amide linkage and restore carboxyl and amino groups.<br/>
+<b>中:</b> 斬肽鍵係水解：用水拆開酰胺鍵，還原返羧基同胺基。
+  </div>
+</div>
+<div class="question" id="q15">
+<b>15. A peptide containing 15 amino acid residues is most appropriately termed a(n):</b>
+<div class="choice" onclick="selectChoice('q15', this, false)">A. Dipeptide</div>
+<div class="choice" onclick="selectChoice('q15', this, false)">B. Tripeptide</div>
+<div class="choice" onclick="selectChoice('q15', this, true)">C. Oligopeptide</div>
+<div class="choice" onclick="selectChoice('q15', this, false)">D. Polypeptide</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Oligopeptides contain a 'few' residues (often &lt;20). Polypeptides are typically &gt;20 residues.<br/>
+<b>中:</b> 15 個 residues 屬「少量」(&lt;20) → oligopeptide；&gt;20 先多數叫 polypeptide。
+  </div>
+</div>
+<div class="passage-header"><span>📘 Passage 4 - Secondary structure and the role of backbone hydrogen bonding</span><button class="reason-btn" id="p4-btn" onclick="toggleReasoning('p4')">How to reason</button></div>
+<div class="passage-box">
+<p>A biochemist compares two peptides that share the same primary sequence except for one substitution. In the first peptide, the sequence forms a stable α-helix. In the second peptide, a single residue introduces a sharp bend and disrupts the helical pattern.</p>
+<p>Further analysis reveals that secondary structure stability depends largely on hydrogen bonds between backbone amide N–H groups and backbone carbonyl oxygens, rather than interactions between side chains alone. The lab also examines β-pleated sheets and notes that strands can be parallel or antiparallel.</p>
+</div><div class="reasoning-box" id="p4-reason"><p><b>How to reason:</b></p><ol><li>Locate the key stabilizer of secondary structure: <span class="kw">backbone hydrogen bonds</span> between C=O and N–H, not primarily side-chain bonds.</li><li>Predict helix disruption: <span class="kw">proline</span> introduces a kink and lacks a backbone N–H for helix H-bonding, so it often breaks <span class="kw">α-helices</span>.</li><li>Differentiate motifs: <span class="kw">α-helices</span> are typically right-handed; <span class="kw">β-sheets</span> are extended strands arranged in <span class="kw">parallel</span> or <span class="kw">antiparallel</span> orientation.</li><li>Pick answers that tie a structural change (single substitution) to predictable shifts in <span class="kw">H-bond geometry</span> and <span class="kw">backbone constraints</span>.</li></ol></div>
+<div class="question" id="q16">
+<b>16. Which statement best defines primary protein structure?</b>
+<div class="choice" onclick="selectChoice('q16', this, false)">A. Clockwise coiling stabilized by hydrogen bonds</div>
+<div class="choice" onclick="selectChoice('q16', this, false)">B. Association of multiple subunits into a functional complex</div>
+<div class="choice" onclick="selectChoice('q16', this, false)">C. Overall 3D folding driven primarily by hydrophobic collapse</div>
+<div class="choice" onclick="selectChoice('q16', this, true)">D. Linear amino acid sequence stabilized by peptide bonds</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Primary structure is the linear sequence of amino acids linked by peptide bonds.<br/>
+<b>中:</b> 一級結構＝胺基酸線性排列順序，靠肽鍵（共價）連住。
+  </div>
+</div>
+<div class="question" id="q17">
+<b>17. The key stabilizing interaction in both α-helices and β-sheets is:</b>
+<div class="choice" onclick="selectChoice('q17', this, true)">A. Hydrogen bonding between backbone carbonyl oxygens and backbone amide hydrogens</div>
+<div class="choice" onclick="selectChoice('q17', this, false)">B. Covalent disulfide bonds between any two residues</div>
+<div class="choice" onclick="selectChoice('q17', this, false)">C. Ionic bonding between peptide bonds and water molecules</div>
+<div class="choice" onclick="selectChoice('q17', this, false)">D. π–π stacking between every adjacent residue</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Secondary structure is stabilized primarily by hydrogen bonds between backbone C=O and N–H groups (not primarily by side-chain covalent bonds).<br/>
+<b>中:</b> 二級結構主要靠主鏈 C=O 與 N–H 之間嘅氫鍵穩定（唔係靠側鏈共價鍵）。
+  </div>
+</div>
+<div class="question" id="q18">
+<b>18. Which substitution most likely caused the sharp bend that disrupts an α-helix?</b>
+<div class="choice" onclick="selectChoice('q18', this, false)">A. Alanine → valine</div>
+<div class="choice" onclick="selectChoice('q18', this, true)">B. Leucine → proline</div>
+<div class="choice" onclick="selectChoice('q18', this, false)">C. Serine → threonine</div>
+<div class="choice" onclick="selectChoice('q18', this, false)">D. Aspartate → glutamate</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Proline’s rigid cyclic structure and lack of a backbone N–H (for helix H-bonding) often introduces kinks and disrupts α-helices.<br/>
+<b>中:</b> Proline 環狀剛性高，而且主鏈缺少可供氫鍵嘅 N–H，常造成 kink，打斷 α-helix。
+  </div>
+</div>
+<div class="question" id="q19">
+<b>19. In naturally occurring proteins, α-helices are typically described as:</b>
+<div class="choice" onclick="selectChoice('q19', this, false)">A. Random coils with no repeating pattern</div>
+<div class="choice" onclick="selectChoice('q19', this, false)">B. Left-handed helices around a central axis</div>
+<div class="choice" onclick="selectChoice('q19', this, true)">C. Right-handed (clockwise) coils around a central axis</div>
+<div class="choice" onclick="selectChoice('q19', this, false)">D. Two strands joined only by disulfide bonds</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> α-helices in proteins are usually right-handed (clockwise) coils stabilized by backbone hydrogen bonding.<br/>
+<b>中:</b> 蛋白入面 α-helix 通常係右手（順時針）螺旋，靠主鏈氫鍵穩定。
+  </div>
+</div>
+<div class="question" id="q20">
+<b>20. β-pleated sheets are best described as:</b>
+<div class="choice" onclick="selectChoice('q20', this, false)">A. Structures stabilized by hydrogen bonds between side chains only</div>
+<div class="choice" onclick="selectChoice('q20', this, false)">B. Clockwise coils that pack tightly in the protein core</div>
+<div class="choice" onclick="selectChoice('q20', this, false)">C. Single rigid bonds that cannot hydrogen bond</div>
+<div class="choice" onclick="selectChoice('q20', this, true)">D. Rippled strands that can be arranged in parallel or antiparallel orientation</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> β-sheets consist of extended strands; neighboring strands hydrogen bond and can align in parallel or antiparallel fashion.<br/>
+<b>中:</b> β-sheet 由伸展鏈條組成，相鄰鏈用氫鍵連接，排列可平行或反平行。
+  </div>
+</div>
+<div class="passage-header"><span>📘 Passage 5 - Folding forces, subunits, and denaturation</span><button class="reason-btn" id="p5-btn" onclick="toggleReasoning('p5')">How to reason</button></div>
+<div class="passage-box">
+<p>A globular enzyme folds so that many nonpolar side chains become buried in its interior while polar and charged side chains remain exposed to water. The lab measures that folding is favored even though ordering the polypeptide chain seems to reduce entropy.</p>
+<p>The protein contains two cysteine residues that form an intramolecular covalent bond after oxidation. Another version of the enzyme functions only when a tightly bound metal ion remains attached, suggesting a conjugated protein with a prosthetic group.</p>
+<p>When the enzyme is heated or placed in a highly concentrated solute solution, it loses its three-dimensional shape and catalytic activity, even though its peptide bonds remain intact.</p>
+</div><div class="reasoning-box" id="p5-reason"><p><b>How to reason:</b></p><ol><li>Use the thermodynamics cue: burying hydrophobics increases <span class="kw">water entropy</span> (hydrophobic effect), helping make folding favorable (ΔG &lt; 0).</li><li>Identify covalent stabilization: oxidized <span class="kw">cysteines</span> form a <span class="kw">disulfide bond</span> (cystine).</li><li>Match multi-subunit assembly: multiple polypeptides forming one functional complex indicates <span class="kw">quaternary structure</span>.</li><li>Distinguish denaturation: heat/solute can disrupt secondary/tertiary/quaternary interactions while leaving <span class="kw">peptide bonds</span> (primary structure) intact.</li></ol></div>
+<div class="question" id="q21">
+<b>21. Why can burying hydrophobic side chains in the protein interior be thermodynamically favorable?</b>
+<div class="choice" onclick="selectChoice('q21', this, true)">A. It increases the entropy of surrounding water molecules, contributing to a negative ΔG for folding</div>
+<div class="choice" onclick="selectChoice('q21', this, false)">B. It breaks peptide bonds to reduce chain length and increase disorder</div>
+<div class="choice" onclick="selectChoice('q21', this, false)">C. It requires ATP hydrolysis for every hydrophobic interaction formed</div>
+<div class="choice" onclick="selectChoice('q21', this, false)">D. It eliminates all hydrogen bonding in the protein</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Hydrophobic collapse releases ordered water from hydrophobic surfaces, increasing water entropy and making folding more favorable (ΔG becomes more negative).<br/>
+<b>中:</b> 疏水側鏈聚埋會釋放原本被迫有序排列嘅水分子，水熵↑，令摺疊 ΔG 更負、更自發。
+  </div>
+</div>
+<div class="question" id="q22">
+<b>22. The covalent bond formed after oxidation between two cysteine residues is a:</b>
+<div class="choice" onclick="selectChoice('q22', this, false)">A. Salt bridge</div>
+<div class="choice" onclick="selectChoice('q22', this, true)">B. Disulfide bond (forming cystine)</div>
+<div class="choice" onclick="selectChoice('q22', this, false)">C. Hydrogen bond</div>
+<div class="choice" onclick="selectChoice('q22', this, false)">D. Peptide bond</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Oxidation of two cysteine thiols forms a covalent disulfide bond (cystine).<br/>
+<b>中:</b> 兩個 Cys 的 –SH 氧化後形成 S–S 共價鍵（cystine），就係二硫鍵。
+  </div>
+</div>
+<div class="question" id="q23">
+<b>23. A protein composed of multiple polypeptide subunits interacting to form one functional complex is demonstrating:</b>
+<div class="choice" onclick="selectChoice('q23', this, false)">A. Primary structure</div>
+<div class="choice" onclick="selectChoice('q23', this, false)">B. Secondary structure</div>
+<div class="choice" onclick="selectChoice('q23', this, true)">C. Quaternary structure</div>
+<div class="choice" onclick="selectChoice('q23', this, false)">D. Only denaturation</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Quaternary structure refers to interactions among multiple polypeptide subunits within a single protein complex.<br/>
+<b>中:</b> 四級結構就係多條 polypeptide subunits 之間嘅組裝/互作形成一個功能蛋白。
+  </div>
+</div>
+<div class="question" id="q24">
+<b>24. A tightly bound metal ion that is required for enzyme function is best described as a:</b>
+<div class="choice" onclick="selectChoice('q24', this, false)">A. Second messenger</div>
+<div class="choice" onclick="selectChoice('q24', this, false)">B. Allosteric inhibitor</div>
+<div class="choice" onclick="selectChoice('q24', this, false)">C. Peptide bond</div>
+<div class="choice" onclick="selectChoice('q24', this, true)">D. Prosthetic group (conjugated protein component)</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Conjugated proteins contain covalently or tightly bound nonprotein components (prosthetic groups), such as metal ions, vitamins, or heme.<br/>
+<b>中:</b> 共軛蛋白會帶固定附著嘅非蛋白成分（prosthetic group），例如金屬離子/維生素/血紅素等。
+  </div>
+</div>
+<div class="question" id="q25">
+<b>25. Heating the enzyme causes loss of tertiary structure and activity while peptide bonds remain intact. This process is best termed:</b>
+<div class="choice" onclick="selectChoice('q25', this, true)">A. Denaturation</div>
+<div class="choice" onclick="selectChoice('q25', this, false)">B. Primary structure formation</div>
+<div class="choice" onclick="selectChoice('q25', this, false)">C. Glycosylation</div>
+<div class="choice" onclick="selectChoice('q25', this, false)">D. Transcription</div>
+<div class="feedback correct fb-correct"><span class="icon">✔️</span>Correct!</div>
+<div class="feedback incorrect fb-incorrect"><span class="icon">❌</span>Incorrect</div>
+<div class="explanation"><b>Explanation / 解釋</b><br/>
+<b>EN:</b> Denaturation is loss of three-dimensional protein structure (secondary/tertiary/quaternary) due to heat or solute changes, often without breaking peptide bonds.<br/>
+<b>中:</b> 變性係三維結構（二/三/四級）被破壞（熱或溶質等），多數唔會直接斷肽鍵，所以序列仍在但功能失。
+  </div>
+</div>
+</body>
+</html>
