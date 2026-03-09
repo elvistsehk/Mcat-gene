@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MCAT — Amino Acids (Ch. 1.1) (15Q + 3 Passages)</title>
+<style>
+
+
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+  .main-header{ background:#1565c0; color:#fff; padding:15px; border-radius:8px;
+    font-size:22px; font-weight:bold; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reset-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reset-btn:hover{ transform: translateY(-1px); }
+  .section-label{ margin:6px 0 14px 0; color:#0f4fa0; font-weight:bold; font-size:16px; }
+  .question{ background:#fff; padding:15px; margin-bottom:20px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .choice{ padding:10px; margin:6px 0; background:#f5f5f5; border-radius:6px; cursor:pointer; font-size:15px; }
+  .choice.correct{ background:#b6f2b0; }
+  .choice.incorrect{ background:#ffb6b6; }
+  .feedback{ padding:8px 10px; margin:10px 0 8px 0; border-radius:6px; font-weight:bold;
+    display:none; align-items:center; gap:8px; font-size:14px; }
+  .feedback.correct{ background:#e2ffe2; color:#008800; }
+  .feedback.incorrect{ background:#ffe2e2; color:#cc0000; }
+  .icon{ font-size:18px; }
+  details.explain{ display:none; margin-top:12px; padding:10px; background:#fff;
+    border-left:4px solid #888; border-radius:6px; font-size:14px; line-height:1.70; }
+  details.explain summary{ cursor:pointer; font-weight:bold; outline:none; }
+  .explain-body{ margin-top:8px; }
+  .passage-header{ background:#1565c0; color:#fff; padding:12px 15px; border-radius:8px;
+    font-size:20px; font-weight:bold; margin-top:18px; margin-bottom:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .reason-btn{ background:#ffffff; color:#0f4fa0; border:1px solid rgba(255,255,255,0.55);
+    padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:bold;
+    box-shadow:0 1px 2px rgba(0,0,0,0.10); font-size:14px; white-space:nowrap; }
+  .reason-btn:hover{ transform: translateY(-1px); }
+  .passage-box{ background:#fff; padding:15px; border-radius:8px; margin-bottom:12px; line-height:1.90;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); text-align:justify; text-justify:inter-word; hyphens:auto; }
+  .passage-box p{ margin:0 0 10px 0; }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .reasoning-box{ display:none; background:#ffffff; padding:12px 14px; border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08); border-left:5px solid #1565c0;
+    margin:0 0 18px 0; line-height:1.75; font-size:14px; }
+  .reasoning-box b{ color:#0f4fa0; }
+
+
+  .kw{ color:#0f4fa0; font-weight:bold; }
+
+</style>
+<script>
+
+
+  function clearVisual(q){
+    q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+  }
+  function selectChoice(qid, el, correct){
+    const q=document.getElementById(qid); if(!q) return;
+    clearVisual(q);
+    el.classList.add(correct ? 'correct' : 'incorrect');
+    const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+    if(correct){ if(fbC) fbC.style.display='flex'; if(fbI) fbI.style.display='none'; }
+    else { if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='flex'; }
+    const details=q.querySelector('details.explain');
+    if(details){ details.style.display='block'; details.open=true; }
+  }
+  function toggleReasoning(pid){
+    const box=document.getElementById(pid+'-reason');
+    const btn=document.getElementById(pid+'-btn');
+    if(!box||!btn) return;
+    const hidden=(box.style.display===''||box.style.display==='none');
+    box.style.display = hidden ? 'block' : 'none';
+    btn.textContent = hidden ? 'Hide reasoning' : 'How to reason';
+  }
+  function resetAll(){
+    document.querySelectorAll('.question').forEach(q=>{
+      q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','incorrect'));
+      const fbC=q.querySelector('.fb-correct'); const fbI=q.querySelector('.fb-incorrect');
+      if(fbC) fbC.style.display='none'; if(fbI) fbI.style.display='none';
+      const details=q.querySelector('details.explain');
+      if(details){ details.open=false; details.style.display='none'; }
+    });
+    document.querySelectorAll('.reasoning-box').forEach(b=>b.style.display='none');
+    document.querySelectorAll('.reason-btn').forEach(btn=>btn.textContent='How to reason');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+
+</script>
+</head>
+<body>
+
+<div class="main-header">
+  <div>Biochemistry — Amino Acids (Ch. 1.1)</div>
+  <button class="reset-btn" id="resetAll" onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="section-label">Standalone Questions (Q1–Q15)</div>
+
+
+<div class="question" id="q1">
+  <b>1. Which statement best defines an α-amino acid?</b>
+  <div class="choice" onclick="selectChoice('q1', this, true)">A. The amino group and the carboxyl group are attached to the same carbon (the α-carbon)</div><div class="choice" onclick="selectChoice('q1', this, false)">B. The amino group is always attached to the γ-carbon</div><div class="choice" onclick="selectChoice('q1', this, false)">C. The molecule must be incorporated into proteins to be considered an amino acid</div><div class="choice" onclick="selectChoice('q1', this, false)">D. The side chain must contain a carboxylate group at physiologic pH</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>α-amino acids have both the amino and carboxyl functional groups on the α-carbon (the carbon adjacent to the carboxyl carbon).</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>γ-carbon attachment:</b> describes molecules like GABA, not α-amino acids.</li><li><b>Must be incorporated into proteins:</b> many amino acids and related molecules exist without being proteinogenic.</li><li><b>Side chain carboxylate:</b> applies only to Asp/Glu, not all amino acids.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q2">
+  <b>2. Which amino acid is achiral because its side chain is a hydrogen atom?</b>
+  <div class="choice" onclick="selectChoice('q2', this, true)">A. Glycine</div><div class="choice" onclick="selectChoice('q2', this, false)">B. Alanine</div><div class="choice" onclick="selectChoice('q2', this, false)">C. Valine</div><div class="choice" onclick="selectChoice('q2', this, false)">D. Cysteine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Glycine’s R group is H, so the α-carbon does not have four different substituents and is not chiral.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Alanine/Valine:</b> have alkyl side chains, making the α-carbon chiral.</li><li><b>Cysteine:</b> is chiral and is the notable exception for absolute configuration.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q3">
+  <b>3. All proteinogenic amino acids in eukaryotic proteins are typically:</b>
+  <div class="choice" onclick="selectChoice('q3', this, false)">A. D-amino acids</div><div class="choice" onclick="selectChoice('q3', this, true)">B. L-amino acids</div><div class="choice" onclick="selectChoice('q3', this, false)">C. A 50/50 mixture of L and D amino acids</div><div class="choice" onclick="selectChoice('q3', this, false)">D. Racemized at physiologic pH</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Proteins are synthesized using L-amino acids. D-amino acids can exist but are not typically incorporated into eukaryotic proteins.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>D-amino acids:</b> occur in some bacterial products but are not standard for eukaryotic proteins.</li><li><b>50/50 mixture:</b> not true for ribosomally synthesized proteins.</li><li><b>Racemized at pH 7.4:</b> chirality does not spontaneously racemize under normal cellular conditions.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q4">
+  <b>4. Most chiral amino acids have (S) absolute configuration, except:</b>
+  <div class="choice" onclick="selectChoice('q4', this, false)">A. Glycine, which is (R)</div><div class="choice" onclick="selectChoice('q4', this, false)">B. Histidine, which is (R)</div><div class="choice" onclick="selectChoice('q4', this, false)">C. Proline, which is (R)</div><div class="choice" onclick="selectChoice('q4', this, true)">D. Cysteine, which is (R)</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Because sulfur in cysteine’s side chain changes priority order under CIP rules, cysteine is L but has (R) configuration.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Glycine:</b> is achiral (no R/S).</li><li><b>Histidine:</b> is chiral and typically (S).</li><li><b>Proline:</b> is chiral and typically (S); its uniqueness is ring formation, not configuration.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q5">
+  <b>5. Which amino acid is unique because its amino nitrogen is part of a five-membered ring, restricting backbone flexibility?</b>
+  <div class="choice" onclick="selectChoice('q5', this, false)">A. Serine</div><div class="choice" onclick="selectChoice('q5', this, false)">B. Methionine</div><div class="choice" onclick="selectChoice('q5', this, false)">C. Leucine</div><div class="choice" onclick="selectChoice('q5', this, true)">D. Proline</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Proline’s side chain covalently links back to the amino nitrogen, making it cyclic and conformationally restrictive.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Serine:</b> is polar due to –OH but not cyclic.</li><li><b>Methionine:</b> contains sulfur but is not cyclic.</li><li><b>Leucine:</b> is a hydrophobic branched-chain amino acid (BCAA) but not cyclic.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q6">
+  <b>6. Which amino acid is classified as aromatic and also has a phenolic –OH group that increases polarity?</b>
+  <div class="choice" onclick="selectChoice('q6', this, false)">A. Phenylalanine</div><div class="choice" onclick="selectChoice('q6', this, false)">B. Tryptophan</div><div class="choice" onclick="selectChoice('q6', this, true)">C. Tyrosine</div><div class="choice" onclick="selectChoice('q6', this, false)">D. Valine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Tyrosine is aromatic like phenylalanine but has an –OH on the ring, making it more polar and capable of hydrogen bonding.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Phenylalanine:</b> aromatic but lacks the –OH.</li><li><b>Tryptophan:</b> aromatic with an indole nitrogen, but not a phenolic –OH.</li><li><b>Valine:</b> nonaromatic, aliphatic.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q7">
+  <b>7. Which pair of amino acids has amide side chains and is polar but uncharged at physiologic pH?</b>
+  <div class="choice" onclick="selectChoice('q7', this, false)">A. Aspartate and glutamate</div><div class="choice" onclick="selectChoice('q7', this, false)">B. Lysine and arginine</div><div class="choice" onclick="selectChoice('q7', this, true)">C. Asparagine and glutamine</div><div class="choice" onclick="selectChoice('q7', this, false)">D. Serine and threonine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Asn and Gln contain amide side chains that do not ionize significantly with pH changes, remaining uncharged but polar.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Asp/Glu:</b> have carboxylate side chains and are negatively charged at physiologic pH.</li><li><b>Lys/Arg:</b> are positively charged (basic) at physiologic pH.</li><li><b>Ser/Thr:</b> are polar due to –OH but are not amides.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q8">
+  <b>8. At physiologic pH (~7.4), which amino acid side chain is most likely to be partially protonated because its pKa is near 6?</b>
+  <div class="choice" onclick="selectChoice('q8', this, true)">A. Histidine</div><div class="choice" onclick="selectChoice('q8', this, false)">B. Lysine</div><div class="choice" onclick="selectChoice('q8', this, false)">C. Arginine</div><div class="choice" onclick="selectChoice('q8', this, false)">D. Aspartate</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Histidine’s imidazole side chain has a pKa around 6, so it can exist in both protonated and unprotonated forms near physiologic pH.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Lysine:</b> pKa ~10.5; largely protonated at pH 7.4.</li><li><b>Arginine:</b> pKa ~12.5; almost always protonated at pH 7.4.</li><li><b>Aspartate:</b> pKa ~4; largely deprotonated at pH 7.4.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q9">
+  <b>9. Which amino acid side chain is most prone to oxidation due to its thiol group?</b>
+  <div class="choice" onclick="selectChoice('q9', this, false)">A. Serine</div><div class="choice" onclick="selectChoice('q9', this, true)">B. Cysteine</div><div class="choice" onclick="selectChoice('q9', this, false)">C. Threonine</div><div class="choice" onclick="selectChoice('q9', this, false)">D. Glutamine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Cysteine’s thiol (–SH) can be oxidized to form disulfide bonds, affecting protein structure and stability.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Serine/Threonine:</b> have –OH groups; they do not form disulfides.</li><li><b>Glutamine:</b> has an amide side chain, not a thiol.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q10">
+  <b>10. Which amino acid is strongly hydrophobic and most likely to be buried in the interior of a soluble globular protein?</b>
+  <div class="choice" onclick="selectChoice('q10', this, false)">A. Aspartate</div><div class="choice" onclick="selectChoice('q10', this, false)">B. Lysine</div><div class="choice" onclick="selectChoice('q10', this, false)">C. Asparagine</div><div class="choice" onclick="selectChoice('q10', this, true)">D. Leucine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Leucine has a long aliphatic side chain and is strongly hydrophobic, favoring the protein core away from water.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Aspartate:</b> negatively charged and hydrophilic.</li><li><b>Lysine:</b> positively charged and hydrophilic.</li><li><b>Asparagine:</b> polar amide and hydrophilic.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q11">
+  <b>11. Which one-letter abbreviation correctly matches glutamic acid (glutamate)?</b>
+  <div class="choice" onclick="selectChoice('q11', this, true)">A. E</div><div class="choice" onclick="selectChoice('q11', this, false)">B. D</div><div class="choice" onclick="selectChoice('q11', this, false)">C. Q</div><div class="choice" onclick="selectChoice('q11', this, false)">D. K</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Glutamic acid is abbreviated Glu and has one-letter code E (while Asp is D, Gln is Q, Lys is K).</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>D:</b> is aspartate (Asp).</li><li><b>Q:</b> is glutamine (Gln).</li><li><b>K:</b> is lysine (Lys).</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q12">
+  <b>12. A mutation described as "E6V" indicates:</b>
+  <div class="choice" onclick="selectChoice('q12', this, false)">A. Glutamine at position 6 was replaced by valine</div><div class="choice" onclick="selectChoice('q12', this, false)">B. Valine at position 6 was replaced by glutamic acid</div><div class="choice" onclick="selectChoice('q12', this, true)">C. Glutamic acid at position 6 was replaced by valine</div><div class="choice" onclick="selectChoice('q12', this, false)">D. Glutamic acid at position 6 was replaced by lysine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Mutation shorthand uses the original amino acid’s one-letter code, the position, and the new amino acid’s one-letter code.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Glutamine:</b> is Q, not E.</li><li><b>Reversed direction:</b> V6E would indicate valine replaced by glutamic acid.</li><li><b>Lysine:</b> is K, not V.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q13">
+  <b>13. Which amino acid is one of the two sulfur-containing amino acids and is relatively nonpolar because the sulfur is bonded to a methyl group?</b>
+  <div class="choice" onclick="selectChoice('q13', this, true)">A. Methionine</div><div class="choice" onclick="selectChoice('q13', this, false)">B. Cysteine</div><div class="choice" onclick="selectChoice('q13', this, false)">C. Serine</div><div class="choice" onclick="selectChoice('q13', this, false)">D. Histidine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Methionine contains a thioether (sulfur in the side chain) and is considered relatively nonpolar compared to cysteine’s thiol.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Cysteine:</b> sulfur-containing but polar/reactive (thiol).</li><li><b>Serine:</b> oxygen-containing –OH, polar.</li><li><b>Histidine:</b> basic aromatic imidazole.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q14">
+  <b>14. Which amino acid has a benzyl side chain and is strongly hydrophobic?</b>
+  <div class="choice" onclick="selectChoice('q14', this, true)">A. Phenylalanine</div><div class="choice" onclick="selectChoice('q14', this, false)">B. Tyrosine</div><div class="choice" onclick="selectChoice('q14', this, false)">C. Tryptophan</div><div class="choice" onclick="selectChoice('q14', this, false)">D. Glutamate</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: A</b></p>
+<p>Phenylalanine has an aromatic benzyl side chain and is strongly hydrophobic.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Tyrosine:</b> aromatic but has an –OH, increasing polarity.</li><li><b>Tryptophan:</b> aromatic but bulkier; the benzyl description best matches Phe.</li><li><b>Glutamate:</b> negatively charged and hydrophilic.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="question" id="q15">
+  <b>15. Which set contains only positively charged (basic) amino acids at physiologic pH?</b>
+  <div class="choice" onclick="selectChoice('q15', this, false)">A. Aspartate, glutamate, histidine</div><div class="choice" onclick="selectChoice('q15', this, false)">B. Serine, threonine, tyrosine</div><div class="choice" onclick="selectChoice('q15', this, false)">C. Asparagine, glutamine, cysteine</div><div class="choice" onclick="selectChoice('q15', this, true)">D. Lysine, arginine, histidine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Lysine and arginine are strongly basic; histidine is weakly basic and can be protonated near physiologic pH.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Asp/Glu:</b> are negatively charged at pH 7.4.</li><li><b>Ser/Thr/Tyr:</b> are polar but generally uncharged.</li><li><b>Asn/Gln/Cys:</b> are polar/uncharged.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+<div class="section-label">Passages (3 passages × 3 questions)</div>
+
+
+<div class="passage-header">
+  <span>Passage 1: Enzyme Active Site Substitutions</span>
+  <button class="reason-btn" id="p1-btn" onclick="toggleReasoning('p1')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A research group is studying a serine protease that uses a catalytic triad to accelerate peptide bond hydrolysis. In the wild-type enzyme, a histidine residue helps activate a serine side chain by accepting a proton, increasing the nucleophilicity of the serine oxygen. The team engineers a variant in which that histidine is replaced by leucine.</p>
+<p>In a separate variant, the histidine is replaced by lysine. Both mutants fold into structures that appear grossly similar to wild type by a low-resolution assay, but their catalytic rates differ dramatically. The investigators suspect that the substitutions altered local side-chain chemistry rather than overall folding.</p>
+<p>The researchers also note that the enzyme’s surface is enriched in charged residues, while its core is enriched in strongly hydrophobic residues. They hypothesize that moving a charged residue into the core could destabilize the protein even if the backbone remains intact.</p>
+</div>
+<div class="reasoning-box" id="p1-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Identify what the passage <span class="kw">implies</span> about catalysis: <span class="kw">histidine</span> participates in proton transfer; <span class="kw">therefore</span>, substitutions should be evaluated by whether they can exist in both protonated and unprotonated forms near physiologic pH.</li>
+<li>Recall the key <span class="kw">pKa</span> clue: <span class="kw">histidine</span> has a side-chain <span class="kw">pKa</span> near 6, <span class="kw">so</span> it can readily accept or donate a proton around pH 7.4.</li>
+<li>Compare substitutions chemically: leucine is <span class="kw">hydrophobic</span> and cannot participate in acid–base catalysis; <span class="kw">lysine</span> is positively charged (high <span class="kw">pKa</span>) and may be less effective as a reversible proton shuttle.</li>
+<li>Use structure–function logic: charged residues are favored on the surface; strongly <span class="kw">hydrophobic</span> residues are favored in the <span class="kw">protein interior</span>.</li>
+<li>Choose answers that connect side-chain properties to enzyme mechanism and protein stability, not just to amino-acid names.</li>
+  </ol>
+</div>
+
+<div class="question" id="q16">
+  <b>16. In Passage 1, replacing histidine with leucine at the active site most directly reduces catalysis because leucine:</b>
+  <div class="choice" onclick="selectChoice('q16', this, false)">A. Has a negatively charged side chain that repels the substrate</div><div class="choice" onclick="selectChoice('q16', this, false)">B. Forms disulfide bonds that lock the active site closed</div><div class="choice" onclick="selectChoice('q16', this, false)">C. Has a pKa near physiologic pH and is therefore partially protonated</div><div class="choice" onclick="selectChoice('q16', this, true)">D. Cannot participate in acid–base chemistry or proton shuttling</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Histidine’s imidazole can accept/donate protons near physiologic pH. Leucine is hydrophobic and lacks a proton-accepting functional group for this catalytic role.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Negatively charged:</b> leucine is nonpolar, not acidic.</li><li><b>Disulfide bonds:</b> are formed by cysteine thiols, not leucine.</li><li><b>pKa near physiologic:</b> describes histidine, not leucine.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q17">
+  <b>17. Still in Passage 1, why might substituting histidine with lysine fail to fully preserve the original catalytic role?</b>
+  <div class="choice" onclick="selectChoice('q17', this, false)">A. Lysine is hydrophobic and cannot interact with water</div><div class="choice" onclick="selectChoice('q17', this, false)">B. Lysine is negatively charged at physiologic pH</div><div class="choice" onclick="selectChoice('q17', this, false)">C. Lysine is achiral and therefore cannot fit into proteins</div><div class="choice" onclick="selectChoice('q17', this, true)">D. Lysine is usually protonated at physiologic pH and is less effective as a reversible proton shuttle</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: D</b></p>
+<p>Lysine has a high side-chain pKa and tends to remain protonated, making it less suited for switching protonation states the way histidine can during catalysis.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Hydrophobic:</b> lysine is basic and hydrophilic.</li><li><b>Negatively charged:</b> lysine is positively charged at pH 7.4.</li><li><b>Achiral:</b> lysine is chiral; glycine is the classic achiral amino acid.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q18">
+  <b>18. Passage 1 notes hydrophobic residues are enriched in the protein core. Which residue is most compatible with burial in the core?</b>
+  <div class="choice" onclick="selectChoice('q18', this, false)">A. Aspartate</div><div class="choice" onclick="selectChoice('q18', this, false)">B. Lysine</div><div class="choice" onclick="selectChoice('q18', this, true)">C. Valine</div><div class="choice" onclick="selectChoice('q18', this, false)">D. Glutamate</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Valine is a strongly hydrophobic branched-chain amino acid, favoring the interior of soluble proteins.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Aspartate/Glutamate:</b> are negatively charged and hydrophilic.</li><li><b>Lysine:</b> is positively charged and hydrophilic.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 2: A Disulfide-Rich Secreted Protein</span>
+  <button class="reason-btn" id="p2-btn" onclick="toggleReasoning('p2')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A secreted signaling protein isolated from plasma contains multiple disulfide bonds that stabilize its tertiary structure. When the protein is treated with a reducing agent, its disulfide bonds are broken and the protein becomes less stable, unfolding more readily at body temperature.</p>
+<p>A student suggests replacing several cysteine residues with serine residues to prevent disulfide formation. Another student suggests replacing cysteine with methionine instead, arguing that both contain sulfur. The instructor notes that the chemical nature of the sulfur-containing functional group matters for reactivity.</p>
+<p>The class also discusses why disulfide-rich proteins are common in extracellular environments but are less common in the cytosol, where the redox environment can differ.</p>
+</div>
+<div class="reasoning-box" id="p2-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Start with the functional group: <span class="kw">disulfide</span> bonds form by <span class="kw">oxidation</span> of two <span class="kw">cysteine</span> thiols; <span class="kw">therefore</span>, identify which amino acid provides a <span class="kw">thiol</span>.</li>
+<li>Differentiate sulfur chemistry: <span class="kw">cysteine</span> has a reactive <span class="kw">thiol</span>; <span class="kw">methionine</span> has a <span class="kw">thioether</span> and is relatively nonpolar and less prone to forming disulfides.</li>
+<li>Predict the consequence of substitutions: serine (–OH) cannot form disulfides; replacing cysteines reduces covalent stabilization and can lower thermal stability.</li>
+<li>Use environment logic: extracellular proteins often use disulfides for stability; intracellular conditions can limit <span class="kw">disulfide</span> formation.</li>
+<li>Pick answers that <span class="kw">infer</span> effects on stability/reactivity rather than only memorizing sulfur-containing amino acids.</li>
+  </ol>
+</div>
+
+<div class="question" id="q19">
+  <b>19. In Passage 2, disulfide bonds form by oxidation of which functional group?</b>
+  <div class="choice" onclick="selectChoice('q19', this, false)">A. Two serine hydroxyl (–OH) groups</div><div class="choice" onclick="selectChoice('q19', this, true)">B. Two cysteine thiol (–SH) groups</div><div class="choice" onclick="selectChoice('q19', this, false)">C. Two methionine thioether groups</div><div class="choice" onclick="selectChoice('q19', this, false)">D. Two lysine amino (–NH2) groups</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Disulfides are covalent bonds formed between oxidized cysteine thiols, stabilizing tertiary structure especially in extracellular proteins.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Serine hydroxyl:</b> does not form disulfide bonds.</li><li><b>Methionine thioether:</b> is not a thiol and is much less prone to forming disulfides.</li><li><b>Lysine amino:</b> participates in acid–base chemistry but not disulfide formation.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q20">
+  <b>20. Why is methionine not a good substitute for cysteine if the goal is to preserve disulfide bonding (Passage 2)?</b>
+  <div class="choice" onclick="selectChoice('q20', this, false)">A. Methionine is negatively charged and would repel other cysteines</div><div class="choice" onclick="selectChoice('q20', this, true)">B. Methionine contains a thioether rather than a thiol, so it does not readily form disulfide bonds</div><div class="choice" onclick="selectChoice('q20', this, false)">C. Methionine is aromatic and cannot fit in folded proteins</div><div class="choice" onclick="selectChoice('q20', this, false)">D. Methionine is an imino acid and disrupts peptide bonds</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Methionine’s sulfur is in a thioether (–S–), which is relatively nonreactive for disulfide formation compared to cysteine’s thiol (–SH).</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Negatively charged:</b> methionine is neutral and relatively nonpolar.</li><li><b>Aromatic:</b> methionine is not aromatic.</li><li><b>Imino acid:</b> proline is the cyclic amino acid; methionine is not an imino acid.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q21">
+  <b>21. In Passage 2, replacing cysteine with serine would most directly be expected to:</b>
+  <div class="choice" onclick="selectChoice('q21', this, false)">A. Create new disulfide bonds through serine hydroxyl groups</div><div class="choice" onclick="selectChoice('q21', this, false)">B. Increase the protein’s net negative charge at physiologic pH</div><div class="choice" onclick="selectChoice('q21', this, true)">C. Reduce covalent stabilization and decrease protein stability under oxidizing conditions</div><div class="choice" onclick="selectChoice('q21', this, false)">D. Make the protein aromatic-rich and more hydrophobic overall</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Serine cannot form disulfide bonds, so the stabilizing covalent crosslinks are lost, often reducing stability for disulfide-rich proteins.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Serine disulfides:</b> –OH does not form disulfides.</li><li><b>Net negative charge:</b> serine is uncharged at physiologic pH.</li><li><b>Aromatic-rich:</b> serine is nonaromatic.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="passage-header">
+  <span>Passage 3: Interpreting Protein Sequence Annotations</span>
+  <button class="reason-btn" id="p3-btn" onclick="toggleReasoning('p3')">How to reason</button>
+</div>
+<div class="passage-box">
+<p>A clinician reviews a genetic report describing a single amino acid substitution in a membrane-associated protein: "E120K." The report notes that the mutated residue is located in a region that is normally exposed to the aqueous cytosol. The patient’s symptoms suggest altered protein interactions rather than complete loss of the protein.</p>
+<p>In a lab follow-up, researchers compare the wild-type and mutant proteins in a model membrane system. They observe that the mutant protein has a higher tendency to form abnormal electrostatic interactions with nearby residues and with cytosolic binding partners. They also note that the protein’s hydrophobic segments remain embedded in the membrane.</p>
+<p>A trainee proposes that if the same substitution occurred within a deeply hydrophobic segment, the effect might differ substantially. The supervising scientist asks the trainee to justify that prediction using amino acid side-chain properties and hydrophobic/hydrophilic reasoning.</p>
+</div>
+<div class="reasoning-box" id="p3-reason">
+  <p><b>How to reason:</b></p>
+  <ol>
+    <li>Decode the mutation notation: the first letter is the original residue, the number is the position, and the last letter is the new residue.</li>
+<li>Translate the letters to chemistry: E is <span class="kw">glutamate</span> (negatively charged at pH 7.4); K is <span class="kw">lysine</span> (positively charged), <span class="kw">so</span> the substitution flips the sign of charge.</li>
+<li>Use location reasoning: a charged residue on a <span class="kw">protein surface</span> can participate in <span class="kw">electrostatic</span> interactions; changing its charge can alter binding and signaling.</li>
+<li>Contrast with a <span class="kw">hydrophobic</span> segment: strongly <span class="kw">hydrophobic</span> regions favor residues like Leu, Ile, Val, Phe; introducing a charged residue can disrupt <span class="kw">membrane</span> embedding or local structure.</li>
+<li>Choose the option that integrates notation + charge + environment (aqueous vs <span class="kw">hydrophobic</span>), not just the correct letter mapping.</li>
+  </ol>
+</div>
+
+<div class="question" id="q22">
+  <b>22. From Passage 3, what does the notation E120K indicate?</b>
+  <div class="choice" onclick="selectChoice('q22', this, false)">A. Glutamine at position 120 has been replaced by lysine</div><div class="choice" onclick="selectChoice('q22', this, true)">B. Glutamate at position 120 has been replaced by lysine</div><div class="choice" onclick="selectChoice('q22', this, false)">C. Lysine at position 120 has been replaced by glutamate</div><div class="choice" onclick="selectChoice('q22', this, false)">D. Glutamate at position 120 has been replaced by arginine</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>E is glutamate and K is lysine; the number is the residue position in the sequence.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Glutamine:</b> is Q, not E.</li><li><b>Reversed:</b> K120E would indicate lysine replaced by glutamate.</li><li><b>Arginine:</b> is R, not K.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q23">
+  <b>23. Which chemical change is introduced by the E120K substitution (Passage 3) at physiologic pH?</b>
+  <div class="choice" onclick="selectChoice('q23', this, false)">A. A change from a hydrophobic side chain to a hydrophobic side chain</div><div class="choice" onclick="selectChoice('q23', this, true)">B. A change from a negative side chain to a positive side chain</div><div class="choice" onclick="selectChoice('q23', this, false)">C. A change from an uncharged amide to a negatively charged carboxylate</div><div class="choice" onclick="selectChoice('q23', this, false)">D. A change from a thiol to a thioether</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: B</b></p>
+<p>Glutamate is negatively charged at pH 7.4; lysine is positively charged, so the substitution reverses charge and can alter electrostatic interactions.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Hydrophobic to hydrophobic:</b> neither residue is hydrophobic.</li><li><b>Amide to carboxylate:</b> describes Gln/Asn to Glu/Asp, not Glu to Lys.</li><li><b>Thiol to thioether:</b> refers to cysteine vs methionine.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+<div class="question" id="q24">
+  <b>24. If the E120K substitution occurred within a deeply hydrophobic membrane segment (Passage 3), what would be the most likely consequence?</b>
+  <div class="choice" onclick="selectChoice('q24', this, false)">A. It would increase hydrophobicity and strengthen membrane anchoring</div><div class="choice" onclick="selectChoice('q24', this, false)">B. It would create a new disulfide bond that anchors the segment</div><div class="choice" onclick="selectChoice('q24', this, true)">C. It could destabilize membrane embedding by introducing a charged residue into a hydrophobic environment</div><div class="choice" onclick="selectChoice('q24', this, false)">D. It would convert the residue into an aromatic ring that stacks with lipids</div>
+  <div class="feedback fb-correct correct"><span class="icon">✅</span>Correct</div>
+  <div class="feedback fb-incorrect incorrect"><span class="icon">❌</span>Incorrect</div>
+  <details class="explain"><summary>Show explanation</summary>
+    <div class="explain-body">
+      
+<p><b>Correct Answer: C</b></p>
+<p>Hydrophobic membrane segments favor nonpolar residues. Introducing a charged lysine can be energetically unfavorable and disrupt local structure or insertion.</p>
+<p><b>Why the other choices are not best:</b></p>
+<ul><li><b>Increase hydrophobicity:</b> lysine is charged and hydrophilic.</li><li><b>New disulfide bond:</b> requires cysteine thiols.</li><li><b>Aromatic ring:</b> lysine is not aromatic.</li></ul>
+
+    </div>
+  </details>
+</div>
+
+
+</body>
+</html>
