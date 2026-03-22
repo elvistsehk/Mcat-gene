@@ -95,7 +95,7 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Aria
     <div class="left"><div>MCAT Nervous System</div></div>
     <div class="timer" id="timerWrap" aria-label="Passage timer">
       <span class="timer-label">Timer</span>
-      <span class="timer-time" id="timerDisplay">10:00</span>
+      <span class="timer-time" id="timerDisplay">30:00</span>
       <button class="timer-btn" id="timerStart" type="button">Start</button>
       <button class="timer-btn" id="timerPause" type="button">Pause</button>
       <button class="timer-btn" id="timerReset" type="button">Reset</button>
@@ -593,7 +593,7 @@ let currentIndex = 0;
 let currentPassage = 0;
 let highlightMode = false;
 let timer = null;
-const passageRemaining = passages.map(() => 10 * 60);
+const passageRemaining = passages.map(() => 30 * 60);
 
 function formatTime(total){
   const m = String(Math.floor(total/60)).padStart(2,'0');
@@ -639,7 +639,7 @@ function setPassage(idx){
 }
 document.getElementById('timerStart').addEventListener('click', startTimer);
 document.getElementById('timerPause').addEventListener('click', stopTimer);
-document.getElementById('timerReset').addEventListener('click', function(){ stopTimer(); passageRemaining[currentPassage] = 10 * 60; renderTimer(); });
+document.getElementById('timerReset').addEventListener('click', function(){ stopTimer(); passageRemaining[currentPassage] = 30 * 60; renderTimer(); });
 
 function showQuestion(num){
   currentIndex = qOrder.indexOf(num);

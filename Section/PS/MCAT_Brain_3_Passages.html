@@ -118,7 +118,7 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Aria
           <div class="subbar">
             <div class="timer" aria-label="Passage timer">
               <span class="timer-label">Timer</span>
-              <span class="timer-time">10:00</span>
+              <span class="timer-time">22:00</span>
               <button class="timer-btn timerStart" type="button">Start</button>
               <button class="timer-btn timerPause" type="button">Pause</button>
               <button class="timer-btn timerReset" type="button">Reset</button>
@@ -149,7 +149,7 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Aria
           <div class="subbar">
             <div class="timer" aria-label="Passage timer">
               <span class="timer-label">Timer</span>
-              <span class="timer-time">10:00</span>
+              <span class="timer-time">22:00</span>
               <button class="timer-btn timerStart" type="button">Start</button>
               <button class="timer-btn timerPause" type="button">Pause</button>
               <button class="timer-btn timerReset" type="button">Reset</button>
@@ -180,7 +180,7 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Aria
           <div class="subbar">
             <div class="timer" aria-label="Passage timer">
               <span class="timer-label">Timer</span>
-              <span class="timer-time">10:00</span>
+              <span class="timer-time">22:00</span>
               <button class="timer-btn timerStart" type="button">Start</button>
               <button class="timer-btn timerPause" type="button">Pause</button>
               <button class="timer-btn timerReset" type="button">Reset</button>
@@ -283,7 +283,7 @@ class PassageController{
     const startBtn = this.section.querySelector('.timerStart');
     const pauseBtn = this.section.querySelector('.timerPause');
     const resetBtn = this.section.querySelector('.timerReset');
-    let remaining = 10 * 60;
+    let remaining = 22 * 60;
     let timer = null;
     const render = ()=>{
       display.textContent = formatTime(remaining);
@@ -297,7 +297,7 @@ class PassageController{
       }, 1000);
     });
     pauseBtn.addEventListener('click', ()=>{ if(timer){ clearInterval(timer); timer = null; } });
-    resetBtn.addEventListener('click', ()=>{ if(timer){ clearInterval(timer); timer = null; } remaining = 10 * 60; render(); });
+    resetBtn.addEventListener('click', ()=>{ if(timer){ clearInterval(timer); timer = null; } remaining = 22 * 60; render(); });
     render();
   }
   showQuestion(num){
