@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MCAT Nervous System Passages</title>
+<style>
+:root{
+  --blue:#1f6fae;
+  --blue2:#2d7fbf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#d7dee8;
+  --good:#118a4a;
+  --bad:#c0262d;
+  --accent:#1f67d6;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--blue);color:#fff;padding:12px 16px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .left{display:flex;flex-direction:column;gap:2px}
+.timer{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);border-radius:10px;color:#fff;font-weight:800}
+.timer-label{opacity:.9;font-weight:700}
+.timer-time{min-width:60px;text-align:center;letter-spacing:.5px}
+.timer-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:5px 8px;font-weight:800;cursor:pointer}
+.timer-btn:hover{background:rgba(255,255,255,.18)}
+.timer-danger{background:rgba(192,38,45,.35)!important;border-color:rgba(255,255,255,.55)!important}
+.container{width:100%;max-width:none;margin:0 auto;padding:12px;height:calc(100vh - 60px)}
+.split{display:flex;gap:0;height:100%}
+.pane{flex:1;min-width:0;height:100%}
+.vdiv{width:6px;background:linear-gradient(#cbd5e1,#cbd5e1);border-radius:3px;margin:0 10px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(0deg,var(--blue),var(--blue2));color:#fff;padding:10px 12px}
+.bar .title{font-weight:900;flex:1 1 auto;min-width:180px}
+.bar .barActions{display:flex;gap:10px;margin-left:auto;align-items:center}
+.iconbtn{height:40px;min-width:120px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:0 14px;font-weight:800;cursor:pointer;white-space:nowrap}
+.iconbtn:hover{background:rgba(255,255,255,.18)}
+.iconbtn.is-active,.iconbtn.active{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.7)}
+.content{padding:14px 16px;line-height:1.6;font-size:15px;flex:1;overflow:auto}
+#passageText{position:relative;-webkit-touch-callout:none}
+#passageText, #passageText *{-webkit-user-drag:none;user-drag:none}
+#passageText p{text-indent:1.5em;margin:10px 0}
+#passageText p.noindent{margin-top:0}
+.reason-box{white-space:normal;border:1px solid var(--border);background:#fbfdff;border-radius:10px;padding:14px 16px;margin-top:12px}
+.reason-box p{margin:0 0 8px 0}
+.reason-box ul{margin:0;padding-left:18px}
+.reason-box li{margin:8px 0;line-height:1.25}
+#reasonBox strong,#reasonBox .key{color:var(--accent);font-weight:700}
+.hl-layer{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hl-rect{position:absolute;background:rgba(255,245,157,0.75);border-radius:2px}
+#passageText > *:not(.hl-layer){position:relative;z-index:1}
+.subbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);background:#fbfdff}
+.chips{display:none}
+.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.qwrap{padding:12px;overflow:auto;flex:1}
+.qcard{display:none}
+.qcard.active{display:block}
+.qhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qmeta{font-size:13px;color:var(--muted);font-weight:800}
+.qstem{font-size:16px;font-weight:800;margin:8px 0 10px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px;cursor:pointer}
+.choice:hover{border-color:#b9c6d8}
+.choice input{margin-top:3px}
+.choice-letter{font-weight:950;min-width:28px}
+.choice.selected{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,132,198,.12)}
+.choice.correct{border-color:rgba(17,138,74,.6);box-shadow:0 0 0 3px rgba(17,138,74,.12)}
+.choice.incorrect{border-color:rgba(192,38,45,.55);box-shadow:0 0 0 3px rgba(192,38,45,.10)}
+.feedback{margin-top:10px;font-weight:950}
+.feedback.good{color:var(--good)}
+.feedback.bad{color:var(--bad)}
+.actions{display:flex;gap:8px;margin-top:10px}
+.explanation{margin-top:10px;border:1px solid var(--border);background:#fbfdff;border-radius:12px;padding:10px 12px}
+.exp-title{font-weight:950;margin:6px 0}
+.exp-text{color:#111827}
+.exp-list{margin:6px 0 0 18px}
+.exp-text strong,.explanation strong{color:var(--accent)}
+@media (max-width: 980px){
+  .split{flex-direction:column}
+  .vdiv{display:none}
+  .pane{height:auto}
+  .panel{height:auto;min-height:44vh}
+  .container{height:auto}
+}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="left"><div>MCAT Nervous System</div></div>
+    <div class="timer" id="timerWrap" aria-label="Passage timer">
+      <span class="timer-label">Timer</span>
+      <span class="timer-time" id="timerDisplay">10:00</span>
+      <button class="timer-btn" id="timerStart" type="button">Start</button>
+      <button class="timer-btn" id="timerPause" type="button">Pause</button>
+      <button class="timer-btn" id="timerReset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="split">
+      <div class="pane leftPane">
+        <div class="panel">
+          <div class="bar">
+            <div class="title" id="passageTitle">Passage 1 (Questions 1–5)</div>
+            <div class="barActions">
+              <button class="iconbtn" id="highlightBtn" type="button">Highlight</button>
+              <button class="iconbtn" id="clearHighlightBtn" type="button">Clear highlight</button>
+              <button class="iconbtn" id="toggleReason" type="button">How to reason</button>
+            </div>
+          </div>
+          <div class="content" id="passageText">
+            <div class="hl-layer" id="hlLayer" aria-hidden="true"></div>
+          </div>
+          <div class="reason-box" id="reasonBox" hidden></div>
+        </div>
+      </div>
+
+      <div class="vdiv"></div>
+
+      <div class="pane rightPane">
+        <div class="panel">
+          <div class="subbar">
+            <div class="chips" id="chips"></div>
+            <div class="right-actions">
+              <button class="btn" id="resetAll" type="button">Reset all</button>
+              <button class="btn primary" id="prevBtn" type="button">Previous</button>
+              <button class="btn primary" id="nextBtn" type="button">Next</button>
+            </div>
+          </div>
+
+          <div class="qwrap" id="qwrap">
+            <section class="qcard" id="card-1">
+  <div class="qhead"></div>
+  <div class="qstem">A patient quickly describes the heat stimulus accurately and can later lift the arm on command, but no immediate withdrawal occurs when the forearm is touched with the painful probe. Which site of damage best matches the passage?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q1" value="A"><span class="choice-letter">A.</span><span class="choice-text">Spinal interneuron circuits within the reflex arc</span></label>
+<label class="choice"><input type="radio" name="q1" value="B"><span class="choice-letter">B.</span><span class="choice-text">The sympathetic branch of the autonomic nervous system</span></label>
+<label class="choice"><input type="radio" name="q1" value="C"><span class="choice-letter">C.</span><span class="choice-text">The sensory receptors in the skin only</span></label>
+<label class="choice"><input type="radio" name="q1" value="D"><span class="choice-letter">D.</span><span class="choice-text">The thalamic relay for conscious sensory perception</span></label>
+  </div>
+  <div class="feedback" id="fb-1"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="1" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-1" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>A</strong>. The passage states that spinal interneurons can relay sensory input into a rapid protective withdrawal while information is also sent to the brain. If conscious detection and delayed voluntary movement are preserved but the rapid withdrawal is lost, the missing component is the spinal interneuron portion of the reflex arc.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>B</strong>: Autonomic damage would not specifically abolish only the rapid somatic withdrawal while sparing sensation and later voluntary movement.</li>
+<li><strong>C</strong>: If the sensory receptors or afferent limb were lost, the patient would not describe the heat normally.</li>
+<li><strong>D</strong>: The patient does consciously detect the stimulus, so a thalamic relay failure is not the best fit.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-2">
+  <div class="qhead"></div>
+  <div class="qstem">Group P reported the heat normally and showed sweating and tachycardia, yet the stimulated arm neither withdrew reflexively nor moved voluntarily on request. Which pathway was most clearly preserved in that group?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q2" value="A"><span class="choice-letter">A.</span><span class="choice-text">Somatic motor output to the arm</span></label>
+<label class="choice"><input type="radio" name="q2" value="B"><span class="choice-letter">B.</span><span class="choice-text">Spinal interneuron signaling to skeletal muscle</span></label>
+<label class="choice"><input type="radio" name="q2" value="C"><span class="choice-letter">C.</span><span class="choice-text">Sympathetic autonomic output</span></label>
+<label class="choice"><input type="radio" name="q2" value="D"><span class="choice-letter">D.</span><span class="choice-text">Parasympathetic outflow to the gut</span></label>
+  </div>
+  <div class="feedback" id="fb-2"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="2" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-2" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>C</strong>. Sweating and tachycardia are classic fight-or-flight responses, so the passage indicates that autonomic sympathetic output remained intact. The inability to withdraw or voluntarily move the arm points instead to damage in the somatic motor pathway to that limb.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: Somatic motor output was the impaired component, because neither reflexive nor commanded arm movement occurred.</li>
+<li><strong>B</strong>: If the spinal relay to skeletal muscle were preserved, at least the rapid withdrawal would still be expected.</li>
+<li><strong>D</strong>: The physiologic pattern given is sympathetic, not parasympathetic.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-3">
+  <div class="qhead"></div>
+  <div class="qstem">The investigators found that EEG and regional cerebral blood-flow changes associated with cortical processing increased only after withdrawal had already begun. Which interpretation is most consistent with that result?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q3" value="A"><span class="choice-letter">A.</span><span class="choice-text">The reflex arc requires prior cortical interpretation of pain before movement can begin</span></label>
+<label class="choice"><input type="radio" name="q3" value="B"><span class="choice-letter">B.</span><span class="choice-text">Autonomic responses are generated only after the cortex has fully analyzed the stimulus</span></label>
+<label class="choice"><input type="radio" name="q3" value="C"><span class="choice-letter">C.</span><span class="choice-text">Peripheral sensory neurons are unnecessary for withdrawal if the cortex is intact</span></label>
+<label class="choice"><input type="radio" name="q3" value="D"><span class="choice-letter">D.</span><span class="choice-text">Protective withdrawal can be initiated at the spinal level before conscious cortical processing is fully engaged</span></label>
+  </div>
+  <div class="feedback" id="fb-3"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="3" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-3" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>D</strong>. The passage explicitly contrasts early withdrawal with later cortical EEG and blood-flow changes. That pattern means the protective movement can begin through spinal circuitry before the brain has completed conscious interpretation.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: This reverses the passage’s timing evidence.</li>
+<li><strong>B</strong>: The passage does not claim autonomic responses require full cortical analysis first.</li>
+<li><strong>C</strong>: The reflex still depends on sensory input reaching the spinal cord; intact cortex alone would not substitute for missing afferent input.</li>
+<li><strong>D</strong>: This is the only option that matches both the timing data and the reflex-arc explanation.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-4">
+  <div class="qhead"></div>
+  <div class="qstem">A student stimulates one autonomic branch and observes constricted pupils, increased gut motility, and slowed heart rate. Based on the passage, which branch was activated?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q4" value="A"><span class="choice-letter">A.</span><span class="choice-text">Sympathetic outflow</span></label>
+<label class="choice"><input type="radio" name="q4" value="B"><span class="choice-letter">B.</span><span class="choice-text">Parasympathetic outflow</span></label>
+<label class="choice"><input type="radio" name="q4" value="C"><span class="choice-letter">C.</span><span class="choice-text">Somatic motor efferents</span></label>
+<label class="choice"><input type="radio" name="q4" value="D"><span class="choice-letter">D.</span><span class="choice-text">Afferent sensory fibers</span></label>
+  </div>
+  <div class="feedback" id="fb-4"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="4" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-4" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>B</strong>. The passage reports that parasympathetic stimulation produces the opposite of sympathetic fight-or-flight effects: smaller pupils, greater digestive activity, and slower heart rate.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: Sympathetic stimulation enlarged pupils, decreased gut motility, and increased heart rate.</li>
+<li><strong>C</strong>: Somatic motor fibers control voluntary skeletal muscle, not these visceral patterns.</li>
+<li><strong>D</strong>: Afferent fibers carry sensory information toward the CNS rather than directly generating this coordinated visceral output.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-5">
+  <div class="qhead"></div>
+  <div class="qstem">Suppose a new patient has damage limited to the afferent sensory neuron carrying pain information from the forearm, while spinal interneurons, motor neurons, and the brain remain intact. Which outcome would most likely be seen during the heat-probe task?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q5" value="A"><span class="choice-letter">A.</span><span class="choice-text">Rapid withdrawal would occur before conscious awareness, but heart rate would not change</span></label>
+<label class="choice"><input type="radio" name="q5" value="B"><span class="choice-letter">B.</span><span class="choice-text">Only voluntary movement would remain, because reflexes do not require sensory input</span></label>
+<label class="choice"><input type="radio" name="q5" value="C"><span class="choice-letter">C.</span><span class="choice-text">Neither rapid withdrawal nor conscious report of the forearm stimulus would occur</span></label>
+<label class="choice"><input type="radio" name="q5" value="D"><span class="choice-letter">D.</span><span class="choice-text">The patient would show normal withdrawal because the cortex can replace the missing sensory neuron</span></label>
+  </div>
+  <div class="feedback" id="fb-5"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="5" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-5" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>C</strong>. Both the reflex and the conscious report depend on sensory information first entering the nervous system from the stimulated forearm. If the afferent limb is interrupted, the spinal cord and brain do not receive the relevant signal from that site.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: A reflex still needs sensory input to start the circuit.</li>
+<li><strong>B</strong>: Voluntary movement of the arm might be possible in general, but the patient would not know to move in response to an undetected forearm heat stimulus.</li>
+<li><strong>D</strong>: The cortex cannot compensate for a missing incoming signal that never reaches the CNS.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-6">
+  <div class="qhead"></div>
+  <div class="qstem">A patient has intact vision and hearing apparatus but is unreliable at detecting flashes and tones, while olfactory testing remains normal. Which forebrain structure is the most likely site of dysfunction?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q6" value="A"><span class="choice-letter">A.</span><span class="choice-text">Hypothalamus</span></label>
+<label class="choice"><input type="radio" name="q6" value="B"><span class="choice-letter">B.</span><span class="choice-text">Thalamus</span></label>
+<label class="choice"><input type="radio" name="q6" value="C"><span class="choice-letter">C.</span><span class="choice-text">Hippocampus</span></label>
+<label class="choice"><input type="radio" name="q6" value="D"><span class="choice-letter">D.</span><span class="choice-text">Occipital cortex</span></label>
+  </div>
+  <div class="feedback" id="fb-6"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="6" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-6" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>B</strong>. The passage states that the thalamus relays sensory information to the cortex, with smell as the major exception. A patient who misses multiple non-olfactory sensory cues despite intact peripheral organs fits a thalamic relay problem.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: Hypothalamic damage would be expected to disturb homeostasis and endocrine integration rather than selectively spare smell while disrupting other sensory relay.</li>
+<li><strong>C</strong>: Hippocampal injury primarily affects memory consolidation, not broad non-olfactory cue detection.</li>
+<li><strong>D</strong>: An occipital lesion could explain visual problems but would not also account for impaired auditory detection with spared olfaction.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-7">
+  <div class="qhead"></div>
+  <div class="qstem">Which additional finding would most strongly support placement of a lesion in Group H rather than in Group T or Group L?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q7" value="A"><span class="choice-letter">A.</span><span class="choice-text">Failure to consolidate a newly learned route through the ward</span></label>
+<label class="choice"><input type="radio" name="q7" value="B"><span class="choice-letter">B.</span><span class="choice-text">Reduced conditioned fear after a once-aversive tone</span></label>
+<label class="choice"><input type="radio" name="q7" value="C"><span class="choice-letter">C.</span><span class="choice-text">Preserved body temperature but inability to detect spoken words</span></label>
+<label class="choice"><input type="radio" name="q7" value="D"><span class="choice-letter">D.</span><span class="choice-text">Abnormal hunger and thirst with blunted anterior-pituitary responses to physiologic stress</span></label>
+  </div>
+  <div class="feedback" id="fb-7"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="7" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-7" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>D</strong>. Group H in the passage had hypothalamic damage, producing disturbed homeostasis and impaired endocrine integration through the hypophyseal portal connection to the anterior pituitary.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: That points more toward hippocampal involvement in memory consolidation.</li>
+<li><strong>B</strong>: That pattern fits amygdalar injury within the limbic system.</li>
+<li><strong>C</strong>: Poor spoken-word detection suggests a sensory or temporal-cortical problem, not the homeostatic-endocrine profile of hypothalamic injury.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-8">
+  <div class="qhead"></div>
+  <div class="qstem">A patient can immediately repeat seven digits but forgets a newly introduced medication schedule by the next morning. Based on the teaching session, which lesion best explains this combination?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q8" value="A"><span class="choice-letter">A.</span><span class="choice-text">Hippocampal damage affecting memory consolidation</span></label>
+<label class="choice"><input type="radio" name="q8" value="B"><span class="choice-letter">B.</span><span class="choice-text">Basal ganglia dysfunction impairing movement smoothing</span></label>
+<label class="choice"><input type="radio" name="q8" value="C"><span class="choice-letter">C.</span><span class="choice-text">Parietal-lobe damage impairing spatial manipulation</span></label>
+<label class="choice"><input type="radio" name="q8" value="D"><span class="choice-letter">D.</span><span class="choice-text">Thalamic dysfunction impairing sensory relay from all modalities</span></label>
+  </div>
+  <div class="feedback" id="fb-8"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="8" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-8" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>A</strong>. The passage specifically contrasts preserved immediate repetition with failure to retain new information over time in patients with hippocampal damage. That pattern indicates impaired consolidation rather than loss of attention or motor ability.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>B</strong>: Basal ganglia dysfunction mainly affects movement initiation, smoothness, and posture.</li>
+<li><strong>C</strong>: Parietal injury emphasizes somatic sensation and spatial processing deficits.</li>
+<li><strong>D</strong>: Thalamic problems would be expected to disrupt detection of incoming sensory information, not selectively impair overnight retention of new facts.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-9">
+  <div class="qhead"></div>
+  <div class="qstem">A patient understands the command “reach for the cup,” forms the plan, and has normal strength, yet movement begins hesitantly, looks poorly smoothed, and balance is unstable while standing. Which localization best matches the passage?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q9" value="A"><span class="choice-letter">A.</span><span class="choice-text">Amygdala</span></label>
+<label class="choice"><input type="radio" name="q9" value="B"><span class="choice-letter">B.</span><span class="choice-text">Temporal lobe</span></label>
+<label class="choice"><input type="radio" name="q9" value="C"><span class="choice-letter">C.</span><span class="choice-text">Basal ganglia</span></label>
+<label class="choice"><input type="radio" name="q9" value="D"><span class="choice-letter">D.</span><span class="choice-text">Hypothalamus</span></label>
+  </div>
+  <div class="feedback" id="fb-9"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="9" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-9" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>C</strong>. The passage assigns movement smoothing and postural stability to the basal ganglia. Preserved comprehension and motor planning make a cortical language problem less likely, and normal strength argues against a primary lower motor deficit.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: Amygdalar lesions are linked to fear and aggression changes, not this motor pattern.</li>
+<li><strong>B</strong>: Temporal cortex is associated with sound processing, speech perception, memory, and emotion rather than characteristic movement smoothing deficits.</li>
+<li><strong>D</strong>: Hypothalamic lesions mainly disturb homeostasis and endocrine regulation.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-10">
+  <div class="qhead"></div>
+  <div class="qstem">A right-handed patient can hear spoken language and recognize objects visually, but speech becomes nonfluent and effortful, planning is poor, and impulsive decisions increase. Which lesion is the best single explanation?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q10" value="A"><span class="choice-letter">A.</span><span class="choice-text">Right occipital lobe</span></label>
+<label class="choice"><input type="radio" name="q10" value="B"><span class="choice-letter">B.</span><span class="choice-text">Left frontal lobe</span></label>
+<label class="choice"><input type="radio" name="q10" value="C"><span class="choice-letter">C.</span><span class="choice-text">Left parietal lobe</span></label>
+<label class="choice"><input type="radio" name="q10" value="D"><span class="choice-letter">D.</span><span class="choice-text">Septal nuclei</span></label>
+  </div>
+  <div class="feedback" id="fb-10"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="10" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-10" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>B</strong>. The passage links the frontal lobe to executive function, impulse control, long-term planning, motor sequencing, and speech production. Because language is usually left-dominant, a left frontal lesion best fits nonfluent speech plus poor planning and impulsivity.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: Occipital lesions would primarily affect visual processing, which is preserved here.</li>
+<li><strong>C</strong>: Parietal damage would be more likely to disturb somatic sensation and spatial manipulation.</li>
+<li><strong>D</strong>: Septal nuclei are associated with pleasure-seeking and addiction, not the speech-production and planning pattern described.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-11">
+  <div class="qhead"></div>
+  <div class="qstem">Which statement best explains why the course treated the public-speaking response and the later cortisol rise as related but not identical phenomena?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q11" value="A"><span class="choice-letter">A.</span><span class="choice-text">Both changes are best explained by serotonin release from the adrenal cortex</span></label>
+<label class="choice"><input type="radio" name="q11" value="B"><span class="choice-letter">B.</span><span class="choice-text">Both changes reflect the same immediate neurotransmitter signal and therefore should peak simultaneously</span></label>
+<label class="choice"><input type="radio" name="q11" value="C"><span class="choice-letter">C.</span><span class="choice-text">The later cortisol rise proves the early pupil and heart-rate changes were parasympathetic</span></label>
+<label class="choice"><input type="radio" name="q11" value="D"><span class="choice-letter">D.</span><span class="choice-text">The early changes mainly reflect sympathetic epinephrine/norepinephrine signaling, whereas the later cortisol rise reflects endocrine output from the adrenal cortex</span></label>
+  </div>
+  <div class="feedback" id="fb-11"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="11" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-11" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>D</strong>. The passage distinguishes the rapid fight-or-flight pattern from the slower hormonal stress response. Immediate dilation of pupils and rising heart rate fit sympathetic catecholamine signaling, whereas cortisol comes later from the adrenal cortex.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: Serotonin is not described here as the adrenal-cortex mediator of the acute stress response.</li>
+<li><strong>B</strong>: The passage emphasizes different timing and different signaling modes, not a single simultaneous peak.</li>
+<li><strong>C</strong>: The early physiologic pattern is sympathetic, not parasympathetic.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-12">
+  <div class="qhead"></div>
+  <div class="qstem">A study drug raises pain tolerance during a cold-pressor task but leaves light-touch detection unchanged. Which endogenous signaling system would this most closely resemble?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q12" value="A"><span class="choice-letter">A.</span><span class="choice-text">Endorphin and enkephalin pathways</span></label>
+<label class="choice"><input type="radio" name="q12" value="B"><span class="choice-letter">B.</span><span class="choice-text">Glutamatergic excitatory pathways</span></label>
+<label class="choice"><input type="radio" name="q12" value="C"><span class="choice-letter">C.</span><span class="choice-text">Dopaminergic motor pathways</span></label>
+<label class="choice"><input type="radio" name="q12" value="D"><span class="choice-letter">D.</span><span class="choice-text">Cholinergic neuromuscular signaling</span></label>
+  </div>
+  <div class="feedback" id="fb-12"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="12" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-12" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>A</strong>. The passage says endorphins and enkephalins act as natural painkillers. The fact that pain tolerance changes without erasing ordinary touch sensation further supports selective modulation of pain processing rather than broad sensory shutdown.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>B</strong>: Glutamate is described mainly as an excitatory brain transmitter, not a natural analgesic system.</li>
+<li><strong>C</strong>: Dopamine in this passage is linked to smooth movement and posture.</li>
+<li><strong>D</strong>: Acetylcholine is important at skeletal muscle, parasympathetic targets, and alertness, but it is not presented here as the main endogenous analgesic system.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-13">
+  <div class="qhead"></div>
+  <div class="qstem">A patient with recurrent seizures improves after treatment that strengthens inhibitory signaling in the brain. Which neurotransmitter was most likely enhanced?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q13" value="A"><span class="choice-letter">A.</span><span class="choice-text">Glutamate</span></label>
+<label class="choice"><input type="radio" name="q13" value="B"><span class="choice-letter">B.</span><span class="choice-text">Norepinephrine</span></label>
+<label class="choice"><input type="radio" name="q13" value="C"><span class="choice-letter">C.</span><span class="choice-text">GABA</span></label>
+<label class="choice"><input type="radio" name="q13" value="D"><span class="choice-letter">D.</span><span class="choice-text">Dopamine</span></label>
+  </div>
+  <div class="feedback" id="fb-13"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="13" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-13" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>C</strong>. The passage explicitly identifies GABA as a brain “stabilizer” and contrasts it with excitatory glutamate. Increasing inhibitory tone is the most direct way to reduce seizure tendency in the scenario presented.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: Glutamate is excitatory, so increasing it would tend to move in the opposite direction.</li>
+<li><strong>B</strong>: Norepinephrine is associated more with wakefulness and fight-or-flight responses.</li>
+<li><strong>D</strong>: Dopamine is discussed mainly in relation to movement smoothness and posture.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-14">
+  <div class="qhead"></div>
+  <div class="qstem">Family studies show a trait clusters in affected families, twin studies show higher concordance in monozygotic than dizygotic twins, and adoption studies show adoptees resemble biological parents more than adoptive parents while home environment still changes severity. What is the strongest conclusion?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q14" value="A"><span class="choice-letter">A.</span><span class="choice-text">Environment is irrelevant because adoptive parents do not determine the trait completely</span></label>
+<label class="choice"><input type="radio" name="q14" value="B"><span class="choice-letter">B.</span><span class="choice-text">Both genetics and environment contribute, with substantial heritable influence and environmental modification of expression</span></label>
+<label class="choice"><input type="radio" name="q14" value="C"><span class="choice-letter">C.</span><span class="choice-text">The trait must be caused by a single dominant gene</span></label>
+<label class="choice"><input type="radio" name="q14" value="D"><span class="choice-letter">D.</span><span class="choice-text">Only family studies are needed, because the three methods all answer the same question in the same way</span></label>
+  </div>
+  <div class="feedback" id="fb-14"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="14" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-14" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>B</strong>. The passage emphasizes convergence across methods. Greater similarity to biological parents and higher monozygotic concordance indicate an important genetic contribution, while the effect of the adoptive home on severity shows that environment still matters.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: The passage explicitly rejects an all-nurture or all-nature interpretation.</li>
+<li><strong>C</strong>: These study designs do not by themselves prove a single-gene dominant mechanism.</li>
+<li><strong>D</strong>: Each method has limitations; the point of the passage is that the case becomes strongest when different methods converge.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-15">
+  <div class="qhead"></div>
+  <div class="qstem">A toxin causes skeletal-muscle weakness, reduced salivation, and impaired gastrointestinal “rest-and-digest” activity, while pain perception and mood remain unchanged. Which signaling molecule is most directly implicated by that pattern?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q15" value="A"><span class="choice-letter">A.</span><span class="choice-text">Serotonin</span></label>
+<label class="choice"><input type="radio" name="q15" value="B"><span class="choice-letter">B.</span><span class="choice-text">Endorphin</span></label>
+<label class="choice"><input type="radio" name="q15" value="C"><span class="choice-letter">C.</span><span class="choice-text">Epinephrine</span></label>
+<label class="choice"><input type="radio" name="q15" value="D"><span class="choice-letter">D.</span><span class="choice-text">Acetylcholine</span></label>
+  </div>
+  <div class="feedback" id="fb-15"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="15" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-15" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>D</strong>. The passage presents acetylcholine as unusual because it participates at skeletal muscle in the somatic nervous system and also in the parasympathetic nervous system. A single toxin that weakens voluntary muscle contraction and blunts parasympathetic secretory/gut effects therefore most strongly suggests reduced cholinergic signaling.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: Serotonin is linked here to mood, sleep, eating, and dreaming rather than neuromuscular plus parasympathetic failure.</li>
+<li><strong>B</strong>: Endorphins mainly modulate pain.</li>
+<li><strong>C</strong>: Epinephrine is associated with sympathetic arousal, not the combined somatic-neuromuscular and parasympathetic deficits described.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-16">
+  <div class="qhead"></div>
+  <div class="qstem">During a newborn visit, brushing the infant’s cheek causes the infant to turn toward the stimulus and open the mouth. Which interpretation best fits the passage?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q16" value="A"><span class="choice-letter">A.</span><span class="choice-text">This is a normal rooting reflex that supports feeding early in life</span></label>
+<label class="choice"><input type="radio" name="q16" value="B"><span class="choice-letter">B.</span><span class="choice-text">This is evidence of abnormally persistent Babinski signaling</span></label>
+<label class="choice"><input type="radio" name="q16" value="C"><span class="choice-letter">C.</span><span class="choice-text">This shows that fine motor control has matured from core to periphery</span></label>
+<label class="choice"><input type="radio" name="q16" value="D"><span class="choice-letter">D.</span><span class="choice-text">This indicates that neural crest cells failed to migrate properly</span></label>
+  </div>
+  <div class="feedback" id="fb-16"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="16" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-16" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>A</strong>. The passage identifies turning toward a cheek stimulus as the rooting reflex and notes that primitive reflexes in infancy often serve protective or survival-related roles such as feeding.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>B</strong>: Babinski is elicited by stroking the sole and produces toe extension with fanning.</li>
+<li><strong>C</strong>: The response is a primitive reflex, not evidence of mature fine motor sequencing.</li>
+<li><strong>D</strong>: The vignette concerns a normal early-life reflex, not an embryologic migration defect.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-17">
+  <div class="qhead"></div>
+  <div class="qstem">An experimental embryo develops a normal neural tube but loses most neural crest cells shortly after neurulation. Which structure would still arise most directly from the tissue that remains intact?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q17" value="A"><span class="choice-letter">A.</span><span class="choice-text">A broad set of migratory peripheral derivatives throughout the body</span></label>
+<label class="choice"><input type="radio" name="q17" value="B"><span class="choice-letter">B.</span><span class="choice-text">The central nervous system</span></label>
+<label class="choice"><input type="radio" name="q17" value="C"><span class="choice-letter">C.</span><span class="choice-text">The notochord itself</span></label>
+<label class="choice"><input type="radio" name="q17" value="D"><span class="choice-letter">D.</span><span class="choice-text">Primitive reflexes that appear only after infancy</span></label>
+  </div>
+  <div class="feedback" id="fb-17"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="17" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-17" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>B</strong>. The passage states that the neural tube becomes the CNS, whereas neural crest cells migrate and form many other tissues. If the neural tube is preserved, CNS formation is the most direct retained outcome.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: That description fits neural crest derivatives, the very population that was lost.</li>
+<li><strong>C</strong>: The notochord is the inducer of neurulation, not the product of the intact neural tube.</li>
+<li><strong>D</strong>: Primitive reflexes are infant neurologic behaviors, not embryologic tissues derived directly from the neural tube.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-18">
+  <div class="qhead"></div>
+  <div class="qstem">A 10-month-old infant has good trunk stability and transfers objects from one hand to the other but does not yet walk independently. Which conclusion is most supported by the clinic’s framework?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q18" value="A"><span class="choice-letter">A.</span><span class="choice-text">The child must have a serious disorder because grasp-related skills should appear only after walking</span></label>
+<label class="choice"><input type="radio" name="q18" value="B"><span class="choice-letter">B.</span><span class="choice-text">The findings prove a persistent primitive reflex is blocking lower-limb development</span></label>
+<label class="choice"><input type="radio" name="q18" value="C"><span class="choice-letter">C.</span><span class="choice-text">The overall pattern can still be normal because motor development tends to progress from head to toe and from core to periphery</span></label>
+<label class="choice"><input type="radio" name="q18" value="D"><span class="choice-letter">D.</span><span class="choice-text">The child’s language development must also be severely delayed</span></label>
+  </div>
+  <div class="feedback" id="fb-18"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="18" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-18" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>C</strong>. The passage explicitly gives this type of reassurance: stable head and trunk control plus improving distal hand use can precede independent walking because motor development generally follows head-to-toe and core-to-periphery sequencing.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: The passage warns against overinterpreting a single missing skill when the overall developmental pattern is appropriate.</li>
+<li><strong>B</strong>: No primitive-reflex persistence is described here.</li>
+<li><strong>D</strong>: Motor timing alone does not prove severe language delay.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-19">
+  <div class="qhead"></div>
+  <div class="qstem">An older child who had long since lost primitive reflexes shows a Babinski response again after a neurologic injury. Which inference best matches the passage?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q19" value="A"><span class="choice-letter">A.</span><span class="choice-text">The response confirms accelerated normal development</span></label>
+<label class="choice"><input type="radio" name="q19" value="B"><span class="choice-letter">B.</span><span class="choice-text">The child is now entering the stage when rooting reflex should emerge</span></label>
+<label class="choice"><input type="radio" name="q19" value="C"><span class="choice-letter">C.</span><span class="choice-text">The finding is irrelevant because Babinski is normal at all ages</span></label>
+<label class="choice"><input type="radio" name="q19" value="D"><span class="choice-letter">D.</span><span class="choice-text">A primitive reflex can reappear in certain nervous-system disorders, so the sign is abnormal in this developmental context</span></label>
+  </div>
+  <div class="feedback" id="fb-19"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="19" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-19" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>D</strong>. The passage states that primitive reflexes are expected early in infancy, usually fade with maturation, and can reappear later in life in some neurologic disorders. The same sign therefore has a different meaning in an older injured child than in a newborn.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>A</strong>: Reappearance after maturity is not evidence of accelerated normality.</li>
+<li><strong>B</strong>: Rooting and Babinski are different reflexes, and the context here is an older child after injury.</li>
+<li><strong>C</strong>: The passage directly contradicts this claim by emphasizing developmental context.</li>
+    </ul>
+  </div>
+</section>
+<section class="qcard" id="card-20">
+  <div class="qhead"></div>
+  <div class="qstem">Which child’s developmental pattern best fits the directional rules emphasized by the pediatrician?</div>
+  <div class="choices">
+    <label class="choice"><input type="radio" name="q20" value="A"><span class="choice-letter">A.</span><span class="choice-text">Head control becomes reliable before refined finger manipulation, and social focus gradually expands from caregivers toward other people</span></label>
+<label class="choice"><input type="radio" name="q20" value="B"><span class="choice-letter">B.</span><span class="choice-text">Fine pincer movements appear before stable head control, and peer-oriented play precedes attachment to caregivers</span></label>
+<label class="choice"><input type="radio" name="q20" value="C"><span class="choice-letter">C.</span><span class="choice-text">Language complexity should decrease temporarily whenever gross motor ability improves</span></label>
+<label class="choice"><input type="radio" name="q20" value="D"><span class="choice-letter">D.</span><span class="choice-text">Primitive reflexes should strengthen throughout childhood as voluntary control matures</span></label>
+  </div>
+  <div class="feedback" id="fb-20"></div>
+  <div class="actions"><button class="btn" data-action="toggle-exp" data-q="20" disabled>Show explanation</button></div>
+  <div class="explanation" id="exp-20" hidden>
+    <div class="exp-title">Explanation</div>
+    <div class="exp-text">The best answer is <strong>A</strong>. The passage states that motor abilities progress from head to toe and from core to periphery, social development shifts from parent-oriented to self-oriented to other-oriented, and language becomes increasingly complex rather than simpler.</div>
+    <div class="exp-title">Why the other choices are not as good</div>
+    <ul class="exp-list">
+      <li><strong>B</strong>: This reverses both the motor and social developmental sequences described.</li>
+<li><strong>C</strong>: The passage says language generally becomes more complex with age, not less complex whenever motor skills advance.</li>
+<li><strong>D</strong>: Primitive reflexes normally fade with maturation rather than strengthening through childhood.</li>
+    </ul>
+  </div>
+</section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const qOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+const correct = {'1': 'A', '2': 'C', '3': 'D', '4': 'B', '5': 'C', '6': 'B', '7': 'D', '8': 'A', '9': 'C', '10': 'B', '11': 'D', '12': 'A', '13': 'C', '14': 'B', '15': 'D', '16': 'A', '17': 'B', '18': 'C', '19': 'D', '20': 'A'};
+const passageForQ = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 11: 2, 12: 2, 13: 2, 14: 2, 15: 2, 16: 3, 17: 3, 18: 3, 19: 3, 20: 3};
+const passages = [{'title': 'Passage 1 (Questions 1–5)', 'html': '<p>A rehabilitation laboratory compared several nervous-system pathways in volunteers and patients recovering from injury. The investigators began with the reminder that the nervous system can be organized in more than one way at the same time. One useful division is central nervous system versus peripheral nervous system: the brain and spinal cord belong to the central nervous system, whereas most cranial and spinal nerves belong to the peripheral nervous system. Another useful division is functional: somatic pathways govern voluntary skeletal-muscle action, whereas autonomic pathways govern largely automatic visceral responses. The autonomic system can then be divided again into sympathetic and parasympathetic branches.</p>\n<p>To illustrate these overlapping schemes, the researchers delivered a brief painful heat stimulus to the forearm while measuring three outcomes: how quickly the arm withdrew, when the participant pressed a button to indicate conscious detection, and whether heart rate changed. In healthy volunteers, the arm withdrew before the participant reported pain. The investigators emphasized that this timing difference should not be interpreted as evidence that the person “felt pain in the spinal cord.” Instead, the result was presented as an example of a reflex arc in which sensory neurons activate interneurons in the spinal cord, allowing a rapid protective motor response while information is also routed upward to the brain for conscious perception.</p>\n<p>Two patient groups were then studied. Group S had selective damage limited to spinal interneuron circuits in the cervical cord, but intact peripheral sensory and motor neurons. Group P had peripheral damage affecting the motor component of the somatic pathway to the arm, but intact sensation. During heat stimulation, Group S recognized the heat and could voluntarily move the arm after a delay, but no rapid withdrawal occurred. Group P described the heat normally and showed sweating and tachycardia, yet the stimulated arm did not withdraw or perform the requested voluntary movement.</p>\n<p>In a separate experiment, the team electrically stimulated either sympathetic or parasympathetic outflow while monitoring pupil diameter, gut motility, and heart rate. Sympathetic stimulation enlarged the pupils, decreased gut motility, and increased heart rate. Parasympathetic stimulation produced the opposite pattern. Because students often memorize these responses without understanding organization, the authors warned that an organ response can be autonomic even when the initial sensory cue arose from the external environment. Finally, scalp EEG and regional cerebral blood-flow recordings were used to study when cortical processing increased after the heat stimulus. Both measures changed after the reflex withdrawal had already begun.</p>', 'reason': '<ul><li>First identify which part of the pathway is being tested: <strong>afferent input</strong>, a <strong>spinal interneuron reflex</strong>, a <strong>somatic motor output</strong>, or an <strong>autonomic response</strong>.</li><li>Then separate what happens <strong>before conscious awareness</strong> from what requires <strong>brain processing</strong>. The passage repeatedly warns that a fast withdrawal does not prove the cortex has already interpreted the stimulus.</li><li>Use the experimental design carefully: lesion data, stimulation data, EEG timing, and physiologic measurements each answer different questions. Match the <strong>observation</strong> to the most likely <strong>anatomic division</strong> before choosing.</li></ul>'}, {'title': 'Passage 2 (Questions 6–10)', 'html': '<p>A neurology teaching service designed a set of bedside tasks to help students distinguish among major parts of the forebrain. The instructors began by warning that students often over-attribute every abnormal behavior to the cerebral cortex, even when a deeper forebrain structure is a better explanation. To address that problem, the service compared four patient groups and then related the findings back to cortical lobe functions and hemispheric specialization.</p>\n<p>Group T had a focal lesion that disrupted a thalamic nucleus. These patients had intact retinas, auditory apparatus, and peripheral nerves, yet they were unreliable at detecting externally presented sensory cues unless the cues were olfactory. The attending physician used this pattern to remind students that the thalamus acts as a relay station for sensory information, with smell being the major exception. Group H had hypothalamic damage. They performed normally on basic sensory tests and remembered word lists, but they showed poor temperature regulation, erratic hunger and thirst, and blunted endocrine responses after physiologic challenge. The attending connected these findings to the hypothalamus, which maintains homeostasis and communicates with the anterior pituitary through the hypophyseal portal system.</p>\n<p>Group B had pathology affecting the basal ganglia. These patients could understand instructions and generate a motor plan, but their movements began hesitantly, lacked smoothness, and were accompanied by postural instability. Group L had lesions within the limbic system. One subgroup with amygdalar injury showed reduced conditioned fear and less reactive aggression. Another subgroup with hippocampal damage could repeat a short list of digits immediately yet failed to retain newly learned information over time. The staff used this contrast to show that emotional salience and memory consolidation can both be limbic functions, but they are not identical.</p>\n<p>The final part of the session focused on the cerebral cortex. Patients with frontal-lobe injury had difficulty with impulse control, long-term planning, speech production, and voluntary motor sequencing. Parietal-lobe injury impaired spatial manipulation and awareness of somatic sensation. Occipital-lobe lesions impaired visual processing, and temporal-lobe lesions impaired sound processing, speech perception, memory, and emotion. In most patients on the ward, the left hemisphere remained dominant for language. The instructors stressed that localization should depend on the entire pattern rather than on one symptom alone.</p>', 'reason': '<ul><li>Start by locating the function in the correct <strong>forebrain structure</strong>: sensory relay, homeostasis-endocrine integration, movement smoothing, emotion-memory processing, or cortical specialization.</li><li>Do not stop at a single buzzword. Ask which result is the <strong>best fit</strong> for the full pattern in the passage. A memory deficit with preserved immediate repetition points to a different region than an impulsivity problem or a primary visual problem.</li><li>When the passage compares lesion groups, use both the <strong>behavioral task</strong> and the <strong>preserved abilities</strong> to rule out tempting distractors.</li></ul>'}, {'title': 'Passage 3 (Questions 11–15)', 'html': '<p>A behavioral-neuroscience course asked students to interpret behavior using both chemical signaling and study design. The instructor began with a common caution: a change in behavior may reflect neurotransmission, endocrine signaling, or both. Neurotransmitters are released by neurons and carry signals to another neuron or to an effector such as a muscle or gland, whereas hormones may act at more distant targets through the bloodstream. The nervous and endocrine systems are tied together especially through the hypothalamus and anterior pituitary.</p>\n<p>In one laboratory exercise, volunteers completed a stressful public-speaking task. During the first few seconds, their pupils dilated, heart rate rose, and attention sharpened. Blood assays obtained later showed elevated cortisol. The instructor pointed out that the immediate response reflected sympathetic activation involving epinephrine and norepinephrine, whereas the later hormonal profile reflected the adrenal cortex. In another exercise, a drug that reduced dopamine signaling caused slowed, poorly smoothed movement and unstable posture despite preserved muscle strength. A different compound increased pain tolerance without changing touch detection, consistent with endogenous opioid pathways involving endorphins and enkephalins.</p>\n<p>Students then compared several clinical vignettes. One patient with insomnia, depressed mood, and altered appetite improved when a medication increased serotonergic signaling. Another patient with recurrent seizures improved when inhibitory signaling in the brain was enhanced, illustrating the stabilizing role of GABA. The instructor contrasted this with glutamate, an excitatory transmitter. Acetylcholine was presented as a special case because it participates in the somatic nervous system at skeletal muscle, in the parasympathetic nervous system, and in the central nervous system where it contributes to alertness.</p>\n<p>To connect neurobiology with psychology, the class reviewed a trait related to impulsive risk taking. Family studies showed that the trait was more common within affected families than in the general population. Twin studies found higher concordance in monozygotic than dizygotic twins. Adoption studies found that adoptees resembled their biological parents more than their adoptive parents, although the adoptive home still influenced the severity of expression. The instructor concluded that for most behavioral traits, genes and environment both matter, and the strongest arguments come from convergence across methods rather than from any single study.</p>', 'reason': '<ul><li>Separate <strong>neurotransmitter</strong> explanations from <strong>hormonal</strong> explanations. The passage gives clues about timing, source, and target tissues.</li><li>Then ask whether the question is really about <strong>movement</strong>, <strong>mood and sleep</strong>, <strong>pain modulation</strong>, <strong>alertness and fight-or-flight</strong>, or <strong>behavioral genetics</strong>.</li><li>For family, twin, and adoption evidence, do not treat any single method as perfect. Use the pattern of concordance or parent-child similarity to infer the relative contribution of <strong>nature</strong> and <strong>nurture</strong>.</li></ul>'}, {'title': 'Passage 4 (Questions 16–20)', 'html': '<p>A developmental pediatrics clinic paired embryology teaching with infant follow-up visits. The supervising physician first reviewed neurulation. During early development, the notochord induces the overlying ectoderm to fold inward, forming a neural tube topped by neural crest cells. The physician emphasized that the neural tube becomes the central nervous system, whereas neural crest cells migrate widely and give rise to multiple tissues throughout the body. Students were warned not to confuse these two developmental populations just because both arise near the dorsal aspect of the embryo.</p>\n<p>The clinic then turned to primitive reflexes. At the newborn visit, brushing the cheek caused an infant to turn toward the stimulus and open the mouth, a rooting response that helps direct feeding. A sudden sensation of falling caused extension of the arms followed by slower retraction and crying, an example of the Moro reflex. Stroking the sole caused extension of the big toe with fanning of the other toes, and placing a finger in the palm triggered a grasp. The physician noted that these primitive reflexes are normal in early infancy, probably reflect protective or survival-related functions, and should fade as the nervous system matures. Their reappearance later in life can indicate neurologic disease.</p>\n<p>Parents were also taught to think about milestones as patterns rather than isolated tricks. Gross and fine motor control generally progress from head to toe and from the center of the body outward. For example, stable head control precedes refined finger manipulation. Social development tends to move from parent-oriented behavior to self-oriented behavior and then to increasing awareness of others. Language follows a similar principle of increasing complexity, moving from simpler forms of communication toward more elaborate expression.</p>\n<p>At one follow-up, a 10-month-old infant had good trunk stability and could transfer objects hand to hand, but still lacked independent walking. The pediatrician reassured the parents because the overall pattern still fit expected developmental sequencing. At another visit, an older child who had previously lost primitive reflexes now showed a Babinski response after a neurologic injury. The team used the case to remind students that normality depends on developmental context, not merely on whether a sign is present.</p>', 'reason': '<ul><li>Decide whether the question is asking about <strong>early embryologic origin</strong> or a later <strong>developmental milestone/reflex</strong>.</li><li>When infant reflexes are described, ask whether the response is expected at that age, whether it serves a <strong>protective</strong> role, and whether persistence or reappearance suggests nervous-system dysfunction.</li><li>For milestones, apply the directional rules in the passage: motor control tends to develop <strong>head to toe</strong> and <strong>core to periphery</strong>; social behavior shifts from parent-oriented to self-oriented to other-oriented; language grows more complex with age.</li></ul>'}];
+const $ = (s, root=document) => root.querySelector(s);
+const $all = (s, root=document) => Array.from(root.querySelectorAll(s));
+let currentIndex = 0;
+let currentPassage = 0;
+let highlightMode = false;
+let timer = null;
+const passageRemaining = passages.map(() => 10 * 60);
+
+function formatTime(total){
+  const m = String(Math.floor(total/60)).padStart(2,'0');
+  const s = String(total%60).padStart(2,'0');
+  return `${m}:${s}`;
+}
+function renderTimer(){
+  const rem = passageRemaining[currentPassage];
+  $('#timerDisplay').textContent = formatTime(rem);
+  $('#timerWrap').classList.toggle('timer-danger', rem <= 60);
+}
+function stopTimer(){
+  if (timer) { clearInterval(timer); timer = null; }
+}
+function startTimer(){
+  if (timer) return;
+  timer = setInterval(() => {
+    if (passageRemaining[currentPassage] > 0) {
+      passageRemaining[currentPassage] -= 1;
+      renderTimer();
+    } else {
+      stopTimer();
+    }
+  }, 1000);
+}
+function setPassage(idx){
+  if (idx === currentPassage && $('#passageText').dataset.loaded === String(idx)) {
+    renderTimer();
+    return;
+  }
+  stopTimer();
+  currentPassage = idx;
+  $('#passageTitle').textContent = passages[idx].title;
+  const pt = $('#passageText');
+  pt.innerHTML = '<div class="hl-layer" id="hlLayer" aria-hidden="true"></div>' + passages[idx].html;
+  pt.dataset.loaded = String(idx);
+  $('#reasonBox').innerHTML = passages[idx].reason;
+  const reasonBtn = $('#toggleReason');
+  $('#reasonBox').hidden = true;
+  reasonBtn.textContent = 'How to reason';
+  try{ clearHighlights(); }catch(e){}
+  renderTimer();
+}
+document.getElementById('timerStart').addEventListener('click', startTimer);
+document.getElementById('timerPause').addEventListener('click', stopTimer);
+document.getElementById('timerReset').addEventListener('click', function(){ stopTimer(); passageRemaining[currentPassage] = 10 * 60; renderTimer(); });
+
+function showQuestion(num){
+  currentIndex = qOrder.indexOf(num);
+  $all('.qcard').forEach(card => card.classList.remove('active'));
+  $('#card-' + num).classList.add('active');
+  $('#prevBtn').disabled = currentIndex === 0;
+  $('#nextBtn').disabled = currentIndex === qOrder.length - 1;
+  const p = passageForQ[num];
+  setPassage(p);
+  const active = $('#card-' + num);
+  const head = active.querySelector('.qhead');
+  head.innerHTML = `<div class="qmeta">Question ${num} of 20</div>`;
+}
+function getSelected(num){ const checked = $('input[name="q'+num+'"]:checked'); return checked ? checked.value : null; }
+function setFeedback(num, ok){ const fb = $('#fb-' + num); if (ok === null){ fb.textContent=''; fb.className='feedback'; return; } fb.textContent = ok ? 'Correct' : 'Incorrect'; fb.className = 'feedback ' + (ok ? 'good' : 'bad'); }
+function markChoices(num, selected){
+  const card = $('#card-' + num);
+  $all('.choice', card).forEach(function(lab){
+    lab.classList.remove('selected','correct','incorrect');
+    const input = lab.querySelector('input');
+    if (!input) return;
+    if (input.value === selected) lab.classList.add('selected');
+    if (selected) {
+      if (input.value === correct[String(num)]) lab.classList.add('correct');
+      if (input.value === selected && selected !== correct[String(num)]) lab.classList.add('incorrect');
+    }
+  });
+}
+function enableExplanation(num){ const card = $('#card-' + num); card.querySelector('button[data-action="toggle-exp"]').disabled = false; }
+function resetQuestion(num){
+  document.querySelectorAll('input[name="q'+num+'"]').forEach(i => i.checked = false);
+  setFeedback(num, null);
+  const card = $('#card-' + num);
+  $all('.choice', card).forEach(l => l.classList.remove('selected','correct','incorrect'));
+  const exp = $('#exp-' + num);
+  exp.hidden = true;
+  const btn = card.querySelector('button[data-action="toggle-exp"]');
+  btn.textContent = 'Show explanation';
+  btn.disabled = true;
+}
+function resetAll(){
+  try{ clearHighlights(); }catch(e){}
+  qOrder.forEach(n => resetQuestion(n));
+  passages.forEach((_,i) => passageRemaining[i] = 10*60);
+  stopTimer();
+  renderTimer();
+}
+
+$('#toggleReason').addEventListener('click', function(){
+  const box = $('#reasonBox');
+  box.hidden = !box.hidden;
+  this.textContent = box.hidden ? 'How to reason' : 'Hide reasoning';
+});
+$('#prevBtn').addEventListener('click', function(){ showQuestion(qOrder[Math.max(0, currentIndex-1)]); });
+$('#nextBtn').addEventListener('click', function(){ showQuestion(qOrder[Math.min(qOrder.length-1, currentIndex+1)]); });
+$('#resetAll').addEventListener('click', function(){ resetAll(); showQuestion(qOrder[0]); });
+document.addEventListener('change', function(e){
+  if (!(e.target && e.target.matches('input[type="radio"]'))) return;
+  const num = parseInt(e.target.name.replace('q',''),10);
+  const sel = getSelected(num);
+  const ok = sel === correct[String(num)];
+  setFeedback(num, ok);
+  markChoices(num, sel);
+  enableExplanation(num);
+});
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  if (btn.dataset.action === 'toggle-exp') {
+    const num = parseInt(btn.dataset.q,10);
+    const exp = $('#exp-' + num);
+    exp.hidden = !exp.hidden;
+    btn.textContent = exp.hidden ? 'Show explanation' : 'Hide explanation';
+  }
+});
+
+(function(){
+  const highlightBtn = document.getElementById('highlightBtn');
+  const clearHighlightBtn = document.getElementById('clearHighlightBtn');
+  let groups = [];
+  function getPassage(){ return document.getElementById('passageText'); }
+  function getLayer(){ return document.getElementById('hlLayer'); }
+  function clearHighlights(){
+    const layer = getLayer();
+    if (!layer) return;
+    while(layer.firstChild) layer.removeChild(layer.firstChild);
+    groups = [];
+  }
+  function undoLastHighlight(){
+    const layer = getLayer();
+    const g = groups.pop();
+    if (g && layer && g.parentNode === layer) layer.removeChild(g);
+  }
+  function createGroup(){
+    const layer = getLayer();
+    const g = document.createElement('div');
+    layer.appendChild(g);
+    groups.push(g);
+    return g;
+  }
+  function selectionWithinPassage(sel){
+    const passage = getPassage();
+    return !!(sel && sel.rangeCount && passage.contains(sel.anchorNode) && passage.contains(sel.focusNode));
+  }
+  function addRect(rect, base, group){
+    const passage = getPassage();
+    const div = document.createElement('div');
+    div.className = 'hl-rect';
+    div.style.top = (rect.top - base.top + passage.scrollTop) + 'px';
+    div.style.left = (rect.left - base.left + passage.scrollLeft) + 'px';
+    div.style.width = rect.width + 'px';
+    div.style.height = rect.height + 'px';
+    group.appendChild(div);
+  }
+  function highlightSelection(){
+    const passage = getPassage();
+    const sel = window.getSelection();
+    if(!selectionWithinPassage(sel)) return;
+    const range = sel.getRangeAt(0);
+    if(range.collapsed) return;
+    const base = passage.getBoundingClientRect();
+    const rects = Array.from(range.getClientRects()).filter(r=>r.width>0 && r.height>0);
+    if(!rects.length) return;
+    const group = createGroup();
+    rects.forEach(r=>addRect(r, base, group));
+    try{ sel.removeAllRanges(); }catch(_){}
+  }
+  function setMode(on){
+    highlightMode = !!on;
+    highlightBtn.classList.toggle('is-active', highlightMode);
+    highlightBtn.classList.toggle('active', highlightMode);
+  }
+  highlightBtn.addEventListener('click', (e)=>{ e.preventDefault(); setMode(!highlightMode); if (highlightMode) setTimeout(highlightSelection, 0); });
+  clearHighlightBtn.addEventListener('click', (e)=>{ e.preventDefault(); clearHighlightBtn.classList.add('is-active','active'); setTimeout(()=>clearHighlightBtn.classList.remove('is-active','active'), 180); undoLastHighlight(); });
+  document.addEventListener('mouseup', (e)=>{
+    const passage = getPassage();
+    if(!highlightMode || !passage.contains(e.target)) return;
+    setTimeout(highlightSelection, 0);
+  });
+  document.addEventListener('touchend', (e)=>{
+    const passage = getPassage();
+    if(!highlightMode || !passage.contains(e.target)) return;
+    setTimeout(highlightSelection, 0);
+  }, {passive:true});
+  window.clearHighlights = clearHighlights;
+})();
+
+window.addEventListener('DOMContentLoaded', function(){
+  qOrder.forEach(n => resetQuestion(n));
+  showQuestion(qOrder[0]);
+  renderTimer();
+});
+</script>
+</body>
+</html>
