@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Miller’s law, chunking, and the capacity of working memory</title>
+<style>
+
+:root{
+  --blue:#1f6fae;
+  --blue2:#2d7fbf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#d7dee8;
+  --good:#118a4a;
+  --bad:#c0262d;
+  --accent:#1f67d6;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--blue);color:#fff;padding:12px 16px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .left{display:flex;flex-direction:column;gap:2px}
+.timer{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);border-radius:10px;color:#fff;font-weight:800}
+.timer-label{opacity:.9;font-weight:700}
+.timer-time{min-width:60px;text-align:center;letter-spacing:.5px}
+.timer-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:5px 8px;font-weight:800;cursor:pointer}
+.timer-btn:hover{background:rgba(255,255,255,.18)}
+.timer-danger{background:rgba(192,38,45,.35)!important;border-color:rgba(255,255,255,.55)!important}
+.container{width:100%;max-width:none;margin:0 auto;padding:12px;height:calc(100vh - 60px)}
+.split{display:flex;gap:0;height:100%}
+.pane{flex:1;min-width:0;height:100%}
+.vdiv{width:6px;background:linear-gradient(#cbd5e1,#cbd5e1);border-radius:3px;margin:0 10px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(0deg,var(--blue),var(--blue2));color:#fff;padding:10px 12px}
+.bar .title{font-weight:900;flex:1 1 auto;min-width:180px}
+.bar .barActions{display:flex;gap:10px;margin-left:auto;align-items:center}
+.iconbtn{height:40px;min-width:120px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:0 14px;font-weight:800;cursor:pointer;white-space:nowrap}
+.iconbtn:hover{background:rgba(255,255,255,.18)}
+.iconbtn.is-active,.iconbtn.active{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.7)}
+.content{padding:14px 16px;line-height:1.6;font-size:15px;flex:1;overflow:auto}
+#passageText{position:relative;-webkit-touch-callout:none}
+#passageText, #passageText *{-webkit-user-drag:none;user-drag:none}
+#passageText p{text-indent:1.5em;margin:10px 0}
+#passageText p.noindent{text-indent:0}
+.figure{margin:0 0 14px 0}
+.figure img{width:100%;height:auto;border:1px solid var(--border);border-radius:10px;background:#fff}
+.figcap{font-size:13px;color:#475569;margin-top:6px}
+.tablebox{border:1px solid var(--border);border-radius:10px;background:#fff;overflow:hidden}
+.fig-table{width:100%;border-collapse:collapse;font-size:15px}
+.fig-table th,.fig-table td{padding:14px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.fig-table th{background:#f8fafc;text-align:left;color:#334155;font-weight:800}
+.fig-table tr:last-child td{border-bottom:none}
+.fig-table td:first-child{width:15%;font-weight:700;color:#475569}
+.fig-table td:nth-child(2){width:18%;font-weight:700;color:#475569}
+.reason-box{white-space:normal;border:1px solid var(--border);background:#fbfdff;border-radius:10px;padding:14px 16px;margin-top:12px}
+.reason-box p{margin:0 0 8px 0}
+.reason-box ul{margin:0;padding-left:18px}
+.reason-box li{margin:8px 0;line-height:1.25}
+#reasonBox strong,#reasonBox .key{color:var(--accent);font-weight:700}
+.hl-layer{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hl-rect{position:absolute;background:rgba(255,245,157,0.75);border-radius:2px}
+#passageText > *:not(.hl-layer){position:relative;z-index:1}
+.subbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);background:#fbfdff}
+.chips{display:none}
+.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.qwrap{padding:12px;overflow:auto;flex:1}
+.qcard{display:none}
+.qcard.active{display:block}
+.qhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qstem{font-size:16px;font-weight:800;margin:8px 0 10px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px;cursor:pointer}
+.choice:hover{border-color:#b9c6d8}
+.choice input{margin-top:3px}
+.choice-letter{font-weight:950;min-width:28px}
+.choice.selected{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,132,198,.12)}
+.choice.correct{border-color:rgba(17,138,74,.6);box-shadow:0 0 0 3px rgba(17,138,74,.12)}
+.choice.incorrect{border-color:rgba(192,38,45,.55);box-shadow:0 0 0 3px rgba(192,38,45,.10)}
+.feedback{margin-top:10px;font-weight:950}
+.feedback.good{color:var(--good)}
+.feedback.bad{color:var(--bad)}
+.actions{display:flex;gap:8px;margin-top:10px}
+.explanation{margin-top:10px;border:1px solid var(--border);background:#fbfdff;border-radius:12px;padding:10px 12px}
+.exp-title{font-weight:950;margin:6px 0}
+.exp-text{color:#111827}
+.exp-list{margin:6px 0 0 18px}
+.exp-text strong,.explanation strong{color:var(--accent)}
+@media (max-width: 980px){
+  .split{flex-direction:column}
+  .vdiv{display:none}
+  .pane{height:auto}
+  .panel{height:auto;min-height:44vh}
+  .container{height:auto}
+}
+
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="left"><div>Miller’s law, chunking, and the capacity of working memory</div></div>
+    <div class="timer" id="timerWrap" aria-label="Passage timer">
+      <span class="timer-label">Timer</span>
+      <span class="timer-time" id="timerDisplay">12:00</span>
+      <button class="timer-btn" id="timerStart" type="button">Start</button>
+      <button class="timer-btn" id="timerPause" type="button">Pause</button>
+      <button class="timer-btn" id="timerReset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="split">
+      <div class="pane leftPane">
+        <div class="panel">
+          <div class="bar">
+            <div class="title">Passage 1 (Questions 1–7)</div>
+            <div class="barActions">
+              <button class="iconbtn" id="highlightBtn" type="button">Highlight</button>
+              <button class="iconbtn" id="clearHighlightBtn" type="button">Clear highlight</button>
+              <button class="iconbtn" id="toggleReason" type="button">How to reason</button>
+            </div>
+          </div>
+          <div class="content" id="passageText">
+            <div class="hl-layer" id="hlLayer" aria-hidden="true"></div>
+            
+            <div class="figure">
+              <div style="overflow:auto">
+                <table style="width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden">
+                  <thead>
+                    <tr>
+                      <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);background:#f8fafc">Subject</th>
+                      <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);background:#f8fafc">Average results</th>
+                      <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);background:#f8fafc">Subject</th>
+                      <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);background:#f8fafc">Average results</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td style="padding:10px 12px;border-top:1px solid var(--border)">1</td><td style="padding:10px 12px;border-top:1px solid var(--border)">4.63</td><td style="padding:10px 12px;border-top:1px solid var(--border)">11</td><td style="padding:10px 12px;border-top:1px solid var(--border)">4.18</td></tr>
+                    <tr><td style="padding:10px 12px;border-top:1px solid var(--border)">2</td><td style="padding:10px 12px;border-top:1px solid var(--border)">4.53</td><td style="padding:10px 12px;border-top:1px solid var(--border)">12</td><td style="padding:10px 12px;border-top:1px solid var(--border)">4.81</td></tr>
+                    <tr><td style="padding:10px 12px;border-top:1px solid var(--border)">3</td><td style="padding:10px 12px;border-top:1px solid var(--border)">5.12</td><td style="padding:10px 12px;border-top:1px solid var(--border)">13</td><td style="padding:10px 12px;border-top:1px solid var(--border)">9.32</td></tr>
+                    <tr><td style="padding:10px 12px;border-top:1px solid var(--border)">4</td><td style="padding:10px 12px;border-top:1px solid var(--border)">3.81</td><td style="padding:10px 12px;border-top:1px solid var(--border)">14</td><td style="padding:10px 12px;border-top:1px solid var(--border)">3.79</td></tr>
+                    <tr><td style="padding:10px 12px;border-top:1px solid var(--border)">5</td><td style="padding:10px 12px;border-top:1px solid var(--border)">3.27</td><td style="padding:10px 12px;border-top:1px solid var(--border)">15</td><td style="padding:10px 12px;border-top:1px solid var(--border)">2.67</td></tr>
+                    <tr><td style="padding:10px 12px;border-top:1px solid var(--border)">6</td><td style="padding:10px 12px;border-top:1px solid var(--border)">5.38</td><td style="padding:10px 12px;border-top:1px solid var(--border)">16</td><td style="padding:10px 12px;border-top:1px solid var(--border)">4.65</td></tr>
+                    <tr><td style="padding:10px 12px;border-top:1px solid var(--border)">7</td><td style="padding:10px 12px;border-top:1px solid var(--border)">7.75</td><td style="padding:10px 12px;border-top:1px solid var(--border)">17</td><td style="padding:10px 12px;border-top:1px solid var(--border)">3.82</td></tr>
+                    <tr><td style="padding:10px 12px;border-top:1px solid var(--border)">8</td><td style="padding:10px 12px;border-top:1px solid var(--border)">5.46</td><td style="padding:10px 12px;border-top:1px solid var(--border)">18</td><td style="padding:10px 12px;border-top:1px solid var(--border)">3.75</td></tr>
+                    <tr><td style="padding:10px 12px;border-top:1px solid var(--border)">9</td><td style="padding:10px 12px;border-top:1px solid var(--border)">5.41</td><td style="padding:10px 12px;border-top:1px solid var(--border)">19</td><td style="padding:10px 12px;border-top:1px solid var(--border)">4.19</td></tr>
+                    <tr><td style="padding:10px 12px;border-top:1px solid var(--border)">10</td><td style="padding:10px 12px;border-top:1px solid var(--border)">4.41</td><td style="padding:10px 12px;border-top:1px solid var(--border)">20</td><td style="padding:10px 12px;border-top:1px solid var(--border)">4.37</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="figcap">Table 1 Average backward digit-span performance for 20 subjects across 25 total trials</div>
+            </div>
+
+            <p class="noindent">George Miller argued that immediate memory is limited to about seven pieces of information, plus or minus two. The investigators in this study noted, however, that a backward digit-span task places a heavier demand on working memory than simple storage because the participant must hold a sequence, mentally reverse it, and then report it in the correct backward order. They also emphasized that a score above seven should not automatically be taken as proof that typical working-memory capacity exceeds Miller’s estimate; such a claim would require many participants to cluster near that range, not just one or two exceptional performers.</p>
+
+            <p>Chunking can raise performance when separate items are reorganized into larger, meaningful units. In the present task, the digit strings were read at one digit per second and were composed of random numbers, so semantic chunking was limited. During debriefing, only a small minority of participants reported deliberately grouping digits into temporary mini-sequences. The researchers therefore cautioned that unusually high averages might reflect strategy discovery rather than a general increase in capacity shared by the whole sample.</p>
+
+            <p>Twenty subjects completed five sessions over the course of a year, with five backward-span trials per session. Table 1 reports each subject’s average longest correctly reversed string across all 25 trials. If Miller’s upper range generalized broadly to this task, the investigators expected many subjects to center near seven or above. Instead, they predicted that most scores would fall below that level because backward recall requires manipulation as well as storage, and because random digits provide relatively weak support for meaningful chunking.</p>
+
+            <p>In planning a follow-up study, the investigators debated whether the highest performers should be interpreted as evidence of a larger universal capacity or as outliers who had adopted an effective strategy. They proposed that explicitly marking chunk boundaries during presentation should help average performers more than merely slowing the digit rate slightly, because chunking changes the unit being remembered rather than only adding rehearsal time.</p>
+
+            <div class="reason-box" id="reasonBox" hidden>
+              <p>Treat the passage as a research argument about <span class="key">what the table means</span>, not as a definition list.</p>
+              <ul>
+                <li><strong>First, identify the investigators’ claim</strong>: backward digit span is meant to test <strong>working-memory manipulation</strong>, so performance can fall below Miller’s classic range even when immediate memory is intact.</li>
+                <li><strong>Next, inspect the distribution in Table 1</strong>: ask whether the values <strong>cluster across many subjects</strong> or whether only a <strong>few high performers</strong> are pulling attention upward.</li>
+                <li><strong>Then use the passage’s warning about chunking</strong>: the researchers think some unusually high means may reflect <strong>strategy discovery</strong>, especially because the digit strings were <strong>random</strong> and meaningful grouping was limited.</li>
+                <li><strong>Finally, test the answer choice causally</strong>: the best choice should explain how the <strong>table pattern</strong> supports or weakens the researchers’ interpretation, or predict which manipulation would distinguish <strong>general capacity</strong> from <strong>strategy-based improvement</strong>.</li>
+              </ul>
+            </div>
+            <div style="font-size:12px;color:#9ca3af;margin-top:14px">Adapted from: Miller, G. A. (1956). The magical number seven, plus or minus two: some limits on our capacity for processing information. <em>Psychological review</em>, 63(2), 81.</div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="vdiv"></div>
+
+      <div class="pane rightPane">
+        <div class="panel">
+          <div class="bar"><div class="title">Questions</div></div>
+          <div class="subbar">
+            <div class="chips"></div>
+            <div class="right-actions">
+              <button class="btn" id="resetAll" type="button">Reset all</button>
+              <button class="btn" id="prevBtn" type="button">Previous</button>
+              <button class="btn primary" id="nextBtn" type="button">Next</button>
+            </div>
+          </div>
+          <div class="qwrap">
+
+            <section class="qcard" id="card-1">
+              <div class="qhead"><div class="qnum">Question 1 of 7</div></div>
+              <div class="qstem">Which observation from Table 1 most strongly supports the investigators’ claim that the backward digit-span task does not show a broad sample-wide capacity near the top of Miller’s range?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q1" value="A"><div class="choice-letter">A.</div><div>The highest score, 9.32, exceeds seven, showing that the sample as a whole can typically reverse at least nine digits.</div></label>
+                <label class="choice"><input type="radio" name="q1" value="B"><div class="choice-letter">B.</div><div>Most subjects cluster around 4–5 digits, while only Subjects 7 and 13 exceed seven, fitting the passage’s warning that a few strategic outliers should not be treated as typical capacity.</div></label>
+                <label class="choice"><input type="radio" name="q1" value="C"><div class="choice-letter">C.</div><div>Several subjects score below four, proving that Miller’s law applies only to visual rather than auditory material.</div></label>
+                <label class="choice"><input type="radio" name="q1" value="D"><div class="choice-letter">D.</div><div>Because Subject 15 scored 2.67, all subjects must have misunderstood the backward instructions.</div></label>
+              </div>
+              <div class="feedback" id="fb-1"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="1" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-1" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>B</strong>. The passage says that support for a generally higher capacity would require <strong>many participants to cluster near seven or above</strong>, not just isolated high performers. Table 1 instead shows that <strong>most subjects are concentrated around 4–5 digits</strong>, while only <strong>Subjects 7 and 13</strong> exceed seven. That pattern fits the investigators’ interpretation that the task usually yields lower values and that a few high scores may reflect strategy discovery rather than a universal capacity.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>A</strong>: This overgeneralizes from a single high value. The passage explicitly warns against treating one or two exceptional scores as representative of the whole sample.</li>
+                  <li><strong>C</strong>: The table contains no comparison of auditory versus visual presentation, so this claim is unsupported.</li>
+                  <li><strong>D</strong>: A low score does not prove misunderstanding. The passage offers a more plausible explanation: backward recall is demanding and random digits limit useful chunking.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-2">
+              <div class="qhead"><div class="qnum">Question 2 of 7</div></div>
+              <div class="qstem">The investigators design a follow-up condition in which the same random digits are presented with explicit rhythmic group boundaries to encourage chunking. Based on the passage and Table 1, which pair of subjects would most likely show the clearest improvement if the high scorers were already using their own strategy?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q2" value="A"><div class="choice-letter">A.</div><div>Subjects 1 and 20, because both are near the middle of the distribution and therefore have room to benefit without already looking like clear strategic outliers.</div></label>
+                <label class="choice"><input type="radio" name="q2" value="B"><div class="choice-letter">B.</div><div>Subjects 7 and 13, because the highest scorers always gain the most when chunking cues are added.</div></label>
+                <label class="choice"><input type="radio" name="q2" value="C"><div class="choice-letter">C.</div><div>Subjects 5 and 15, because the lowest scorers must have been closest to Miller’s upper range before the manipulation.</div></label>
+                <label class="choice"><input type="radio" name="q2" value="D"><div class="choice-letter">D.</div><div>Subjects 3 and 8, because any score above five means chunking can no longer improve performance.</div></label>
+              </div>
+              <div class="feedback" id="fb-2"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="2" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-2" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>A</strong>. The passage suggests that <strong>explicit chunk boundaries</strong> should mainly help participants who have <strong>not already discovered an effective strategy</strong>. Table 1 shows that Subjects <strong>1 (4.63)</strong> and <strong>20 (4.37)</strong> are typical midrange performers—high enough to complete the task but far from the obvious outlier pattern of Subjects 7 and 13. They are therefore the best candidates to show strategy-based gains.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>B</strong>: If Subjects 7 and 13 were already using effective grouping, they might improve less, not more, under an added chunking cue.</li>
+                  <li><strong>C</strong>: Very low scores do not necessarily mean the participants are closest to the relevant strategy threshold; they may reflect other limits in attention or manipulation.</li>
+                  <li><strong>D</strong>: Nothing in the passage says performance above five rules out further improvement. The issue is whether a participant already discovered an effective strategy.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-3">
+              <div class="qhead"><div class="qnum">Question 3 of 7</div></div>
+              <div class="qstem">A classmate argues that the very small p-value by itself proves every participant’s working-memory capacity is below seven. Which response is most consistent with the passage and Table 1?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q3" value="A"><div class="choice-letter">A.</div><div>Correct, because a significant p-value means all individual scores must fall below the null value.</div></label>
+                <label class="choice"><input type="radio" name="q3" value="B"><div class="choice-letter">B.</div><div>Correct, because the mean can be used in place of every subject’s value whenever n = 20.</div></label>
+                <label class="choice"><input type="radio" name="q3" value="C"><div class="choice-letter">C.</div><div>Incorrect, because p-values apply only to forward span tasks, not backward span tasks.</div></label>
+                <label class="choice"><input type="radio" name="q3" value="D"><div class="choice-letter">D.</div><div>Incorrect, because the p-value concerns the sample summary, whereas the passage warns that the table contains substantial heterogeneity, including two subjects above seven.</div></label>
+              </div>
+              <div class="feedback" id="fb-3"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="3" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-3" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>D</strong>. The passage repeatedly warns that <strong>summary statistics can mask heterogeneity</strong>. Table 1 confirms that by showing a wide spread of values, including <strong>Subjects 7 and 13 above seven</strong>. A very small p-value can support a claim about the <strong>sample mean relative to a hypothesis</strong>, but it does not imply that <strong>every individual participant</strong> shares the same capacity or lies below the same threshold.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>A</strong>: Statistical significance does not mean every observation falls below the hypothesized value.</li>
+                  <li><strong>B</strong>: Means summarize a distribution; they do not replace individual data when the passage explicitly highlights heterogeneity.</li>
+                  <li><strong>C</strong>: The problem is not that p-values are restricted to forward span. The problem is misinterpreting a summary statistic as an individual-level claim.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-4">
+              <div class="qhead"><div class="qnum">Question 4 of 7</div></div>
+              <div class="qstem">To test whether Subject 13’s unusually high average reflects strategy use rather than a universally larger storage limit, which follow-up design would best fit the investigators’ reasoning?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q4" value="A"><div class="choice-letter">A.</div><div>Increase the number of sessions but continue presenting random digits exactly as before, then assume any remaining outlier is proof of universal capacity.</div></label>
+                <label class="choice"><input type="radio" name="q4" value="B"><div class="choice-letter">B.</div><div>Compare a grouped-presentation condition with the original ungrouped condition within the same participants and determine whether typical subjects move upward toward the outlier only when chunk cues are supplied.</div></label>
+                <label class="choice"><input type="radio" name="q4" value="C"><div class="choice-letter">C.</div><div>Replace the backward task with a vocabulary test, because semantic knowledge is the same as working-memory capacity.</div></label>
+                <label class="choice"><input type="radio" name="q4" value="D"><div class="choice-letter">D.</div><div>Exclude Subject 13 before collecting any new data so the remaining sample more closely resembles the mean.</div></label>
+              </div>
+              <div class="feedback" id="fb-4"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="4" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-4" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>B</strong>. The passage frames the central issue as <strong>general capacity versus strategy discovery</strong>. A within-subject comparison of <strong>grouped versus ungrouped digit presentation</strong> directly tests that question: if many midrange subjects move upward specifically in the grouped condition, then Subject 13’s high score is more plausibly explained by <strong>effective chunking</strong> than by a universal capacity that was present all along.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>A</strong>: Simply repeating the same design does not separate capacity from strategy; it mainly reproduces the original ambiguity.</li>
+                  <li><strong>C</strong>: Vocabulary knowledge does not isolate the working-memory manipulation required in backward digit span.</li>
+                  <li><strong>D</strong>: Removing the outlier without testing the mechanism would hide the phenomenon the investigators are trying to explain.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-5">
+              <div class="qhead"><div class="qnum">Question 5 of 7</div></div>
+              <div class="qstem">Which additional result would most strongly support the passage’s claim that backward digit span measures working-memory manipulation more than mere short-term storage?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q5" value="A"><div class="choice-letter">A.</div><div>Subjects with the lowest backward scores also have the lowest visual acuity.</div></label>
+                <label class="choice"><input type="radio" name="q5" value="B"><div class="choice-letter">B.</div><div>Subjects 7 and 13 report the greatest confidence before each trial.</div></label>
+                <label class="choice"><input type="radio" name="q5" value="C"><div class="choice-letter">C.</div><div>The same participants perform substantially better on a forward digit-span task than on the backward task, while the backward distribution still resembles the lower values in Table 1.</div></label>
+                <label class="choice"><input type="radio" name="q5" value="D"><div class="choice-letter">D.</div><div>The sample mean remains below seven even when the room temperature changes slightly.</div></label>
+              </div>
+              <div class="feedback" id="fb-5"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="5" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-5" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>C</strong>. The passage argues that backward span is harder because the subject must <strong>hold and mentally reverse</strong> the sequence. If the same participants do much better on <strong>forward span</strong> but still show lower values on <strong>backward span</strong> like those in Table 1, that would support the idea that the limiting factor is <strong>manipulation in working memory</strong>, not simply the passive storage of digits.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>A</strong>: Visual acuity is not the relevant mechanism, especially because the digits are read aloud in the study description.</li>
+                  <li><strong>B</strong>: Confidence does not directly test whether the difficulty lies in manipulation versus storage.</li>
+                  <li><strong>D</strong>: Room temperature does not address the conceptual distinction the passage is making.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-6">
+              <div class="qhead"><div class="qnum">Question 6 of 7</div></div>
+              <div class="qstem">If Subjects 7 and 13 were temporarily removed from the analysis, which conclusion would become more defensible on the basis of both the passage and the table?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q6" value="A"><div class="choice-letter">A.</div><div>Typical backward-span performance in this sample is even farther below Miller’s upper range, and the remaining data look more consistent with the idea that the two highest means reflect exceptional strategy use.</div></label>
+                <label class="choice"><input type="radio" name="q6" value="B"><div class="choice-letter">B.</div><div>The evidence for chunking would disappear, because outliers are the only valid evidence in cognitive psychology.</div></label>
+                <label class="choice"><input type="radio" name="q6" value="C"><div class="choice-letter">C.</div><div>The average would move closer to seven, showing that Miller’s law was underestimated by the original investigators.</div></label>
+                <label class="choice"><input type="radio" name="q6" value="D"><div class="choice-letter">D.</div><div>The task would cease to measure working memory, because manipulation can only be studied in outliers.</div></label>
+              </div>
+              <div class="feedback" id="fb-6"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="6" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-6" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>A</strong>. The passage argues that <strong>isolated high performers may reflect strategy discovery</strong>. Table 1 shows that Subjects <strong>7 and 13</strong> are the main high-end exceptions. Removing them would leave a tighter cluster centered well below seven, which would make the interpretation of <strong>typical lower backward-span performance</strong> even stronger and would further suggest that the two highest means were exceptional rather than representative.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>B</strong>: Outliers can be informative, but they are not the only valid evidence. The passage is about interpreting them carefully, not dismissing all other data.</li>
+                  <li><strong>C</strong>: Removing the two highest values would shift the mean downward, not upward.</li>
+                  <li><strong>D</strong>: The task still requires reversal and therefore still taxes working memory, regardless of whether outliers are included.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-7">
+              <div class="qhead"><div class="qnum">Question 7 of 7</div></div>
+              <div class="qstem">A student reads Table 1 and concludes, “Because Subject 13 averaged 9.32, typical working-memory capacity must exceed the classic 7 ± 2 estimate.” Which critique best matches the investigators’ reasoning?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q7" value="A"><div class="choice-letter">A.</div><div>The student is correct because the maximum score is always the best estimate of a population’s typical capacity.</div></label>
+                <label class="choice"><input type="radio" name="q7" value="B"><div class="choice-letter">B.</div><div>The student ignores the passage’s warning that a general-capacity claim requires many subjects to cluster near the target range; Table 1 instead shows one extreme value embedded in a much lower overall distribution.</div></label>
+                <label class="choice"><input type="radio" name="q7" value="C"><div class="choice-letter">C.</div><div>The student should focus only on Subject 7 because a score of 7.75 is closer to Miller’s prediction than 9.32.</div></label>
+                <label class="choice"><input type="radio" name="q7" value="D"><div class="choice-letter">D.</div><div>The student should reject the table entirely because chunking can never influence digit-span performance.</div></label>
+              </div>
+              <div class="feedback" id="fb-7"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="7" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-7" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>B</strong>. The passage explicitly says that <strong>one or two exceptional performers</strong> should not be treated as proof of a broader sample-wide capacity. Table 1 shows exactly that pattern: <strong>Subject 13 is an outlier</strong>, while the rest of the distribution is centered much lower. The investigators’ argument is about the <strong>shape of the distribution</strong>, not the mere existence of a single large score.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>A</strong>: A maximum value is not a measure of what is typical.</li>
+                  <li><strong>C</strong>: Switching from one outlier to another does not solve the representativeness problem.</li>
+                  <li><strong>D</strong>: The passage says chunking can influence performance; that is precisely why the investigators are cautious about interpreting unusually high scores.</li>
+                </ul>
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const qOrder = [1,2,3,4,5,6,7];
+const correct = {"1": "B", "2": "A", "3": "D", "4": "B", "5": "C", "6": "A", "7": "B"};
+const $ = (s, root=document) => root.querySelector(s);
+const $all = (s, root=document) => Array.from(root.querySelectorAll(s));
+let currentIndex = 0;
+(function(){
+  const display = $('#timerDisplay');
+  const wrap = $('#timerWrap');
+  const startBtn = $('#timerStart');
+  const pauseBtn = $('#timerPause');
+  const resetBtn = $('#timerReset');
+  let remaining = 12*60;
+  let timer = null;
+  function formatTime(total){
+    const m = String(Math.floor(total/60)).padStart(2,'0');
+    const s = String(total%60).padStart(2,'0');
+    return `${m}:${s}`;
+  }
+  function render(){
+    display.textContent = formatTime(remaining);
+    wrap.classList.toggle('timer-danger', remaining <= 60);
+  }
+  function start(){
+    if (timer) return;
+    timer = setInterval(() => {
+      if (remaining > 0) { remaining -= 1; render(); }
+      else { clearInterval(timer); timer = null; }
+    }, 1000);
+  }
+  function pause(){ if (timer){ clearInterval(timer); timer = null; } }
+  function reset(){ pause(); remaining = 12*60; render(); }
+  startBtn.addEventListener('click', start);
+  pauseBtn.addEventListener('click', pause);
+  resetBtn.addEventListener('click', reset);
+  render();
+})();
+function showQuestion(num){
+  currentIndex = qOrder.indexOf(num);
+  $all('.qcard').forEach(card => card.classList.remove('active'));
+  $('#card-' + num).classList.add('active');
+  $('#prevBtn').disabled = currentIndex === 0;
+  $('#nextBtn').disabled = currentIndex === qOrder.length - 1;
+}
+function getSelected(num){ const el = document.querySelector('input[name="q'+num+'"]:checked'); return el ? el.value : null; }
+function setFeedback(num, ok){ const fb = $('#fb-' + num); if (ok === null) { fb.textContent = ''; fb.className = 'feedback'; return; } fb.textContent = ok ? 'Correct' : 'Incorrect'; fb.className = 'feedback ' + (ok ? 'good' : 'bad'); }
+function markChoices(num, selected){ const card = $('#card-' + num); $all('.choice', card).forEach(function(lab){ lab.classList.remove('selected','correct','incorrect'); const input = lab.querySelector('input'); if (!input) return; if (input.value === selected) lab.classList.add('selected'); if (selected) { if (input.value === correct[String(num)]) lab.classList.add('correct'); if (input.value === selected && selected !== correct[String(num)]) lab.classList.add('incorrect'); } }); }
+function enableExplanation(num){ const card = $('#card-' + num); card.querySelector('button[data-action="toggle-exp"]').disabled = false; }
+function resetQuestion(num){ document.querySelectorAll('input[name="q'+num+'"]').forEach(i => i.checked = false); setFeedback(num, null); const card = $('#card-' + num); $all('.choice', card).forEach(l => l.classList.remove('selected','correct','incorrect')); const exp = $('#exp-' + num); exp.hidden = true; const btn = card.querySelector('button[data-action="toggle-exp"]'); btn.textContent = 'Show explanation'; btn.disabled = true; }
+function resetAll(){ try{ clearHighlights(); }catch(e){} qOrder.forEach(n => resetQuestion(n)); }
+$('#toggleReason').addEventListener('click', function(){ const box = $('#reasonBox'); box.hidden = !box.hidden; this.textContent = box.hidden ? 'How to reason' : 'Hide reasoning'; });
+$('#prevBtn').addEventListener('click', function(){ showQuestion(qOrder[Math.max(0, currentIndex-1)]); });
+$('#nextBtn').addEventListener('click', function(){ showQuestion(qOrder[Math.min(qOrder.length-1, currentIndex+1)]); });
+$('#resetAll').addEventListener('click', function(){ resetAll(); showQuestion(qOrder[0]); });
+document.addEventListener('change', function(e){ if (!(e.target && e.target.matches('input[type="radio"]'))) return; const num = parseInt(e.target.name.replace('q',''),10); const sel = getSelected(num); const ok = sel === correct[String(num)]; setFeedback(num, ok); markChoices(num, sel); enableExplanation(num); });
+document.addEventListener('click', function(e){ const btn = e.target.closest('button'); if (!btn) return; if (btn.dataset.action === 'toggle-exp') { const num = parseInt(btn.dataset.q,10); const exp = $('#exp-' + num); exp.hidden = !exp.hidden; btn.textContent = exp.hidden ? 'Show explanation' : 'Hide explanation'; } });
+(function(){
+  const passage = document.getElementById('passageText');
+  const layer = document.getElementById('hlLayer');
+  const highlightBtn = document.getElementById('highlightBtn');
+  const clearHighlightBtn = document.getElementById('clearHighlightBtn');
+  if (!passage || !layer || !highlightBtn) return;
+  let highlightMode = false; let groups = [];
+  function clearHighlights(){ while(layer.firstChild) layer.removeChild(layer.firstChild); groups = []; }
+  function undoLastHighlight(){ const g = groups.pop(); if (g && g.parentNode === layer) layer.removeChild(g); }
+  function createGroup(){ const g = document.createElement('div'); layer.appendChild(g); groups.push(g); return g; }
+  function selectionWithinPassage(sel){ return !!(sel && sel.rangeCount && passage.contains(sel.anchorNode) && passage.contains(sel.focusNode)); }
+  function addRect(rect, base, group){ const div = document.createElement('div'); div.className = 'hl-rect'; div.style.top = (rect.top - base.top + passage.scrollTop) + 'px'; div.style.left = (rect.left - base.left + passage.scrollLeft) + 'px'; div.style.width = rect.width + 'px'; div.style.height = rect.height + 'px'; group.appendChild(div); }
+  function highlightSelection(){ const sel = window.getSelection(); if(!selectionWithinPassage(sel)) return; const range = sel.getRangeAt(0); if(range.collapsed) return; const base = passage.getBoundingClientRect(); const rects = Array.from(range.getClientRects()).filter(r=>r.width>0 && r.height>0); if(!rects.length) return; const group = createGroup(); rects.forEach(r=>addRect(r, base, group)); try{ sel.removeAllRanges(); }catch(_){} }
+  function setMode(on){ highlightMode = !!on; highlightBtn.classList.toggle('is-active', highlightMode); highlightBtn.classList.toggle('active', highlightMode); }
+  highlightBtn.addEventListener('click', (e)=>{ e.preventDefault(); setMode(!highlightMode); if (highlightMode) setTimeout(highlightSelection, 0); });
+  clearHighlightBtn.addEventListener('click', (e)=>{ e.preventDefault(); clearHighlightBtn.classList.add('is-active','active'); setTimeout(()=>clearHighlightBtn.classList.remove('is-active','active'), 180); undoLastHighlight(); });
+  passage.addEventListener('mouseup', ()=>{ if(!highlightMode) return; setTimeout(highlightSelection, 0); });
+  passage.addEventListener('touchend', ()=>{ if(!highlightMode) return; setTimeout(highlightSelection, 0); }, {passive:true});
+  window.clearHighlights = clearHighlights;
+})();
+window.addEventListener('DOMContentLoaded', function(){ showQuestion(qOrder[0]); resetAll(); showQuestion(qOrder[0]); });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Applications of operant conditioning</title>
+<style>
+:root{
+  --blue:#1f6fae;
+  --blue2:#2d7fbf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#d7dee8;
+  --good:#118a4a;
+  --bad:#c0262d;
+  --accent:#1f67d6;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--blue);color:#fff;padding:12px 16px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .left{display:flex;flex-direction:column;gap:2px}
+.timer{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);border-radius:10px;color:#fff;font-weight:800}
+.timer-label{opacity:.9;font-weight:700}
+.timer-time{min-width:60px;text-align:center;letter-spacing:.5px}
+.timer-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:5px 8px;font-weight:800;cursor:pointer}
+.timer-btn:hover{background:rgba(255,255,255,.18)}
+.timer-danger{background:rgba(192,38,45,.35)!important;border-color:rgba(255,255,255,.55)!important}
+.container{width:100%;max-width:none;margin:0 auto;padding:12px;height:calc(100vh - 60px)}
+.split{display:flex;gap:0;height:100%}
+.pane{flex:1;min-width:0;height:100%}
+.vdiv{width:6px;background:linear-gradient(#cbd5e1,#cbd5e1);border-radius:3px;margin:0 10px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(0deg,var(--blue),var(--blue2));color:#fff;padding:10px 12px}
+.bar .title{font-weight:900;flex:1 1 auto;min-width:180px}
+.bar .barActions{display:flex;gap:10px;margin-left:auto;align-items:center}
+.iconbtn{height:40px;min-width:120px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:0 14px;font-weight:800;cursor:pointer;white-space:nowrap}
+.iconbtn:hover{background:rgba(255,255,255,.18)}
+.iconbtn.is-active,.iconbtn.active{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.7)}
+.content{padding:14px 16px;line-height:1.6;font-size:15px;flex:1;overflow:auto}
+#passageText{position:relative;-webkit-touch-callout:none}
+#passageText, #passageText *{-webkit-user-drag:none;user-drag:none}
+#passageText p{text-indent:1.5em;margin:10px 0}
+#passageText p.noindent{text-indent:0}
+.figure{margin:0 0 14px 0}
+.figure img{width:100%;height:auto;border:1px solid var(--border);border-radius:10px;background:#fff}
+.figcap{font-size:13px;color:#475569;margin-top:6px}
+.tablebox{border:1px solid var(--border);border-radius:10px;background:#fff;overflow:hidden}
+.fig-table{width:100%;border-collapse:collapse;font-size:15px}
+.fig-table th,.fig-table td{padding:14px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.fig-table th{background:#f8fafc;text-align:left;color:#334155;font-weight:800}
+.fig-table tr:last-child td{border-bottom:none}
+.fig-table td:first-child{width:15%;font-weight:700;color:#475569}
+.fig-table td:nth-child(2){width:18%;font-weight:700;color:#475569}
+.reason-box{white-space:normal;border:1px solid var(--border);background:#fbfdff;border-radius:10px;padding:14px 16px;margin-top:12px}
+.reason-box p{margin:0 0 8px 0}
+.reason-box ul{margin:0;padding-left:18px}
+.reason-box li{margin:8px 0;line-height:1.25}
+#reasonBox strong,#reasonBox .key{color:var(--accent);font-weight:700}
+.hl-layer{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hl-rect{position:absolute;background:rgba(255,245,157,0.75);border-radius:2px}
+#passageText > *:not(.hl-layer){position:relative;z-index:1}
+.subbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);background:#fbfdff}
+.chips{display:none}
+.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.qwrap{padding:12px;overflow:auto;flex:1}
+.qcard{display:none}
+.qcard.active{display:block}
+.qhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qstem{font-size:16px;font-weight:800;margin:8px 0 10px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px;cursor:pointer}
+.choice:hover{border-color:#b9c6d8}
+.choice input{margin-top:3px}
+.choice-letter{font-weight:950;min-width:28px}
+.choice.selected{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,132,198,.12)}
+.choice.correct{border-color:rgba(17,138,74,.6);box-shadow:0 0 0 3px rgba(17,138,74,.12)}
+.choice.incorrect{border-color:rgba(192,38,45,.55);box-shadow:0 0 0 3px rgba(192,38,45,.10)}
+.feedback{margin-top:10px;font-weight:950}
+.feedback.good{color:var(--good)}
+.feedback.bad{color:var(--bad)}
+.actions{display:flex;gap:8px;margin-top:10px}
+.explanation{margin-top:10px;border:1px solid var(--border);background:#fbfdff;border-radius:12px;padding:10px 12px}
+.exp-title{font-weight:950;margin:6px 0}
+.exp-text{color:#111827}
+.exp-list{margin:6px 0 0 18px}
+.exp-text strong,.explanation strong{color:var(--accent)}
+@media (max-width: 980px){
+  .split{flex-direction:column}
+  .vdiv{display:none}
+  .pane{height:auto}
+  .panel{height:auto;min-height:44vh}
+  .container{height:auto}
+}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="left"><div>Applications of operant conditioning</div></div>
+    <div class="timer" id="timerWrap" aria-label="Passage timer">
+      <span class="timer-label">Timer</span>
+      <span class="timer-time" id="timerDisplay">12:00</span>
+      <button class="timer-btn" id="timerStart" type="button">Start</button>
+      <button class="timer-btn" id="timerPause" type="button">Pause</button>
+      <button class="timer-btn" id="timerReset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="split">
+      <div class="pane leftPane">
+        <div class="panel">
+          <div class="bar">
+            <div class="title">Passage 1 (Questions 1–7)</div>
+            <div class="barActions">
+              <button class="iconbtn" id="highlightBtn" type="button">Highlight</button>
+              <button class="iconbtn" id="clearHighlightBtn" type="button">Clear highlight</button>
+              <button class="iconbtn" id="toggleReason" type="button">How to reason</button>
+            </div>
+          </div>
+          <div class="content" id="passageText">
+            <div class="hl-layer" id="hlLayer" aria-hidden="true"></div>
+
+            <p class="noindent">At a municipal animal-enrichment lab, trainer Elena works with two shelter dogs, Rocket and Basil. Rocket eagerly chases a flirt pole but becomes overaroused and jumps on Elena’s sleeves near the end of play bouts. Basil is far less active; he prefers lying on a foam mat and often ignores toys altogether. Elena wants Basil to spend more time in voluntary play, and she wants Rocket to finish play bouts with all four paws on the floor. She chooses an operant-conditioning approach because she wants to change the consequences of behavior rather than treating the dogs’ differences as fixed traits.</p>
+
+            <p>Elena reminds her interns that several terms are commonly confused. Delivering a food pellet after a target response is positive reinforcement if the goal is to increase that response. Adding or removing a consequence after an unwanted behavior can count as punishment if the goal is to decrease that behavior. Negative reinforcement, in contrast, increases a behavior by removing something aversive after the target response. Simply putting Basil’s mat away before a session is not itself reinforcement; it only changes the setting in which training occurs.</p>
+
+            <p>During pilot sessions, edible rewards increased desired behavior much more reliably than verbal praise. Elena also warns the interns not to judge a schedule only by the first few trials. More predictable schedules often produce rapid acquisition but can also produce pauses immediately after reward delivery. Less predictable schedules usually produce steadier responding and better persistence if a reward is delayed or omitted. Some schedules depend on elapsed time, whereas others depend on the number of target responses; interns often confuse these two ideas.</p>
+
+            <p>For Basil, the target response is continued toy pursuit. For Rocket, the target response is a completed play bout that ends without jumping. Elena emphasizes that if Rocket jumps and still receives attention or a treat, the jumping may be accidentally strengthened. In a short pilot test, Basil began engaging slightly faster under the predictable schedule assigned to him, but when one reward was delayed, the less predictable schedule maintained play longer. Rocket reduced jumping more quickly under the schedule that rewarded every successful calm bout, but after a dispenser malfunction produced several unrewarded calm bouts, the less predictable schedule maintained calm behavior better.</p>
+
+            <div class="figure">
+              <div class="tablebox">
+                <table class="fig-table" aria-label="Table 1 reinforcement schedules tested by Elena">
+                  <thead>
+                    <tr><th>Schedule</th><th>Dog</th><th>Strategy</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>A</td><td>Basil</td><td>1 treat after every 2 minutes of continuous toy pursuit</td></tr>
+                    <tr><td>B</td><td>Basil</td><td>1 treat after an unpredictable duration of continuous toy pursuit</td></tr>
+                    <tr><td>C</td><td>Rocket</td><td>1 treat after every calm play bout that ends without jumping</td></tr>
+                    <tr><td>D</td><td>Rocket</td><td>1 treat after an unpredictable number of calm, non-jumping play bouts</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="figcap">Table 1 Reinforcement schedules compared by Elena</div>
+            </div>
+
+            <div class="reason-box" id="reasonBox" hidden>
+              <p>Use the passage like an MCAT experiment summary, not like a vocabulary list.</p>
+              <ul>
+                <li><strong>First, identify the trainer’s goal</strong>: Basil’s behavior should <strong>increase</strong>, while Rocket’s jumping should <strong>decrease by reinforcing an alternative response</strong>.</li>
+                <li><strong>Next, map each schedule to the table</strong>: decide whether reward depends on <strong>elapsed time</strong> or on the <strong>number of completed responses</strong>, and whether the schedule is <strong>predictable</strong> or <strong>less predictable</strong>.</li>
+                <li><strong>Then connect the schedule to Elena’s evidence</strong>: the passage tells you which kind of schedule helps <strong>initial acquisition</strong>, which one causes <strong>post-reward pauses</strong>, and which one better resists <strong>delayed or omitted reinforcement</strong>.</li>
+                <li><strong>Finally, test the causal claim</strong>: if a choice rewards the wrong behavior, confuses punishment with reinforcement, or ignores the specific dog listed in the table, it is probably not the best answer.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vdiv"></div>
+
+      <div class="pane rightPane">
+        <div class="panel">
+          <div class="bar"><div class="title">Questions</div></div>
+          <div class="subbar">
+            <div class="chips"></div>
+            <div class="right-actions">
+              <button class="btn" id="resetAll" type="button">Reset all</button>
+              <button class="btn" id="prevBtn" type="button">Previous</button>
+              <button class="btn primary" id="nextBtn" type="button">Next</button>
+            </div>
+          </div>
+          <div class="qwrap">
+
+            <section class="qcard" id="card-1">
+              <div class="qhead"><div class="qnum">Question 1 of 7</div></div>
+              <div class="qstem">After a day when the treat dispenser occasionally pauses for several minutes, which schedule would most likely keep Basil playing despite the delay, and why?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q1" value="A"><div class="choice-letter">A.</div><div>Schedule A, because fixed timing lets Basil predict exactly when the next pellet will come.</div></label>
+                <label class="choice"><input type="radio" name="q1" value="B"><div class="choice-letter">B.</div><div>Schedule C, because rewarding every calm bout for Rocket should generalize to any dog’s behavior.</div></label>
+                <label class="choice"><input type="radio" name="q1" value="C"><div class="choice-letter">C.</div><div>Schedule D, because variable response schedules always produce the fastest acquisition in every subject.</div></label>
+                <label class="choice"><input type="radio" name="q1" value="D"><div class="choice-letter">D.</div><div>Schedule B, because Basil’s reward is still tied to sustained play, and the passage says less predictable schedules persist better when reinforcement is delayed.</div></label>
+              </div>
+              <div class="feedback" id="fb-1"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="1" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-1" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>D</strong>. The passage says that <strong>less predictable schedules</strong> produce better persistence when a reward is <strong>delayed or omitted</strong>. Table 1 shows that for <strong>Basil</strong>, the less predictable schedule is <strong>B</strong>, where the treat follows an unpredictable duration of continued toy pursuit.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>A</strong>: A is Basil’s predictable schedule, and the passage explicitly says predictable schedules are weaker when reinforcement is delayed.</li>
+                  <li><strong>B</strong>: Schedule C applies to <strong>Rocket</strong>, not Basil, and it reinforces calm non-jumping bouts rather than sustained toy pursuit.</li>
+                  <li><strong>C</strong>: D is also for <strong>Rocket</strong>, and the passage never says variable schedules always produce the fastest acquisition. In fact, Elena reports faster early learning under more predictable schedules.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-2">
+              <div class="qhead"><div class="qnum">Question 2 of 7</div></div>
+              <div class="qstem">An intern argues that yelling “Off!” at Rocket each time he jumps is equivalent to schedule C because both are meant to reduce jumping. Which reply best fits the passage and Table 1?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q2" value="A"><div class="choice-letter">A.</div><div>Both are negative reinforcement because they remove Elena’s sleeves from Rocket after the target response.</div></label>
+                <label class="choice"><input type="radio" name="q2" value="B"><div class="choice-letter">B.</div><div>Schedule C is different because it reinforces the alternative response listed in the table; yelling adds a consequence after the problem behavior and may still pair attention with jumping.</div></label>
+                <label class="choice"><input type="radio" name="q2" value="C"><div class="choice-letter">C.</div><div>Yelling is superior because continuous punishment extinguishes behavior faster than any reinforcement schedule.</div></label>
+                <label class="choice"><input type="radio" name="q2" value="D"><div class="choice-letter">D.</div><div>Both should work equally well because Rocket’s arousal level, not consequences, determines the final behavior.</div></label>
+              </div>
+              <div class="feedback" id="fb-2"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="2" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-2" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>B</strong>. Table 1 shows that <strong>schedule C</strong> delivers a treat after <strong>every calm play bout that ends without jumping</strong>, so it reinforces an alternative response. The passage also warns that if Rocket jumps and still gets attention, the jumping may be accidentally strengthened. Yelling occurs <strong>after the problem behavior</strong> and may not teach the calm response Elena wants.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>A</strong>: Nothing in the passage indicates that yelling removes an aversive stimulus after the target response. This mislabels the contingency.</li>
+                  <li><strong>C</strong>: The passage does not claim punishment is always faster or superior. Elena’s own pilot data support reinforcement of calm behavior.</li>
+                  <li><strong>D</strong>: This ignores the central logic of operant conditioning in the passage, which is precisely about modifying consequences to change behavior.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-3">
+              <div class="qhead"><div class="qnum">Question 3 of 7</div></div>
+              <div class="qstem">Basil starts responding quickly but shows a noticeable pause right after each pellet is delivered. Based on the passage and Table 1, which schedule is most likely being used?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q3" value="A"><div class="choice-letter">A.</div><div>Schedule B, because a variable duration schedule should make Basil pause while he waits for the next unpredictable treat.</div></label>
+                <label class="choice"><input type="radio" name="q3" value="B"><div class="choice-letter">B.</div><div>Schedule D, because unpredictable numbers of calm bouts generally produce the strongest post-reward pause.</div></label>
+                <label class="choice"><input type="radio" name="q3" value="C"><div class="choice-letter">C.</div><div>Schedule A, because Basil’s reward follows a predictable 2-minute interval and the passage says predictable schedules can produce post-reward pauses.</div></label>
+                <label class="choice"><input type="radio" name="q3" value="D"><div class="choice-letter">D.</div><div>Schedule C, because rewarding every calm Rocket bout is equivalent to timing Basil’s toy pursuit.</div></label>
+              </div>
+              <div class="feedback" id="fb-3"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="3" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-3" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>C</strong>. The passage states that <strong>more predictable schedules</strong> can produce <strong>pauses immediately after reward delivery</strong>. Table 1 identifies Basil’s predictable schedule as <strong>A</strong>: one treat after every 2 minutes of continuous toy pursuit.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>A</strong>: B is Basil’s less predictable schedule, which the passage associates with steadier responding, not stronger pauses.</li>
+                  <li><strong>B</strong>: D applies to Rocket and does not match Basil’s target behavior.</li>
+                  <li><strong>D</strong>: C is a response-based schedule for Rocket, not a time-based schedule for Basil.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-4">
+              <div class="qhead"><div class="qnum">Question 4 of 7</div></div>
+              <div class="qstem">To separate acquisition speed from resistance to extinction, Elena withholds treats for several trials after each dog has already learned the target behavior. Which pair of outcomes would best match the passage plus Table 1?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q4" value="A"><div class="choice-letter">A.</div><div>Basil’s play drops off more sharply under A than B, while Rocket’s calm behavior persists longer under D than C.</div></label>
+                <label class="choice"><input type="radio" name="q4" value="B"><div class="choice-letter">B.</div><div>Basil persists longer under A than B, while Rocket acquires calm behavior faster under D than C.</div></label>
+                <label class="choice"><input type="radio" name="q4" value="C"><div class="choice-letter">C.</div><div>Both dogs persist longest under the schedules that deliver reinforcement after every successful trial.</div></label>
+                <label class="choice"><input type="radio" name="q4" value="D"><div class="choice-letter">D.</div><div>Basil shows no difference between A and B, because both schedules use positive reinforcement.</div></label>
+              </div>
+              <div class="feedback" id="fb-4"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="4" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-4" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>A</strong>. The passage says Basil responds faster under the <strong>predictable</strong> schedule but maintains play longer under the <strong>less predictable</strong> one when reward is delayed. Table 1 maps those schedules to <strong>A</strong> and <strong>B</strong>, respectively. For Rocket, the passage says calm behavior persists better under the <strong>less predictable</strong> schedule after unrewarded calm bouts, and Table 1 shows that schedule is <strong>D</strong>, not C.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>B</strong>: This reverses both parts of the pilot findings.</li>
+                  <li><strong>C</strong>: The passage argues the opposite for persistence: less predictable schedules resist extinction better.</li>
+                  <li><strong>D</strong>: Merely noting that both schedules are positive reinforcement ignores the evidence that predictability still matters.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-5">
+              <div class="qhead"><div class="qnum">Question 5 of 7</div></div>
+              <div class="qstem">A new volunteer claims schedule B is a ratio schedule because Basil can get more treats by making more rapid toy contacts. Which prediction would most clearly show the volunteer is misreading Table 1 in light of the passage?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q5" value="A"><div class="choice-letter">A.</div><div>Rocket should earn more treats under D by shortening the length of each calm bout.</div></label>
+                <label class="choice"><input type="radio" name="q5" value="B"><div class="choice-letter">B.</div><div>Basil should receive a treat immediately after his mat is removed, because negative reinforcement is time-based.</div></label>
+                <label class="choice"><input type="radio" name="q5" value="C"><div class="choice-letter">C.</div><div>Schedule B should eliminate all post-reward pauses, because every ratio schedule is unpredictable.</div></label>
+                <label class="choice"><input type="radio" name="q5" value="D"><div class="choice-letter">D.</div><div>Under B, Basil could make many toy contacts without immediate reward if the required duration of sustained pursuit has not yet elapsed.</div></label>
+              </div>
+              <div class="feedback" id="fb-5"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="5" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-5" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>D</strong>. The passage specifically warns that interns often confuse schedules based on <strong>elapsed time</strong> with schedules based on the <strong>number of responses</strong>. Table 1 shows that schedule <strong>B</strong> depends on an unpredictable <strong>duration</strong> of continuous pursuit, not on a count of discrete contacts. So Basil could respond many times and still not be reinforced until enough time has passed.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>A</strong>: This concerns Rocket’s schedule D and does not directly expose the misreading of Basil’s time-based schedule B.</li>
+                  <li><strong>B</strong>: The passage explicitly says putting the mat away is not itself reinforcement, so this option compounds two conceptual errors.</li>
+                  <li><strong>C</strong>: Even if a schedule is less predictable, the key mistake here is confusing time-based and response-count contingencies. This option does not address that problem as directly as D does.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-6">
+              <div class="qhead"><div class="qnum">Question 6 of 7</div></div>
+              <div class="qstem">Suppose Elena wants the quickest initial drop in Rocket’s jumping during the first few sessions, even if long-term maintenance is not yet being tested. Which schedule is best supported, and why?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q6" value="A"><div class="choice-letter">A.</div><div>Schedule D, because less predictable schedules always suppress unwanted behavior sooner.</div></label>
+                <label class="choice"><input type="radio" name="q6" value="B"><div class="choice-letter">B.</div><div>Schedule C, because the table makes reinforcement contingent on every calm bout and the passage says that schedule reduced jumping more quickly during acquisition.</div></label>
+                <label class="choice"><input type="radio" name="q6" value="C"><div class="choice-letter">C.</div><div>Schedule B, because interval schedules are less likely to accidentally reward arousal than response-based schedules.</div></label>
+                <label class="choice"><input type="radio" name="q6" value="D"><div class="choice-letter">D.</div><div>Schedule A, because Basil’s early improvement proves predictable schedules should be transferred across dogs.</div></label>
+              </div>
+              <div class="feedback" id="fb-6"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="6" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-6" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>B</strong>. The passage reports that Rocket reduced jumping more quickly under the schedule that rewarded <strong>every successful calm bout</strong>. Table 1 identifies that schedule as <strong>C</strong>. This is an acquisition question, not a maintenance question, so the early advantage matters most.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>A</strong>: The passage does not say less predictable schedules always work sooner; for Rocket, they worked better for persistence after omitted rewards.</li>
+                  <li><strong>C</strong>: B is Basil’s schedule, not Rocket’s, and the target behavior is different.</li>
+                  <li><strong>D</strong>: Basil’s result cannot simply be generalized to Rocket because the dogs, target behaviors, and contingencies differ.</li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="qcard" id="card-7">
+              <div class="qhead"><div class="qnum">Question 7 of 7</div></div>
+              <div class="qstem">After several sessions, an intern proposes giving Rocket a treat at the end of a play bout even if he jumped midway through it, as long as he is calm at the instant the treat appears. Based on the passage and Table 1, which concern is most justified?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q7" value="A"><div class="choice-letter">A.</div><div>It would weaken the contingency underlying schedules C and D, because treats are supposed to follow whole calm bouts; rewarding after a bout that included jumping could strengthen the wrong behavior.</div></label>
+                <label class="choice"><input type="radio" name="q7" value="B"><div class="choice-letter">B.</div><div>It would convert Rocket’s training from operant conditioning to classical conditioning because treats are unconditioned stimuli.</div></label>
+                <label class="choice"><input type="radio" name="q7" value="C"><div class="choice-letter">C.</div><div>It would make D identical to B, because both schedules would now depend on elapsed time instead of behavior.</div></label>
+                <label class="choice"><input type="radio" name="q7" value="D"><div class="choice-letter">D.</div><div>It would only matter under C, since variable schedules are immune to accidental reinforcement of an undesired response.</div></label>
+              </div>
+              <div class="feedback" id="fb-7"></div>
+              <div class="actions"><button class="btn" type="button" data-action="toggle-exp" data-q="7" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-7" hidden>
+                <div class="exp-title">Explanation</div>
+                <div class="exp-text">The best answer is <strong>A</strong>. Table 1 defines Rocket’s target contingency in both <strong>C</strong> and <strong>D</strong> as a <strong>calm, non-jumping play bout</strong>. The passage explicitly warns that if Rocket jumps and still receives attention or a treat, the jumping may be accidentally strengthened. Rewarding at the end of a bout that included jumping would therefore blur the contingency and reinforce the wrong behavioral chain.</div>
+                <div class="exp-title">Why the other choices are not as good</div>
+                <ul class="exp-list">
+                  <li><strong>B</strong>: The situation still involves consequences shaping behavior, so it remains an operant-conditioning problem.</li>
+                  <li><strong>C</strong>: Changing the success criterion does not convert Rocket’s schedule into Basil’s time-based schedule B.</li>
+                  <li><strong>D</strong>: Variable schedules are not immune to accidental reinforcement. If the wrong behavior is followed by reward, it can still be strengthened.</li>
+                </ul>
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const qOrder = [1,2,3,4,5,6,7];
+const correct = {"1":"D","2":"B","3":"C","4":"A","5":"D","6":"B","7":"A"};
+const $ = (s, root=document) => root.querySelector(s);
+const $all = (s, root=document) => Array.from(root.querySelectorAll(s));
+let currentIndex = 0;
+(function(){
+  const display = $('#timerDisplay');
+  const wrap = $('#timerWrap');
+  const startBtn = $('#timerStart');
+  const pauseBtn = $('#timerPause');
+  const resetBtn = $('#timerReset');
+  let remaining = 12*60;
+  let timer = null;
+  function formatTime(total){
+    const m = String(Math.floor(total/60)).padStart(2,'0');
+    const s = String(total%60).padStart(2,'0');
+    return `${m}:${s}`;
+  }
+  function render(){
+    display.textContent = formatTime(remaining);
+    wrap.classList.toggle('timer-danger', remaining <= 60);
+  }
+  function start(){
+    if (timer) return;
+    timer = setInterval(() => {
+      if (remaining > 0) { remaining -= 1; render(); }
+      else { clearInterval(timer); timer = null; }
+    }, 1000);
+  }
+  function pause(){ if (timer){ clearInterval(timer); timer = null; } }
+  function reset(){ pause(); remaining = 12*60; render(); }
+  startBtn.addEventListener('click', start);
+  pauseBtn.addEventListener('click', pause);
+  resetBtn.addEventListener('click', reset);
+  render();
+})();
+function showQuestion(num){
+  currentIndex = qOrder.indexOf(num);
+  $all('.qcard').forEach(card => card.classList.remove('active'));
+  $('#card-' + num).classList.add('active');
+  $('#prevBtn').disabled = currentIndex === 0;
+  $('#nextBtn').disabled = currentIndex === qOrder.length - 1;
+}
+function getSelected(num){ const el = document.querySelector('input[name="q'+num+'"]:checked'); return el ? el.value : null; }
+function setFeedback(num, ok){ const fb = $('#fb-' + num); if (ok === null) { fb.textContent = ''; fb.className = 'feedback'; return; } fb.textContent = ok ? 'Correct' : 'Incorrect'; fb.className = 'feedback ' + (ok ? 'good' : 'bad'); }
+function markChoices(num, selected){ const card = $('#card-' + num); $all('.choice', card).forEach(function(lab){ lab.classList.remove('selected','correct','incorrect'); const input = lab.querySelector('input'); if (!input) return; if (input.value === selected) lab.classList.add('selected'); if (selected) { if (input.value === correct[String(num)]) lab.classList.add('correct'); if (input.value === selected && selected !== correct[String(num)]) lab.classList.add('incorrect'); } }); }
+function enableExplanation(num){ const card = $('#card-' + num); card.querySelector('button[data-action="toggle-exp"]').disabled = false; }
+function resetQuestion(num){ document.querySelectorAll('input[name="q'+num+'"]').forEach(i => i.checked = false); setFeedback(num, null); const card = $('#card-' + num); $all('.choice', card).forEach(l => l.classList.remove('selected','correct','incorrect')); const exp = $('#exp-' + num); exp.hidden = true; const btn = card.querySelector('button[data-action="toggle-exp"]'); btn.textContent = 'Show explanation'; btn.disabled = true; }
+function resetAll(){ try{ clearHighlights(); }catch(e){} qOrder.forEach(n => resetQuestion(n)); }
+$('#toggleReason').addEventListener('click', function(){ const box = $('#reasonBox'); box.hidden = !box.hidden; this.textContent = box.hidden ? 'How to reason' : 'Hide reasoning'; });
+$('#prevBtn').addEventListener('click', function(){ showQuestion(qOrder[Math.max(0, currentIndex-1)]); });
+$('#nextBtn').addEventListener('click', function(){ showQuestion(qOrder[Math.min(qOrder.length-1, currentIndex+1)]); });
+$('#resetAll').addEventListener('click', function(){ resetAll(); showQuestion(qOrder[0]); });
+document.addEventListener('change', function(e){ if (!(e.target && e.target.matches('input[type="radio"]'))) return; const num = parseInt(e.target.name.replace('q',''),10); const sel = getSelected(num); const ok = sel === correct[String(num)]; setFeedback(num, ok); markChoices(num, sel); enableExplanation(num); });
+document.addEventListener('click', function(e){ const btn = e.target.closest('button'); if (!btn) return; if (btn.dataset.action === 'toggle-exp') { const num = parseInt(btn.dataset.q,10); const exp = $('#exp-' + num); exp.hidden = !exp.hidden; btn.textContent = exp.hidden ? 'Show explanation' : 'Hide explanation'; } });
+(function(){
+  const passage = document.getElementById('passageText');
+  const layer = document.getElementById('hlLayer');
+  const highlightBtn = document.getElementById('highlightBtn');
+  const clearHighlightBtn = document.getElementById('clearHighlightBtn');
+  if (!passage || !layer || !highlightBtn) return;
+  let highlightMode = false; let groups = [];
+  function clearHighlights(){ while(layer.firstChild) layer.removeChild(layer.firstChild); groups = []; }
+  function undoLastHighlight(){ const g = groups.pop(); if (g && g.parentNode === layer) layer.removeChild(g); }
+  function createGroup(){ const g = document.createElement('div'); layer.appendChild(g); groups.push(g); return g; }
+  function selectionWithinPassage(sel){ return !!(sel && sel.rangeCount && passage.contains(sel.anchorNode) && passage.contains(sel.focusNode)); }
+  function addRect(rect, base, group){ const div = document.createElement('div'); div.className = 'hl-rect'; div.style.top = (rect.top - base.top + passage.scrollTop) + 'px'; div.style.left = (rect.left - base.left + passage.scrollLeft) + 'px'; div.style.width = rect.width + 'px'; div.style.height = rect.height + 'px'; group.appendChild(div); }
+  function highlightSelection(){ const sel = window.getSelection(); if(!selectionWithinPassage(sel)) return; const range = sel.getRangeAt(0); if(range.collapsed) return; const base = passage.getBoundingClientRect(); const rects = Array.from(range.getClientRects()).filter(r=>r.width>0 && r.height>0); if(!rects.length) return; const group = createGroup(); rects.forEach(r=>addRect(r, base, group)); try{ sel.removeAllRanges(); }catch(_){} }
+  function setMode(on){ highlightMode = !!on; highlightBtn.classList.toggle('is-active', highlightMode); highlightBtn.classList.toggle('active', highlightMode); }
+  highlightBtn.addEventListener('click', (e)=>{ e.preventDefault(); setMode(!highlightMode); if (highlightMode) setTimeout(highlightSelection, 0); });
+  clearHighlightBtn.addEventListener('click', (e)=>{ e.preventDefault(); clearHighlightBtn.classList.add('is-active','active'); setTimeout(()=>clearHighlightBtn.classList.remove('is-active','active'), 180); undoLastHighlight(); });
+  passage.addEventListener('mouseup', ()=>{ if(!highlightMode) return; setTimeout(highlightSelection, 0); });
+  passage.addEventListener('touchend', ()=>{ if(!highlightMode) return; setTimeout(highlightSelection, 0); }, {passive:true});
+  window.clearHighlights = clearHighlights;
+})();
+window.addEventListener('DOMContentLoaded', function(){ showQuestion(qOrder[0]); resetAll(); showQuestion(qOrder[0]); });
+</script>
+</body>
+</html>
