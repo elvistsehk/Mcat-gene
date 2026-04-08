@@ -1,0 +1,548 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Glycolysis to ETC — MCAT Passage + Discretes</title>
+<style>
+:root{
+  --blue:#1f6fae;
+  --blue2:#2d7fbf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#d7dee8;
+  --good:#118a4a;
+  --bad:#c0262d;
+  --accent:#1f67d6;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--blue);color:#fff;padding:12px 16px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .left{display:flex;flex-direction:column;gap:2px}
+.timer{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);border-radius:10px;color:#fff;font-weight:800}
+.timer-label{opacity:.9;font-weight:700}
+.timer-time{min-width:60px;text-align:center;letter-spacing:.5px}
+.timer-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:5px 8px;font-weight:800;cursor:pointer}
+.timer-btn:hover{background:rgba(255,255,255,.18)}
+.timer-danger{background:rgba(192,38,45,.35)!important;border-color:rgba(255,255,255,.55)!important}
+.container{width:100%;max-width:none;margin:0 auto;padding:12px;height:calc(100vh - 60px)}
+.split{display:flex;gap:0;height:100%}
+.pane{flex:1;min-width:0;height:100%}
+.vdiv{width:6px;background:linear-gradient(#cbd5e1,#cbd5e1);border-radius:3px;margin:0 10px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(0deg,var(--blue),var(--blue2));color:#fff;padding:10px 12px}
+.bar .title{font-weight:900;flex:1 1 auto;min-width:180px}
+.bar .barActions{display:flex;gap:10px;margin-left:auto;align-items:center}
+.iconbtn{height:40px;min-width:120px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:0 14px;font-weight:800;cursor:pointer;white-space:nowrap}
+.iconbtn:hover{background:rgba(255,255,255,.18)}
+.iconbtn.is-active,.iconbtn.active{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.7)}
+.content{padding:14px 16px;line-height:1.6;font-size:15px;flex:1;overflow:auto}
+.passage-section{display:none;height:100%;flex-direction:column}
+.passage-section.active{display:flex}
+.passageText{position:relative;-webkit-touch-callout:none;flex:1;overflow:auto}
+.passageText,.passageText *{-webkit-user-drag:none;user-drag:none}
+.passageText p{text-indent:1.5em;margin:10px 0}
+.passageText p.noindent{ text-indent:0 }
+.passageText > *:not(.hl-layer){position:relative;z-index:1}
+.reason-box{white-space:normal;border:1px solid var(--border);background:#fbfdff;border-radius:10px;padding:14px 16px;margin-top:12px}
+.reason-box p{margin:0 0 8px 0}
+.reason-box ul{margin:0;padding-left:18px}
+.reason-box li{margin:8px 0;line-height:1.25}
+.reason-box strong,.reason-box .key{color:var(--accent);font-weight:700}
+.hl-layer{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hl-rect{position:absolute;background:rgba(255,245,157,0.75);border-radius:2px}
+.table-wrap{margin:12px 0 14px 0;overflow:auto}
+.data-table{width:100%;border-collapse:collapse;font-size:14px;background:#fff}
+.data-table th,.data-table td{border:1px solid var(--border);padding:8px 10px;text-align:center;vertical-align:middle}
+.data-table th{background:#f7fbff;font-weight:800}
+.figcap,.note{font-size:13px;color:#475569;margin-top:6px}
+.independent-note{font-size:22px;line-height:1.3;font-weight:800;color:#20262d;padding:6px 4px 0 4px}
+.subbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);background:#fbfdff}
+.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.qwrap{padding:12px;overflow:auto;flex:1}
+.qcard{display:none}
+.qcard.active{display:block}
+.qhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qstem{font-size:16px;font-weight:800;margin:8px 0 10px}
+.question-note{font-size:12px;color:var(--muted);font-weight:700}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px;cursor:pointer}
+.choice:hover{border-color:#b9c6d8}
+.choice input{margin-top:3px}
+.choice-letter{font-weight:950;min-width:28px}
+.choice.selected{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,132,198,.12)}
+.choice.correct{border-color:rgba(17,138,74,.6);box-shadow:0 0 0 3px rgba(17,138,74,.12)}
+.choice.incorrect{border-color:rgba(192,38,45,.55);box-shadow:0 0 0 3px rgba(192,38,45,.10)}
+.feedback{margin-top:10px;font-weight:950}
+.feedback.good{color:var(--good)}
+.feedback.bad{color:var(--bad)}
+.actions{display:flex;gap:8px;margin-top:10px}
+.explanation{margin-top:10px;border:1px solid var(--border);background:#fbfdff;border-radius:12px;padding:10px 12px}
+.exp-title{font-weight:950;margin:6px 0}
+.exp-text{color:#111827}
+.exp-text strong,.explanation strong{color:var(--accent)}
+@media (max-width: 980px){
+  .split{flex-direction:column}
+  .vdiv{display:none}
+  .pane{height:auto}
+  .panel{height:auto;min-height:44vh}
+  .container{height:auto}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="left"><div>Glycolysis → ETC / ATP Synthase</div></div>
+  <div class="timer" id="timerWrap" aria-label="Passage timer">
+    <span class="timer-label">Timer</span>
+    <span class="timer-time" id="timerDisplay">18:00</span>
+    <button class="timer-btn" id="timerStart" type="button">Start</button>
+    <button class="timer-btn" id="timerPause" type="button">Pause</button>
+    <button class="timer-btn" id="timerReset" type="button">Reset</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="split">
+    <div class="pane leftPane">
+      <div class="panel">
+        <div class="bar">
+          <div class="title" id="passageTitle">Passage 1 (Questions 1–6)</div>
+          <div class="barActions">
+            <button class="iconbtn" id="highlightBtn" type="button">Highlight</button>
+            <button class="iconbtn" id="clearHighlightBtn" type="button">Clear highlight</button>
+            <button class="iconbtn" id="toggleReason" type="button">How to reason</button>
+          </div>
+        </div>
+        <div class="content" id="passagePane">
+          <section class="passage-section active" id="section-1" data-title="Passage 1 (Questions 1–6)">
+            <div class="passageText" id="passageText-1">
+              <div class="hl-layer" id="hlLayer-1" aria-hidden="true"></div>
+              <p class="noindent">A physiology laboratory compared ATP production in rapidly dividing mammalian cells grown under four conditions designed to perturb energy metabolism at different steps. The investigators reminded students that a fall in oxygen consumption does not automatically prove that glycolysis has stopped, and that lactate accumulation does not mean the mitochondria are absent. Instead, the location of each block must be considered: glycolysis occurs in the cytosol, pyruvate dehydrogenase converts pyruvate to acetyl-CoA in the mitochondrial matrix, the citric acid cycle occurs in the matrix, and the electron transport chain together with ATP synthase resides in the inner mitochondrial membrane.</p>
+
+              <p>The cells were supplied with glucose as the only exogenous fuel. In untreated control cells, pyruvate entered the mitochondria, pyruvate dehydrogenase generated acetyl-CoA and NADH, the citric acid cycle generated additional NADH and FADH<sub>2</sub>, and oxidative phosphorylation produced most of the ATP. In one experimental group, fluoropyruvate was used to inhibit pyruvate dehydrogenase. In a second group, malonate competitively inhibited succinate dehydrogenase. Because succinate dehydrogenase is both a citric acid cycle enzyme and Complex II of the ETC, the investigators warned that this perturbation can lower fumarate formation while also decreasing the delivery of electrons from FADH<sub>2</sub> to ubiquinone. In a third group, oligomycin inhibited ATP synthase. In a fourth group, cells were placed under severe hypoxia.</p>
+
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Condition</th>
+                      <th>Oxygen consumption</th>
+                      <th>Lactate release</th>
+                      <th>Mitochondrial NADH/NAD<sup>+</sup></th>
+                      <th>Succinate</th>
+                      <th>ATP per glucose</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Control</td><td>100%</td><td>1.0×</td><td>1.0×</td><td>1.0×</td><td>30</td></tr>
+                    <tr><td>PDH inhibitor</td><td>38%</td><td>3.4×</td><td>0.6×</td><td>0.9×</td><td>4</td></tr>
+                    <tr><td>Malonate</td><td>63%</td><td>2.0×</td><td>1.3×</td><td>2.8×</td><td>18</td></tr>
+                    <tr><td>Oligomycin</td><td>22%</td><td>4.1×</td><td>2.5×</td><td>1.4×</td><td>3</td></tr>
+                    <tr><td>Severe hypoxia</td><td>9%</td><td>4.6×</td><td>2.1×</td><td>1.2×</td><td>2</td></tr>
+                  </tbody>
+                </table>
+                <div class="figcap">Table 1. Representative outcomes after 2 hours. Values are normalized to control except ATP per glucose, which is approximate.</div>
+              </div>
+
+              <p>The investigators highlighted several patterns. Blocking pyruvate dehydrogenase reduced entry of glycolytic carbon into the citric acid cycle, so ATP production shifted toward substrate-level phosphorylation in glycolysis and lactate release rose. Malonate caused succinate to accumulate upstream of succinate dehydrogenase and reduced, but did not abolish, oxidative phosphorylation because NADH generated elsewhere could still donate electrons through Complex I. Oligomycin prevented protons from flowing back through ATP synthase, which secondarily slowed the electron transport chain because the proton gradient became difficult to dissipate. Under severe hypoxia, the terminal electron acceptor became limiting, so the electron transport chain slowed markedly and cells regenerated cytosolic NAD<sup>+</sup> primarily by reducing pyruvate to lactate.</p>
+
+              <p>Finally, the team cautioned students against a common shortcut: a high mitochondrial NADH/NAD<sup>+</sup> ratio can arise either because NADH production is increased or because oxidation of NADH by the electron transport chain is impaired. Therefore, they argued, the redox ratio must be interpreted together with oxygen use, metabolite buildup, and ATP yield rather than in isolation.</p>
+
+              <div class="reason-box" id="reasonBox-1" hidden>
+                <p><span class="key">Locate the block first.</span> Ask whether the perturbation is acting in the cytosol, mitochondrial matrix, or inner mitochondrial membrane.</p>
+                <ul>
+                  <li><span class="key">Match the data pattern to the step.</span> Combine oxygen consumption, lactate release, redox ratio, and metabolite buildup instead of relying on only one column.</li>
+                  <li><span class="key">Track carbon and electrons separately.</span> Pyruvate and acetyl-CoA describe carbon flow; NADH, FADH<sub>2</sub>, ubiquinone, and oxygen describe electron flow.</li>
+                  <li><span class="key">Remember substrate-level phosphorylation.</span> Glycolysis can still make ATP even when oxidative phosphorylation is impaired.</li>
+                  <li><span class="key">Use dual-function enzymes carefully.</span> Succinate dehydrogenase belongs to both the TCA cycle and Complex II, so its inhibition affects two linked systems.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="passage-section" id="section-2" data-title="Independent Questions (7–14)">
+            <div class="passageText" id="passageText-2">
+              <div class="hl-layer" id="hlLayer-2" aria-hidden="true"></div>
+              <div class="independent-note">This question does not refer to a passage and is independent of other questions.</div>
+              <div class="reason-box" id="reasonBox-2" hidden>
+                <p><span class="key">Treat each item as standalone.</span> Pull the needed biochemistry from memory, then eliminate choices that place molecules in the wrong compartment or confuse ATP sources.</p>
+                <ul>
+                  <li><span class="key">Check location.</span> Glycolysis is cytosolic, PDH and TCA are in the matrix, and the ETC plus ATP synthase are in the inner mitochondrial membrane.</li>
+                  <li><span class="key">Check redox logic.</span> NADH and FADH<sub>2</sub> donate electrons; oxygen is reduced to water; proton motive force drives ATP synthase.</li>
+                  <li><span class="key">Check carbon fate.</span> Pyruvate becomes acetyl-CoA, carbons leave the cycle as CO<sub>2</sub>, and oxaloacetate is regenerated rather than consumed overall.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="vdiv"></div>
+
+    <div class="pane rightPane">
+      <div class="panel">
+        <div class="subbar">
+          <div></div>
+          <div class="right-actions">
+            <button class="btn" id="resetAll" type="button">Reset all</button>
+            <button class="btn" id="prevBtn" type="button">Previous</button>
+            <button class="btn primary" id="nextBtn" type="button">Next</button>
+          </div>
+        </div>
+        <div class="qwrap">
+
+          <!-- Q1-6 passage -->
+          <div class="qcard" id="card-1">
+            <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 1</div></div></div>
+            <div class="qstem">A student argues that the oligomycin group must have low mitochondrial NADH/NAD<sup>+</sup> because ATP synthase is blocked and ATP cannot be made. Which response best fits the passage and the data?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q1" value="A"><div class="choice-letter">A.</div><div>The redox ratio should rise because blocking ATP synthase slows electron transport, so NADH oxidation is impaired.</div></label>
+              <label class="choice"><input type="radio" name="q1" value="B"><div class="choice-letter">B.</div><div>The redox ratio should fall because malate dehydrogenase directly hydrolyzes ATP.</div></label>
+              <label class="choice"><input type="radio" name="q1" value="C"><div class="choice-letter">C.</div><div>The ratio should remain unchanged because ATP synthase does not interact with the ETC.</div></label>
+              <label class="choice"><input type="radio" name="q1" value="D"><div class="choice-letter">D.</div><div>The ratio should fall because pyruvate cannot enter the mitochondrion when ATP synthase is inhibited.</div></label>
+            </div>
+            <div class="feedback" id="fb-1"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="1" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-1" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>A</strong> is correct. The passage states that oligomycin blocks proton flow through ATP synthase, which secondarily slows the ETC because the proton gradient is harder to dissipate. If the ETC slows, mitochondrial NADH is oxidized less efficiently, so the NADH/NAD<sup>+</sup> ratio rises. Table 1 supports this with the highest redox ratio among the listed perturbations. Choice B invents an ATP-hydrolyzing role for malate dehydrogenase. Choice C ignores respiratory control. Choice D confuses ATP synthase inhibition with a block in pyruvate transport or PDH.</div></div>
+          </div>
+
+          <div class="qcard" id="card-2">
+            <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 2</div></div></div>
+            <div class="qstem">Which observation most strongly identifies malonate, rather than the PDH inhibitor, as the perturbation applied to a sample?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q2" value="A"><div class="choice-letter">A.</div><div>A major rise in lactate release with oxygen use reduced to less than 40% of control</div></label>
+              <label class="choice"><input type="radio" name="q2" value="B"><div class="choice-letter">B.</div><div>A lower mitochondrial NADH/NAD<sup>+</sup> ratio than control</div></label>
+              <label class="choice"><input type="radio" name="q2" value="C"><div class="choice-letter">C.</div><div>Marked succinate accumulation with only partial preservation of ATP production</div></label>
+              <label class="choice"><input type="radio" name="q2" value="D"><div class="choice-letter">D.</div><div>ATP yield close to 2 ATP per glucose with nearly absent oxygen consumption</div></label>
+            </div>
+            <div class="feedback" id="fb-2"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="2" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-2" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>C</strong> is correct. Malonate blocks succinate dehydrogenase, so succinate accumulates upstream. Because Complex I can still accept electrons from NADH, oxidative phosphorylation is reduced but not eliminated, which matches the intermediate ATP yield. Choice A better fits PDH inhibition, where glycolytic carbon cannot efficiently enter the TCA cycle. Choice B is opposite the malonate pattern shown. Choice D fits severe hypoxia more closely than malonate.</div></div>
+          </div>
+
+          <div class="qcard" id="card-3">
+            <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 3</div></div></div>
+            <div class="qstem">If dichloroacetate were added together with the PDH inhibitor and partially restored PDH activity, which change would be most likely relative to PDH inhibitor alone?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q3" value="A"><div class="choice-letter">A.</div><div>Lactate release would increase further because more pyruvate would be forced into fermentation.</div></label>
+              <label class="choice"><input type="radio" name="q3" value="B"><div class="choice-letter">B.</div><div>Oxygen consumption would rise because more acetyl-CoA and NADH could be generated in mitochondria.</div></label>
+              <label class="choice"><input type="radio" name="q3" value="C"><div class="choice-letter">C.</div><div>Succinate would necessarily accumulate above the malonate level because PDH directly oxidizes succinate.</div></label>
+              <label class="choice"><input type="radio" name="q3" value="D"><div class="choice-letter">D.</div><div>ATP per glucose would fall toward 2 because glycolysis would shut off when PDH recovers.</div></label>
+            </div>
+            <div class="feedback" id="fb-3"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="3" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-3" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>B</strong> is correct. Restoring PDH allows more pyruvate to be converted to acetyl-CoA in the matrix. That increases TCA-cycle input and mitochondrial NADH production, which supports greater electron delivery to the ETC and therefore higher oxygen consumption than with PDH inhibition alone. Choice A reverses the expected carbon redistribution. Choice C assigns succinate oxidation to PDH, which is false. Choice D incorrectly assumes glycolysis stops when mitochondrial oxidation improves.</div></div>
+          </div>
+
+          <div class="qcard" id="card-4">
+            <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 4</div></div></div>
+            <div class="qstem">Which condition best illustrates the investigators’ warning that a high mitochondrial NADH/NAD<sup>+</sup> ratio does not by itself prove increased NADH production?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q4" value="A"><div class="choice-letter">A.</div><div>Control, because oxidative phosphorylation is maximal</div></label>
+              <label class="choice"><input type="radio" name="q4" value="B"><div class="choice-letter">B.</div><div>PDH inhibition, because acetyl-CoA formation is blocked</div></label>
+              <label class="choice"><input type="radio" name="q4" value="C"><div class="choice-letter">C.</div><div>Oligomycin, because the ETC slows and NADH accumulates even though ATP synthase rather than a dehydrogenase is directly targeted</div></label>
+              <label class="choice"><input type="radio" name="q4" value="D"><div class="choice-letter">D.</div><div>Malonate, because succinate dehydrogenase directly converts NAD<sup>+</sup> to NADH</div></label>
+            </div>
+            <div class="feedback" id="fb-4"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="4" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-4" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>C</strong> is correct. Oligomycin does not directly increase NADH production. Instead, by blocking ATP synthase it makes proton reentry difficult, slowing the ETC and thereby slowing oxidation of NADH. The redox ratio rises because NADH is not being consumed efficiently. Choice B shows a lower, not higher, ratio. Choice D is incorrect because succinate dehydrogenase uses FAD/FADH<sub>2</sub>, not NAD<sup>+</sup>/NADH.</div></div>
+          </div>
+
+          <div class="qcard" id="card-5">
+            <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 5</div></div></div>
+            <div class="qstem">A classmate claims that severe hypoxia and oligomycin should produce identical ATP yields because both impair oxidative phosphorylation. Which evidence from the passage best argues against that claim?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q5" value="A"><div class="choice-letter">A.</div><div>Only malonate changes succinate levels, so all other ATP yields must be equal.</div></label>
+              <label class="choice"><input type="radio" name="q5" value="B"><div class="choice-letter">B.</div><div>The table shows different oxygen-consumption values and slightly different ATP yields, implying different residual electron flow and ATP generation.</div></label>
+              <label class="choice"><input type="radio" name="q5" value="C"><div class="choice-letter">C.</div><div>Hypoxia should prevent lactate release, whereas oligomycin should enhance it.</div></label>
+              <label class="choice"><input type="radio" name="q5" value="D"><div class="choice-letter">D.</div><div>Oligomycin restores PDH activity, while hypoxia inhibits PDH directly.</div></label>
+            </div>
+            <div class="feedback" id="fb-5"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="5" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-5" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>B</strong> is correct. Both conditions impair oxidative phosphorylation, but they do so at different points. Oligomycin blocks proton-driven ATP synthesis and secondarily slows the ETC, whereas hypoxia deprives the ETC of its terminal electron acceptor. Table 1 therefore shows distinct oxygen-consumption rates and ATP yields. Choice A overgeneralizes from succinate. Choice C is false because both conditions increase lactate release. Choice D invents effects on PDH that are not described.</div></div>
+          </div>
+
+          <div class="qcard" id="card-6">
+            <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 6</div></div></div>
+            <div class="qstem">If the same experiment were repeated in cells supplied with abundant pyruvate instead of glucose, which perturbation would most likely remain strongly growth-limiting for ATP production because it acts downstream of pyruvate entry?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q6" value="A"><div class="choice-letter">A.</div><div>PDH inhibition</div></label>
+              <label class="choice"><input type="radio" name="q6" value="B"><div class="choice-letter">B.</div><div>Inhibition of lactate dehydrogenase in the cytosol</div></label>
+              <label class="choice"><input type="radio" name="q6" value="C"><div class="choice-letter">C.</div><div>Loss of glucose transporters only</div></label>
+              <label class="choice"><input type="radio" name="q6" value="D"><div class="choice-letter">D.</div><div>Malonate, because it still blocks succinate dehydrogenase after acetyl-CoA enters the TCA cycle</div></label>
+            </div>
+            <div class="feedback" id="fb-6"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="6" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-6" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>D</strong> is correct. The question asks for a block that remains relevant after pyruvate has already entered mitochondrial metabolism. Malonate inhibits succinate dehydrogenase, a downstream step in the TCA cycle/Complex II interface, so pyruvate supply does not bypass it. Choice A is still downstream of glycolysis but acts at pyruvate-to-acetyl-CoA conversion itself; with pyruvate as substrate it remains important, yet the key phrase <strong>after acetyl-CoA enters the TCA cycle</strong> points more specifically to malonate. Choice B and C are more upstream or context-dependent.</div></div>
+          </div>
+
+          <!-- Discretes 7-14 -->
+          <div class="qcard" id="card-7">
+            <div class="qhead"><div><div class="question-note">Independent</div><div class="qstem">Question 7</div></div></div>
+            <div class="qstem">A patient with arsenite poisoning has impaired activity of pyruvate dehydrogenase. Which additional finding would most directly result from this defect during aerobic metabolism?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q7" value="A"><div class="choice-letter">A.</div><div>Increased conversion of acetyl-CoA into pyruvate in the cytosol</div></label>
+              <label class="choice"><input type="radio" name="q7" value="B"><div class="choice-letter">B.</div><div>Decreased formation of mitochondrial NADH from pyruvate oxidation</div></label>
+              <label class="choice"><input type="radio" name="q7" value="C"><div class="choice-letter">C.</div><div>Direct inhibition of ATP synthase proton flow</div></label>
+              <label class="choice"><input type="radio" name="q7" value="D"><div class="choice-letter">D.</div><div>Accumulation of fumarate because succinate dehydrogenase is blocked</div></label>
+            </div>
+            <div class="feedback" id="fb-7"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="7" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-7" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>B</strong> is correct. PDH sits in the mitochondrial matrix and oxidatively decarboxylates pyruvate to acetyl-CoA while reducing NAD<sup>+</sup> to NADH. If PDH is inhibited, that specific mitochondrial NADH source falls. Choice A reverses the PDH reaction and places it in the wrong compartment. Choice C describes oligomycin-like ATP synthase inhibition. Choice D describes a defect at succinate dehydrogenase rather than PDH.</div></div>
+          </div>
+
+          <div class="qcard" id="card-8">
+            <div class="qhead"><div><div class="question-note">Independent</div><div class="qstem">Question 8</div></div></div>
+            <div class="qstem">Which pair correctly matches a process with its principal cellular location in eukaryotic cells?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q8" value="A"><div class="choice-letter">A.</div><div>Glycolysis — mitochondrial matrix; ATP synthase — cytosol</div></label>
+              <label class="choice"><input type="radio" name="q8" value="B"><div class="choice-letter">B.</div><div>PDH complex — inner mitochondrial membrane; ETC Complex IV — cytosol</div></label>
+              <label class="choice"><input type="radio" name="q8" value="C"><div class="choice-letter">C.</div><div>TCA cycle — mitochondrial matrix; ATP synthase catalytic head — matrix side of the inner mitochondrial membrane</div></label>
+              <label class="choice"><input type="radio" name="q8" value="D"><div class="choice-letter">D.</div><div>ETC Complex II — outer mitochondrial membrane; glycolysis — intermembrane space</div></label>
+            </div>
+            <div class="feedback" id="fb-8"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="8" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-8" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>C</strong> is correct. The TCA cycle occurs in the mitochondrial matrix. ATP synthase spans the inner mitochondrial membrane, and its catalytic F<sub>1</sub> head projects toward the matrix where ATP is synthesized. The other choices misplace major pathways or membrane complexes.</div></div>
+          </div>
+
+          <div class="qcard" id="card-9">
+            <div class="qhead"><div><div class="question-note">Independent</div><div class="qstem">Question 9</div></div></div>
+            <div class="qstem">A mutation prevents transfer of electrons from cytochrome c to Complex IV. Which immediate consequence is most likely?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q9" value="A"><div class="choice-letter">A.</div><div>Reduced oxygen consumption and decreased regeneration of NAD<sup>+</sup> from NADH</div></label>
+              <label class="choice"><input type="radio" name="q9" value="B"><div class="choice-letter">B.</div><div>Increased ATP synthesis because proton pumping at Complex IV becomes uncoupled</div></label>
+              <label class="choice"><input type="radio" name="q9" value="C"><div class="choice-letter">C.</div><div>Direct conversion of pyruvate to acetyl-CoA in the intermembrane space</div></label>
+              <label class="choice"><input type="radio" name="q9" value="D"><div class="choice-letter">D.</div><div>Enhanced oxidation of FADH<sub>2</sub> at succinate dehydrogenase despite downstream blockade</div></label>
+            </div>
+            <div class="feedback" id="fb-9"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="9" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-9" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>A</strong> is correct. Complex IV transfers electrons to oxygen. If cytochrome c cannot donate to Complex IV, oxygen reduction falls and the entire chain backs up, impairing oxidation of upstream NADH and FADH<sub>2</sub>. Choice B is opposite the expected ATP effect. Choice C is unrelated to Complex IV. Choice D ignores the fact that downstream blockade limits continued upstream electron flow.</div></div>
+          </div>
+
+          <div class="qcard" id="card-10">
+            <div class="qhead"><div><div class="question-note">Independent</div><div class="qstem">Question 10</div></div></div>
+            <div class="qstem">Which statement best explains why complete oxidation of glucose yields far more ATP aerobically than anaerobically?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q10" value="A"><div class="choice-letter">A.</div><div>Anaerobic glycolysis produces more pyruvate molecules per glucose than aerobic glycolysis.</div></label>
+              <label class="choice"><input type="radio" name="q10" value="B"><div class="choice-letter">B.</div><div>Only aerobic metabolism allows pyruvate to be converted into lactate, generating extra substrate-level ATP.</div></label>
+              <label class="choice"><input type="radio" name="q10" value="C"><div class="choice-letter">C.</div><div>Aerobic metabolism uses the TCA cycle and ETC to harvest high-energy electrons from NADH and FADH<sub>2</sub> for oxidative phosphorylation.</div></label>
+              <label class="choice"><input type="radio" name="q10" value="D"><div class="choice-letter">D.</div><div>Oxygen directly phosphorylates ADP at Complex I during glycolysis.</div></label>
+            </div>
+            <div class="feedback" id="fb-10"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="10" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-10" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>C</strong> is correct. Glycolysis alone yields only a small amount of ATP by substrate-level phosphorylation. Aerobic metabolism adds PDH, the TCA cycle, and the ETC, allowing electrons in NADH and FADH<sub>2</sub> to power proton pumping and ATP synthesis by ATP synthase. Choices A, B, and D all misstate core biochemistry.</div></div>
+          </div>
+
+          <div class="qcard" id="card-11">
+            <div class="qhead"><div><div class="question-note">Independent</div><div class="qstem">Question 11</div></div></div>
+            <div class="qstem">During intense exercise, skeletal muscle can maintain glycolytic flux when oxygen delivery is limited mainly because lactate dehydrogenase:</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q11" value="A"><div class="choice-letter">A.</div><div>Converts acetyl-CoA to citrate so the TCA cycle can continue</div></label>
+              <label class="choice"><input type="radio" name="q11" value="B"><div class="choice-letter">B.</div><div>Transfers electrons from FADH<sub>2</sub> directly to oxygen</div></label>
+              <label class="choice"> <input type="radio" name="q11" value="C"><div class="choice-letter">C.</div><div>Regenerates cytosolic NAD<sup>+</sup> by reducing pyruvate to lactate</div></label>
+              <label class="choice"><input type="radio" name="q11" value="D"><div class="choice-letter">D.</div><div>Pumps protons across the inner mitochondrial membrane</div></label>
+            </div>
+            <div class="feedback" id="fb-11"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="11" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-11" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>C</strong> is correct. Glyceraldehyde-3-phosphate dehydrogenase in glycolysis needs NAD<sup>+</sup>. When mitochondrial oxidation is limited, lactate dehydrogenase reduces pyruvate to lactate and oxidizes NADH to NAD<sup>+</sup>, permitting glycolysis to continue. The other options describe unrelated reactions or mitochondrial functions.</div></div>
+          </div>
+
+          <div class="qcard" id="card-12">
+            <div class="qhead"><div><div class="question-note">Independent</div><div class="qstem">Question 12</div></div></div>
+            <div class="qstem">A researcher adds an uncoupling protein to isolated mitochondria. Which pattern should increase most directly?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q12" value="A"><div class="choice-letter">A.</div><div>Proton reentry independent of ATP synthase, with increased oxygen consumption but reduced ATP made per oxygen consumed</div></label>
+              <label class="choice"><input type="radio" name="q12" value="B"><div class="choice-letter">B.</div><div>Direct inhibition of electron transport with decreased heat production</div></label>
+              <label class="choice"><input type="radio" name="q12" value="C"><div class="choice-letter">C.</div><div>Accumulation of pyruvate in the intermembrane space because glycolysis accelerates</div></label>
+              <label class="choice"><input type="radio" name="q12" value="D"><div class="choice-letter">D.</div><div>Conversion of ADP to ATP in the absence of a proton gradient</div></label>
+            </div>
+            <div class="feedback" id="fb-12"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="12" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-12" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>A</strong> is correct. Uncouplers allow protons to flow back into the matrix without passing through ATP synthase. This dissipates the proton motive force, so the ETC can run rapidly and consume oxygen while ATP production becomes less efficient; energy is released as heat. Choices B, C, and D contradict the definition of uncoupling.</div></div>
+          </div>
+
+          <div class="qcard" id="card-13">
+            <div class="qhead"><div><div class="question-note">Independent</div><div class="qstem">Question 13</div></div></div>
+            <div class="qstem">Which metabolite is produced once per turn of the citric acid cycle and donates electrons directly to Complex II rather than Complex I?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q13" value="A"><div class="choice-letter">A.</div><div>NADH produced by isocitrate dehydrogenase</div></label>
+              <label class="choice"><input type="radio" name="q13" value="B"><div class="choice-letter">B.</div><div>GTP produced by succinyl-CoA synthetase</div></label>
+              <label class="choice"><input type="radio" name="q13" value="C"><div class="choice-letter">C.</div><div>CO<sub>2</sub> released by α-ketoglutarate dehydrogenase</div></label>
+              <label class="choice"><input type="radio" name="q13" value="D"><div class="choice-letter">D.</div><div>FADH<sub>2</sub> produced when succinate is oxidized to fumarate</div></label>
+            </div>
+            <div class="feedback" id="fb-13"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="13" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-13" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>D</strong> is correct. Succinate dehydrogenase, which is also Complex II, oxidizes succinate to fumarate and reduces FAD to FADH<sub>2</sub>. Those electrons enter the ETC through Complex II. NADH feeds electrons into Complex I, while GTP and CO<sub>2</sub> are not ETC electron donors.</div></div>
+          </div>
+
+          <div class="qcard" id="card-14">
+            <div class="qhead"><div><div class="question-note">Independent</div><div class="qstem">Question 14</div></div></div>
+            <div class="qstem">A mutant ATP synthase still permits proton movement through F<sub>0</sub> but cannot catalyze phosphorylation at F<sub>1</sub>. Which outcome would most likely follow?</div>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="q14" value="A"><div class="choice-letter">A.</div><div>The ETC would stop completely because protons could no longer cross the inner mitochondrial membrane.</div></label>
+              <label class="choice"><input type="radio" name="q14" value="B"><div class="choice-letter">B.</div><div>Proton motive force would be partly dissipated, allowing some electron transport, but ATP synthesis by oxidative phosphorylation would remain defective.</div></label>
+              <label class="choice"><input type="radio" name="q14" value="C"><div class="choice-letter">C.</div><div>Glycolysis would be unable to make ATP because mitochondrial ATP synthase is mutated.</div></label>
+              <label class="choice"><input type="radio" name="q14" value="D"><div class="choice-letter">D.</div><div>PDH would reverse direction and convert acetyl-CoA to pyruvate to compensate.</div></label>
+            </div>
+            <div class="feedback" id="fb-14"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="14" disabled>Show explanation</button></div>
+            <div class="explanation" id="exp-14" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>B</strong> is correct. If F<sub>0</sub> still allows proton flow, the gradient can be dissipated to some degree, so electron transport need not stop completely. However, if F<sub>1</sub> cannot catalyze ATP formation, oxidative phosphorylation remains defective. Choice A would be more consistent with total proton-flow blockade. Choice C ignores substrate-level phosphorylation in glycolysis. Choice D proposes a nonexistent compensatory reversal of PDH.</div></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const totalQuestions = 14;
+const answerKey = {1:'A',2:'C',3:'B',4:'C',5:'B',6:'D',7:'B',8:'C',9:'A',10:'C',11:'C',12:'A',13:'D',14:'B'};
+let currentQuestion = 1;
+
+function getSectionForQuestion(q){ return q <= 6 ? 1 : 2; }
+function updatePassage(){
+  const section = getSectionForQuestion(currentQuestion);
+  document.querySelectorAll('.passage-section').forEach(sec => sec.classList.remove('active'));
+  const active = document.getElementById(`section-${section}`);
+  active.classList.add('active');
+  document.getElementById('passageTitle').textContent = active.dataset.title;
+  document.querySelectorAll('.qcard').forEach(c => c.classList.remove('active'));
+  document.getElementById(`card-${currentQuestion}`).classList.add('active');
+  document.getElementById('prevBtn').disabled = currentQuestion === 1;
+  document.getElementById('nextBtn').disabled = currentQuestion === totalQuestions;
+  document.querySelectorAll('.reason-box').forEach(box => box.hidden = true);
+  document.getElementById('toggleReason').textContent = 'How to reason';
+  active.querySelector('.passageText').scrollTop = 0;
+}
+
+document.getElementById('prevBtn').addEventListener('click', ()=>{ if(currentQuestion>1){ currentQuestion--; updatePassage(); } });
+document.getElementById('nextBtn').addEventListener('click', ()=>{ if(currentQuestion<totalQuestions){ currentQuestion++; updatePassage(); } });
+
+document.querySelectorAll('.choice input').forEach(input=>{
+  input.addEventListener('change', (e)=>{
+    const q = e.target.name.replace('q','');
+    const correct = answerKey[q];
+    const chosen = e.target.value;
+    const choices = document.querySelectorAll(`#card-${q} .choice`);
+    choices.forEach(label=>{
+      label.classList.remove('selected','correct','incorrect');
+      const val = label.querySelector('input').value;
+      if(val === chosen) label.classList.add('selected');
+      if(val === correct) label.classList.add('correct');
+      else if(val === chosen) label.classList.add('incorrect');
+    });
+    const fb = document.getElementById(`fb-${q}`);
+    fb.textContent = chosen === correct ? 'Correct' : 'Incorrect';
+    fb.className = 'feedback ' + (chosen === correct ? 'good' : 'bad');
+    const btn = document.querySelector(`[data-q="${q}"]`);
+    btn.disabled = false;
+  });
+});
+
+document.querySelectorAll('[data-action="toggle-exp"]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const q = btn.dataset.q;
+    const exp = document.getElementById(`exp-${q}`);
+    exp.hidden = !exp.hidden;
+    btn.textContent = exp.hidden ? 'Show explanation' : 'Hide explanation';
+  });
+});
+
+document.getElementById('resetAll').addEventListener('click', ()=>{
+  document.querySelectorAll('input[type="radio"]').forEach(i=>i.checked=false);
+  document.querySelectorAll('.choice').forEach(c=>c.classList.remove('selected','correct','incorrect'));
+  document.querySelectorAll('.feedback').forEach(f=>{f.textContent=''; f.className='feedback';});
+  document.querySelectorAll('.explanation').forEach(exp=>exp.hidden=true);
+  document.querySelectorAll('[data-action="toggle-exp"]').forEach(btn=>{btn.disabled=true; btn.textContent='Show explanation';});
+  currentQuestion = 1;
+  updatePassage();
+});
+
+document.getElementById('toggleReason').addEventListener('click', ()=>{
+  const section = getSectionForQuestion(currentQuestion);
+  const box = document.getElementById(`reasonBox-${section}`);
+  box.hidden = !box.hidden;
+  document.getElementById('toggleReason').textContent = box.hidden ? 'How to reason' : 'Hide reasoning';
+});
+
+// timer
+let totalSeconds = 18 * 60;
+let remaining = totalSeconds;
+let timerId = null;
+const display = document.getElementById('timerDisplay');
+const wrap = document.getElementById('timerWrap');
+function renderTime(){
+  const m = String(Math.floor(remaining/60)).padStart(2,'0');
+  const s = String(remaining%60).padStart(2,'0');
+  display.textContent = `${m}:${s}`;
+  if(remaining <= 60) wrap.classList.add('timer-danger'); else wrap.classList.remove('timer-danger');
+}
+function startTimer(){
+  if(timerId) return;
+  timerId = setInterval(()=>{
+    if(remaining>0){ remaining--; renderTime(); }
+    else { clearInterval(timerId); timerId = null; }
+  },1000);
+}
+function pauseTimer(){ if(timerId){ clearInterval(timerId); timerId=null; } }
+function resetTimer(){ pauseTimer(); remaining = totalSeconds; renderTime(); }
+document.getElementById('timerStart').addEventListener('click', startTimer);
+document.getElementById('timerPause').addEventListener('click', pauseTimer);
+document.getElementById('timerReset').addEventListener('click', resetTimer);
+renderTime();
+
+// highlight
+let highlightMode = false;
+let activePassageText = ()=> document.getElementById(`passageText-${getSectionForQuestion(currentQuestion)}`);
+let activeLayer = ()=> document.getElementById(`hlLayer-${getSectionForQuestion(currentQuestion)}`);
+let highlightStacks = {1:[], 2:[]};
+
+function clearSelection(){
+  const sel = window.getSelection();
+  if(sel) sel.removeAllRanges();
+}
+function rectToRelative(rect, container){
+  const c = container.getBoundingClientRect();
+  return {left: rect.left - c.left + container.scrollLeft, top: rect.top - c.top + container.scrollTop, width: rect.width, height: rect.height};
+}
+function makeHighlight(range, container, layer){
+  const rects = Array.from(range.getClientRects()).filter(r => r.width > 0 && r.height > 0);
+  if(!rects.length) return;
+  const nodes = [];
+  rects.forEach(r => {
+    const rel = rectToRelative(r, container);
+    const div = document.createElement('div');
+    div.className = 'hl-rect';
+    div.style.left = rel.left + 'px';
+    div.style.top = rel.top + 'px';
+    div.style.width = rel.width + 'px';
+    div.style.height = rel.height + 'px';
+    layer.appendChild(div);
+    nodes.push(div);
+  });
+  highlightStacks[getSectionForQuestion(currentQuestion)].push(nodes);
+}
+
+document.getElementById('highlightBtn').addEventListener('click', ()=>{
+  highlightMode = !highlightMode;
+  document.getElementById('highlightBtn').classList.toggle('active', highlightMode);
+  if(!highlightMode) clearSelection();
+});
+
+document.getElementById('clearHighlightBtn').addEventListener('click', ()=>{
+  const section = getSectionForQuestion(currentQuestion);
+  const last = highlightStacks[section].pop();
+  if(last) last.forEach(n => n.remove());
+});
+
+document.addEventListener('mouseup', ()=>{
+  if(!highlightMode) return;
+  const sel = window.getSelection();
+  if(!sel || sel.isCollapsed || sel.rangeCount === 0) return;
+  const range = sel.getRangeAt(0);
+  const container = activePassageText();
+  if(!container.contains(range.commonAncestorContainer)) return;
+  makeHighlight(range, container, activeLayer());
+  clearSelection();
+});
+
+updatePassage();
+</script>
+</body>
+</html>

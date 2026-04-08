@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Reproduction — MCAT Passages</title>
+<style>
+
+:root{
+  --blue:#1f6fae;
+  --blue2:#2d7fbf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#d7dee8;
+  --good:#118a4a;
+  --bad:#c0262d;
+  --accent:#1f67d6;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--blue);color:#fff;padding:12px 16px;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar .left{display:flex;flex-direction:column;gap:2px}
+.timer{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);border-radius:10px;color:#fff;font-weight:800}
+.timer-label{opacity:.9;font-weight:700}
+.timer-time{min-width:60px;text-align:center;letter-spacing:.5px}
+.timer-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:5px 8px;font-weight:800;cursor:pointer}
+.timer-btn:hover{background:rgba(255,255,255,.18)}
+.timer-danger{background:rgba(192,38,45,.35)!important;border-color:rgba(255,255,255,.55)!important}
+.container{width:100%;max-width:none;margin:0 auto;padding:12px;height:calc(100vh - 60px)}
+.split{display:flex;gap:0;height:100%}
+.pane{flex:1;min-width:0;height:100%}
+.vdiv{width:6px;background:linear-gradient(#cbd5e1,#cbd5e1);border-radius:3px;margin:0 10px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(0deg,var(--blue),var(--blue2));color:#fff;padding:10px 12px}
+.bar .title{font-weight:900;flex:1 1 auto;min-width:180px}
+.bar .barActions{display:flex;gap:10px;margin-left:auto;align-items:center}
+.iconbtn{height:40px;min-width:120px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:10px;padding:0 14px;font-weight:800;cursor:pointer;white-space:nowrap}
+.iconbtn:hover{background:rgba(255,255,255,.18)}
+.iconbtn.is-active,.iconbtn.active{background:rgba(0,0,0,.22);border-color:rgba(255,255,255,.7)}
+.content{padding:14px 16px;line-height:1.6;font-size:15px;flex:1;overflow:auto}
+#passageText{position:relative;-webkit-touch-callout:none}
+#passageText, #passageText *{-webkit-user-drag:none;user-drag:none}
+#passageText p{text-indent:1.5em;margin:10px 0}
+#passageText p.noindent{text-indent:0}
+.figure{margin:0 0 14px 0}
+.figure img{width:100%;height:auto;border:1px solid var(--border);border-radius:10px;background:#fff}
+.figcap{font-size:13px;color:#475569;margin-top:6px}
+.reason-box{white-space:normal;border:1px solid var(--border);background:#fbfdff;border-radius:10px;padding:14px 16px;margin-top:12px}
+.reason-box p{margin:0 0 8px 0}
+.reason-box ul{margin:0;padding-left:18px}
+.reason-box li{margin:8px 0;line-height:1.25}
+#reasonBox strong,#reasonBox .key{color:var(--accent);font-weight:700}
+.hl-layer{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hl-rect{position:absolute;background:rgba(255,245,157,0.75);border-radius:2px}
+#passageText > *:not(.hl-layer){position:relative;z-index:1}
+.subbar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);background:#fbfdff}
+.chips{display:none}
+.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 12px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--blue2);border-color:var(--blue2);color:#fff}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.qwrap{padding:12px;overflow:auto;flex:1}
+.qcard{display:none}
+.qcard.active{display:block}
+.qhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qstem{font-size:16px;font-weight:800;margin:8px 0 10px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px;cursor:pointer}
+.choice:hover{border-color:#b9c6d8}
+.choice input{margin-top:3px}
+.choice-letter{font-weight:950;min-width:28px}
+.choice.selected{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,132,198,.12)}
+.choice.correct{border-color:rgba(17,138,74,.6);box-shadow:0 0 0 3px rgba(17,138,74,.12)}
+.choice.incorrect{border-color:rgba(192,38,45,.55);box-shadow:0 0 0 3px rgba(192,38,45,.10)}
+.feedback{margin-top:10px;font-weight:950}
+.feedback.good{color:var(--good)}
+.feedback.bad{color:var(--bad)}
+.actions{display:flex;gap:8px;margin-top:10px}
+.explanation{margin-top:10px;border:1px solid var(--border);background:#fbfdff;border-radius:12px;padding:10px 12px}
+.exp-title{font-weight:950;margin:6px 0}
+.exp-text{color:#111827}
+.exp-list{margin:6px 0 0 18px}
+.exp-text strong,.explanation strong{color:var(--accent)}
+@media (max-width: 980px){
+  .split{flex-direction:column}
+  .vdiv{display:none}
+  .pane{height:auto}
+  .panel{height:auto;min-height:44vh}
+  .container{height:auto}
+}
+
+.passage-section{display:none;height:100%;flex-direction:column}
+.passage-section.active{display:flex}
+.passageText{position:relative;-webkit-touch-callout:none;flex:1;overflow:auto}
+.passageText, .passageText *{-webkit-user-drag:none;user-drag:none}
+.passageText p{text-indent:1.5em;margin:10px 0}
+.passageText p.noindent{text-indent:0}
+.passageText > *:not(.hl-layer){position:relative;z-index:1}
+.question-note{font-size:12px;color:var(--muted);font-weight:700}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="left"><div>Reproduction</div></div>
+    <div class="timer" id="timerWrap" aria-label="Passage timer">
+      <span class="timer-label">Timer</span>
+      <span class="timer-time" id="timerDisplay">13:00</span>
+      <button class="timer-btn" id="timerStart" type="button">Start</button>
+      <button class="timer-btn" id="timerPause" type="button">Pause</button>
+      <button class="timer-btn" id="timerReset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="split">
+      <div class="pane leftPane">
+        <div class="panel">
+          <div class="bar">
+            <div class="title" id="passageTitle">Passage 1 (Questions 1–6)</div>
+            <div class="barActions">
+              <button class="iconbtn" id="highlightBtn" type="button">Highlight</button>
+              <button class="iconbtn" id="clearHighlightBtn" type="button">Clear highlight</button>
+              <button class="iconbtn" id="toggleReason" type="button">How to reason</button>
+            </div>
+          </div>
+          <div class="content" id="passagePane">
+            <section class="passage-section active" id="section-1" data-title="Passage 1 (Questions 1–6)">
+              <div class="passageText" id="passageText-1">
+                <div class="hl-layer" id="hlLayer-1" aria-hidden="true"></div>
+                <p class="noindent">A reproductive endocrinology clinic redesigned its urine pregnancy strip for patients returning after assisted-reproduction cycles. The investigators wanted trainees to remember two common errors. First, a positive urinary hCG result does not prove that implantation followed natural conception; some patients recently received an hCG trigger shot to induce ovulation. Second, a weak or absent test line is not always a true negative. In rare cases, very high hCG can prevent formation of the sandwich complex needed at the test line, so dilution of the urine may restore the expected signal.</p>
+
+                <div class="figure">
+                  <img alt="Redrawn lateral-flow pregnancy strip" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22900%22%20height%3D%22300%22%20viewBox%3D%220%200%20900%20300%22%3E%0A%20%20%3Crect%20x%3D%2290%22%20y%3D%2255%22%20rx%3D%2224%22%20ry%3D%2224%22%20width%3D%22700%22%20height%3D%22110%22%20fill%3D%22white%22%20stroke%3D%22%23333%22%20stroke-width%3D%223%22/%3E%0A%20%20%3Crect%20x%3D%22175%22%20y%3D%2255%22%20width%3D%2238%22%20height%3D%22110%22%20fill%3D%22%23c8ccd1%22%20stroke%3D%22%23333%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Crect%20x%3D%22500%22%20y%3D%2255%22%20width%3D%2234%22%20height%3D%22110%22%20fill%3D%22%23c8ccd1%22%20stroke%3D%22%23333%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Crect%20x%3D%22595%22%20y%3D%2255%22%20width%3D%2242%22%20height%3D%22110%22%20fill%3D%22%23c8ccd1%22%20stroke%3D%22%23333%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Ctext%20x%3D%22194%22%20y%3D%22118%22%20font-size%3D%2228%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%22%20font-weight%3D%22700%22%3EA%3C/text%3E%0A%20%20%3Ctext%20x%3D%22517%22%20y%3D%22118%22%20font-size%3D%2228%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%22%20font-weight%3D%22700%22%3EB%3C/text%3E%0A%20%20%3Ctext%20x%3D%22616%22%20y%3D%22118%22%20font-size%3D%2228%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%22%20font-weight%3D%22700%22%3EC%3C/text%3E%0A%20%20%3Ctext%20x%3D%22110%22%20y%3D%22215%22%20font-size%3D%2224%22%20font-family%3D%22Arial%22%3EA%3A%20mobile%20mouse%20monoclonal%20anti-%CE%B2-hCG%E2%80%93HRP%20conjugates%3C/text%3E%0A%20%20%3Ctext%20x%3D%22110%22%20y%3D%22245%22%20font-size%3D%2224%22%20font-family%3D%22Arial%22%3EB%3A%20immobilized%20anti-hCG%20capture%20antibodies%20%2B%20chromogenic%20substrate%3C/text%3E%0A%20%20%3Ctext%20x%3D%22110%22%20y%3D%22275%22%20font-size%3D%2224%22%20font-family%3D%22Arial%22%3EC%3A%20immobilized%20anti-mouse%20IgG%20control%20antibodies%20%2B%20chromogenic%20substrate%3C/text%3E%0A%3C/svg%3E"/>
+                  <div class="figcap">Figure 1. Redrawn lateral-flow strip used in the clinic validation study. Urine enters on the left and migrates to the right.</div>
+                </div>
+
+                <p>The strip contains three antibody preparations. At site A, mobile mouse monoclonal antibodies against the β-subunit of hCG are conjugated to horseradish peroxidase (HRP). At site B, immobilized capture antibodies bind a different epitope on hCG. At site C, immobilized anti-mouse IgG antibodies act as a downstream control. Chromogenic substrate is present at both B and C, so a visible colored line appears only when HRP-tagged antibody becomes trapped there.</p>
+
+                <p>When urine from a pregnant patient enters the strip, hCG binds the labeled antibodies released from A. The resulting complex can be captured at B to produce a test line. Excess labeled antibodies that continue downstream are then trapped at C, producing the control line. In urine lacking hCG, no sandwich forms at B, but the labeled antibodies can still be captured at C, so a valid negative strip shows only the control line. If no line appears at C, the test is invalid because flow, reagent integrity, or enzyme activity may have failed.</p>
+
+                <p>During validation, the clinic noted three especially instructive scenarios. Patients tested too soon after an hCG trigger injection sometimes produced B and C lines even before implantation could have occurred. A few patients with very high serum hCG had a strong C line but a faint or absent B line; after a 1:50 dilution of the same urine, both lines appeared. The investigators also confirmed that using antibodies directed at β-hCG, rather than the shared α-subunit, minimized cross-reactivity with LH.</p>
+
+                <div class="reason-box" id="reasonBox-1" hidden>
+                  <p><span class="key">Start with strip architecture.</span> Decide what each site actually traps: A releases labeled antibody, B traps the hCG-containing sandwich, and C traps leftover mouse antibody.</p>
+                  <ul>
+                    <li><span class="key">Track the sample from left to right.</span> Ask whether hCG is present, whether a sandwich can form at B, and whether any labeled antibody can still reach C.</li>
+                    <li><span class="key">Use the clinical timing clue.</span> A B-line means hCG was present in the urine, but the passage warns that this may come from implantation or from a recent trigger injection.</li>
+                    <li><span class="key">Watch for false negatives.</span> If dilution restores B, think about excess analyte disrupting sandwich capture rather than absence of hCG.</li>
+                    <li><span class="key">Separate invalid from negative.</span> A negative test still needs a control line at C; absence of C means the strip cannot be interpreted.</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <section class="passage-section" id="section-2" data-title="Passage 2 (Questions 7–12)">
+              <div class="passageText" id="passageText-2">
+                <div class="hl-layer" id="hlLayer-2" aria-hidden="true"></div>
+                <p class="noindent">A reproductive biology group studied a progesterone-receptor modulator as a potential post-ovulation contraceptive. To isolate effects on implantation rather than fertilization, the drug was administered only after the LH surge had already occurred. In the treated animals, ovulation still occurred, corpora lutea formed, and midluteal serum progesterone remained similar to that of untreated controls.</p>
+
+                <p>Despite normal ovulation and preserved luteal progesterone, uterine biopsies obtained several days later showed delayed secretory transformation of the endometrium, with reduced expression of implantation-associated markers such as glycodelin and integrin αvβ3. Fertilized embryos recovered from treated animals cleaved normally in culture. When those embryos were transferred into untreated surrogate mothers, implantation rates were similar to control values. However, when embryos from untreated donors were transferred into drug-treated recipients, implantation remained markedly reduced.</p>
+
+                <p>The investigators emphasized that the timing of hormone action matters. Before ovulation, the hypothalamic-pituitary-ovarian axis must generate an LH surge that permits follicular rupture. After ovulation, the corpus luteum normally secretes progesterone, which converts a proliferative estrogen-primed endometrium into a receptive secretory lining. A compound can therefore impair pregnancy either by preventing ovulation, by harming the embryo directly, or by making the uterus unreceptive at the time the blastocyst arrives.</p>
+
+                <p>In a follow-up experiment, the team delayed drug administration until after implantation was already complete. Under those conditions, the sharp reduction in implantation was no longer observed, supporting the idea that the main target was the window of endometrial receptivity rather than earlier gamete or embryo development.</p>
+
+                <div class="reason-box" id="reasonBox-2" hidden>
+                  <p><span class="key">Map each stage of reproduction.</span> Separate ovulation, fertilization, cleavage, implantation, and maintenance of pregnancy into distinct steps.</p>
+                  <ul>
+                    <li><span class="key">Use timing as evidence.</span> Because the drug was given after the LH surge, the passage is trying to isolate post-ovulatory mechanisms.</li>
+                    <li><span class="key">Compare transfer experiments.</span> Normal implantation of treated embryos in untreated surrogates argues against direct embryotoxicity, while failure in treated recipients points toward the uterus.</li>
+                    <li><span class="key">Integrate hormone physiology.</span> Normal progesterone with poor implantation suggests the corpus luteum is functioning, but the endometrium is not responding appropriately.</li>
+                    <li><span class="key">Ask what changes if dosing is later.</span> Loss of effect after implantation supports a narrow action during the receptive window.</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div class="vdiv"></div>
+
+      <div class="pane rightPane">
+        <div class="panel">
+          <div class="subbar">
+            <div class="chips"></div>
+            <div class="right-actions">
+              <button class="btn" id="resetAll" type="button">Reset all</button>
+              <button class="btn" id="prevBtn" type="button">Previous</button>
+              <button class="btn primary" id="nextBtn" type="button">Next</button>
+            </div>
+          </div>
+          <div class="qwrap">
+
+            <div class="qcard" id="card-1">
+              <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 1</div></div></div>
+              <div class="qstem">A patient takes the redesigned urine test 3 days after receiving an hCG trigger injection for IVF, before implantation could reasonably have occurred. If the strip shows both B and C lines, which conclusion is most justified?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q1" value="A"><div class="choice-letter">A.</div><div>The strip confirms hCG is present, but it cannot distinguish exogenous trigger hCG from implantation-derived hCG.</div></label><label class="choice"><input type="radio" name="q1" value="B"><div class="choice-letter">B.</div><div>The patient must already have a placenta producing hCG.</div></label><label class="choice"><input type="radio" name="q1" value="C"><div class="choice-letter">C.</div><div>The result proves ovulation did not occur.</div></label><label class="choice"><input type="radio" name="q1" value="D"><div class="choice-letter">D.</div><div>The control line should be ignored because site B is positive.</div></label>
+              </div>
+              <div class="feedback" id="fb-1"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="1" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-1" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>A</strong> is correct. From the figure and passage, a B line appears whenever hCG-containing complexes are captured at the test line, and a C line indicates valid flow. The passage explicitly warns that recent trigger injections can place hCG in the urine before implantation. Therefore, the strip demonstrates <strong>presence of urinary hCG</strong>, not necessarily implantation. Choice B overinterprets the result. Choice C is unrelated: hCG trigger is used to induce ovulation, not to show that ovulation failed. Choice D is incorrect because the downstream control line remains essential for validity.</div></div>
+            </div>
+
+            <div class="qcard" id="card-2">
+              <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 2</div></div></div>
+              <div class="qstem">A patient with very high serum hCG initially shows a strong C line and no visible B line. After a 1:50 dilution of the same urine, both B and C lines appear. Which explanation best fits the clinic’s observations?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q2" value="A"><div class="choice-letter">A.</div><div>Dilution created hCG that had not been present in the original sample.</div></label><label class="choice"><input type="radio" name="q2" value="B"><div class="choice-letter">B.</div><div>Dilution increased LH cross-reactivity at site B.</div></label><label class="choice"><input type="radio" name="q2" value="C"><div class="choice-letter">C.</div><div>Excess hCG in the undiluted sample interfered with sandwich formation at B, and dilution restored efficient capture.</div></label><label class="choice"><input type="radio" name="q2" value="D"><div class="choice-letter">D.</div><div>The original C line showed that site A lacked antibody.</div></label>
+              </div>
+              <div class="feedback" id="fb-2"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="2" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-2" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>C</strong> is correct. The passage describes a high-dose or hook-like effect: with very high analyte, the test line can be lost because the sandwich required at B does not form efficiently. The figure matters because B is the capture site for the hCG-containing complex, whereas C can still trap labeled antibody downstream. Dilution can therefore <strong>restore the B line</strong>. Choice A is impossible. Choice B conflicts with the β-hCG specificity described in the passage. Choice D is wrong because the strong C line shows labeled antibody was still moving and being captured downstream.</div></div>
+            </div>
+
+            <div class="qcard" id="card-3">
+              <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 3</div></div></div>
+              <div class="qstem">Suppose a rare hCG variant in a patient’s urine still binds the capture antibody at B but no longer binds the mobile monoclonal antibody released from A. Which strip pattern is most likely?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q3" value="A"><div class="choice-letter">A.</div><div>A visible B line only</div></label><label class="choice"><input type="radio" name="q3" value="B"><div class="choice-letter">B.</div><div>Visible B and C lines</div></label><label class="choice"><input type="radio" name="q3" value="C"><div class="choice-letter">C.</div><div>No lines anywhere</div></label><label class="choice"><input type="radio" name="q3" value="D"><div class="choice-letter">D.</div><div>A visible C line without a B line</div></label>
+              </div>
+              <div class="feedback" id="fb-3"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="3" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-3" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>D</strong> is correct. The figure shows that visible color requires HRP-labeled mouse antibody released from A. If the hCG variant cannot bind that labeled antibody, no labeled sandwich reaches B, so the test line will not appear. However, the unbound labeled antibody can still continue to C and be captured by anti-mouse IgG, producing a control line. Choice A and B both incorrectly assume B can become colored without the labeled conjugate. Choice C would be more consistent with failed flow or failed HRP activity, not with selective loss of binding between hCG and the site-A antibody.</div></div>
+            </div>
+
+            <div class="qcard" id="card-4">
+              <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 4</div></div></div>
+              <div class="qstem">Why is the anti-mouse control region placed downstream of B rather than upstream of it?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q4" value="A"><div class="choice-letter">A.</div><div>So that C can trap placental cells before they reach B</div></label><label class="choice"><input type="radio" name="q4" value="B"><div class="choice-letter">B.</div><div>So that labeled antibodies first have a chance to participate in a test-line sandwich at B, while downstream capture at C still confirms flow and reagent function.</div></label><label class="choice"><input type="radio" name="q4" value="C"><div class="choice-letter">C.</div><div>So that B can measure progesterone after C measures hCG</div></label><label class="choice"><input type="radio" name="q4" value="D"><div class="choice-letter">D.</div><div>So that C will become positive only in the absence of hCG</div></label>
+              </div>
+              <div class="feedback" id="fb-4"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="4" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-4" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>B</strong> is correct. The strip works only if the labeled antibodies released from A can first encounter hCG and then be captured at the test region B. Any labeled antibodies that continue past B are then trapped at C, which verifies that the strip had adequate flow and functioning labeled reagent. That logic depends on the left-to-right arrangement shown in the figure. Choice A invents a mechanism not described in the passage. Choice C confuses progesterone with hCG detection. Choice D is incorrect because C should appear in both valid negatives and valid positives.</div></div>
+            </div>
+
+            <div class="qcard" id="card-5">
+              <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 5</div></div></div>
+              <div class="qstem">The clinic switched from antibodies recognizing the shared α-subunit of glycoprotein hormones to antibodies specific for β-hCG. Which potential false interpretation was this change most directly intended to reduce?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q5" value="A"><div class="choice-letter">A.</div><div>Concluding that the test is invalid whenever C appears</div></label><label class="choice"><input type="radio" name="q5" value="B"><div class="choice-letter">B.</div><div>Concluding that a patient is pregnant when urinary LH, rather than hCG, is generating the B line</div></label><label class="choice"><input type="radio" name="q5" value="C"><div class="choice-letter">C.</div><div>Concluding that implantation has already occurred because no control line appears</div></label><label class="choice"><input type="radio" name="q5" value="D"><div class="choice-letter">D.</div><div>Concluding that dilution should weaken the hook effect</div></label>
+              </div>
+              <div class="feedback" id="fb-5"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="5" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-5" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>B</strong> is correct. LH and hCG share an α-subunit, so α-directed antibodies would risk cross-reactivity. By targeting the β-subunit of hCG, the assay reduces the chance that LH would form the labeled complex and create a false-positive B line. Choice A concerns interpretation of the control line, not hormone specificity. Choice C describes invalid testing, not cross-reactivity. Choice D misunderstands the hook effect, which is about analyte excess rather than recognition of the wrong hormone.</div></div>
+            </div>
+
+            <div class="qcard" id="card-6">
+              <div class="qhead"><div><div class="question-note">Passage 1</div><div class="qstem">Question 6</div></div></div>
+              <div class="qstem">A technician accidentally adds an HRP inhibitor to the urine sample. The strip still wets completely and the antibodies migrate normally. Which outcome is most likely, and how should it be interpreted?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q6" value="A"><div class="choice-letter">A.</div><div>No visible B or C line, so the test should be considered invalid even if hCG is present.</div></label><label class="choice"><input type="radio" name="q6" value="B"><div class="choice-letter">B.</div><div>A C line but no B line, indicating a true negative result.</div></label><label class="choice"><input type="radio" name="q6" value="C"><div class="choice-letter">C.</div><div>A B line but no C line, indicating early implantation.</div></label><label class="choice"><input type="radio" name="q6" value="D"><div class="choice-letter">D.</div><div>Stronger B and C lines because inhibition concentrates the chromogen.</div></label>
+              </div>
+              <div class="feedback" id="fb-6"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="6" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-6" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>A</strong> is correct. The passage states that visible color appears only when HRP-tagged antibody is trapped at B or C and can act on chromogenic substrate. If HRP is inhibited, the strip may still flow physically, but neither line will become visible. Because the control line fails to appear, the test is <strong>invalid</strong>, not interpretable as negative. Choice B assumes enzyme activity remains intact. Choice C is not possible without visible control chemistry. Choice D reverses the effect of enzyme inhibition.</div></div>
+            </div>
+
+            <div class="qcard" id="card-7">
+              <div class="qhead"><div><div class="question-note">Passage 2</div><div class="qstem">Question 7</div></div></div>
+              <div class="qstem">Taken together, the embryo-transfer experiments most strongly support which conclusion about the progesterone-receptor modulator?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q7" value="A"><div class="choice-letter">A.</div><div>It prevents fertilization by blocking sperm capacitation.</div></label><label class="choice"><input type="radio" name="q7" value="B"><div class="choice-letter">B.</div><div>It causes primary failure of corpus luteum formation.</div></label><label class="choice"><input type="radio" name="q7" value="C"><div class="choice-letter">C.</div><div>It directly poisons embryos before cleavage.</div></label><label class="choice"><input type="radio" name="q7" value="D"><div class="choice-letter">D.</div><div>It primarily decreases uterine receptivity during the implantation window.</div></label>
+              </div>
+              <div class="feedback" id="fb-7"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="7" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-7" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>D</strong> is correct. Treated embryos implanted normally in untreated surrogates, which argues against direct embryotoxicity. Untreated embryos still implanted poorly in treated recipients, pointing to the maternal environment. The passage also reports delayed secretory transformation and reduced receptivity markers, making the uterus the main target. Choice A is inconsistent because the drug was administered after the LH surge and after fertilization-related steps were being isolated. Choice B is contradicted by normal corpus luteum formation and normal progesterone. Choice C is contradicted by normal embryo cleavage and rescue in untreated surrogates.</div></div>
+            </div>
+
+            <div class="qcard" id="card-8">
+              <div class="qhead"><div><div class="question-note">Passage 2</div><div class="qstem">Question 8</div></div></div>
+              <div class="qstem">Why did the investigators administer the drug only after the LH surge had already occurred?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q8" value="A"><div class="choice-letter">A.</div><div>To ensure that embryonic cleavage had already been completed</div></label><label class="choice"><input type="radio" name="q8" value="B"><div class="choice-letter">B.</div><div>To maximize suppression of pituitary FSH secretion</div></label><label class="choice"><input type="radio" name="q8" value="C"><div class="choice-letter">C.</div><div>To minimize confounding effects on ovulation and better isolate post-ovulatory effects on implantation</div></label><label class="choice"><input type="radio" name="q8" value="D"><div class="choice-letter">D.</div><div>To convert the endometrium into a proliferative estrogen-dominant state before follicular rupture</div></label>
+              </div>
+              <div class="feedback" id="fb-8"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="8" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-8" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>C</strong> is correct. The passage explicitly says the team wanted to isolate effects on implantation rather than fertilization. Because the LH surge is the event that permits ovulation, waiting until after it occurred reduces the chance that failure of pregnancy could simply be blamed on failure of follicular rupture. Choice A is too late; cleavage is not yet complete at the time immediately after ovulation. Choice B is not the study goal. Choice D reverses the normal sequence of reproductive physiology.</div></div>
+            </div>
+
+            <div class="qcard" id="card-9">
+              <div class="qhead"><div><div class="question-note">Passage 2</div><div class="qstem">Question 9</div></div></div>
+              <div class="qstem">Which additional finding would be most consistent with the passage’s claim that ovarian luteal function remained intact while the uterus became less receptive?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q9" value="A"><div class="choice-letter">A.</div><div>Normal midluteal progesterone concentrations despite reduced implantation-associated endometrial markers</div></label><label class="choice"><input type="radio" name="q9" value="B"><div class="choice-letter">B.</div><div>Absent corpora lutea together with low progesterone and low implantation</div></label><label class="choice"><input type="radio" name="q9" value="C"><div class="choice-letter">C.</div><div>Failure of fertilization in oocytes collected immediately after mating</div></label><label class="choice"><input type="radio" name="q9" value="D"><div class="choice-letter">D.</div><div>Marked reduction in cleavage rate of embryos cultured outside the uterus</div></label>
+              </div>
+              <div class="feedback" id="fb-9"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="9" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-9" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>A</strong> is correct. The question asks for a pattern showing that the ovary and corpus luteum still function but that the uterine response is impaired. Normal progesterone indicates preserved luteal secretion, while low endometrial receptivity markers indicate a uterine problem. Choice B would imply ovarian failure. Choice C points to a fertilization defect, not a receptivity defect. Choice D points toward embryotoxicity, which the transfer experiments argue against.</div></div>
+            </div>
+
+            <div class="qcard" id="card-10">
+              <div class="qhead"><div><div class="question-note">Passage 2</div><div class="qstem">Question 10</div></div></div>
+              <div class="qstem">The reproductive defect produced by the drug is most analogous to failure of which normal physiologic process?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q10" value="A"><div class="choice-letter">A.</div><div>The acrosome reaction that allows sperm to penetrate the zona pellucida</div></label><label class="choice"><input type="radio" name="q10" value="B"><div class="choice-letter">B.</div><div>Meiotic arrest of the primary oocyte in prophase I</div></label><label class="choice"><input type="radio" name="q10" value="C"><div class="choice-letter">C.</div><div>LH-stimulated rupture of the dominant follicle</div></label><label class="choice"><input type="radio" name="q10" value="D"><div class="choice-letter">D.</div><div>Progesterone-driven secretory transformation that makes the endometrium receptive to a blastocyst</div></label>
+              </div>
+              <div class="feedback" id="fb-10"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="10" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-10" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>D</strong> is correct. The passage describes normal ovulation, normal cleavage, and preserved progesterone production, but a failure of the endometrium to undergo appropriately receptive secretory changes. That is exactly the process listed in choice D. Choice A concerns fertilization. Choice B concerns oogenesis before ovulation. Choice C concerns ovulation, which the investigators intentionally left intact by dosing after the LH surge.</div></div>
+            </div>
+
+            <div class="qcard" id="card-11">
+              <div class="qhead"><div><div class="question-note">Passage 2</div><div class="qstem">Question 11</div></div></div>
+              <div class="qstem">Which interpretation is most weakened by the observation that embryos from treated animals implanted normally when transferred into untreated surrogates?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q11" value="A"><div class="choice-letter">A.</div><div>The drug acts during a narrow time window</div></label><label class="choice"><input type="radio" name="q11" value="B"><div class="choice-letter">B.</div><div>Progesterone is important for endometrial maturation</div></label><label class="choice"><input type="radio" name="q11" value="C"><div class="choice-letter">C.</div><div>The drug directly damages the embryo in a way that permanently prevents implantation</div></label><label class="choice"><input type="radio" name="q11" value="D"><div class="choice-letter">D.</div><div>A maternal target may be more important than an embryonic target</div></label>
+              </div>
+              <div class="feedback" id="fb-11"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="11" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-11" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>C</strong> is correct. If the embryos themselves had been permanently damaged by the drug, transferring them into untreated surrogates should not restore implantation. Because implantation does recover in untreated recipients, the idea of direct irreversible embryotoxicity is weakened. Choice A remains compatible with the later-dosing experiment. Choice B is supported by standard physiology and by the endometrial findings. Choice D is strengthened, not weakened, by the transfer results.</div></div>
+            </div>
+
+            <div class="qcard" id="card-12">
+              <div class="qhead"><div><div class="question-note">Passage 2</div><div class="qstem">Question 12</div></div></div>
+              <div class="qstem">When administration was delayed until after implantation was already complete, the sharp fall in implantation was no longer observed. Which inference is best supported?</div>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="q12" value="A"><div class="choice-letter">A.</div><div>The drug’s major effect is to increase the LH surge before ovulation.</div></label><label class="choice"><input type="radio" name="q12" value="B"><div class="choice-letter">B.</div><div>The drug mainly interferes with an earlier receptive window rather than with already-established implantation.</div></label><label class="choice"><input type="radio" name="q12" value="C"><div class="choice-letter">C.</div><div>The drug becomes embryotoxic only after placentation is complete.</div></label><label class="choice"><input type="radio" name="q12" value="D"><div class="choice-letter">D.</div><div>The corpus luteum must regress before the drug can act.</div></label>
+              </div>
+              <div class="feedback" id="fb-12"></div><div class="actions"><button class="btn" data-action="toggle-exp" data-q="12" disabled>Show explanation</button></div>
+              <div class="explanation" id="exp-12" hidden><div class="exp-title">Explanation</div><div class="exp-text">Choice <strong>B</strong> is correct. The loss of effect when dosing is postponed until after implantation indicates that the modulator acts during an earlier, limited period when the blastocyst is trying to implant and the endometrium must be receptive. Choice A is inconsistent with post-ovulatory dosing. Choice C is unsupported and contradicts the embryo-transfer results. Choice D is contradicted by the finding that progesterone and corpora lutea were preserved.</div></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const qOrder = [1,2,3,4,5,6,7,8,9,10,11,12];
+const correct = {"1":"A","2":"C","3":"D","4":"B","5":"B","6":"A","7":"D","8":"C","9":"A","10":"D","11":"C","12":"B"};
+const sectionForQuestion = (num) => num <= 6 ? 1 : 2;
+const $ = (s, root=document) => root.querySelector(s);
+const $all = (s, root=document) => Array.from(root.querySelectorAll(s));
+let currentIndex = 0;
+let highlightMode = false;
+const groups = {1:[],2:[]};
+
+(function(){
+  const display = $('#timerDisplay');
+  const wrap = $('#timerWrap');
+  const startBtn = $('#timerStart');
+  const pauseBtn = $('#timerPause');
+  const resetBtn = $('#timerReset');
+  let remaining = 13*60;
+  let timer = null;
+  function formatTime(total){
+    const m = String(Math.floor(total/60)).padStart(2,'0');
+    const s = String(total%60).padStart(2,'0');
+    return `${m}:${s}`;
+  }
+  function render(){
+    display.textContent = formatTime(remaining);
+    wrap.classList.toggle('timer-danger', remaining <= 60);
+  }
+  function start(){ if (timer) return; timer = setInterval(() => { if (remaining > 0) { remaining -= 1; render(); } else { clearInterval(timer); timer = null; } }, 1000); }
+  function pause(){ if (timer){ clearInterval(timer); timer = null; } }
+  function reset(){ pause(); remaining = 13*60; render(); }
+  startBtn.addEventListener('click', start);
+  pauseBtn.addEventListener('click', pause);
+  resetBtn.addEventListener('click', reset);
+  render();
+})();
+
+function activeSectionNumber(){ return sectionForQuestion(qOrder[currentIndex]); }
+function getPassage(section){ return document.getElementById('passageText-' + section); }
+function getLayer(section){ return document.getElementById('hlLayer-' + section); }
+
+function updateSectionDisplay(num){
+  const sec = sectionForQuestion(num);
+  $all('.passage-section').forEach(s => s.classList.remove('active'));
+  const active = $('#section-' + sec);
+  active.classList.add('active');
+  $('#passageTitle').textContent = active.dataset.title;
+  const btn = $('#toggleReason');
+  const box = $('#reasonBox-' + sec);
+  btn.textContent = box.hidden ? 'How to reason' : 'Hide reasoning';
+  const passage = $('#passageText-' + sec);
+  if (passage) passage.scrollTop = 0;
+}
+
+function showQuestion(num){
+  currentIndex = qOrder.indexOf(num);
+  $all('.qcard').forEach(card => card.classList.remove('active'));
+  $('#card-' + num).classList.add('active');
+  $('#prevBtn').disabled = currentIndex === 0;
+  $('#nextBtn').disabled = currentIndex === qOrder.length - 1;
+  updateSectionDisplay(num);
+}
+function getSelected(num){ const checked = $('input[name="q'+num+'"]:checked'); return checked ? checked.value : null; }
+function setFeedback(num, ok){ const fb = $('#fb-' + num); if (ok === null){ fb.textContent=''; fb.className='feedback'; return; } fb.textContent = ok ? 'Correct' : 'Incorrect'; fb.className = 'feedback ' + (ok ? 'good' : 'bad'); }
+function markChoices(num, selected){ const card = $('#card-' + num); $all('.choice', card).forEach(function(lab){ lab.classList.remove('selected','correct','incorrect'); const input = lab.querySelector('input'); if (!input) return; if (input.value === selected) lab.classList.add('selected'); if (selected) { if (input.value === correct[String(num)]) lab.classList.add('correct'); if (input.value === selected && selected !== correct[String(num)]) lab.classList.add('incorrect'); } }); }
+function enableExplanation(num){ const card = $('#card-' + num); card.querySelector('button[data-action="toggle-exp"]').disabled = false; }
+function resetQuestion(num){ document.querySelectorAll('input[name="q'+num+'"]').forEach(i => i.checked = false); setFeedback(num, null); const card = $('#card-' + num); $all('.choice', card).forEach(l => l.classList.remove('selected','correct','incorrect')); const exp = $('#exp-' + num); exp.hidden = true; const btn = card.querySelector('button[data-action="toggle-exp"]'); btn.textContent = 'Show explanation'; btn.disabled = true; }
+function clearHighlights(section=null){
+  const sections = section ? [section] : [1,2];
+  sections.forEach(sec => {
+    const layer = getLayer(sec);
+    while(layer.firstChild) layer.removeChild(layer.firstChild);
+    groups[sec] = [];
+  });
+}
+function undoLastHighlight(){
+  const sec = activeSectionNumber();
+  const layer = getLayer(sec);
+  const g = groups[sec].pop();
+  if (g && g.parentNode === layer) layer.removeChild(g);
+}
+function createGroup(sec){ const g = document.createElement('div'); getLayer(sec).appendChild(g); groups[sec].push(g); return g; }
+function selectionWithinPassage(sel, sec){ const passage = getPassage(sec); return !!(sel && sel.rangeCount && passage.contains(sel.anchorNode) && passage.contains(sel.focusNode)); }
+function addRect(rect, base, passage, group){ const div = document.createElement('div'); div.className = 'hl-rect'; div.style.top = (rect.top - base.top + passage.scrollTop) + 'px'; div.style.left = (rect.left - base.left + passage.scrollLeft) + 'px'; div.style.width = rect.width + 'px'; div.style.height = rect.height + 'px'; group.appendChild(div); }
+function highlightSelection(){
+  const sec = activeSectionNumber();
+  const passage = getPassage(sec);
+  const sel = window.getSelection();
+  if(!selectionWithinPassage(sel, sec)) return;
+  const range = sel.getRangeAt(0);
+  if(range.collapsed) return;
+  const base = passage.getBoundingClientRect();
+  const rects = Array.from(range.getClientRects()).filter(r=>r.width>0 && r.height>0);
+  if(!rects.length) return;
+  const group = createGroup(sec);
+  rects.forEach(r=>addRect(r, base, passage, group));
+  try{ sel.removeAllRanges(); }catch(_){}
+}
+function setMode(on){ highlightMode = !!on; $('#highlightBtn').classList.toggle('is-active', highlightMode); $('#highlightBtn').classList.toggle('active', highlightMode); }
+function resetAll(){ clearHighlights(); qOrder.forEach(n => resetQuestion(n)); $all('.reason-box').forEach(box => box.hidden = true); $('#toggleReason').textContent = 'How to reason'; setMode(false); }
+
+$('#toggleReason').addEventListener('click', function(){ const sec = activeSectionNumber(); const box = $('#reasonBox-' + sec); box.hidden = !box.hidden; this.textContent = box.hidden ? 'How to reason' : 'Hide reasoning'; });
+$('#prevBtn').addEventListener('click', function(){ showQuestion(qOrder[Math.max(0, currentIndex-1)]); });
+$('#nextBtn').addEventListener('click', function(){ showQuestion(qOrder[Math.min(qOrder.length-1, currentIndex+1)]); });
+$('#resetAll').addEventListener('click', function(){ resetAll(); showQuestion(qOrder[0]); });
+document.addEventListener('change', function(e){ if (!(e.target && e.target.matches('input[type="radio"]'))) return; const num = parseInt(e.target.name.replace('q',''),10); const sel = getSelected(num); const ok = sel === correct[String(num)]; setFeedback(num, ok); markChoices(num, sel); enableExplanation(num); });
+document.addEventListener('click', function(e){ const btn = e.target.closest('button'); if (!btn) return; if (btn.dataset.action === 'toggle-exp') { const num = parseInt(btn.dataset.q,10); const exp = $('#exp-' + num); exp.hidden = !exp.hidden; btn.textContent = exp.hidden ? 'Show explanation' : 'Hide explanation'; } });
+$('#highlightBtn').addEventListener('click', (e)=>{ e.preventDefault(); setMode(!highlightMode); if (highlightMode) setTimeout(highlightSelection, 0); });
+$('#clearHighlightBtn').addEventListener('click', (e)=>{ e.preventDefault(); $('#clearHighlightBtn').classList.add('is-active','active'); setTimeout(()=>$('#clearHighlightBtn').classList.remove('is-active','active'), 180); undoLastHighlight(); });
+$all('.passageText').forEach(passage => { passage.addEventListener('mouseup', ()=>{ if(!highlightMode) return; setTimeout(highlightSelection, 0); }); passage.addEventListener('touchend', ()=>{ if(!highlightMode) return; setTimeout(highlightSelection, 0); }, {passive:true}); });
+window.addEventListener('DOMContentLoaded', function(){ showQuestion(qOrder[0]); resetAll(); showQuestion(qOrder[0]); });
+</script>
+</body>
+</html>
